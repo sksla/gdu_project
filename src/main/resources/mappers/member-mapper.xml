@@ -2,4 +2,98 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="memberMapper">
 
+	<resultMap id="memberResult" type="MemberDto">
+  	<id column="mem_no" property="memNo"/>
+  	<result column="major_no" property="majorNo"/>
+  	<result column="job_no" property="jobNo"/>
+  	<result column="mem_name" property="memName"/>
+  	<result column="mem_id" property="memId"/>
+  	<result column="mem_pwd" property="memPwd"/>
+  	<result column="phone" property="phone"/>
+  	<result column="email" property="email"/>
+  	<result column="address" property="address"/>
+  	<result column="resident" property="resident"/>
+  	<result column="hire_date" property="hireDate"/>
+  	<result column="end_date" property="endDate"/>
+  	<result column="status" property="status"/>
+  	<result column="salary" property="salary"/>
+  	<result column="sign_url" property="signUrl"/>
+  	<result column="profile_url" property="profileUrl"/>
+  	<result column="leave_count" property="leaveCount"/>
+  	<result column="birth" property="birth"/>
+  	<result column="gender" property="gender"/>
+  </resultMap>
+  
+  <!--  로그인용 -->
+  <select id="selectMember" resultMap="memberResult">
+  <!-- * 암호화 적용 전 -->
+  
+    	select
+  				mem_no, major_no, job_no, mem_name, mem_id, mem_pwd 
+  			, phone, email, address, resident, hire_date, end_date, salary
+  			, sign_url, profile_url, leave_count, birth, gender
+  		from member
+  	 where status in('N')
+  	 	 and mem_no = #{memNo}
+  	 	 and mem_pwd = #{memPwd} 
+  </select>
+  
+  
+ 
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
 </mapper>
