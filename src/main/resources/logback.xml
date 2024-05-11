@@ -16,9 +16,9 @@
    
 		<!-- logger -->
    <logger name="org.springframework" level="info"/>
-   <logger name="com.br.spring" level="debug"/>
+   <logger name="com.cu.gdu" level="debug"/>
    <!-- additivity false : root 로거로 전달되지 않음, 참조할 어펜더를 등록 해줘야함 -->
-   <logger name="com.br.spring.handler" level="debug" additivity="false">
+   <logger name="com.cu.gdu.handler" level="debug" additivity="false">
    	<appender-ref ref="websocketLog"/>
    </logger>
    
