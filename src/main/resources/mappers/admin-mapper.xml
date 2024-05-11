@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="adminMapper">
+  
+  <resultMap type="CollegeDto" id="collegeResult">
+  	<id column="col_no" property="colNo" />
+  	<result column="col_name" property="colName" />
+  </resultMap>
+  
+  <select id="selectCollegeList" resultMap="collegeResult">
+  	select
+  				 col_no
+  			 , col_name
+  		from college
+  </select>
+  
+</mapper>
