@@ -233,7 +233,7 @@
                               </ul>
                             </li>
                             <li>
-                              <a href="#" class="college">단과1</a>
+                              <a href="#" class="college">단과2</a>
                               <ul>
                                 <li>
                                   <a href="#" class="major">학과명</a>
@@ -251,7 +251,7 @@
                               </ul>
                             </li>
                             <li>
-                              <a href="#" class="college">단과1</a>
+                              <a href="#" class="college">단과3</a>
                               <ul>
                                 <li>
                                   <a href="#" class="major">학과명</a>
