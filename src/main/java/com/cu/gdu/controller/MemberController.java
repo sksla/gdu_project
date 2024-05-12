@@ -61,7 +61,11 @@ public class MemberController {
 	        return "member/mainpage"; 
 	    }
 	
-	
+	// * 마이페이지 관련 -------------------------
+	@GetMapping("/mypage.page")
+	public String mypage() {
+		return "/member/mypage";
+	}
 	
 	
 	
