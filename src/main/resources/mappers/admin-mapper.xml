@@ -9,11 +9,76 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   	<result column="col_name" property="colName" />
   </resultMap>
   
+  <resultMap type="MajorDto" id="majorResult">
+  	<id column="major_no" property="majorNo" />
+  	<result column="col_no" property="colNo" />
+  	<result column="major_name" property="majorName" />
+  	<result column="status" property="status" />
+  </resultMap>
+  
+  <resultMap type="MemberDto" id="memberResult">
+  	<id column="mem_No" property="memNo" />
+  	<result column="major_name" property="majorNo" />
+  	<result column="job_name" property="jobNo" />
+  	<result column="mem_Name" property="memName" />
+  	<result column="mem_id" property="memId" />
+  	<result column="mem_pwd" property="memPwd" />
+  	<result column="phone" property="phone" />
+  	<result column="email" property="email" />
+  	<result column="address" property="address" />
+  	<result column="resident" property="resident" />
+  	<result column="hire_date" property="hireDate" />
+  	<result column="end_date" property="endDate" />
+  	<result column="status" property="status" />
+  	<result column="salary" property="salary" />
+  	<result column="sign_url" property="signUrl" />
+  	<result column="profile_Url" property="profileUrl" />
+  	<result column="leave_Count" property="leaveCount" />
+  	<result column="birth" property="birth" />
+  	<result column="gender" property="gender" />
+  </resultMap>
+
   <select id="selectCollegeList" resultMap="collegeResult">
   	select
   				 col_no
   			 , col_name
   		from college
+  </select>
+  
+  <select id="selectMajorList" resultMap="majorResult">
+  	select
+		       major_no
+		     , col_no
+		     , major_name
+		     , status
+		  from major
+		 where status = 'Y'
+  </select>
+  
+  <select id="selectMemberListCount" resultType="_int">
+  	select
+  				 count(*)
+  		from member
+  	 where status = 'N'
+  </select>
+  
+  <select id="selectMemberList" resultMap="memberResult">
+		select
+		       mem_no
+		     , mem_name
+		     , major_name
+		     , job_name
+		     , resident
+		     , email
+		     , address
+		     , to_char(hire_date, 'YYYY-MM-DD') hire_date
+		     , phone
+		  from member
+		  join major on (member.major_no = major.major_no)
+		  join job on (member.job_no = job.job_no)
+		 where member.status = 'N'
+		 order
+		    by mem_no desc
   </select>
   
 </mapper>

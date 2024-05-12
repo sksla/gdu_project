@@ -9,6 +9,7 @@
 	<typeAliases>
 		<typeAlias type="com.cu.gdu.dto.MemberDto" alias="MemberDto"/>
 		<typeAlias type="com.cu.gdu.dto.CollegeDto" alias="CollegeDto"/>
+		<typeAlias type="com.cu.gdu.dto.MajorDto" alias="majorDto"/>
 	</typeAliases>
 	
 	<mappers>

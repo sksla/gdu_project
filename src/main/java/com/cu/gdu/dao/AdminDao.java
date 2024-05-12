@@ -2,10 +2,14 @@ package com.cu.gdu.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.cu.gdu.dto.CollegeDto;
+import com.cu.gdu.dto.MajorDto;
+import com.cu.gdu.dto.MemberDto;
+import com.cu.gdu.dto.PageInfoDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -17,6 +21,21 @@ public class AdminDao {
 	
 	public List<CollegeDto> selectCollegeList(){
 		return sqlSessionTemplate.selectList("adminMapper.selectCollegeList");
+	}
+	
+	public List<MajorDto> selectMajorList(){
+		return sqlSessionTemplate.selectList("adminMapper.selectMajorList");
+	}
+	
+	public int selectMemberListCount() {
+		return sqlSessionTemplate.selectOne("adminMapper.selectMemberListCount");
+	}
+	
+	public List<MemberDto> selectMemberList(PageInfoDto pi){
+		int limit = pi.getBoardLimit();
+		int offset = (pi.getCurrentPage()-1) * limit;
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return sqlSessionTemplate.selectList("adminMapper.selectMemberList", pi, rowBounds);
 	}
 	
 }

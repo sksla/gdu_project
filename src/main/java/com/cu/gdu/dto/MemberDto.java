@@ -16,8 +16,8 @@ import lombok.ToString;
 public class MemberDto {
 
 	private int memNo;
-	private int majorNo;
-	private int jobNo;
+	private String majorNo;
+	private String jobNo;
 	private String memName;
 	private String memId;
 	private String memPwd;

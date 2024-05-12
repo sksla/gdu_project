@@ -91,7 +91,7 @@
 	            <script>
 	            	$(document).ready(function(){
 	            		$(".chart").on("click", function(){
-	            			location.href="http://www.naver.com";
+	            			location.href="${contextPath}/admin/chart.do";
 	            		})
 	            	})
 	            </script>
