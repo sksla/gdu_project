@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -45,8 +46,7 @@ public class MemberController {
 		if(loginUser != null && m.getMemPwd().equals(loginUser.getMemPwd()) ) 	{ 
 			request.getSession().setAttribute("loginUser", loginUser);
 			out.println("alert('" + loginUser.getMemName() + "님 환영합니다~');");
-			//out.println("location.href = '" + request.getContextPath()  + "';");
-			out.println("location.href = '" + request.getHeader("referer")  + "';"); // 이전에보던페이지 
+			out.println("location.href = '" + request.getContextPath() + "/member/mainpage';"); // mainpage.jsp로 이동
 		
 		}else {
 			out.println("alert('로그인 실패하였습니다. 아이디 및 비밀번호를 다시 확인해주세요.')");
@@ -55,6 +55,11 @@ public class MemberController {
 		out.println("</script>");
 		
 	}
+	
+	 @GetMapping("/mainpage")
+	    public String showMainPage() {
+	        return "member/mainpage"; 
+	    }
 	
 	
 	
