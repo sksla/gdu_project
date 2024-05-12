@@ -6,25 +6,23 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>페이지 작성 틀</title>
 </head>
 <body>
 	<div class="main-wrapper">
 	
-		<!-- 이쪽에 사이드바 포함 할꺼임 -->
-		<!--  
-    <jsp:include page=""/>
-    -->
+		<!-- 각 페이지 별 사이드 바 -->
+    <jsp:include page="/WEB-INF/views/common/calSidebar.jsp"/>
+    
     <div class="page-wrapper">
     
-    	<!-- 이쪽에 헤더(메뉴바) 포함 할꺼임 -->
-    	<!--  
-	    <jsp:include page=""/>
-	    -->
+    	<!-- 이쪽에 헤더(상단바) -->
+	    <jsp:include page="/WEB-INF/views/common/header.jsp"/>
     	
 	    <!----------------------------- 본문 시작 -------------------->
 	    <div class="body-wrapper">
         <div class="container-fluid">
+        <!-- ----------------------------- 실제 내용 작성 영역 ----------------------------- -->
           <!-- 페이지 타이틀 -->
           <div class="card bg-info-subtle shadow-none position-relative overflow-hidden mb-4">
             <div class="card-body px-4 py-3">
@@ -71,24 +69,20 @@
               여기에 내용작성
             </div>
           </div>
-
+          
+					<!-- ----------------------------- 실제 내용 작성 영역 end ----------------------------- -->
         </div>
-        
       </div><!-- body-wrapper end 본문 끝-->
       
     </div><!-- page-wrapper end -->
     
-    <!-- 이쪽에 세팅메뉴(바) 포함 할꺼임 -->
-    	<!--  
-	    <jsp:include page=""/>
-	    -->
+    <!-- 세팅메뉴(바) -->
+	    <jsp:include page="/WEB-INF/views/common/settingbar.jsp"/>
     
 	</div><!-- main-wrapper end -->
 	
-	<!-- 이쪽에 푸터 포함 할꺼임 -->
- 	<!--  
-  <jsp:include page=""/>
-  -->
+	<!-- footer-->
+  <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 	
 </body>
 </html>
