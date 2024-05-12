@@ -67,11 +67,19 @@
               </a>
               <ul aria-expanded="false" class="collapse first-level">
                 <li class="sidebar-item">
+                  <a href="${contextPath}/admin/memberList.do" class="sidebar-link">
+                    <div class="round-16 d-flex align-items-center justify-content-center">
+                      <i class="ti ti-circle"></i>
+                    </div>
+                    <span class="hide-menu">직원관리</span>
+                  </a>
+                </li>
+                <li class="sidebar-item">
                   <a href="./main/blog-posts.html" class="sidebar-link">
                     <div class="round-16 d-flex align-items-center justify-content-center">
                       <i class="ti ti-circle"></i>
                     </div>
-                    <span class="hide-menu">직원</span>
+                    <span class="hide-menu">직원등록</span>
                   </a>
                 </li>
                 <li class="sidebar-item">

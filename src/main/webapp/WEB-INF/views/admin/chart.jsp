@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html>
@@ -183,39 +184,100 @@
           <!-- 페이지 내용 -->
           <div class="card">
             <div class="card-body">
+		    
 		    <script>
 		
 		        $(document).ready(function(){
+		        	
+					    console.log(${majorList.size()});
+			      
+			        	for(var i=0; i<${majorList.size()}; i++){
+				        	//console.log("음");
+									//console.log(${majorList.get(i).majorName})
+									//${majorList.get(1).colNo}
+									var aTag = document.createElement("a");
+									aTag.textContent = "${majorList.get(i).majorName}";
+									aTag.href = "#";
+									aTag.classList.add("major");
+									aTag.classList.add(${majorList.get(i).colNo});
+									
+									var laTag = document.createElement("li");
+									laTag.appendChild(aTag);
+									
+									var ulTag = document.createElement("ul");
+									ulTag.appendChild(laTag);
+									
+									var college1Li = document.getElementById("college1");
+									college1Li.appendChild(ulTag);
+
+			        }
+			       
+									/*	
+                	<ul>
+                    <li>
+                      <a href="#" class="major">학과명</a>
+                    </li>
+                  </ul> 
+			        		*/
 		
-				        // 학과테이블 보여지는 펑션
-				        // 테이블 숨길지말지 추후수정 -----------------------
-				        var isHidden = true;
-				
-				        $("#major").hide();
-				        $("#search").hide();
-				
-				        $(".major").on("click", function(){
-				        if (isHidden) {
-				            $("#major").show();
-				            $("#search").show();
-				            isHidden = false;
-				        } else {
-				            $("#major").hide();
-				            $("#search").hide();
-				            isHidden = true;
-				        }
-				        });
-				        //-------------------------------------------------
+			        // 학과테이블 보여지는 펑션
+			        // 테이블 숨길지말지 추후수정 -----------------------
+			        var isHidden = true;
+			
+			        $("#major").hide();
+			        $("#search").hide();
+			
+			        $(".major").on("click", function(){
+			        if (isHidden) {
+			            $("#major").show();
+			            $("#search").show();
+			            isHidden = false;
+			        } else {
+			            $("#major").hide();
+			            $("#search").hide();
+			            isHidden = true;
+			        }
+			        });
+			        //-------------------------------------------------
+			        
+
 		        });
 		    </script>
+		    
+		    
+		    <c:forEach var="i" items="${majorList}">
+		    	${i.majorName}
+		    </c:forEach>
+		    				${majorList.get(0).majorName}
+		    				${majorList.get(1).majorName}
+								${majorList.get(1).colNo}
                 <div id="content_1">
                     <div class="tree originTree">
-                      <ul>
-                        <li>
-                          <a href="#" id="admin" class="fs-8">GDU</a>
-                          <ul>
-                            <li>
-                              <a href="#" class="college">단과1</a>
+                      <ul class="oneUl">
+                        <li class="oneLi">
+                          <a href="#" id="admin" class="fs-8 gdu">GDU</a>
+                          <ul class="twoUl">
+                          <!-- 동적으로 조직도 생성범위 -->
+                            <li id="college1">
+                              <a href="#" class="college college1">${colList[0].colName}</a>
+<!--                               <ul>
+                                <li>
+                                  <a href="#" class="major">학과명</a>
+                                  <ul>
+                                    <li>
+                                      <a href="#" class="major">학과명</a>
+                                      <ul>
+                                        <li>
+                                          <a href="#" class="major">학과명</a>
+                                        </li>
+                                      </ul>
+                                    </li>
+                                  </ul>
+                                </li>
+                              </ul> -->
+                            </li>
+                            <li id="college2">
+                              <a href="#" class="college college2">${colList[1].colName}</a>
                               <ul>
                                 <li>
                                   <a href="#" class="major">학과명</a>
@@ -232,8 +294,8 @@
                                 </li>
                               </ul>
                             </li>
-                            <li>
-                              <a href="#" class="college">단과2</a>
+                            <li id="college3">
+                              <a href="#" class="college college3">${colList[2].colName}</a>
                               <ul>
                                 <li>
                                   <a href="#" class="major">학과명</a>
@@ -250,24 +312,7 @@
                                 </li>
                               </ul>
                             </li>
-                            <li>
-                              <a href="#" class="college">단과3</a>
-                              <ul>
-                                <li>
-                                  <a href="#" class="major">학과명</a>
-                                  <ul>
-                                    <li>
-                                      <a href="#" class="major">학과명</a>
-                                      <ul>
-                                        <li>
-                                          <a href="#" class="major">학과명</a>
-                                        </li>
-                                      </ul>
-                                    </li>
-                                  </ul>
-                                </li>
-                              </ul>
-                            </li>
+                          <!-- 동적으로 조직도 생성범위 -->
                           </ul>
                         </li>
                       </ul>

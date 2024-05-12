@@ -4,8 +4,8 @@
 
 	<resultMap id="memberResult" type="MemberDto">
   	<id column="mem_no" property="memNo"/>
-  	<result column="major_no" property="majorNo"/>
-  	<result column="job_no" property="jobNo"/>
+  	<result column="major_name" property="majorNo"/>
+  	<result column="job_name" property="jobNo"/>
   	<result column="mem_name" property="memName"/>
   	<result column="mem_id" property="memId"/>
   	<result column="mem_pwd" property="memPwd"/>
@@ -29,11 +29,17 @@
   <!-- * 암호화 적용 전 -->
   
     	select
-  				mem_no, major_no, job_no, mem_name, mem_id, mem_pwd 
-  			, phone, email, address, resident, hire_date, end_date, salary
-  			, sign_url, profile_url, leave_count, birth, gender
+  				mem_no, major_name, job_name, mem_name, mem_id, mem_pwd 
+  			, phone, email, address, resident
+  			, to_char(hire_date, 'YYYY-MM-DD') hire_date
+  			, end_date, salary
+  			, sign_url, profile_url, leave_count
+  			, to_char(birth, 'YYYY-MM-DD') birth
+  			, gender
   		from member
-  	 where status in('N')
+  		join major on (member.major_no = major.major_no)
+		  join job on (member.job_no = job.job_no)
+  	 where member.status = 'N'
   	 	 and mem_no = #{memNo}
   	 	 and mem_pwd = #{memPwd} 
   </select>
