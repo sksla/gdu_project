@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="calendarMapper">
+	<resultMap type="CalCtgDto" id="calCtgResult">
+		<id column="ctg_no" property="ctgNo" />
+		<result column="ctg_type" property="ctgType"/>
+		<result column="mem_name" property="ctgWriter"/>
+		<result column="ctg_name" property="ctgName"/>
+		<result column="color" property="color"/>
+		<result column="is_show" property="isShow"/>
+		<result column="regist_date" property="registDate"/>
+		<result column="modify_date" property="modifyDate"/>
+		<result column="status" property="status"/>
+	</resultMap>
+	
+	<resultMap type="CalendarDto" id="calendarResult">
+		<id column="cal_no" property="calNo" />
+		<result column="ctg_no" property="ctgNo" />
+		<result column="color" property="color" />
+		<result column="cal_title" property="calTitle" />
+		<result column="cal_content" property="calContent" />
+		<result column="start_date" property="startDate" />
+		<result column="end_date" property="endDate" />
+		<result column="is_allday" property="isAllday" />
+		<result column="regist_date" property="registDate" />
+		<result column="cal_writer" property="calWriter" />
+		<result column="modify_date" property="modifyDate" />
+		<result column="modifier_name" property="modifier" />
+		<result column="status" property="status" />
+	</resultMap>
+
+</mapper>
