@@ -19,7 +19,7 @@ public class AffiliatedOrganDao {
 	private final SqlSessionTemplate sqlSessionTemplate;
 	
 	public int selectAffiliatedOrganListCount() {
-		return sqlSessionTemplate.selectOne("AffiliatedOrganMapper.selectAffiliatedOrganListCount");
+		return sqlSessionTemplate.selectOne("affiliatedOrganMapper.selectAffiliatedOrganListCount");
 	}
 	
 	public List<AffiliatedOrganDto> selectAffiliatedOrganList(PageInfoDto pi){
@@ -36,10 +36,17 @@ public class AffiliatedOrganDao {
 	public int selectAffiliatedOrganSearchListCount(Map<String, String> search) {
 		return sqlSessionTemplate.selectOne("affiliatedOrganMapper.selectAffiliatedOrganSearchListCount", search);
 	}
-	
+
+	public AffiliatedOrganDto selectAffiliatedOrganRes(int affNo) {
+		return sqlSessionTemplate.selectOne("affiliatedOrganMapper.selectAffiliatedOrganRes", affNo);
+	}
+
+	/*
 	public List<AffiliatedOrganDto> selectSearchList(Map<String, String> search, PageInfoDto pi){
 		RowBounds rowBounds = new RowBounds((pi.getCurrentPage()-1) * pi.getBoardLimit(), pi.getBoardLimit());
 		return sqlSessionTemplate.selectList("affiliatedOrganMapper.selectSearchList", search, rowBounds);
 	}
+	*/
+	
 	
 }

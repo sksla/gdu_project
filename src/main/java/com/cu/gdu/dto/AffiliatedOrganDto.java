@@ -25,4 +25,5 @@ public class AffiliatedOrganDto {
 	private String reason;
 	private String latitude;
 	private String longitude;
+	private String affEtc;
 }

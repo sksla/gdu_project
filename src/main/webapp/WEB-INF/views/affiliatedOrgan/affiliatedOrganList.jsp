@@ -9,14 +9,19 @@
 <title>부속기관목록</title>
 </head>
 <body>
-
-	<!-- header -->
-	<jsp:include page="/WEB-INF/views/common/header.jsp"/>
-	<!-- sidebar -->
 	
-	<!-- 본문 -->
-	<!-- 바디 -->
-      <div class="body-wrapper">
+	<div class="main-wrapper">
+	
+		<!-- 각 페이지 별 사이드 바 -->
+    <jsp:include page="/WEB-INF/views/common/calSidebar.jsp"/>
+    
+    <div class="page-wrapper">
+    
+    	<!-- 이쪽에 헤더(상단바) -->
+	    <jsp:include page="/WEB-INF/views/common/header.jsp"/>
+    	
+	    <!----------------------------- 본문 시작 -------------------->
+	    <div class="body-wrapper">
         <div class="container-fluid">
           <!-- 페이지 타이틀 -->
           <div class="card bg-info-subtle shadow-none position-relative overflow-hidden mb-4">
@@ -93,7 +98,7 @@
                                 </form>
                               </div>
                               <div class="button">
-                                <button type="button" class="btn btn-info" onclick="location.href='부속기관등록수정.html'">등록하기</button>
+                                <button type="button" class="btn btn-info" onclick="location.href='${contextPath}/aff/affiliatedOrganEnrollForm.do'">등록하기</button>
                               </div>
                             </div>
                   
@@ -118,65 +123,31 @@
                                             <h6 class="fs-4 fw-semibold mb-0">관리자</h6>
                                           </th>
                                           <th>
-                                            <h6 class="fs-4 fw-semibold mb-0">연락처</h6>
-                                          </th>
-                                          <th>
                                             <h6 class="fs-4 fw-semibold mb-0">예약</h6>
                                           </th>
                                         </tr>
                                       </thead>
                                       <tbody>
                                         <tr>
-                                          <td>
-                                            <div class="d-flex align-items-center">
-                                              <div class="ms-3">
-                                                <h6 class="fs-4 fw-semibold mb-0">1</h6>
-                                              </div>
-                                            </div>
-                                          </td>
-                                          <td>
-                                            <p class="mb-0 fw-normal fs-4">연구실1</p>
-                                          </td>
-                                          <td>
-                                            <div class="d-flex align-items-center">
-                                              <p class="mb-0 fw-normal fs-4">11호</p>
-                                            </div>
-                                          </td>
-                                          <td>
-                                            <p class="mb-0 fw-normal fs-4">경영학과</p>
-                                          </td>
-                                          <td>
-                                            <p class="mb-0 fw-normal fs-4">02-1111-1111</p>
-                                          </td>
-                                          <td>
-                                            <button type="button" class="btn btn-info" onclick="location.href='부속기관예약.html'">예약</button>
-                                          </td>
-                                        </tr>
-                                        <tr>
-                                          <td>
-                                            <div class="d-flex align-items-center">
-                                              <div class="ms-3">
-                                                <h6 class="fs-4 fw-semibold mb-0">1</h6>
-                                              </div>
-                                            </div>
-                                          </td>
-                                          <td>
-                                            <p class="mb-0 fw-normal fs-4">연구실1</p>
-                                          </td>
-                                          <td>
-                                            <div class="d-flex align-items-center">
-                                              <p class="mb-0 fw-normal fs-4">11호</p>
-                                            </div>
-                                          </td>
-                                          <td>
-                                            <p class="mb-0 fw-normal fs-4">경영학과</p>
-                                          </td>
-                                          <td>
-                                            <p class="mb-0 fw-normal fs-4">02-1111-1111</p>
-                                          </td>
-                                          <td>
-                                            <button type="button" class="btn btn-info" onclick="location.href='부속기관예약.html'">예약</button>
-                                          </td>
+                                          <c:choose>
+                                          	<c:when test="${ empty list }">
+                                          		<tr>
+                                          			<td colspan="5"> 조회된 기관이 없습니다.</td>
+                                          		</tr>
+                                          	</c:when>
+                                          	<c:otherwise>
+                                          		<c:forEach var="af" items="${ list }">
+                                          			<tr onclick="location.href='${contextPath}/aff/affiliatedOrganRes.do?no=${af.affNo}'">
+                                          				<td>${ af.affNo }</td>
+                                          				<td>${ af.affName }</td>
+                                          				<td>${ af.affLocation }</td>
+                                          				<td>${ af.majorNo }</td>
+                                          				<td><button type="button" class="btn btn-info">예약</button></td>
+                                          			</tr>
+                                          		</c:forEach>
+                                          	</c:otherwise>
+                                          
+                                          </c:choose>
                                         </tr>
                                         
                                       </tbody>
@@ -257,9 +228,6 @@
                                                 <h6 class="fs-4 fw-semibold mb-0">관리자</h6>
                                               </th>
                                               <th>
-                                                <h6 class="fs-4 fw-semibold mb-0">연락처</h6>
-                                              </th>
-                                              <th>
                                                 <h6 class="fs-4 fw-semibold mb-0">사용기간</h6>
                                               </th>
                                             </tr>
@@ -284,9 +252,7 @@
                                               <td>
                                                 <p class="mb-0 fw-normal fs-4">경영학과</p>
                                               </td>
-                                              <td>
-                                                <p class="mb-0 fw-normal fs-4">02-1111-1111</p>
-                                              </td>
+
                                               <td>
                                                 <p class="mb-0 fw-normal fs-4">2024-04-05</p>
                                               </td>
@@ -380,8 +346,43 @@
 
         </div>
       </div>
+      
+    </div><!-- page-wrapper end -->
+    
+    <!-- 세팅메뉴(바) -->
+	    <jsp:include page="/WEB-INF/views/common/settingbar.jsp"/>
+    
+	</div><!-- main-wrapper end -->
 	
-	<!-- footer -->
-	<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
+	<!-- footer-->
+  <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 </body>
 </html>

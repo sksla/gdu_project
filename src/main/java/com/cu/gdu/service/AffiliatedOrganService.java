@@ -15,4 +15,7 @@ public interface AffiliatedOrganService {
 	// 부속기관검색리스트 조회 서비스(페이징)
 	int selectAffiliatedOrganSearchListCount(Map<String, String> search);
 	List<AffiliatedOrganDto> selectAffiliatedOrganSearchList(Map<String, String> search, PageInfoDto pi);
+	
+	// 부속기관 예약페이지 조회 서비스
+	AffiliatedOrganDto selectAffiliatedOrganRes(int affNo);
 }
