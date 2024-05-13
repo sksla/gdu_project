@@ -1,6 +1,7 @@
 package com.cu.gdu.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -48,5 +49,12 @@ public class AdminServiceImpl implements AdminService {
 	public int updateOutMember(String[] memNo) {
 		return adminDao.updateOutMember(memNo);
 	}
+
+	@Override
+	public int updateMajorMember(Map<String, Object> map) {
+		return adminDao.updateMajorMember(map);
+	}
+
+
 
 }

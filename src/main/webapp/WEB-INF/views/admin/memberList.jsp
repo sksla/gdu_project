@@ -42,7 +42,7 @@
     font-size: 15px;
     border-radius: 15px;
   }
-  .updateModal{--bs-modal-width: 170px;}
+  .updateModal{--bs-modal-width: 240px;}
   table tbody>tr{cursor: pointer;}
   .form-select{cursor: pointer;}
 </style>
@@ -100,7 +100,7 @@
 
           <div id="outAndUpdate"  style="display: none;">
             <div class="out" style="display: inline;" data-bs-toggle="modal" data-bs-target="#outModal" onclick="outModal();">퇴직처리</div>
-            <div class="updateMajor" style="display: inline;" data-bs-toggle="modal" data-bs-target="#updateMajorModal">학과수정</div>
+            <div class="updateMajor" style="display: inline;" data-bs-toggle="modal" data-bs-target="#updateMajorModal" onclick="updateMajor();">학과수정</div>
             <div class="updateJob" style="display: inline;" data-bs-toggle="modal" data-bs-target="#updateJobModal">직급수정</div>
           </div>
 
@@ -166,6 +166,22 @@
                   })
                 })
                 
+                // 학과수정 함수
+                function updateMajor(){
+                	let checkedbox = $(".selectMember:checked");
+                	
+                	checkedbox.each(function(){
+                		let multiValue = $(this).val();
+                		let inputHidden = "<input type='hidden' name='memNo' value='" + multiValue + "'>"
+                		$("#updateMajorForm").append(inputHidden)
+                	})
+                	
+	            		$('#updateMajorModal').on('hidden.bs.modal', function () {
+	            		    $('#updateMajorForm').find('input[name="memNo"]').remove();
+	            		});
+                }
+                
+                // 퇴직처리 함수
                 function outModal(){
                 	let checkedbox = $(".selectMember:checked");
                 	let checkedboxCount = checkedbox.length;
@@ -209,17 +225,6 @@
                 		});
 	                 	
                 	}
-                	// 현재 테이블내의 checkbox요소들 중에 checked 상태의 요소들을 선택해보고
-                	// 해당 요소가 한개일 경우에는 클래스가 oneOut인 div요소 활성화
-                	// 선택된 input type="checkbox" 요소로부터 이름값을 탐색해서 가져온 후에 클래스가 outName인 span요소 자리에 출력
-                	// <input type="hidden" name="" value="" > 이 구문을 제작해서
-                	// outForm에 어펜드
-
-                	
-                	
-                	// 해당 요소가 여러개일 경우 클래스가 multiOut인 div요소 활성화
-                	// 선택된 input type="checkbox" 요소의 갯수를 클래스가 outCount인 span요소 자리에 출력
-                	// <input type="hidden" name="" value="" > 이 구문을 반복문 제작해서 outForm에 어펜드
                 }
               </script>
 
@@ -324,7 +329,7 @@
           </form>
 
           <!-- 학과수정 모달 -->
-          <form class="mt-4" action="" method="post">
+          <form class="mt-4" action="${contextPath}/admin/updateMajorMember.do" method="post" id="updateMajorForm">
             <div class="modal fade" id="updateMajorModal" tabindex="-1" aria-labelledby="vertical-center-modal" style="display: none;" aria-hidden="true">
               <div class="modal-dialog modal-dialog-centered updateModal">
                 <div class="modal-content">
@@ -340,13 +345,10 @@
                     소속학과를 수정하시겠습니까?
                     </div> -->
                     <div class="modalDropdown">
-                      <select class="form-select mb-n2" name="" style="width: 130px;">
-                        <option value="">학과명1</option>
-                        <option value="">학과명2</option>
-                        <option value="">학과명3</option>
-                        <option value="">학과명4</option>
-                        <option value="">학과명5</option>
-                        <option value="">학과명6</option>
+                      <select class="form-select mb-n2" name="majorNo" style="width: 180px;">
+                        <c:forEach var="m" items="${majorList}">
+	                        <option value="${m.majorNo}">${m.majorName}</option>
+                        </c:forEach>
                       </select>
                     </div>
                   </div>

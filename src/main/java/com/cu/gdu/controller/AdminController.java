@@ -1,6 +1,9 @@
 package com.cu.gdu.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -86,7 +89,24 @@ public class AdminController {
 		if(result == memNo.length) {
 			redirectAttributes.addFlashAttribute("alertMsg", "선택하신 회원을 퇴직처리 했습니다.");
 		}else {
-			redirectAttributes.addFlashAttribute("alertMsg", "퇴직처리에 실패했습니다..");
+			redirectAttributes.addFlashAttribute("alertMsg", "퇴직처리에 실패했습니다.");
+		}
+		return "redirect:/admin/memberList.do";
+	}
+	
+	@PostMapping("/updateMajorMember.do")
+	public String updateMajorMember(int[] memNo, String majorNo, RedirectAttributes redirectAttributes) {
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("memNo", memNo); // 1, 5, 4 ,9
+		map.put("majorNo", majorNo); // 5
+		//log.debug("맵 {}", map); // {memNo=[1,2, 3,4], majorNo=2}
+
+		int result = adminService.updateMajorMember(map);
+		if(result == memNo.length) {
+			redirectAttributes.addFlashAttribute("alertMsg", "선택하신 회원의 학과를 수정했습니다..");
+		}else {
+			redirectAttributes.addFlashAttribute("alertMsg", "학과수정에 실패했습니다.");
 		}
 		return "redirect:/admin/memberList.do";
 	}

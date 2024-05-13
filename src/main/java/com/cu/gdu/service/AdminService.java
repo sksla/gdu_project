@@ -1,6 +1,7 @@
 package com.cu.gdu.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.cu.gdu.dto.CollegeDto;
 import com.cu.gdu.dto.JobDto;
@@ -25,5 +26,8 @@ public interface AdminService {
 	
 	// 직원관리페이지에서 직원퇴직처리
 	int updateOutMember(String[] memNo);
+	
+	// 직원관리페이지에서 직원학과수정
+	int updateMajorMember(Map<String, Object> map);
 	
 }
