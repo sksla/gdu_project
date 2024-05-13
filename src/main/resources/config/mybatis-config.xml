@@ -15,6 +15,7 @@
 		<typeAlias type="com.cu.gdu.dto.CalCtgDto" alias="CalCtgDto"/>
 		<typeAlias type="com.cu.gdu.dto.CalendarDto" alias="CalendarDto"/>
 		<typeAlias type="com.cu.gdu.dto.AffiliatedOrganDto" alias="AffiliatedOrganDto"/>
+		<typeAlias type="com.cu.gdu.dto.JobDto" alias="JobDto"/>
 	</typeAliases>
 	
 	<mappers>
