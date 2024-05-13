@@ -43,6 +43,8 @@
       join member on (ctg_writer = mem_no) 
      where c.status = 'Y'
        and ctg_writer = #{memNo} 
+     order
+        by ctg_no asc  
 		       
 	</select>
 	

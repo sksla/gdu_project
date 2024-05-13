@@ -31,12 +31,12 @@
       },
       selectable: true,
       dateClick:function(info){
-        $("#insertForm").modal("show");
+        $("#editForm").modal("show");
         $("#startDate").val(info.dateStr);
         $("#endDate").val(info.dateStr);
       },
       select:function(info){
-        $("#insertForm").modal("show");
+        $("#editForm").modal("show");
         $("#startDate").val(info.startStr);
         $("#endDate").val(info.endStr);
       },
@@ -353,8 +353,8 @@
 
           
 
-          <!-- 일정 등록 모달창 -->
-          <div class="modal" id="insertForm">
+          <!-- 일정 등록 모달창, 수정 모달창 -->
+          <div class="modal" id="editForm">
             <div class="modal-dialog">
               <div class="modal-content">
 
@@ -371,7 +371,7 @@
                       <tr>
                         <th width="100px">캘린더</th>
                         <td>
-                          <select name="">
+                          <select id="selectCtg" name="" style="width:250px;">
                             <!-- 해당 회원의 개인,공유캘린더(일정카테고리) 목록-->
                             <option>나의 프로젝트</option>
                             <option>공유 캘린더(공유캘린더 생성자 이름)</option>
@@ -387,9 +387,20 @@
                         <th>시작</th>
                         <td>
                           <input type="date" id="startDate" name="" required>
-                          <select id="startTime" width="250px">
-                            <option>오전 12시 00분</option>
-                            <option>오전 12시 30분</option>
+                          <select id="startTime">
+                          
+	                       	 	<c:forEach var="hour" begin="0" end="23">
+											        <c:set var="am_pm" value="${hour < 12 ? '오전' : '오후'}" />
+											        <c:set var="displayHour" value="${hour == 0 ? 12 : (hour > 12 ? hour - 12 : hour)}" />
+											        <c:forEach var="minute" begin="0" end="30" step="30">
+											            <c:set var="hourStr" value="${hour < 10 ? '0' : ''}${hour}" />
+											            <c:set var="minuteStr" value="${minute < 10 ? '0' : ''}${minute}" />
+											            <option value="${hourStr}:${minuteStr}">
+											                ${am_pm} ${ displayHour < 10 ? '0' : ''}${displayHour}:${minuteStr}
+											            </option>
+											        </c:forEach>
+											    	</c:forEach>
+                          	
                           </select>&nbsp;
                           <input type="checkbox" name="isAllday" id="isAllday">
                           <label for="isAllday">종일</label>
@@ -400,8 +411,17 @@
                         <td>
                           <input type="date" id="endDate" name="" required>
                           <select id="endTime">
-                            <option>오전 12시 00분</option>
-                            <option>오전 12시 30분</option>
+                            <c:forEach var="hour" begin="0" end="23">
+											        <c:set var="am_pm" value="${hour < 12 ? '오전' : '오후'}" />
+											        <c:set var="displayHour" value="${hour == 0 ? 12 : (hour > 12 ? hour - 12 : hour)}" />
+											        <c:forEach var="minute" begin="0" end="30" step="30">
+											            <c:set var="hourStr" value="${hour < 10 ? '0' : ''}${hour}" />
+											            <c:set var="minuteStr" value="${minute < 10 ? '0' : ''}${minute}" />
+											            <option value="${hourStr}:${minuteStr}">
+											                ${am_pm} ${ displayHour < 10 ? '0' : ''}${displayHour}:${minuteStr}
+											            </option>
+											        </c:forEach>
+											    	</c:forEach>
                           </select>
                         </td>
                       </tr>
@@ -630,7 +650,7 @@
 
             $(document).ready(function(){
             	
-            	selectListCalCtg();
+            	ajaxSelectListCalCtg();
             	
               // 종일 버튼 클릭시 시간input 선택 가능 여부 결정
               $("#isAllday").on("change", function(){
@@ -680,9 +700,65 @@
                 return false;
               }
             }
+         		
+         		// 일정 조회용 ajax
+         		function selectCalendarList(){
+         			
+         			$.ajax({
+         				url:"${contextPath}/calendar/calList.do",
+         				type:"post",
+         				data{},
+         				success:function(rep){
+         					
+         					var calendarEl = document.getElementById('calendar');
+       				    var calendar = new FullCalendar.Calendar(calendarEl, {
+       				      initialView: 'dayGridMonth',
+       				      headerToolbar: {
+       				        left: 'prev,next today',
+       				        center: 'title',
+       				        right: 'dayGridMonth,timeGridWeek,timeGridDay,list',
+       				      },
+       				      nowIndicator: true, // 현재 시간 마크
+       				    	locale: 'ko', // 한국어 설정
+       				      buttonText:{ //버튼 텍스트 변환
+       				        today:'오늘',
+       				        day:'일간',
+       				        week:'주간',
+       				        month:'월간',
+       				        list:'목록'
+       				      },
+       				      selectable: true,
+       				      dateClick:function(info){
+       				        $("#editForm").modal("show");
+       				        $("#startDate").val(info.dateStr);
+       				        $("#endDate").val(info.dateStr);
+       				      },
+       				      select:function(info){
+       				        $("#editForm").modal("show");
+       				        $("#startDate").val(info.startStr);
+       				        $("#endDate").val(info.endStr);
+       				      },
+       				      views:{
+       				        
+       				      },
+       				      events:{
+       				    	  
+       				      }
+
+       				    });
+       				    calendar.render();
+         				},
+         				error:function(){
+         					console.log("일정 조회용 ajax 통신 실패");
+         				}
+         				
+         				
+         			})
+         		}
+         		
             
             // 캘린더 카테고리 조회용 ajax
-            function selectListCalCtg(){
+            function ajaxSelectListCalCtg(){
             	$.ajax({
             		url:"${contextPath}/calendar/ctgList.do",
             		type:"post",
@@ -690,6 +766,7 @@
             		success:function(rep){
             			console.log(rep);
             			
+            			let selectCtg = "";
             			let myVal = "";
             			let shVal = "";
             			
@@ -697,6 +774,9 @@
             				
 	            			for(let i=0; i<rep.length; i++){
 	            				if(rep[i].ctgType == "1"){
+	            					
+	            					selectCtg += "<option value='" + rep[i].ctgNo + "'>" + rep[i].ctgName + "</option>";
+	            					
 	            					myVal += "<li>"
 			                         +		"<div class='cal_ctg'>"
 			                         +			"<div>"
@@ -708,7 +788,11 @@
 			                         +			"</div>"
 			                         +		"</div>"
 			                         + "</li>";
+			                   
 	            				}else if(rep[i].ctgType == "2"){
+	            					
+	            					selectCtg += "<option value='" + rep[i].ctgNo + "'>" + rep[i].ctgName + "(" + rep[i].ctgWriter + ")</option>";
+	            					
 	            					shVal += "<li>"
 				                         +		"<div class='cal_ctg'>"
 				                         +			"<div>"
@@ -724,12 +808,14 @@
 	            			}
             			}else{
 										myVal = "<li><span>조회된 개인 캘린더가 없습니다.</span></li>";            				
-										shVal = "<li><span>조회된 공유 캘린더가 없습니다.</span></li>";            				
+										shVal = "<li><span>조회된 공유 캘린더가 없습니다.</span></li>";
+										selectCtg = "<option value='0'>없음</option>"
             			}
             			
             			
             			$(".my_calendar_list ul").html(myVal);
             			$(".share_calendar_list ul").html(shVal);
+            			$("#editForm #selectCtg").html(selectCtg);
             			
             		},
             		error:function(){
