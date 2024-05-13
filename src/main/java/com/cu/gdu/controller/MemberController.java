@@ -57,10 +57,11 @@ public class MemberController {
 		
 	}
 	
-	 @GetMapping("/mainpage")
-	    public String showMainPage() {
-	        return "member/mainpage"; 
-	    }
+	// * 메인페이지 -------------------------------
+	@GetMapping("/mainpage")
+    public String showMainPage() {
+        return "member/mainpage"; 
+    }
 	
 	// * 마이페이지 관련 -------------------------
 	@GetMapping("/mypage.page")
@@ -74,9 +75,6 @@ public class MemberController {
 								, HttpSession session
 								, RedirectAttributes redirectAttributes) {
 		
-		System.out.println(memPwd);
-		System.out.println(updatePwd);
-		
 		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
 		
 		//if(memPwd.equals(loginUser.getMemPwd())) { // 암호화 전 
@@ -89,6 +87,25 @@ public class MemberController {
 		}else {
 			redirectAttributes.addFlashAttribute("alertMsg", "비밀번호가 틀렸습니다. 다시 입력해주세요");
 			
+		}
+		
+		return "redirect:/member/mypage.page";
+		
+	}
+	
+	// * 마이페이지 정보 수정 관련 ----------------------------
+	@PostMapping("/modify.do")
+	public String modify(MemberDto member
+						, RedirectAttributes redirectAttributes
+						, HttpSession session) {
+		
+		int result = memberService.updateMember(member);
+		
+		if(result > 0) {
+			redirectAttributes.addFlashAttribute("alertMsg", "성공적으로 정보 수정 되었습니다.");
+			session.setAttribute("loginUser", memberService.selectMember(member));
+		}else {
+			redirectAttributes.addFlashAttribute("alertMsg", "정보 수정에 실패했습니다.");
 		}
 		
 		return "redirect:/member/mypage.page";

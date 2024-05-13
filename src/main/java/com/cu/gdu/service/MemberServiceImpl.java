@@ -20,7 +20,7 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public int updateMember(MemberDto m) {
-		return 0;
+		return memberDao.updateMember(m);
 	}
 
 	@Override

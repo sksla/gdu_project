@@ -20,5 +20,9 @@ public class MemberDao {
 	public int updatePassword(MemberDto m) {
 		return sqlSessionTemplate.update("memberMapper.updatePwd", m);
 	}
+	
+	public int updateMember(MemberDto m) {
+		return sqlSessionTemplate.update("memberMapper.updateMember", m);
+	}
 
 }

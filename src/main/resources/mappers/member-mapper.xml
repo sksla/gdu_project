@@ -32,7 +32,8 @@
   				mem_no, major_name, job_name, mem_name, mem_id, mem_pwd 
   			, phone, email, address, resident
   			, to_char(hire_date, 'YYYY-MM-DD') hire_date
-  			, end_date, salary
+  			, to_char(end_date, 'YYYY-MM-DD') end_date
+  			, salary
   			, sign_url, profile_url, leave_count
   			, to_char(birth, 'YYYY-MM-DD') birth
   			, gender
@@ -50,10 +51,17 @@
 						member
 				 set mem_pwd = #{memPwd}
 				where mem_no = #{memNo}
-		</update>	
+	</update>	
   
-  
-  
+  <!-- 회원정보 수정용 -->
+  <update id="updateMember">
+			update member
+				 set mem_name = #{memName}, 
+				 		 email = #{email},
+				 		 phone = #{phone},
+				 		 address = #{address}
+			 where mem_no = #{memNo}
+		</update>
   
   
   
