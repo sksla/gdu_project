@@ -101,7 +101,7 @@
           <div id="outAndUpdate"  style="display: none;">
             <div class="out" style="display: inline;" data-bs-toggle="modal" data-bs-target="#outModal" onclick="outModal();">퇴직처리</div>
             <div class="updateMajor" style="display: inline;" data-bs-toggle="modal" data-bs-target="#updateMajorModal" onclick="updateMajor();">학과수정</div>
-            <div class="updateJob" style="display: inline;" data-bs-toggle="modal" data-bs-target="#updateJobModal">직급수정</div>
+            <div class="updateJob" style="display: inline;" data-bs-toggle="modal" data-bs-target="#updateJobModal" onclick="updateJob();">직급수정</div>
           </div>
 
           <div class="table mb-4">
@@ -165,6 +165,23 @@
                     }
                   })
                 })
+                
+                // 직급수정 함수
+                function updateJob(){
+                	let checkedbox = $(".selectMember:checked");
+                	
+                	checkedbox.each(function(){
+                		let multiValue = $(this).val();
+                		let inputHidden = "<input type='hidden' name='memNo' value='" + multiValue + "'>"
+                		$("#updateJobForm").append(inputHidden)
+                	})
+                	
+                	
+                	$('#updateJobModal').on('hidden.bs.modal', function () {
+	            		   	$('#updateJobForm').find('input[name="memNo"]').remove();
+	            		});
+
+                }
                 
                 // 학과수정 함수
                 function updateMajor(){
@@ -340,10 +357,6 @@
                   </div>
                   <hr>
                   <div class="modal-body myModalBody">
-                    <!-- <div class="modalText">
-                    XXX님은 경영학과에 소속되어있습니다.<br>
-                    소속학과를 수정하시겠습니까?
-                    </div> -->
                     <div class="modalDropdown">
                       <select class="form-select mb-n2" name="majorNo" style="width: 180px;">
                         <c:forEach var="m" items="${majorList}">
@@ -366,7 +379,7 @@
           </form>
 
           <!-- 직급수정 모달 -->
-          <form class="mt-4" action="" method="post">
+          <form class="mt-4" action="${contextPath}/admin/updateJobMember.do" method="post" id="updateJobForm">
             <div class="modal fade" id="updateJobModal" tabindex="-1" aria-labelledby="vertical-center-modal" style="display: none;" aria-hidden="true">
               <div class="modal-dialog modal-dialog-centered updateModal">
                 <div class="modal-content">
@@ -377,19 +390,11 @@
                   </div>
                   <hr>
                   <div class="modal-body myModalBody">
-                    <!-- <div class="modalText">
-                    XXX님은 직급은 대리입니다.<br>
-                    XXX님의 직급을 수정하시겠습니까?
-                    </div>
-                    <br> -->
                     <div class="modalDropdown">
-                      <select class="form-select mb-n2" name="" style="width: 130px;">
-                        <option value="">직급명1</option>
-                        <option value="">직급명2</option>
-                        <option value="">직급명3</option>
-                        <option value="">직급명4</option>
-                        <option value="">직급명5</option>
-                        <option value="">직급명6</option>
+                      <select class="form-select mb-n2" name="jobNo" style="width: 130px;">
+                        <c:forEach var="j" items="${jobList}">
+                        	<option value="${j.jobNo}">${j.jobName}</option>
+                        </c:forEach>
                       </select>
                     </div>
                   </div>

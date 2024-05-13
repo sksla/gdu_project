@@ -55,6 +55,11 @@ public class AdminServiceImpl implements AdminService {
 		return adminDao.updateMajorMember(map);
 	}
 
+	@Override
+	public int updateJobMember(Map<String, Object> map) {
+		return adminDao.updateJobMember(map);
+	}
+
 
 
 }

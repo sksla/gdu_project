@@ -111,4 +111,19 @@ public class AdminController {
 		return "redirect:/admin/memberList.do";
 	}
 	
+	@PostMapping("/updateJobMember.do")
+	public String updateJobMember(int[] memNo, String jobNo, RedirectAttributes redirectAttributes) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("memNo", memNo);
+		map.put("jobNo", jobNo);
+		
+		int result = adminService.updateJobMember(map);	
+		if(result == memNo.length) {
+			redirectAttributes.addFlashAttribute("alertMsg", "선택하신 회원의 직급을 수정했습니다..");
+		}else {
+			redirectAttributes.addFlashAttribute("alertMsg", "직급수정에 실패했습니다.");
+		}
+		return "redirect:/admin/memberList.do";
+	}
+	
 }

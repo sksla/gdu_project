@@ -52,4 +52,8 @@ public class AdminDao {
 		return sqlSessionTemplate.update("adminMapper.updateMajorMember", map);
 	}
 	
+	public int updateJobMember(Map<String, Object> map) {
+		return sqlSessionTemplate.update("adminMapper.updateJobMember", map);
+	}
+	
 }

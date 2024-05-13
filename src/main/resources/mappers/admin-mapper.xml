@@ -124,4 +124,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   	</where>
   </update>
   
+  <update id="updateJobMember">
+  	update
+  				 member
+  		 set job_no = #{jobNo}
+  	<where>
+  		<foreach item="item" collection="memNo"
+  				open="mem_no in (" separator="," close=")">
+				#{item}  		
+  		</foreach>
+  	</where>
+  </update>
+  
 </mapper>

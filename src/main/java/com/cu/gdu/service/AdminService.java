@@ -30,4 +30,7 @@ public interface AdminService {
 	// 직원관리페이지에서 직원학과수정
 	int updateMajorMember(Map<String, Object> map);
 	
+	// 직원관리페이지에서 직원직급수정
+	int updateJobMember(Map<String, Object> map);
+	
 }
