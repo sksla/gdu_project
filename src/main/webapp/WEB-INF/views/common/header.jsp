@@ -38,7 +38,7 @@
 	      <ul class="navbar-nav quick-links d-none d-lg-flex">
 	        <!-- ----------------메인 메뉴들--------------- -->
 	        <li class="nav-item dropdown-hover d-none d-lg-block">
-	          <a class="nav-link" href="./main/app-chat.html">전자결재</a>
+	          <a class="nav-link" href="${contextPath}/approval/main.do">전자결재</a>
 	        </li>
 	        <li class="nav-item dropdown-hover d-none d-lg-block">
 	          <a class="nav-link" href="./main/app-calendar.html">메일</a>
