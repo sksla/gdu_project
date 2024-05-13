@@ -13,6 +13,12 @@
 	<div class="dark-transparent sidebartoggler"></div>
   <script src="${ contextPath }/assets/js/vendor.min.js"></script>
   <!-- Import Js Files -->
+  <!-- 제이쿼리 라이브러리 -->
+  <script
+  src="https://code.jquery.com/jquery-3.7.1.min.js"
+  integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+  crossorigin="anonymous"></script>
+  
   <script src="${ contextPath }/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
   <script src="${ contextPath }/assets/libs/simplebar/dist/simplebar.min.js"></script>
   <script src="${ contextPath }/assets/js/theme/app.init.js"></script>
