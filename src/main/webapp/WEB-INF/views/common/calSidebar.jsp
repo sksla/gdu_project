@@ -57,7 +57,7 @@
              <span class="hide-menu">일정</span>
            </li>
            <li class="sidebar-item">
-             <a class="sidebar-link" href="./main/index.html" aria-expanded="false">
+             <a class="sidebar-link" href="${ contextPath }/calendar/calendar.page" aria-expanded="false">
                <span>
                  <i class="ti ti-calendar-plus"></i>
                </span>

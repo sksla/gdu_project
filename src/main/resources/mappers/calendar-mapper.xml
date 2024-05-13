@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="calendarMapper">
+
 	<resultMap type="CalCtgDto" id="calCtgResult">
 		<id column="ctg_no" property="ctgNo" />
 		<result column="ctg_type" property="ctgType"/>
@@ -28,5 +29,66 @@
 		<result column="modifier_name" property="modifier" />
 		<result column="status" property="status" />
 	</resultMap>
+	
+	<!-- 캘린더(일정카테고리) 조회 -->
+	<select id="selectCalCtgList" resultMap="calCtgResult">
+		select 
+		       ctg_no
+		     , ctg_type
+		     , mem_name
+		     , ctg_name
+		     , color
+		     , is_show
+		  from cal_ctg c
+      join member on (ctg_writer = mem_no) 
+     where c.status = 'Y'
+       and ctg_writer = #{memNo} 
+		       
+	</select>
+	
+	<!-- 일정 조회 -->
+	<select id="selectCalendar" resultMap="calendarResult">
+		select 
+		       cal_no
+		     , e.ctg_no
+		     , color
+		     , cal_title
+		     , cal_content
+		     , e.start_date
+		     , e.end_date
+		     , is_allday
+		     , to_char(e.regist_date, 'YYYY-MM-DD HH24:MI') regist_date
+		     , cw.mem_name cal_writer
+		     , to_char(e.modify_date, 'YYYY-MM-DD HH24:MI') modify_date
+		     , mw.mem_name modifier_name
+		     , e.status
+		  from calendar e
+		  join cal_ctg ctg on (e.ctg_no = ctg.ctg_no) 
+		  join member cw on (cal_writer = cw.mem_no)
+		  join member mw on (modifier_no = mw.mem_no) 
+		 where status = 'Y'
+		   <!--and cal_writer = #{}-->    
+	</select>
+	
+	<!-- 캘린더(카테고리) 등록 -->
+	<insert id="insertCalCtg">
+		insert 
+		  into cal_ctg
+		  (
+		  	ctg_no
+		  , ctg_type
+		  , ctg_writer
+		  , ctg_name
+		  , color	
+		  )
+		  values
+		  (
+		  	seq_ctg_no.nextval
+		  , #{ctgType}
+		  , #{ctgWriter}
+		  , #{ctgName}
+		  , #{color}	
+		  )
+	</insert>
 
 </mapper>

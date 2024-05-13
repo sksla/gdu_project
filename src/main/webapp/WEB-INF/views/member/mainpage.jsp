@@ -59,7 +59,7 @@
                 <a class="nav-link" href="./main/app-calendar.html">메일</a>
               </li>
               <li class="nav-item dropdown-hover d-none d-lg-block">
-                <a class="nav-link" href="./main/app-email.html">일정</a>
+                <a class="nav-link" href="${ contextPath }/calendar/calendar.page">일정</a>
               </li>
               <li class="nav-item dropdown-hover d-none d-lg-block">
                 <a class="nav-link" href="./main/app-email.html">예약</a>
