@@ -1,5 +1,6 @@
 package com.cu.gdu.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -128,7 +129,7 @@ public class AdminController {
 	
 	@ResponseBody
 	@GetMapping(value="/filterMemberList.do", produces="application/json; charset=utf-8")
-	public List<MemberDto> ajaxFilterMemberList(MemberDto m){
+	public List<MemberDto> ajaxFilterMemberList(MemberDto m, @RequestParam(value="page", defaultValue="1") int currentPage){
 		log.debug("학과 및 직급번호 {}", m);
 		List<MemberDto> list = adminService.ajaxFilterMemberList(m);
 		return list;

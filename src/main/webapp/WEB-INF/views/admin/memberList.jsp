@@ -179,15 +179,15 @@
 		                	  console.log("함수실행");
 		                	  let majorNo = $(".selectMajor option:selected").val();
 		                	  let jobNo = $(".selectJob option:selected").val();
-		                	  console.log("학과번호", majorNo);
-		                	  console.log("직급번호", jobNo);
+		                	  //console.log("학과번호", majorNo);
+		                	  //console.log("직급번호", jobNo);
 		                	  
 		                	  $.ajax({
 		                		  url:"${contextPath}/admin/filterMemberList.do",
 		                		  type:"get",
 		                		  data:"majorNo=" + majorNo + "&jobNo=" + jobNo,
 		                		  success:function(list){
-		                			  
+		                			  console.log(list);
 		                		  }
 		                		  ,error:function(){
 		                			  console.log("학과직급 필터링 ajax 통신 실패");
