@@ -56,4 +56,8 @@ public class AdminDao {
 		return sqlSessionTemplate.update("adminMapper.updateJobMember", map);
 	}
 	
+	public List<MemberDto> ajaxFilterMemberList(MemberDto m){
+		return sqlSessionTemplate.selectList("adminMapper.ajaxFilterMemberList", m);
+	}
+	
 }

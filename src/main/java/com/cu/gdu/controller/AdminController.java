@@ -1,6 +1,5 @@
 package com.cu.gdu.controller;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -124,6 +124,14 @@ public class AdminController {
 			redirectAttributes.addFlashAttribute("alertMsg", "직급수정에 실패했습니다.");
 		}
 		return "redirect:/admin/memberList.do";
+	}
+	
+	@ResponseBody
+	@GetMapping(value="/filterMemberList.do", produces="application/json; charset=utf-8")
+	public List<MemberDto> ajaxFilterMemberList(MemberDto m){
+		log.debug("학과 및 직급번호 {}", m);
+		List<MemberDto> list = adminService.ajaxFilterMemberList(m);
+		return list;
 	}
 	
 }

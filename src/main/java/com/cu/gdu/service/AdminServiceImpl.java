@@ -60,6 +60,11 @@ public class AdminServiceImpl implements AdminService {
 		return adminDao.updateJobMember(map);
 	}
 
+	@Override
+	public List<MemberDto> ajaxFilterMemberList(MemberDto m) {
+		return adminDao.ajaxFilterMemberList(m);
+	}
+
 
 
 }

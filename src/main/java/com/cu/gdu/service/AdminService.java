@@ -33,4 +33,7 @@ public interface AdminService {
 	// 직원관리페이지에서 직원직급수정
 	int updateJobMember(Map<String, Object> map);
 	
+	// 학과직급필터링으로 ajax통신해 직원조회
+	List<MemberDto> ajaxFilterMemberList(MemberDto m);
+	
 }

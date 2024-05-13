@@ -136,4 +136,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   	</where>
   </update>
   
+  <select id="ajaxFilterMemberList" resultMap="memberResult">
+  	select
+		       mem_no
+		     , mem_name
+		     , major_name
+		     , job_name
+		     , resident
+		     , email
+		     , address
+		     , to_char(hire_date, 'YYYY-MM-DD') hire_date
+		     , phone
+		  from member
+		  join major on (member.major_no = major.major_no)
+		  join job on (member.job_no = job.job_no)
+		 where member.status = 'N'
+         	and member.job_no = #{jobNo}
+		   and member.major_no = #{majorNo}
+		 order
+		    by mem_no desc;
+  </select>
+  
 </mapper>
