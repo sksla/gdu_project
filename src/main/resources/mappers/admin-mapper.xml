@@ -37,6 +37,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   	<result column="birth" property="birth" />
   	<result column="gender" property="gender" />
   </resultMap>
+  
+  <resultMap type="JobDto" id="jobResult">
+  	<id column="job_No" property="jobNo" />
+  	<result column="job_Name" property="jobName" />
+  	<result column="job_Type" property="jobType" />
+  	<result column="status" property="status" />
+  	<result column="job_Level" property="jobLevel" />
+  </resultMap>
 
   <select id="selectCollegeList" resultMap="collegeResult">
   	select
@@ -80,5 +88,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 order
 		    by mem_no desc
   </select>
+  
+  <select id="selectJobList" resultMap="jobResult">
+		select
+		       job_no
+		     , job_name
+		     , job_type
+		     , status
+		     , job_level
+		  from job
+		 where status = 'Y'
+  </select>
+  
+  <update id="updateOutMember">
+		update
+		       member
+		   set status = 'Y'
+		 <where>
+		 	<foreach item="item" collection="array"
+		 			open="mem_no in (" separator="," close=")">
+		 		#{item}
+		 	</foreach>
+		 </where>
+  </update>
   
 </mapper>

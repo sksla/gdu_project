@@ -5,11 +5,14 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cu.gdu.dto.CollegeDto;
+import com.cu.gdu.dto.JobDto;
 import com.cu.gdu.dto.MajorDto;
 import com.cu.gdu.dto.MemberDto;
 import com.cu.gdu.dto.PageInfoDto;
@@ -46,6 +49,8 @@ public class AdminController {
 		int listCount = adminService.selectMemberListCount();
 		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 10);
 		List<MemberDto> list = adminService.selectMemberList(pi);
+		List<MajorDto> majorList = adminService.selectMajorList();
+		List<JobDto> jobList = adminService.selectJobList();
 		
 	    for (MemberDto m : list) {
 	        m.setResident(maskResidentNumber(m.getResident()));
@@ -53,6 +58,8 @@ public class AdminController {
 		
 		mv.addObject("pi", pi)
 		  .addObject("list", list)
+		  .addObject("jobList", jobList)
+		  .addObject("majorList", majorList)
 		  .setViewName("admin/memberList");
 		return mv;
 	}
@@ -71,6 +78,17 @@ public class AdminController {
 
 	    // *로 대체된 뒷자리와 앞자리를 합쳐서 반환
 	    return residentNumber.substring(0, startIndex) + maskedDigits;
+	}
+	
+	@PostMapping("/outMember.do")
+	public String updateOutMember(String[] memNo, RedirectAttributes redirectAttributes) {
+		int result = adminService.updateOutMember(memNo);
+		if(result == memNo.length) {
+			redirectAttributes.addFlashAttribute("alertMsg", "선택하신 회원을 퇴직처리 했습니다.");
+		}else {
+			redirectAttributes.addFlashAttribute("alertMsg", "퇴직처리에 실패했습니다..");
+		}
+		return "redirect:/admin/memberList.do";
 	}
 	
 }

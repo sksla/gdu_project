@@ -3,6 +3,7 @@ package com.cu.gdu.service;
 import java.util.List;
 
 import com.cu.gdu.dto.CollegeDto;
+import com.cu.gdu.dto.JobDto;
 import com.cu.gdu.dto.MajorDto;
 import com.cu.gdu.dto.MemberDto;
 import com.cu.gdu.dto.PageInfoDto;
@@ -18,5 +19,11 @@ public interface AdminService {
 	// 직원관리페이지에서 직원수 조회 (페이징)
 	int selectMemberListCount();
 	List<MemberDto> selectMemberList(PageInfoDto pi);
+	
+	// 직원관리페이지에서 직급조회
+	List<JobDto> selectJobList();
+	
+	// 직원관리페이지에서 직원퇴직처리
+	int updateOutMember(String[] memNo);
 	
 }

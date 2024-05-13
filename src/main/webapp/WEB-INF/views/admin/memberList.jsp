@@ -18,7 +18,6 @@
       display: flex;
       flex-direction: row;
       align-items: center;
-      justify-content: center;
   }
   /* 페이징바를 한가운데로 */
   #search{
@@ -86,7 +85,12 @@
             $(document).ready(function(){
               $("#allMember").prop('checked', true);
             })
-            </script>
+          </script>
+          
+          <form id="searchForm" action="" method="Get" align="center">
+            <input id="searchName" type="text" class="form-control" name="" placeholder="이름으로 검색">
+            <button type="submit" class="searchBtn btn btn-secondary">검색</button>
+          </form>
 
           <div id="selectStatus">
             <input type="radio" id="allMember" name="selectStatus"><span><label for="allMember">전체</label></span>
@@ -95,13 +99,13 @@
           </div>
 
           <div id="outAndUpdate"  style="display: none;">
-              <div class="out" style="display: inline;" data-bs-toggle="modal" data-bs-target="#outModal">퇴직처리</div>
-              <div class="updateMajor" style="display: inline;" data-bs-toggle="modal" data-bs-target="#updateMajorModal">학과수정</div>
-              <div class="updateJob" style="display: inline;" data-bs-toggle="modal" data-bs-target="#updateJobModal">직급수정</div>
+            <div class="out" style="display: inline;" data-bs-toggle="modal" data-bs-target="#outModal" onclick="outModal();">퇴직처리</div>
+            <div class="updateMajor" style="display: inline;" data-bs-toggle="modal" data-bs-target="#updateMajorModal">학과수정</div>
+            <div class="updateJob" style="display: inline;" data-bs-toggle="modal" data-bs-target="#updateJobModal">직급수정</div>
           </div>
 
           <div class="table mb-4">
-            <table class="table border text-nowrap mb-0 align-middle">
+            <table class="table border text-nowrap mb-0 align-middle memberTable">
               <thead class="text-dark fs-3" align="center">
                 <tr>
                   <th>
@@ -116,24 +120,20 @@
                   <th>
                     <h6 class="fs-3 fw-semibold mb-0">
                       <select class="form-select mb-n2" name="" style="width: 130px;">
-                          <option selected>전체학과</option>
-                          <option value="">학과명1</option>
-                          <option value="">학과명2</option>
-                          <option value="">학과명3</option>
-                          <option value="">학과명4</option>
+                          <option selected value="0">전체학과</option>
+                          <c:forEach var="major" items="${majorList}">
+                          	<option value="${major.majorNo}">${major.majorName}</option>
+                          </c:forEach>
                       </select>
                     </h6>
                   </th>
                   <th>
                     <h6 class="fs-3 fw-semibold mb-0">
                       <select class="form-select mb-n2" name="" style="width: 130px;">
-                        <option selected>전체직급</option>
-                        <option value="">직급명1</option>
-                        <option value="">직급명2</option>
-                        <option value="">직급명3</option>
-                        <option value="">직급명4</option>
-                        <option value="">직급명5</option>
-                        <option value="">직급명6</option>
+                        <option selected value="0">전체직급</option>
+                        <c:forEach var="j" items="${jobList}">
+                        	<option value="${j.jobNo}">${j.jobName}</option>
+                        </c:forEach>
                       </select>
                     </h6>
                   </th>
@@ -165,6 +165,62 @@
                     }
                   })
                 })
+                
+                function outModal(){
+                	let checkedbox = $(".selectMember:checked");
+                	let checkedboxCount = checkedbox.length;
+                	
+                	if(checkedboxCount == 1){
+                		
+                		// div 요소 활성화 및 비활성화 선택
+                		$(".oneOut").css("display", "block");
+                		$(".multiOut").css("display", "none");    		
+                		// 한명일 때 회원이름 가져오기
+                		let oneName = checkedbox.closest("tr").find(".memName").text();
+                		// 가져온 이름 span요소에 추가
+                		$(".outName").text(oneName);
+                		// 체크박스의 밸류값 가져오기
+                		let oneValue = checkedbox.val();
+                		// 인풋타입 히든 만들어서 변수에 담고 퇴직 form에 어펜드
+                		let inputHidden = "<input type='hidden' name='memNo' value='" + oneValue + "'>"
+                		$("#outForm").append(inputHidden)
+                		
+                		$('#outModal').on('hidden.bs.modal', function () {
+                		    $('#outForm').find('input[name="memNo"]').remove();
+                		});
+                		
+                	}else{
+                		
+                		// div 요소 활성화 및 비활성화 선택
+                		$(".multiOut").css("display", "block");
+                		$(".oneOut").css("display", "none");
+                		// 여러명일때 인원수 span요소에 추가
+                		$(".outCount").text(checkedboxCount);
+                		
+                		// 체크박스 밸류값들 가져온 뒤 인풋타입 히든 만들어서 변수에 담고 퇴직form에 어펜드를 반복
+	                 	checkedbox.each(function(){
+	                 		let multiValue = $(this).val();
+	                		let inputHidden = "<input type='hidden' name='memNo' value='" + multiValue + "'>"
+	                		$("#outForm").append(inputHidden)
+	                 	})
+                		
+                		$('#outModal').on('hidden.bs.modal', function () {
+                		    $('#outForm').find('input[name="memNo"]').remove();
+                		});
+	                 	
+                	}
+                	// 현재 테이블내의 checkbox요소들 중에 checked 상태의 요소들을 선택해보고
+                	// 해당 요소가 한개일 경우에는 클래스가 oneOut인 div요소 활성화
+                	// 선택된 input type="checkbox" 요소로부터 이름값을 탐색해서 가져온 후에 클래스가 outName인 span요소 자리에 출력
+                	// <input type="hidden" name="" value="" > 이 구문을 제작해서
+                	// outForm에 어펜드
+
+                	
+                	
+                	// 해당 요소가 여러개일 경우 클래스가 multiOut인 div요소 활성화
+                	// 선택된 input type="checkbox" 요소의 갯수를 클래스가 outCount인 span요소 자리에 출력
+                	// <input type="hidden" name="" value="" > 이 구문을 반복문 제작해서 outForm에 어펜드
+                }
               </script>
 
               <tbody align="center">
@@ -181,14 +237,14 @@
               				<tr>
               					<th>
               						<h6 class="fs-2 mb-0">
-              							<input type="checkbox" name="" class="selectMember">
+              							<input type="checkbox" class="selectMember" value="${m.memNo}"> 
               						</h6>
               					</th>
               					<th>
               						<h6 class="fs-2 mb-0">${m.memNo}</h6>
               					</th>
               					<th>
-              						<h6 class="fs-2 mb-0">${m.memName}</h6>
+              						<h6 class="fs-2 mb-0 memName">${m.memName}</h6>
               					</th>
               					<th>
               						<h6 class="fs-2 mb-0">${m.majorNo}</h6>
@@ -224,7 +280,7 @@
           </div>
 
           <!-- 퇴직처리 모달-->
-          <form class="mt-4" action="" method="post">
+          <form class="mt-4" action="${contextPath}/admin/outMember.do" method="post" id="outForm">
             <div class="modal fade" id="outModal" tabindex="-1" aria-labelledby="vertical-center-modal" style="display: none;" aria-hidden="true">
               <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -236,11 +292,17 @@
                   <hr>
                   <div class="modal-body myModalBody">
                     <div class="modalText">
-                    XXX님을 퇴직처리하시겠습니까?<br>
-                    퇴직처리시 해당 사용자는 더이상 로그인할 수 없습니다. <br>
-                    or <br>
-                    선택한 x명의 사용자를 삭제하시겠습니까? <br>
-                    삭제시 사용자는 더이상 로그인할 수 없습니다.
+                    
+                    	<div class="oneOut" style="display: none;">
+                    	  <span class="outName"></span>님을 퇴직처리하시겠습니까?<br>
+                    		퇴직처리시 해당 사용자는 더이상 로그인할 수 없습니다.
+                    	</div>
+                    	
+                    	<div class="multiOut" style="display: none;">
+                    		선택한 <span class="outCount"></span>명의 사용자를 삭제하시겠습니까? <br>
+                    		삭제시 사용자는 더이상 로그인할 수 없습니다.
+                    	</div>
+                    	
                     </div>
                     <br>
                     <div class="modalCheck">
@@ -373,10 +435,6 @@
                 
               </ul>
             </nav>
-            <form id="searchForm" action="" method="Get" align="center">
-                <input id="searchName" type="text" class="form-control" name="" placeholder="이름으로 검색">
-                <button type="submit" class="searchBtn btn btn-secondary">검색</button>
-            </form>
           </div>
 
         </div>

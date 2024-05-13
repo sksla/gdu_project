@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.cu.gdu.dao.AdminDao;
 import com.cu.gdu.dto.CollegeDto;
+import com.cu.gdu.dto.JobDto;
 import com.cu.gdu.dto.MajorDto;
 import com.cu.gdu.dto.MemberDto;
 import com.cu.gdu.dto.PageInfoDto;
@@ -36,6 +37,16 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public List<MemberDto> selectMemberList(PageInfoDto pi) {
 		return adminDao.selectMemberList(pi);
+	}
+
+	@Override
+	public List<JobDto> selectJobList() {
+		return adminDao.selectJobList();
+	}
+
+	@Override
+	public int updateOutMember(String[] memNo) {
+		return adminDao.updateOutMember(memNo);
 	}
 
 }
