@@ -41,7 +41,7 @@
 	<div class="main-wrapper">
 	
 		<!-- 각 페이지 별 사이드 바 -->
-    <jsp:include page="/WEB-INF/views/common/calSidebar.jsp"/>
+    <jsp:include page="/WEB-INF/views/common/memberSidebar.jsp"/>
     
     <div class="page-wrapper">
     

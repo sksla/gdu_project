@@ -50,8 +50,8 @@
 	
 	      <div class="d-block d-lg-none">
 	        <a href="./main/index.html" class="text-nowrap logo-img">
-	          <img src="./assets/images/logos/dark-logo.svg" class="dark-logo" alt="Logo-Dark" />
-	          <img src="./assets/images/logos/light-logo.svg" class="light-logo" alt="Logo-light" />
+	          <img src="${ contextPath }/assets/images/logos/dark-logo.svg" class="dark-logo" alt="Logo-Dark" />
+	          <img src="${ contextPath }/assets/images/logos/light-logo.svg" class="light-logo" alt="Logo-light" />
 	        </a>
 	      </div>
 	      <a class="navbar-toggler nav-icon-hover p-0 border-0" href="javascript:void(0)" data-bs-toggle="collapse"
@@ -115,7 +115,7 @@
 	                <div class="message-body" data-simplebar>
 	                  <a href="javascript:void(0)" class="py-6 px-7 d-flex align-items-center dropdown-item">
 	                    <span class="me-3">
-	                      <img src="./assets/images/profile/user-2.jpg" alt="user" class="rounded-circle" width="48"
+	                      <img src="${ contextPath }/assets/images/profile/user-2.jpg" alt="user" class="rounded-circle" width="48"
 	                        height="48" />
 	                    </span>
 	                    <div class="w-75 d-inline-block v-middle">
@@ -125,7 +125,7 @@
 	                  </a>
 	                  <a href="javascript:void(0)" class="py-6 px-7 d-flex align-items-center dropdown-item">
 	                    <span class="me-3">
-	                      <img src="./assets/images/profile/user-3.jpg" alt="user" class="rounded-circle" width="48"
+	                      <img src="${ contextPath }/assets/images/profile/user-3.jpg" alt="user" class="rounded-circle" width="48"
 	                        height="48" />
 	                    </span>
 	                    <div class="w-75 d-inline-block v-middle">
@@ -135,7 +135,7 @@
 	                  </a>
 	                  <a href="javascript:void(0)" class="py-6 px-7 d-flex align-items-center dropdown-item">
 	                    <span class="me-3">
-	                      <img src="./assets/images/profile/user-4.jpg" alt="user" class="rounded-circle" width="48"
+	                      <img src="${ contextPath }/assets/images/profile/user-4.jpg" alt="user" class="rounded-circle" width="48"
 	                        height="48" />
 	                    </span>
 	                    <div class="w-75 d-inline-block v-middle">
@@ -145,7 +145,7 @@
 	                  </a>
 	                  <a href="javascript:void(0)" class="py-6 px-7 d-flex align-items-center dropdown-item">
 	                    <span class="me-3">
-	                      <img src="./assets/images/profile/user-5.jpg" alt="user" class="rounded-circle" width="48"
+	                      <img src="${ contextPath }/assets/images/profile/user-5.jpg" alt="user" class="rounded-circle" width="48"
 	                        height="48" />
 	                    </span>
 	                    <div class="w-75 d-inline-block v-middle">
@@ -155,7 +155,7 @@
 	                  </a>
 	                  <a href="javascript:void(0)" class="py-6 px-7 d-flex align-items-center dropdown-item">
 	                    <span class="me-3">
-	                      <img src="./assets/images/profile/user-6.jpg" alt="user" class="rounded-circle" width="48"
+	                      <img src="${ contextPath }/assets/images/profile/user-6.jpg" alt="user" class="rounded-circle" width="48"
 	                        height="48" />
 	                    </span>
 	                    <div class="w-75 d-inline-block v-middle">
@@ -165,7 +165,7 @@
 	                  </a>
 	                  <a href="javascript:void(0)" class="py-6 px-7 d-flex align-items-center dropdown-item">
 	                    <span class="me-3">
-	                      <img src="./assets/images/profile/user-7.jpg" alt="user" class="rounded-circle" width="48"
+	                      <img src="${ contextPath }/assets/images/profile/user-7.jpg" alt="user" class="rounded-circle" width="48"
 	                        height="48" />
 	                    </span>
 	                    <div class="w-75 d-inline-block v-middle">
@@ -204,7 +204,7 @@
 	                    <h5 class="mb-0 fs-5 fw-semibold">User Profile</h5>
 	                  </div>
 	                  <div class="d-flex align-items-center py-9 mx-7 border-bottom">
-	                    <img src="./assets/images/profile/user-1.jpg" class="rounded-circle" width="80" height="80"
+	                    <img src="${ contextPath }/assets/images/profile/user-1.jpg" class="rounded-circle" width="80" height="80"
 	                      alt="" />
 	                    <div class="ms-3">
 	                      <h5 class="mb-1 fs-3">Mathew Anderson</h5>
@@ -217,7 +217,7 @@
 	                  <div class="message-body">
 	                    <a href="${ contextPath }/member/mypage.page" class="py-8 px-7 mt-8 d-flex align-items-center">
 	                      <span class="d-flex align-items-center justify-content-center text-bg-light rounded-1 p-6">
-	                        <img src="./assets/images/svgs/icon-account.svg" alt="" width="24" height="24" />
+	                        <img src="${ contextPath }/assets/images/svgs/icon-account.svg" alt="" width="24" height="24" />
 	                      </span>
 	                      <div class="w-75 d-inline-block v-middle ps-3">
 	                        <h6 class="mb-1 fs-3 fw-semibold lh-base">My Profile</h6>
@@ -226,7 +226,7 @@
 	                    </a>
 	                    <a href="./main/app-email.html" class="py-8 px-7 d-flex align-items-center">
 	                      <span class="d-flex align-items-center justify-content-center text-bg-light rounded-1 p-6">
-	                        <img src="./assets/images/svgs/icon-inbox.svg" alt="" width="24" height="24" />
+	                        <img src="${ contextPath }/assets/images/svgs/icon-inbox.svg" alt="" width="24" height="24" />
 	                      </span>
 	                      <div class="w-75 d-inline-block v-middle ps-3">
 	                        <h6 class="mb-1 fs-3 fw-semibold lh-base">My Inbox</h6>
@@ -235,7 +235,7 @@
 	                    </a>
 	                    <a href="./main/app-notes.html" class="py-8 px-7 d-flex align-items-center">
 	                      <span class="d-flex align-items-center justify-content-center text-bg-light rounded-1 p-6">
-	                        <img src="./assets/images/svgs/icon-tasks.svg" alt="" width="24" height="24" />
+	                        <img src="${ contextPath }/assets/images/svgs/icon-tasks.svg" alt="" width="24" height="24" />
 	                      </span>
 	                      <div class="w-75 d-inline-block v-middle ps-3">
 	                        <h6 class="mb-1 fs-3 fw-semibold lh-base">My Task</h6>
@@ -253,7 +253,7 @@
 	                        </div>
 	                        <div class="col-6">
 	                          <div class="m-n4 unlimited-img">
-	                            <img src="./assets/images/backgrounds/unlimited-bg.png" alt="" class="w-100" />
+	                            <img src="${ contextPath }/assets/images/backgrounds/unlimited-bg.png" alt="" class="w-100" />
 	                          </div>
 	                        </div>
 	                      </div>
