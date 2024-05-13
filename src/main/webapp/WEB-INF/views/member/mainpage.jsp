@@ -109,13 +109,20 @@
                   <!-- ------------------------------- -->
                   <!-- ---------조직도 버튼------------- -->
                   <li class="nav-item">
-                    <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
+                    <a class="nav-link nav-icon-hover chart" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
                       aria-expanded="false">
                       <span>
                         <i class="ti ti-tournament"></i>
                       </span>
                     </a>
                   </li>
+			            <script>
+			            	$(document).ready(function(){
+			            		$(".chart").on("click", function(){
+			            			location.href="${contextPath}/admin/chart.do";
+			            		})
+			            	})
+			            </script>
                   <!-- ------------------------------- -->
 
                   <!-- ------------------------------- -->
