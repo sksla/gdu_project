@@ -230,7 +230,7 @@
                     
                     <div class="form-actions text-end">
                         <div class="card-body border-top">
-                          <button type="button" class="btn btn-success  px-4" data-bs-toggle="modal" data-bs-target="#signup-modal">
+                          <button type="button" class="btn btn-success  px-4" data-bs-toggle="modal" data-bs-target="#changepass-modal">
                             비밀번호변경
                           </button>
                           <button type="submit" class="btn btn-primary px-4 ms-6">Submit</button>
@@ -247,7 +247,7 @@
               </div>
               
                <!-- 비밀번호변경 modal content -->
-               <div id="signup-modal" class="modal fade" tabindex="-1" aria-hidden="true">
+               <div id="changepass-modal" class="modal fade" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-scrollable modal-lg">
                   <div class="modal-content">
                     <div class="modal-body">
@@ -261,12 +261,12 @@
 
                       
 
-                        <form class="form-horizontal">
+                        <form action="${ contextPath }/member/modifyPwd.do" method="post" class="form-horizontal">
                           <div class="mb-3 row">
                             <label for="inputHorizontalSuccess" class="col-sm-2 form-label">현재 비밀번호</label>
                             <div class="col-sm-10">
                               <input type="password" class="form-control is-valid" id="inputHorizontalSuccess"
-                              placeholder="Enter your password" />
+                               name="memPwd" placeholder="Enter your password" />
                               <div class="valid-feedback">
                                 Success! You've done it.
                               </div>
@@ -276,7 +276,7 @@
                             <label for="inputHorizontalDnger" class="col-sm-2 form-label">새 비밀번호</label>
                             <div class="col-sm-10">
                               <input type="password" class="form-control is-invalid" id="inputHorizontalDnger"
-                              placeholder="Enter your password" />
+                               name="updatePwd" placeholder="Enter your password" />
                               <div class="invalid-feedback">
                                 영문,숫자,특수문자 포함 8~15자
                               </div>

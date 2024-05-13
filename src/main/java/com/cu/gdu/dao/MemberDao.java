@@ -16,5 +16,9 @@ public class MemberDao {
 	public MemberDto selectMember(MemberDto m) {
 		return sqlSessionTemplate.selectOne("memberMapper.selectMember", m);
 	}
+	
+	public int updatePassword(MemberDto m) {
+		return sqlSessionTemplate.update("memberMapper.updatePwd", m);
+	}
 
 }

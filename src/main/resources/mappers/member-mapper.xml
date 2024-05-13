@@ -26,7 +26,7 @@
   
   <!--  로그인용 -->
   <select id="selectMember" resultMap="memberResult">
-  <!-- * 암호화 적용 전 -->
+  <!-- * 암호화 적용 후 -->
   
     	select
   				mem_no, major_name, job_name, mem_name, mem_id, mem_pwd 
@@ -41,11 +41,16 @@
 		  join job on (member.job_no = job.job_no)
   	 where member.status = 'N'
   	 	 and mem_no = #{memNo}
-  	 	 and mem_pwd = #{memPwd} 
+  	 	 
   </select>
   
-  
- 
+ 	<!-- 비밀번호 변경용 --> 
+ 	<update id="updatePwd">
+			update
+						member
+				 set mem_pwd = #{memPwd}
+				where mem_no = #{memNo}
+		</update>	
   
   
   

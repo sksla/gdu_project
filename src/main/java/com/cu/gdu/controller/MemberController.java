@@ -42,8 +42,9 @@ public class MemberController {
 		response.setContentType("text/html; charset=utf-8");
 		PrintWriter out = response.getWriter();
 		out.println("<script>");
-		//if(loginUser != null) { // 암호화전 로그인성공에 대한 조건
-		if(loginUser != null && m.getMemPwd().equals(loginUser.getMemPwd()) ) 	{ 
+		
+		//if(loginUser != null && m.getMemPwd().equals(loginUser.getMemPwd()) ) 	{  // 암호화 전
+		if(loginUser != null && bcryptPwdEncoder.matches(m.getMemPwd(), loginUser.getMemPwd()) ) 	{ 
 			request.getSession().setAttribute("loginUser", loginUser);
 			out.println("alert('" + loginUser.getMemName() + "님 환영합니다~');");
 			out.println("location.href = '" + request.getContextPath() + "/member/mainpage';"); // mainpage.jsp로 이동
@@ -65,6 +66,33 @@ public class MemberController {
 	@GetMapping("/mypage.page")
 	public String mypage() {
 		return "/member/mypage";
+	}
+	
+	// * 비밀번호 변경 관련 -------------------------
+	@PostMapping("modifyPwd.do")
+	public String updatePassword(String memPwd, String updatePwd
+								, HttpSession session
+								, RedirectAttributes redirectAttributes) {
+		
+		System.out.println(memPwd);
+		System.out.println(updatePwd);
+		
+		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
+		
+		//if(memPwd.equals(loginUser.getMemPwd())) { // 암호화 전 
+		if(bcryptPwdEncoder.matches(memPwd, loginUser.getMemPwd())) {
+			loginUser.setMemPwd( bcryptPwdEncoder.encode(updatePwd) );
+			memberService.updatePassword(loginUser);
+			session.setAttribute("loginUser", memberService.selectMember(loginUser));
+			redirectAttributes.addFlashAttribute("alertMsg", "비밀번호 변경 성공했습니다.");
+			
+		}else {
+			redirectAttributes.addFlashAttribute("alertMsg", "비밀번호가 틀렸습니다. 다시 입력해주세요");
+			
+		}
+		
+		return "redirect:/member/mypage.page";
+		
 	}
 	
 	

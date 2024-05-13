@@ -30,7 +30,7 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public int updatePassword(MemberDto m) {
-		return 0;
+		return memberDao.updatePassword(m);
 	}
 
 }
