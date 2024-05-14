@@ -138,6 +138,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   	</where>
   </update>
   
+  <select id="ajaxFilterMemberListCount" resultType="_int">
+  	select
+  				 count(*)
+  		from member
+  	 where status = 'N'
+  	   and major_no = #{majorNo}
+  	   and job_no = #{job_no}
+  </select>
+  
   <select id="ajaxFilterMemberList" resultMap="memberResult">
   	select
 		       mem_no
@@ -149,6 +158,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		     , address
 		     , to_char(hire_date, 'YYYY-MM-DD') hire_date
 		     , phone
+		     , to_char(birth, 'YYMMDD') birth
+		     , gender
 		  from member
 		  join major on (member.major_no = major.major_no)
 		  join job on (member.job_no = job.job_no)

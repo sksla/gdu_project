@@ -1,5 +1,6 @@
 package com.cu.gdu.controller;
 
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,23 +69,7 @@ public class AdminController {
 		  .setViewName("admin/memberList");
 		return mv;
 	}
-	/*
-	private String maskResidentNumber(String residentNumber) {
-	    // 주민등록번호의 뒷자리 시작 인덱스
-	    int startIndex = 8;
-	    // 주민등록번호의 뒷자리 마지막 인덱스
-	    int endIndex = 14;
 
-	    // 주민등록번호 뒷자리 추출
-	    String lastDigits = residentNumber.substring(startIndex, endIndex);
-
-	    // 주민등록번호 뒷자리를 *로 대체
-	    String maskedDigits = lastDigits.replaceAll(".", "*");
-
-	    // *로 대체된 뒷자리와 앞자리를 합쳐서 반환
-	    return residentNumber.substring(0, startIndex) + maskedDigits;
-	}
-	*/
 	@GetMapping("/outMember.do")
 	public String updateOutMember(String[] memNo, RedirectAttributes redirectAttributes) {
 		int result = adminService.updateOutMember(memNo);
@@ -128,11 +113,17 @@ public class AdminController {
 		return "redirect:/admin/memberList.do";
 	}
 	
+	
 	@ResponseBody
 	@GetMapping(value="/filterMemberList.do", produces="application/json; charset=utf-8")
 	public List<MemberDto> ajaxFilterMemberList(MemberDto m, @RequestParam(value="page", defaultValue="1") int currentPage){
-		log.debug("학과 및 직급번호 {}", m);
+		int listCount = adminService.ajaxFilterMemberListCount(m);
+		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 10);
+		// 여기에 맵객체 만들고, pi랑 m 담아서 dao에서 rowBounds 에 사용하기
 		List<MemberDto> list = adminService.ajaxFilterMemberList(m);
+		for(MemberDto mList : list) {
+			mList.setBirth(mList.getBirth() + "-" + mList.getGender());
+		}
 		return list;
 	}
 	
@@ -163,5 +154,6 @@ public class AdminController {
 		}
 		return "redirect:/admin/memberList.do";
 	}
+	
 	
 }

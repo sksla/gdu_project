@@ -36,6 +36,9 @@ public interface AdminService {
 	// 학과직급필터링으로 ajax통신해 직원조회
 	List<MemberDto> ajaxFilterMemberList(MemberDto m);
 	
+	// 학과직급필터링으로 ajax통신해 직원조회(페이징)
+	int ajaxFilterMemberListCount(MemberDto m);
+	
 	// 직원개별등록
 	int insertOneMember(MemberDto m);
 	

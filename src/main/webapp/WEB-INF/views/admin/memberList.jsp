@@ -12,7 +12,7 @@
   .updateMajor{margin-right:50px; cursor:pointer; color:blue;}
   .updateJob{cursor:pointer; color:blue;}
   #selectStatus{margin-left: 880px;}
-  #ingMember{margin-left: 20px;}
+  #allMember{margin-left: 20px;}
   #endMember{margin-left: 20px;}
   #searchForm {
       display: flex;
@@ -89,12 +89,6 @@
           <!-- 페이지 내용 -->
           <div class="card">
             <div class="card-body">
-            
-		          <script>
-		            $(document).ready(function(){
-		              $("#allMember").prop('checked', true);
-		            })
-		          </script>
 		          
 		          <form id="searchForm" action="" method="Get" align="center">
 		            <input id="searchName" type="text" class="form-control" name="" placeholder="이름으로 검색">
@@ -102,12 +96,12 @@
 		          </form>
 		
 		          <div id="selectStatus">
-		            <input type="radio" id="allMember" name="selectStatus"><span><label for="allMember">전체</label></span>
 		            <input type="radio" id="ingMember" name="selectStatus"><span><label for="ingMember">재직</label></span>
+		            <input type="radio" id="allMember" name="selectStatus"><span><label for="allMember">전체</label></span>
 		            <input type="radio" id="endMember" name="selectStatus"><span><label for="endMember">퇴직</label></span>
 		          </div>
 		
-		          <div id="outAndUpdate"  style="display: none;">
+		          <div class="outAndUpdate">
 		            <div class="out" style="display: inline;" data-bs-toggle="modal" data-bs-target="#outModal" onclick="outModal();">퇴직처리</div>
 		            <div class="updateMajor" style="display: inline;" data-bs-toggle="modal" data-bs-target="#updateMajorModal" onclick="updateMajor();">학과수정</div>
 		            <div class="updateJob" style="display: inline;" data-bs-toggle="modal" data-bs-target="#updateJobModal" onclick="updateJob();">직급수정</div>
@@ -160,31 +154,87 @@
 		                  <th>
 		                    <h6 class="fs-3 fw-semibold mb-0">입사일</h6>
 		                  </th>
-		                  <th>
-		                    <h6 class="fs-3 fw-semibold mb-0">연락처</h6>
-		                  </th>
 		                </tr>
 		              </thead>
-		              
+		              <tbody align="center" class="tableBody">
+		              	<c:choose>
+		              		<c:when test="${empty list}">
+		              			<tr>
+		              				<th colspan="10">
+		              					<h6 class="fs-2 mb-0">직원이 없습니다.</h6>
+		              				</th>
+		              			</tr>
+		              		</c:when>
+		              		<c:otherwise>
+		              			<c:forEach var="m" items="${list}">
+		              				<tr>
+		              					<th>
+		              						<h6 class="fs-2 mb-0">
+		              							<input type="checkbox" class="selectMember" value="${m.memNo}"> 
+		              						</h6>
+		              					</th>
+		              					<th>
+		              						<h6 class="fs-2 mb-0">${m.memNo}</h6>
+		              					</th>
+		              					<th>
+		              						<h6 class="fs-2 mb-0 memName">${m.memName}</h6>
+		              					</th>
+		              					<th>
+		              						<h6 class="fs-2 mb-0">${m.majorNo}</h6>
+		              					</th>
+		              					<th>
+		              						<h6 class="fs-2 mb-0">${m.jobNo}</h6>
+		              					</th>
+		              					<th>
+		              						<h6 class="fs-2 mb-0">${m.birth}</h6>
+		              					</th>
+		              					<th>
+		              						<h6 class="fs-2 mb-0">${m.email}</h6>
+		              					</th>
+		              					<th>
+		              						<h6 class="fs-2 mb-0">${m.address}</h6>
+		              					</th>
+		              					<th>
+		              						<h6 class="fs-2 mb-0">${m.hireDate}</h6>
+		              					</th>
+		              				</tr>
+		              			</c:forEach>
+		              		</c:otherwise>
+		              	</c:choose>
+		              </tbody>
+		            </table>
+		          </div>
+		          
              <script>
        
                $(document).ready(function(){
-                 $(".selectMember").on("change", function(){
-                   if($(this).is(":checked")){
-                     $("#outAndUpdate").css("display", "block");
-                   }else{
-                     $("#outAndUpdate").css("display", "none");
-                   }
-                 })
+            	   
+            	   // 퇴직학과직급 처리버튼 숨기기
+            	   $(".outAndUpdate").css("display", "none");
                  
+            	   // 라디오버튼 재직중에 체크
+                 $("#ingMember").attr('checked', true);
+
+               })
+               
+               //////////////////////////ready(function) 종료//////////////////////////
+                
+               	// 체크박스 체크시 왼쪽상단 퇴직직급학과 처리 div 보이고 안보이고 처리
+                $(document).on("change", ".selectMember" , function(){
+                  if($(this).is(":checked")){
+                    $(".outAndUpdate").css("display", "block");
+                  }else{
+                    $(".outAndUpdate").css("display", "none");
+                  }
+                })
+               
                 // ajax로 학과직급필터링
                 $(".ajaxSelect").on("change", function(){
-              	  console.log("함수실행");
+
               	  let majorNo = $(".selectMajor option:selected").val();
               	  let jobNo = $(".selectJob option:selected").val();
-              	  //console.log("학과번호", majorNo);
-              	  //console.log("직급번호", jobNo);
               	  
+
               	  $.ajax({
               		  url:"${contextPath}/admin/filterMemberList.do",
               		  type:"get",
@@ -194,7 +244,6 @@
               			  console.log(list);
               			  $(".tableBody").empty();
               			  
-              				//filterTable = "<tbody align='center' class='tableBody'>";
               				filterTable = "";
               				if(list.length == 0){
               					
@@ -237,14 +286,12 @@
                				  						+		"<th>"
                				  						+			"<h6 class='fs-2 mb-0'>" + list[i].hireDate + "</h6>"
                				  						+		"</th>"
-               				  						+		"<th>"
-               				  						+			"<h6 class='fs-2 mb-0'>" + list[i].phone + "</h6>"
-               				  						+		"</th>"
                				  						+	"</tr>";
                			  }
               				} 
-               			 //filterTable + "</tbody>"
+               
               			  $(".tableBody").append(filterTable);
+
               		  }
               		  ,error:function(){
               			  console.log("학과직급 필터링 ajax 통신 실패");
@@ -252,23 +299,7 @@
               	  })
               	  
                 })
-                 
-                  //글자 수 처리
-                 $("tbody tr").each(function(){
-               	  let text = $(this).find("th:nth-child(8) h6").text();
-               	  
-               	  if (text.length >= 10) {
-              	        // 11번째 글자부터 자른 후에 '...'을 추가하여 표시
-              	        let newText = text.substring(0, 12) + "...";
-              	        // 셀 내용 변경
-              	        $(this).find("th:nth-child(8) h6").text(newText);
-               	  }
-               	  
-                 }) 
-                 
-               })
-               
-               
+                
                
                // 직급수정 함수
                function updateJob(){
@@ -347,65 +378,9 @@
                  	
                	}
                }
-              
              </script>
              
-		              <tbody align="center" class="tableBody">
-		              	<c:choose>
-		              		<c:when test="${empty list}">
-		              			<tr>
-		              				<th colspan="10">
-		              					<h6 class="fs-2 mb-0">직원이 없습니다.</h6>
-		              				</th>
-		              			</tr>
-		              		</c:when>
-		              		<c:otherwise>
-		              			<c:forEach var="m" items="${list}">
-		              				<tr>
-		              					<th>
-		              						<h6 class="fs-2 mb-0">
-		              							<input type="checkbox" class="selectMember" value="${m.memNo}"> 
-		              						</h6>
-		              					</th>
-		              					<th>
-		              						<h6 class="fs-2 mb-0">${m.memNo}</h6>
-		              					</th>
-		              					<th>
-		              						<h6 class="fs-2 mb-0 memName">${m.memName}</h6>
-		              					</th>
-		              					<th>
-		              						<h6 class="fs-2 mb-0">${m.majorNo}</h6>
-		              					</th>
-		              					<th>
-		              						<h6 class="fs-2 mb-0">${m.jobNo}</h6>
-		              					</th>
-		              					<th>
-		              						<h6 class="fs-2 mb-0">${m.birth}</h6>
-		              					</th>
-		              					<th>
-		              						<h6 class="fs-2 mb-0">${m.email}</h6>
-		              					</th>
-		              					<th>
-		              						<h6 class="fs-2 mb-0">${m.address}</h6>
-		              					</th>
-		              					<th>
-		              						<h6 class="fs-2 mb-0">${m.hireDate}</h6>
-		              					</th>
-		              					<th>
-		              						<h6 class="fs-2 mb-0">${m.phone}</h6>
-		              					</th>
-		              				</tr>
-		              			</c:forEach>
-		              		</c:otherwise>
-		              	</c:choose>
-		              </tbody>
-		            </table>
-		          </div>
-							<!-- 
-		          <div style="text-align: right;">
-		            <button type="button" class="btn btn-secondary">직원등록</button>
-		          </div>
-		 					-->
+             
 		          <!-- 퇴직처리 모달-->
 		          <form class="mt-4" action="${contextPath}/admin/outMember.do" method="get" id="outForm">
 		            <div class="modal fade" id="outModal" tabindex="-1" aria-labelledby="vertical-center-modal" style="display: none;" aria-hidden="true">
@@ -531,7 +506,7 @@
 		                
 		                <c:forEach var="p" begin="${pi.startPage}" end="${pi.endPage}">
 			                <li class="page-item">
-			                  <a class="page-link link ${pi.currentPage == p ? 'disabled' : ''}" href="#">
+			                  <a class="page-link link ${pi.currentPage == p ? 'disabled' : ''}" href="${contextPath}/admin/memberList.do?page=${p}">
 			                  	${p}
 			                  </a>
 			                </li>

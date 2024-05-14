@@ -189,7 +189,9 @@
 		
 		        $(document).ready(function(){
 		        	
-					    console.log(${majorList.size()});
+					    console.log(${majorList.get(1)});
+					      
+					    
 			      
 			        	for(var i=0; i<${majorList.size()}; i++){
 				        	//console.log("음");
