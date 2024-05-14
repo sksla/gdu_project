@@ -56,11 +56,54 @@ public class AdminDao {
 		return sqlSessionTemplate.update("adminMapper.updateJobMember", map);
 	}
 	
+	// 직급 필터링으로 ajax통신해 직원수조회 (페이징)
+	public int ajaxJobFilterMemberListCount(MemberDto m) {
+		return sqlSessionTemplate.selectOne("adminMapper.ajaxJobFilterMemberListCount", m);
+	}
 	
+	// 직급 필터링으로 ajax통신해 직원수조회
+	public List<MemberDto> ajaxJobFilterMemberList(Map<String, Object> map){
+		PageInfoDto pi = (PageInfoDto)map.get("pi");
+		int limit = pi.getBoardLimit();
+		int offset = (pi.getCurrentPage()-1) * limit;
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return sqlSessionTemplate.selectList("adminMapper.ajaxJobFilterMemberList", map, rowBounds);
+	}
+	
+	// 학과 필터링으로 ajax통신해 직원수조회 (페이징)
+	public int ajaxMajorFilterMemberListCount(MemberDto m) {
+		return sqlSessionTemplate.selectOne("adminMapper.ajaxMajorFilterMemberListCount", m);
+	}
+	
+	// 학과 필터링으로 ajax통신해 직원수조회
+	public List<MemberDto> ajaxMajorFilterMemberList(Map<String, Object> map){
+		PageInfoDto pi = (PageInfoDto)map.get("pi");
+		int limit = pi.getBoardLimit();
+		int offset = (pi.getCurrentPage()-1) * limit;
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return sqlSessionTemplate.selectList("adminMapper.ajaxMajorFilterMemberList", map, rowBounds);
+	}
+	
+	// 필터링없이 ajax통신해 직원수조회 (페이징)
+	public int ajaxNoFilterMemberListCount(MemberDto m) {
+		return sqlSessionTemplate.selectOne("adminMapper.ajaxNoFilterMemberListCount", m);
+	}
+	
+	// 필터링없이 ajax통신해 직원수조회
+	public List<MemberDto> ajaxNoFilterMemberList(Map<String, Object> map){
+		PageInfoDto pi = (PageInfoDto)map.get("pi");
+		int limit = pi.getBoardLimit();
+		int offset = (pi.getCurrentPage()-1) * limit;
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return sqlSessionTemplate.selectList("adminMapper.ajaxNoFilterMemberList", map, rowBounds);
+	}
+
+	// 학과및직급 필터링으로 ajax통신해 직원수조회 (페이징)
 	public int ajaxFilterMemberListCount(MemberDto m) {
 		return sqlSessionTemplate.selectOne("adminMapper.ajaxFilterMemberListCount", m);
 	}
 	
+	// 학과및직급 필터링으로 ajax통신해 직원수조회
 	public List<MemberDto> ajaxFilterMemberList(Map<String, Object> map){
 		PageInfoDto pi = (PageInfoDto)map.get("pi");
 		int limit = pi.getBoardLimit();

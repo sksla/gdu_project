@@ -138,6 +138,102 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   	</where>
   </update>
   
+  <!-- 직급 필터링 ajax통신 직원조회(페이징) -->
+  <select id="ajaxJobFilterMemberListCount" resultType="_int">
+  	select
+  				 count(*)
+  		from member
+  	 where status = 'N'
+  	   and job_no = #{jobNo}
+  </select>
+  
+  <!-- 직급 필터링 ajax통신 직원조회 -->
+  <select id="ajaxJobFilterMemberList" resultMap="memberResult">
+  	select
+		       mem_no
+		     , mem_name
+		     , major_name
+		     , job_name
+		     , resident
+		     , email
+		     , address
+		     , to_char(hire_date, 'YYYY-MM-DD') hire_date
+		     , phone
+		     , to_char(birth, 'YYMMDD') birth
+		     , gender
+		  from member
+		  join major on (member.major_no = major.major_no)
+		  join job on (member.job_no = job.job_no)
+		 where member.status = 'N'
+       and member.job_no = #{m.jobNo}
+		 order
+		    by mem_no desc
+  </select>
+  
+  <!-- 학과 필터링 ajax통신 직원조회(페이징) -->
+  <select id="ajaxMajorFilterMemberListCount" resultType="_int">
+  	select
+  				 count(*)
+  		from member
+  	 where status = 'N'
+  	   and major_no = #{majorNo}
+  </select>
+  
+  <!-- 학과 필터링 ajax통신 직원조회 -->
+  <select id="ajaxMajorFilterMemberList" resultMap="memberResult">
+  	select
+		       mem_no
+		     , mem_name
+		     , major_name
+		     , job_name
+		     , resident
+		     , email
+		     , address
+		     , to_char(hire_date, 'YYYY-MM-DD') hire_date
+		     , phone
+		     , to_char(birth, 'YYMMDD') birth
+		     , gender
+		  from member
+		  join major on (member.major_no = major.major_no)
+		  join job on (member.job_no = job.job_no)
+		 where member.status = 'N'
+		   and member.major_no = #{m.majorNo}
+		 order
+		    by mem_no desc
+  </select>
+  
+  <!-- 필터링 없이 ajax통신 직원조회(페이징) -->
+  <select id="ajaxNoFilterMemberListCount" resultType="_int">
+  	select
+  				 count(*)
+  		from member
+  	 where status = 'N'
+  </select>
+  
+  <!-- 필터링 없이 ajax통신 직원조회 -->
+  <select id="ajaxNoFilterMemberList" resultMap="memberResult">
+  	select
+		       mem_no
+		     , mem_name
+		     , major_name
+		     , job_name
+		     , resident
+		     , email
+		     , address
+		     , to_char(hire_date, 'YYYY-MM-DD') hire_date
+		     , phone
+		     , to_char(birth, 'YYMMDD') birth
+		     , gender
+		  from member
+		  join major on (member.major_no = major.major_no)
+		  join job on (member.job_no = job.job_no)
+		 where member.status = 'N'
+		 order
+		    by mem_no desc
+  </select>
+  
+  
+  <!-- 학과 및 직급 필터링 ajax통신 직원조회(페이징) -->
   <select id="ajaxFilterMemberListCount" resultType="_int">
   	select
   				 count(*)
@@ -147,6 +243,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   	   and job_no = #{jobNo}
   </select>
   
+  <!-- 학과 및 직급 필터링 ajax통신 직원조회 -->
   <select id="ajaxFilterMemberList" resultMap="memberResult">
   	select
 		       mem_no

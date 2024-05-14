@@ -33,11 +33,21 @@ public interface AdminService {
 	// 직원관리페이지에서 직원직급수정
 	int updateJobMember(Map<String, Object> map);
 	
-	// 학과직급필터링으로 ajax통신해 직원조회
-	List<MemberDto> ajaxFilterMemberList(Map<String, Object> map);
+	// 직급 필터링으로 ajax통신해 직원조회 및 페이징
+	int ajaxJobFilterMemberListCount(MemberDto m);
+	List<MemberDto> ajaxJobFilterMemberList(Map<String, Object> map);
 	
-	// 학과직급필터링으로 ajax통신해 직원조회(페이징)
+	// 학과 필터링으로 ajax통신해 직원조회 및 페이징
+	int ajaxMajorFilterMemberListCount(MemberDto m);
+	List<MemberDto> ajaxMajorFilterMemberList(Map<String, Object> map);
+	
+	// 필터링 없이 ajax통신해 직원조회 및 페이징
+	int ajaxNoFilterMemberListCount(MemberDto m);
+	List<MemberDto> ajaxNoFilterMemberList(Map<String, Object> map);
+	
+	// 학과 및 직급필터링으로 ajax통신해 직원조회 및 페이징
 	int ajaxFilterMemberListCount(MemberDto m);
+	List<MemberDto> ajaxFilterMemberList(Map<String, Object> map);
 	
 	// 직원개별등록
 	int insertOneMember(MemberDto m);

@@ -237,7 +237,8 @@
 								    let jobNo = $(".selectJob option:selected").val();
 								
 								    $.ajax({
-								        url:"${contextPath}/admin/filterMemberList.do",
+								    	//url:"${contextPath}/admin/filterMemberList.do", //직급만 웨어절 | 학과만 웨어절 | 웨어절 없는 ajax | 직급학과 둘다 웨어절
+								    		url: majorNo==0 && jobNo!=0 ? "${contextPath}/admin/jobFilterMemberList.do" : (jobNo==0 && majorNo != 0 ? "${contextPath}/admin/majorFilterMemberList.do" : (majorNo == 0 && jobNo == 0 ? "${contextPath}/admin/noFilterMemberList.do" : "${contextPath}/admin/filterMemberList.do")),
 								        type:"get",
 								        data:"majorNo=" + majorNo + "&jobNo=" + jobNo,
 								        success:function(list){

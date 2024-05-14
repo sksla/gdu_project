@@ -59,16 +59,55 @@ public class AdminServiceImpl implements AdminService {
 	public int updateJobMember(Map<String, Object> map) {
 		return adminDao.updateJobMember(map);
 	}
-
+	
+	// 직급 필터링으로 ajax통신해 직원수조회(페이징)
 	@Override
-	public List<MemberDto> ajaxFilterMemberList(Map<String, Object> map) {
-		return adminDao.ajaxFilterMemberList(map);
+	public int ajaxJobFilterMemberListCount(MemberDto m) {
+		return adminDao.ajaxJobFilterMemberListCount(m);
 	}
-
+	
+	// 직급 필터링으로 ajax통신해 직원조회
+	@Override
+	public List<MemberDto> ajaxJobFilterMemberList(Map<String, Object> map) {
+		return adminDao.ajaxJobFilterMemberList(map);
+	}
+	
+	// 학과 필터링으로 ajax통신해 직원수조회(페이징)
+	@Override
+	public int ajaxMajorFilterMemberListCount(MemberDto m) {
+		return adminDao.ajaxMajorFilterMemberListCount(m);
+	}
+	
+	// 학과 필터링으로 ajax통신해 직원조회
+	@Override
+	public List<MemberDto> ajaxMajorFilterMemberList(Map<String, Object> map) {
+		return adminDao.ajaxMajorFilterMemberList(map);
+	}
+	
+	// 필터링 없이 ajax통신해 직원수조회(페이징)
+	@Override
+	public int ajaxNoFilterMemberListCount(MemberDto m) {
+		return adminDao.ajaxNoFilterMemberListCount(m);
+	}
+	
+	// 필터링 없이 ajax통신해 직원조회
+	@Override
+	public List<MemberDto> ajaxNoFilterMemberList(Map<String, Object> map) {
+		return adminDao.ajaxNoFilterMemberList(map);
+	}
+	
+	// 학과직급 둘다 검사 후 ajax통신해 직원수조회(페이징)
 	@Override
 	public int ajaxFilterMemberListCount(MemberDto m) {
 		return adminDao.ajaxFilterMemberListCount(m);
 	}
+	
+	// 학과직급 둘다 검사 후 ajax통신해 직원조회
+	@Override
+	public List<MemberDto> ajaxFilterMemberList(Map<String, Object> map) {
+		return adminDao.ajaxFilterMemberList(map);
+	}
+	
 
 	@Override
 	public int insertOneMember(MemberDto m) {
