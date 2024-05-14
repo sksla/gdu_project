@@ -81,6 +81,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		     , address
 		     , to_char(hire_date, 'YYYY-MM-DD') hire_date
 		     , phone
+		     , gender
+		     , to_char(birth, 'YYMMDD') birth
 		  from member
 		  join major on (member.major_no = major.major_no)
 		  join job on (member.job_no = job.job_no)
@@ -156,6 +158,44 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 order
 		    by mem_no desc
   </select>
+  
+  <insert id="insertOneMember">
+		insert
+		  into member
+		  (
+		    mem_no
+		  , major_no
+		  , job_no
+		  , mem_name
+		  , mem_id
+		  , mem_pwd
+		  , phone
+		  , email
+		  , address
+		  , resident
+		  , salary
+		  , leave_count
+		  , birth
+		  , gender
+		  )
+		  values
+		  (
+		    seq_mem_no.nextval
+		  , #{majorNo}
+		  , #{jobNo}
+		  , #{memName}
+		  , #{memId}
+		  , #{memPwd}
+		  , #{phone}
+		  , #{email}
+		  , #{address}
+		  , #{resident}
+		  , #{salary}
+		  , #{leaveCount}
+		  , #{birth}
+		  , #{gender}
+		  )
+  </insert>
 
   
 </mapper>

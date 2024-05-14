@@ -1,10 +1,10 @@
 package com.cu.gdu.controller;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,6 +34,7 @@ public class AdminController {
 
 	private final AdminService adminService;
 	private final PagingUtil pagingUtil;
+	private final BCryptPasswordEncoder bcryptPwdEncoder;
 	
 	@GetMapping("/chart.do")
 	public String chart(Model model) {
@@ -57,7 +58,7 @@ public class AdminController {
 		List<JobDto> jobList = adminService.selectJobList();
 		
 	    for (MemberDto m : list) {
-	        m.setResident(maskResidentNumber(m.getResident()));
+	        m.setBirth(m.getBirth() + "-" + m.getGender() + "******");
 	    }
 		
 		mv.addObject("pi", pi)
@@ -67,7 +68,7 @@ public class AdminController {
 		  .setViewName("admin/memberList");
 		return mv;
 	}
-	
+	/*
 	private String maskResidentNumber(String residentNumber) {
 	    // 주민등록번호의 뒷자리 시작 인덱스
 	    int startIndex = 8;
@@ -83,8 +84,8 @@ public class AdminController {
 	    // *로 대체된 뒷자리와 앞자리를 합쳐서 반환
 	    return residentNumber.substring(0, startIndex) + maskedDigits;
 	}
-	
-	@PostMapping("/outMember.do")
+	*/
+	@GetMapping("/outMember.do")
 	public String updateOutMember(String[] memNo, RedirectAttributes redirectAttributes) {
 		int result = adminService.updateOutMember(memNo);
 		if(result == memNo.length) {
@@ -95,7 +96,7 @@ public class AdminController {
 		return "redirect:/admin/memberList.do";
 	}
 	
-	@PostMapping("/updateMajorMember.do")
+	@GetMapping("/updateMajorMember.do")
 	public String updateMajorMember(int[] memNo, String majorNo, RedirectAttributes redirectAttributes) {
 		
 		Map<String, Object> map = new HashMap<>();
@@ -112,7 +113,7 @@ public class AdminController {
 		return "redirect:/admin/memberList.do";
 	}
 	
-	@PostMapping("/updateJobMember.do")
+	@GetMapping("/updateJobMember.do")
 	public String updateJobMember(int[] memNo, String jobNo, RedirectAttributes redirectAttributes) {
 		Map<String, Object> map = new HashMap<>();
 		map.put("memNo", memNo);
@@ -133,6 +134,34 @@ public class AdminController {
 		log.debug("학과 및 직급번호 {}", m);
 		List<MemberDto> list = adminService.ajaxFilterMemberList(m);
 		return list;
+	}
+	
+	@GetMapping("/insertOneMemberEnrollForm.do")
+	public String insertOneMemberEnrollForm(Model model) {
+		List<MajorDto> majorList = adminService.selectMajorList();
+		List<JobDto> jobList = adminService.selectJobList();
+		model.addAttribute("majorList", majorList);
+		model.addAttribute("jobList", jobList);
+		return "admin/insertOneMember";
+	}
+	
+	@PostMapping("/insertOneMember.do")
+	public String insertOneMember(MemberDto m, RedirectAttributes redirectAttributes) {
+		m.setMemPwd("1111");
+		m.setLeaveCount(12);
+		String[] resident = m.getResident().split("-");
+		String gender = String.valueOf(resident[1].charAt(0));
+		m.setBirth(resident[0]);
+		m.setGender(gender);
+		m.setMemPwd(bcryptPwdEncoder.encode(m.getMemPwd()));
+		m.setResident(bcryptPwdEncoder.encode(m.getResident()));
+		int result = adminService.insertOneMember(m);
+		if(result == 1) {
+			redirectAttributes.addFlashAttribute("alertMsg", "직원을 등록했습니다.");
+		}else {
+			redirectAttributes.addFlashAttribute("alertMsg", "직원등록에 실패했습니다.");
+		}
+		return "redirect:/admin/memberList.do";
 	}
 	
 }

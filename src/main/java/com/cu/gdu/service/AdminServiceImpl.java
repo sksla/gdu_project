@@ -65,6 +65,11 @@ public class AdminServiceImpl implements AdminService {
 		return adminDao.ajaxFilterMemberList(m);
 	}
 
+	@Override
+	public int insertOneMember(MemberDto m) {
+		return adminDao.insertOneMember(m);
+	}
+
 
 
 }
