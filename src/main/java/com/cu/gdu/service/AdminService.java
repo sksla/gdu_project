@@ -34,7 +34,7 @@ public interface AdminService {
 	int updateJobMember(Map<String, Object> map);
 	
 	// 학과직급필터링으로 ajax통신해 직원조회
-	List<MemberDto> ajaxFilterMemberList(MemberDto m);
+	List<MemberDto> ajaxFilterMemberList(Map<String, Object> map);
 	
 	// 학과직급필터링으로 ajax통신해 직원조회(페이징)
 	int ajaxFilterMemberListCount(MemberDto m);

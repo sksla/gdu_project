@@ -229,76 +229,106 @@
                 })
                
                 // ajax로 학과직급필터링
-                $(".ajaxSelect").on("change", function(){
+								$(".ajaxSelect").on("change", function(){
+										
+										let contextPath = "<c:out value='${pageContext.request.contextPath}' />";
+									
+								    let majorNo = $(".selectMajor option:selected").val();
+								    let jobNo = $(".selectJob option:selected").val();
+								
+								    $.ajax({
+								        url:"${contextPath}/admin/filterMemberList.do",
+								        type:"get",
+								        data:"majorNo=" + majorNo + "&jobNo=" + jobNo,
+								        success:function(list){
+								
+								            console.log("ajax통신 성공시 받아온 map객체: ", list);
+								            console.log("ajax통신 성공시 받아온 map객체의 member타입의 길이: ", list.member.length);
+								            $(".tableBody").empty();
+								            $(".pagination").empty();
+								
+								            let filterTable = "";
+								            if(list.member.length == 0){
+								
+								                filterTable += "<tr>"
+								                                    +   "<th colspan='10'>"
+								                                    +       "<h6 class='fs-2 mb-0'>직원이 없습니다.</h6>"
+								                                    +   "</th>"
+								                                    + "</tr>";
+								
+								            }else{
+								
+								                for(let i=0; i<list.member.length; i++){
+								                    filterTable += "<tr>"
+								                                            +   "<th>"
+								                                            +       "<h6 class='fs-2 mb-0'>"
+								                                            +           "<input type='checkbox' class='selectMember' value='" + list.member[i].memNo + "'>"
+								                                            +       "</h6>"
+								                                            +   "</th>"
+								                                            +   "<th>"
+								                                            +       "<h6 class='fs-2 mb-0'>" + list.member[i].memNo + "</h6>"
+								                                            +   "</th>"
+								                                            +   "<th>"
+								                                            +       "<h6 class='fs-2 mb-0 memName'>" + list.member[i].memName + "</h6>"
+								                                            +   "</th>"
+								                                            +   "<th>"
+								                                            +       "<h6 class='fs-2 mb-0'>" + list.member[i].majorNo + "</h6>"
+								                                            +   "</th>"
+								                                            +   "<th>"
+								                                            +       "<h6 class='fs-2 mb-0'>" + list.member[i].jobNo + "</h6>"
+								                                            +   "</th>"
+								                                            +   "<th>"
+								                                            +       "<h6 class='fs-2 mb-0'>" + list.member[i].birth + "</h6>"
+								                                            +   "</th>"
+								                                            +   "<th>"
+								                                            +       "<h6 class='fs-2 mb-0'>" + list.member[i].email + "</h6>"
+								                                            +   "</th>"
+								                                            +   "<th>"
+								                                            +       "<h6 class='fs-2 mb-0'>" + list.member[i].address + "</h6>"
+								                                            +   "</th>"
+								                                            +   "<th>"
+								                                            +       "<h6 class='fs-2 mb-0'>" + list.member[i].hireDate + "</h6>"
+								                                            +   "</th>"
+								                                            + "</tr>";
+								                }
+								            } 
+								
+								            $(".tableBody").append(filterTable);
+								            
+								            // Pagination
+								            let filterPage = "";
+								            filterPage += "<li class='page-item " + (list.pi.currentPage == 1 ? 'disabled' : '') + "'>"
+							                  +    "<a class='page-link link' href='" + contextPath + "/admin/filterMemberList.do?page=" + (list.pi.currentPage - 1) + "' aria-label='Previous'>"
+							                  +        "<span aria-hidden='true'>"
+							                  +            "<i class='ti ti-chevrons-left fs-4'></i>"
+							                  +        "</span>"
+							                  +    "</a>"
+							                  + "</li>";
 
-              	  let majorNo = $(".selectMajor option:selected").val();
-              	  let jobNo = $(".selectJob option:selected").val();
-              	  
+														for (let p = list.pi.startPage; p <= list.pi.endPage; p++) {
+														    filterPage += "<li class='page-item " + (list.pi.currentPage == p ? 'active' : '') + "'>"
+														                      +    "<a class='page-link link' href='" + contextPath + "/admin/filterMemberList.do?page=" + p + "'>"
+														                      +        p
+														                      +    "</a>"
+														                      + "</li>";
+														}
 
-              	  $.ajax({
-              		  url:"${contextPath}/admin/filterMemberList.do",
-              		  type:"get",
-              		  data:"majorNo=" + majorNo + "&jobNo=" + jobNo,
-              		  success:function(list){
-              			  
-              			  console.log(list);
-              			  $(".tableBody").empty();
-              			  
-              				filterTable = "";
-              				if(list.length == 0){
-              					
-              					filterTable += "<tr>"
-              											+		"<th colspan='10'>"
-              											+			"<h6 class='fs-2 mb-0'>직원이 없습니다.</h6>"
-              											+		"</th>"
-              											+	"</tr>";
-              											
-              				}else{
-              					
-               			  for(let i=0; i<list.length; i++){
-               				  filterTable += "<tr>"
-               				  						+		"<th>"
-               				  						+			"<h6 class='fs-2 mb-0'>"
-               				  						+				"<input type='checkbox' class='selectMember' value='" + list[i].memNo + "'>"
-               				  						+			"</h6>"
-               				  						+		"</th>"
-               				  						+		"<th>"
-               				  						+			"<h6 class='fs-2 mb-0'>" + list[i].memNo + "</h6>"
-               				  						+		"</th>"
-               				  						+		"<th>"
-               				  						+			"<h6 class='fs-2 mb-0 memName'>" + list[i].memName + "</h6>"
-               				  						+		"</th>"
-               				  						+		"<th>"
-               				  						+			"<h6 class='fs-2 mb-0'>" + list[i].majorNo + "</h6>"
-               				  						+		"</th>"
-               				  						+		"<th>"
-               				  						+			"<h6 class='fs-2 mb-0'>" + list[i].jobNo + "</h6>"
-               				  						+		"</th>"
-               				  						+		"<th>"
-               				  						+			"<h6 class='fs-2 mb-0'>" + list[i].birth + "</h6>"
-               				  						+		"</th>"
-               				  						+		"<th>"
-               				  						+			"<h6 class='fs-2 mb-0'>" + list[i].email + "</h6>"
-               				  						+		"</th>"
-               				  						+		"<th>"
-               				  						+			"<h6 class='fs-2 mb-0'>" + list[i].address + "</h6>"
-               				  						+		"</th>"
-               				  						+		"<th>"
-               				  						+			"<h6 class='fs-2 mb-0'>" + list[i].hireDate + "</h6>"
-               				  						+		"</th>"
-               				  						+	"</tr>";
-               			  }
-              				} 
-               
-              			  $(".tableBody").append(filterTable);
-
-              		  }
-              		  ,error:function(){
-              			  console.log("학과직급 필터링 ajax 통신 실패");
-              		  }
-              	  })
-              	  
-                })
+														filterPage += "<li class='page-item " + (list.pi.endPage < list.pi.maxPage ? '' : 'disabled') + "'>"
+														                  +    "<a class='page-link link' href='" + contextPath + "/admin/filterMemberList.do?page=" + (list.pi.currentPage + 1) + "' aria-label='Next'>"
+														                  +        "<span aria-hidden='true'>"
+														                  +            "<i class='ti ti-chevrons-right fs-4'></i>"
+														                  +        "</span>"
+														                  +    "</a>"
+														                  + "</li>";
+								
+								            $(".pagination").append(filterPage);
+								
+								        },
+								        error:function(){
+								            console.log("학과직급 필터링 ajax 통신 실패");
+								        }
+								    })
+								})
                 
                
                // 직급수정 함수

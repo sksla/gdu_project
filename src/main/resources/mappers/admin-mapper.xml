@@ -144,7 +144,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   		from member
   	 where status = 'N'
   	   and major_no = #{majorNo}
-  	   and job_no = #{job_no}
+  	   and job_no = #{jobNo}
   </select>
   
   <select id="ajaxFilterMemberList" resultMap="memberResult">
@@ -164,8 +164,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		  join major on (member.major_no = major.major_no)
 		  join job on (member.job_no = job.job_no)
 		 where member.status = 'N'
-       and member.job_no = #{jobNo}
-		   and member.major_no = #{majorNo}
+       and member.job_no = #{m.jobNo}
+		   and member.major_no = #{m.majorNo}
 		 order
 		    by mem_no desc
   </select>

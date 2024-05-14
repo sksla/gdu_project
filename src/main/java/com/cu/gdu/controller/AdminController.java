@@ -116,15 +116,21 @@ public class AdminController {
 	
 	@ResponseBody
 	@GetMapping(value="/filterMemberList.do", produces="application/json; charset=utf-8")
-	public List<MemberDto> ajaxFilterMemberList(MemberDto m, @RequestParam(value="page", defaultValue="1") int currentPage){
+	public Map<String, Object> ajaxFilterMemberList(MemberDto m, @RequestParam(value="page", defaultValue="1") int currentPage){
 		int listCount = adminService.ajaxFilterMemberListCount(m);
 		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 10);
-		// 여기에 맵객체 만들고, pi랑 m 담아서 dao에서 rowBounds 에 사용하기
-		List<MemberDto> list = adminService.ajaxFilterMemberList(m);
-		for(MemberDto mList : list) {
-			mList.setBirth(mList.getBirth() + "-" + mList.getGender());
-		}
-		return list;
+		Map<String, Object> map = new HashMap<>();
+		map.put("m", m);
+		map.put("pi", pi);
+
+		List<MemberDto> member = adminService.ajaxFilterMemberList(map); 
+		
+	    for (MemberDto mem : member) {
+	        mem.setBirth(mem.getBirth() + "-" + mem.getGender() + "******");
+	    }
+	    map.put("member", member);
+		log.debug("맵객체: {}", map);
+		return map;
 	}
 	
 	@GetMapping("/insertOneMemberEnrollForm.do")

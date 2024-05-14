@@ -61,8 +61,8 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public List<MemberDto> ajaxFilterMemberList(MemberDto m) {
-		return adminDao.ajaxFilterMemberList(m);
+	public List<MemberDto> ajaxFilterMemberList(Map<String, Object> map) {
+		return adminDao.ajaxFilterMemberList(map);
 	}
 
 	@Override

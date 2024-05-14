@@ -56,12 +56,17 @@ public class AdminDao {
 		return sqlSessionTemplate.update("adminMapper.updateJobMember", map);
 	}
 	
-	public List<MemberDto> ajaxFilterMemberList(MemberDto m){
-		return sqlSessionTemplate.selectList("adminMapper.ajaxFilterMemberList", m);
-	}
 	
 	public int ajaxFilterMemberListCount(MemberDto m) {
 		return sqlSessionTemplate.selectOne("adminMapper.ajaxFilterMemberListCount", m);
+	}
+	
+	public List<MemberDto> ajaxFilterMemberList(Map<String, Object> map){
+		PageInfoDto pi = (PageInfoDto)map.get("pi");
+		int limit = pi.getBoardLimit();
+		int offset = (pi.getCurrentPage()-1) * limit;
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return sqlSessionTemplate.selectList("adminMapper.ajaxFilterMemberList", map, rowBounds);
 	}
 	
 	public int insertOneMember(MemberDto m) {
