@@ -1,7 +1,9 @@
 package com.cu.gdu.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,10 +14,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cu.gdu.dto.MemberDto;
 import com.cu.gdu.service.MemberService;
+import com.cu.gdu.util.FileUtil;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +33,7 @@ public class MemberController {
 
 	private final MemberService memberService;
 	private final BCryptPasswordEncoder bcryptPwdEncoder;
+	private final FileUtil fileUtil;
 	
 	// * 로그인 관련 ----------------------------------------
 	@PostMapping("/login.do")
@@ -112,6 +118,30 @@ public class MemberController {
 		
 	}
 	
+	// * 서명 변경 관련 ---------------------------
+	@ResponseBody
+	@PostMapping("/modifySign.do")
+	public String ajaxModifySign(MultipartFile uploadFile, HttpSession session) {
+		
+		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
+		String originalSignURL = loginUser.getSignUrl();
+		
+		// 파일업로드
+		Map<String, String> map = fileUtil.fileUpload(uploadFile, "sign");
+		loginUser.setSignUrl(map.get("filePath") + "/" + map.get("filesystemName"));
+	
+		int result = memberService.updateSignImg(loginUser);
+	
+		if(result > 0) {
+			if(originalSignURL != null) {
+				new File(originalSignURL).delete();
+			}
+			return "SUCCESS";
+		}else {
+			new File(map.get("filePath") + "/" + map.get("filesystemName")).delete();
+			return "FAIL";
+		}
+	}
 	
 	
 	

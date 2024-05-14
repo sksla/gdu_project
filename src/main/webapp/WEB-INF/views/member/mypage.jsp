@@ -200,16 +200,25 @@
                                     <label for="exampleInputText18" class="form-label fw-semibold col-sm-3 col-form-label">서명이미지
                                       </label>
                                     <div class="col-sm-9">
+                                    <c:if test="${ not empty loginUser.signUrl }">
                                         <img
-                                            src="../assets/images/profile/user-2.jpg"
+                                            src="${ contextPath }${loginUser.signUrl}"
                                             class="shadow-warning rounded-2"
                                             alt=""
-                                            width="72"
+                                            width="100"
                                             height="72"
                                         />
+                                   </c:if>
                                         <input class="form-control form-control-sm" id="formFileSm" name="signUrl" type="file">
                                         <button type="button" class="btn btn-success rounded-pill px-4" data-bs-toggle="modal" data-bs-target="#canvasModal">
-                                            서명만들기  
+                                           <c:choose>
+																			        <c:when test="${not empty loginUser.signUrl}">
+																			            서명변경
+																			        </c:when>
+																			        <c:otherwise>
+																			            서명만들기
+																			        </c:otherwise>
+																			    	</c:choose>
                                         </button>
                                     </div>
                                     <!-- 캔버스 모달 ------------>
@@ -318,7 +327,7 @@
                   
         </div>
         
-        <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+        <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script> <!-- 다음주소찾기 -->
         
         <!-- 캔버스 api 스크립트------------------------------------------------->
             <script>
@@ -394,21 +403,35 @@
 
                 const file = dataURLtoFile(signatureImage, 'sign_image.png');
                 let formData = new FormData();
-                formData.append('file', file);
+                formData.append('uploadFile', file);
 
                 const headers = {
                     'Content-Type': 'multipart/form-data',
                 };
 
                 // Send image upload request to the server using Fetch
-                // ajax로 바꾸기
-                axios.put('apiURL', formData, { headers })
-                .then(response => {
-                    console.log(response);
-                })
-                .catch(error => {
-                    console.log(error);
-                });
+                // ajax로 
+                $.ajax({
+            				url:"${contextPath}/member/modifySign.do",
+            				type:"post",
+            				data: formData,
+            				processData:false,
+            				contentType:false,
+            				success:function(result){
+            					
+            					if(result == "SUCCESS"){
+            						location.reload(); // 새로고침
+            						
+            					}else if(result == "FAIL"){
+            						alert("사인 변경에 실패하였습니다.");	
+            					}
+            					
+            				},error:function(){
+            					console.log("사인 이미지 변경용 ajax 통신 실패");
+            				}
+            			})
+                
+                
 
             });
 

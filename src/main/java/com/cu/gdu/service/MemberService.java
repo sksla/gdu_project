@@ -7,9 +7,10 @@ public interface MemberService {
 	// 로그인용 서비스
 	MemberDto selectMember(MemberDto m);
 	
-	// 마이페이지에서 정보수정용 서비스 (프로필이미지만 별도로 수정)
+	// 마이페이지에서 정보수정용 서비스 (프로필이미지,사인이미지 별도로 수정)
 		int updateMember (MemberDto m);
 		int updateProfileImg(MemberDto m);
+		int updateSignImg(MemberDto m);
 	
 	// 비밀번호 변경 서비스
 		int updatePassword (MemberDto m);

@@ -27,10 +27,17 @@ public class MemberServiceImpl implements MemberService {
 	public int updateProfileImg(MemberDto m) {
 		return 0;
 	}
-
+	
+	@Override
+	public int updateSignImg(MemberDto m) {
+		return memberDao.updateSignImg(m);
+	}
+	
 	@Override
 	public int updatePassword(MemberDto m) {
 		return memberDao.updatePassword(m);
 	}
+
+	
 
 }

@@ -61,7 +61,14 @@
 				 		 phone = #{phone},
 				 		 address = #{address}
 			 where mem_no = #{memNo}
-		</update>
+	</update>
+	
+	<!-- 사인이미지 변경용 -->
+ 	<update id="updateSignImg">
+ 		update member
+ 			 set sign_url = #{signUrl}
+ 		 where mem_no = #{memNo}
+ 	</update>
   
   
   

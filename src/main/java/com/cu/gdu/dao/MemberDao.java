@@ -24,5 +24,8 @@ public class MemberDao {
 	public int updateMember(MemberDto m) {
 		return sqlSessionTemplate.update("memberMapper.updateMember", m);
 	}
-
+	
+	public int updateSignImg(MemberDto m) {
+		return sqlSessionTemplate.update("memberMapper.updateSignImg", m);
+	}
 }
