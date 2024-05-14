@@ -2,6 +2,36 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="approvalMapper">
 
+	<select id="selectAppCategory" resultType="String">
+		select distinct app_category
+		  from app_form
+		 order
+		    by app_category
+	</select>
 	
+	<select id="selectCountAppFormName" resultType="_int">
+		select count(*)
+		  from app_form
+		 where app_form_name = #{appFormName}
+	</select>
 
+	<insert id="insertAppForm">
+		insert
+			into app_form
+					 (
+					 	 app_no
+					 , app_form_name
+					 , app_form
+					 , app_category
+					 , tmp
+					 )
+		values (
+						 seq_app_no.nextval
+					 , #{appFormName}
+					 , #{appForm}
+					 , #{appCategory}
+					 , #{tmp}
+					 )
+	</insert>
+	
 </mapper>

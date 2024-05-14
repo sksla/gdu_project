@@ -55,8 +55,8 @@
             <span class="hide-menu">전자결재</span>
           </li>
           <li class="sidebar-item">
-            <a class="btn btn-light btn-lg my-3 fw-semibold" style="width:100%;">
-            <i class="ti ti-clipboard-text"></i>&nbsp;&nbsp;기안하기
+            <a href="${contextPath}/approval/enrollAppSoc.page" class="btn btn-light btn-lg my-3 fw-semibold" style="width:100%;">
+            	<i class="ti ti-clipboard-text"></i>&nbsp;&nbsp;기안하기
             </a>
           </li>
           <li class="sidebar-item">
@@ -68,7 +68,7 @@
             </a>
             <ul aria-expanded="false" class="collapse first-level">
               <li class="sidebar-item">
-                <a href="./main/blog-posts.html" class="sidebar-link">
+                <a href="" class="sidebar-link">
                   <div class="round-16 d-flex align-items-center justify-content-center">
                     <i class="ti ti-circle"></i>
                   </div>
@@ -76,7 +76,7 @@
                 </a>
               </li>
               <li class="sidebar-item">
-                <a href="./main/blog-detail.html" class="sidebar-link">
+                <a href="" class="sidebar-link">
                   <div class="round-16 d-flex align-items-center justify-content-center">
                     <i class="ti ti-circle"></i>
                   </div>
@@ -84,7 +84,7 @@
                 </a>
               </li>
               <li class="sidebar-item">
-                <a href="./main/blog-detail.html" class="sidebar-link">
+                <a href="" class="sidebar-link">
                   <div class="round-16 d-flex align-items-center justify-content-center">
                     <i class="ti ti-circle"></i>
                   </div>
@@ -92,7 +92,7 @@
                 </a>
               </li>
               <li class="sidebar-item">
-                <a href="./main/blog-detail.html" class="sidebar-link">
+                <a href="" class="sidebar-link">
                   <div class="round-16 d-flex align-items-center justify-content-center">
                     <i class="ti ti-circle"></i>
                   </div>
@@ -100,7 +100,7 @@
                 </a>
               </li>
               <li class="sidebar-item">
-                <a href="./main/blog-detail.html" class="sidebar-link">
+                <a href="" class="sidebar-link">
                   <div class="round-16 d-flex align-items-center justify-content-center">
                     <i class="ti ti-circle"></i>
                   </div>
@@ -108,7 +108,7 @@
                 </a>
               </li>
               <li class="sidebar-item">
-                <a href="./main/blog-detail.html" class="sidebar-link">
+                <a href="" class="sidebar-link">
                   <div class="round-16 d-flex align-items-center justify-content-center">
                     <i class="ti ti-circle"></i>
                   </div>
