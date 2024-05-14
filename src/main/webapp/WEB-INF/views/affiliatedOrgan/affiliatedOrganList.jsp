@@ -98,7 +98,7 @@
                                 </form>
                               </div>
                               <div class="button">
-                                <button type="button" class="btn btn-info" onclick="location.href='${contextPath}/aff/affiliatedOrganEnrollForm.do'">등록하기</button>
+                                <button type="button" class="btn btn-info" onclick="location.href='${contextPath}/aff/affiliatedOrganEnrollForm.page'">등록하기</button>
                               </div>
                             </div>
                   

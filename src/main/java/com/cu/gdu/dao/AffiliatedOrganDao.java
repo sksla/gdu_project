@@ -8,6 +8,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.cu.gdu.dto.AffiliatedOrganDto;
+import com.cu.gdu.dto.MajorDto;
 import com.cu.gdu.dto.PageInfoDto;
 
 import lombok.RequiredArgsConstructor;
@@ -40,6 +41,16 @@ public class AffiliatedOrganDao {
 	public AffiliatedOrganDto selectAffiliatedOrganRes(int affNo) {
 		return sqlSessionTemplate.selectOne("affiliatedOrganMapper.selectAffiliatedOrganRes", affNo);
 	}
+	
+	public AffiliatedOrganDto selectAffiliatedOrganEnroll(int affNo) {
+		return null;
+	}
+	
+	public int insertAffiliatedOrgan(AffiliatedOrganDto aff) {
+		return sqlSessionTemplate.insert("affiliatedOrganMapper.insertAffiliatedOrgan", aff);
+	}
+
+	
 
 	/*
 	public List<AffiliatedOrganDto> selectSearchList(Map<String, String> search, PageInfoDto pi){

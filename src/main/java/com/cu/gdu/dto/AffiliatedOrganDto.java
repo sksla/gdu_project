@@ -19,7 +19,7 @@ public class AffiliatedOrganDto {
 	private String affName;
 	private int majorNo;
 	private String affLocation;
-	private int memNo;
+	private String memNo;
 	private String startDate;
 	private String endDate;
 	private String reason;

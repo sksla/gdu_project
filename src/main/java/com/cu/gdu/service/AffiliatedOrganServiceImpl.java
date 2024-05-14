@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.cu.gdu.dao.AdminDao;
 import com.cu.gdu.dao.AffiliatedOrganDao;
 import com.cu.gdu.dto.AffiliatedOrganDto;
+import com.cu.gdu.dto.MajorDto;
 import com.cu.gdu.dto.PageInfoDto;
 
 import lombok.RequiredArgsConstructor;
@@ -34,6 +35,11 @@ public class AffiliatedOrganServiceImpl implements AffiliatedOrganService {
 	}
 
 	@Override
+	public int insertAffiliatedOrgan(AffiliatedOrganDto aff) {
+		return affiliatedOrganDao.insertAffiliatedOrgan(aff);
+	}
+	
+	@Override
 	public int selectAffiliatedOrganSearchListCount(Map<String, String> search) {
 		return 0;
 	}
@@ -42,6 +48,12 @@ public class AffiliatedOrganServiceImpl implements AffiliatedOrganService {
 	public List<AffiliatedOrganDto> selectAffiliatedOrganSearchList(Map<String, String> search, PageInfoDto pi) {
 		return null;
 	}
+
+	
+
+	
+
+	
 
 	
 

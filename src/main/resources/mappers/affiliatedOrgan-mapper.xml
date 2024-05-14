@@ -48,4 +48,18 @@
 		 where aff_no=#{affNo}
   </select>
 
+  <insert id="insertAffiliatedOrgan">
+  	insert 
+  		into affiliated_organ
+  			 (
+  				 aff_no, aff_name, major_no
+  			 , aff_location, latitude, longitude, aff_etc
+				 )
+					values
+	 	 		(	
+			 	 	 seq_aff_no.nextval, #{affName}, #{majorNo}
+			 	 , #{affLocation}, #{latitude}, #{longitude}, #{affEtc}
+			 	 )
+  </insert>
+
 </mapper>
