@@ -69,7 +69,7 @@
                       <div class="d-flex flex-column align-items-center  pb-2">
                         <div align="center" class="">
                           <img
-                            src="../assets/images/profile/user-2.jpg"
+                            src="${ contextPath }<c:out value='${loginUser.profileUrl}' default='/assets/images/profile/user-2.jpg'/>"
                             class="shadow-warning rounded-2"
                             alt=""
                             width="72"
@@ -80,6 +80,43 @@
                         <button class="btn bg-primary-subtle text-primary w-10 mt-3" onclick="$('#profileImgFile').click();"> 프로필 변경 </button>
                         <input type="file" name="profileUrl" id="profileImgFile" style="display:none;" >
                         <div>
+                          
+                          <!-- 프로필이미지 변경용  -->
+                          <script> 
+								            $(document).ready(function(){
+								            	$("#profileImgFile").on("change", function(evt){
+								            
+								            		if(this.files.length != 0){ // 현재 선택된 파일이 있을 경우
+								            			
+								            			let formData = new FormData();
+								            			formData.append("uploadFile", this.files[0]);
+								            			
+								            			$.ajax({
+								            				url:"${contextPath}/member/modifyProfile.do",
+								            				type:"post",
+								            				data: formData,
+								            				processData:false,
+								            				contentType:false,
+								            				success:function(result){
+								            					
+								            					if(result == "SUCCESS"){
+								            						location.reload(); // 새로고침
+								            						
+								            					}else if(result == "FAIL"){
+								            						alertify.alert("프로필 변경 서비스", "프로필 변경에 실패하였습니다.");	
+								            					}
+								            					
+								            				},error:function(){
+								            					console.log("프로필 이미지 변경용 ajax 통신 실패");
+								            				}
+								            			})
+								            		}
+								            		
+								            	})
+								            })
+								            
+								         </script>
+                          
                           
                         </div>
                       </div>

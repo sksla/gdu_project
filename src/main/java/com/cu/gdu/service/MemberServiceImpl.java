@@ -25,7 +25,7 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public int updateProfileImg(MemberDto m) {
-		return 0;
+		return memberDao.updateProfileImg(m);
 	}
 	
 	@Override

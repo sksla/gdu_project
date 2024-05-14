@@ -28,4 +28,8 @@ public class MemberDao {
 	public int updateSignImg(MemberDto m) {
 		return sqlSessionTemplate.update("memberMapper.updateSignImg", m);
 	}
+	
+	public int updateProfileImg(MemberDto m) {
+		return sqlSessionTemplate.update("memberMapper.updateProfileImg", m);
+	}
 }

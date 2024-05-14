@@ -143,6 +143,30 @@ public class MemberController {
 		}
 	}
 	
+	// * 프로필 이미지 변경 관련 ------------------------
+	@ResponseBody
+	@PostMapping("/modifyProfile.do")
+	public String ajaxModifyProfile(MultipartFile uploadFile, HttpSession session) {
+		
+		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
+		String originalProfileURL = loginUser.getProfileUrl();
+		
+		// 파일업로드
+		Map<String, String> map = fileUtil.fileUpload(uploadFile, "profile");
+		loginUser.setProfileUrl(map.get("filePath") + "/" + map.get("filesystemName"));
+	
+		int result = memberService.updateProfileImg(loginUser);
+	
+		if(result > 0) {
+			if(originalProfileURL != null) {
+				new File(originalProfileURL).delete();
+			}
+			return "SUCCESS";
+		}else {
+			new File(map.get("filePath") + "/" + map.get("filesystemName")).delete();
+			return "FAIL";
+		}
+	}
 	
 	
 	

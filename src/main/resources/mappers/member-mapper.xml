@@ -70,6 +70,12 @@
  		 where mem_no = #{memNo}
  	</update>
   
+  <!-- 프로필이미지 변경용 -->
+ 	<update id="updateProfileImg">
+ 		update member
+ 			 set profile_url = #{profileUrl}
+ 		 where mem_no = #{memNo}
+ 	</update>
   
   
   
