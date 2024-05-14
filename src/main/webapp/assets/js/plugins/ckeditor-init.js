@@ -39,9 +39,8 @@ editor1.on("instanceReady", function () {
     this.setMode("source");
 });
 
-
 CKEDITOR.replace("testedit", {
-    height: 150,
+    height: 400,
 });
 
 CKEDITOR.replace("testedit1", {
