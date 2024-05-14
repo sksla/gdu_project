@@ -112,7 +112,9 @@
 		            <div class="updateMajor" style="display: inline;" data-bs-toggle="modal" data-bs-target="#updateMajorModal" onclick="updateMajor();">학과수정</div>
 		            <div class="updateJob" style="display: inline;" data-bs-toggle="modal" data-bs-target="#updateJobModal" onclick="updateJob();">직급수정</div>
 		          </div>
-		
+
+
+
 		          <div class="table mb-4">
 		            <table class="table border text-nowrap mb-0 align-middle memberTable">
 		              <thead class="text-dark fs-3" align="center">
@@ -163,124 +165,192 @@
 		                  </th>
 		                </tr>
 		              </thead>
-		
-		              <script>
-		                $(document).ready(function(){
-		                  $(".selectMember").on("change", function(){
-		                    if($(this).is(":checked")){
-		                      $("#outAndUpdate").css("display", "block");
-		                    }else{
-		                      $("#outAndUpdate").css("display", "none");
-		                    }
-		                  })
-		                  
-		                  // ajax로 학과직급필터링
-		                  $(".ajaxSelect").on("change", function(){
-		                	  console.log("함수실행");
-		                	  let majorNo = $(".selectMajor option:selected").val();
-		                	  let jobNo = $(".selectJob option:selected").val();
-		                	  //console.log("학과번호", majorNo);
-		                	  //console.log("직급번호", jobNo);
-		                	  
-		                	  $.ajax({
-		                		  url:"${contextPath}/admin/filterMemberList.do",
-		                		  type:"get",
-		                		  data:"majorNo=" + majorNo + "&jobNo=" + jobNo,
-		                		  success:function(list){
-		                			  console.log(list);
-		                		  }
-		                		  ,error:function(){
-		                			  console.log("학과직급 필터링 ajax 통신 실패");
-		                		  }
-		                	  })
-		                	  console.log("ajax가 되고있나요?");
-		                	  
-		                  })
-		                  
-		                })
-		                
-		                // 직급수정 함수
-		                function updateJob(){
-		                	let checkedbox = $(".selectMember:checked");
-		                	
-		                	checkedbox.each(function(){
-		                		let multiValue = $(this).val();
-		                		let inputHidden = "<input type='hidden' name='memNo' value='" + multiValue + "'>"
-		                		$("#updateJobForm").append(inputHidden)
-		                	})
-		                	
-		                	
-		                	$('#updateJobModal').on('hidden.bs.modal', function () {
-			            		   	$('#updateJobForm').find('input[name="memNo"]').remove();
-			            		});
-		
-		                }
-		                
-		                // 학과수정 함수
-		                function updateMajor(){
-		                	let checkedbox = $(".selectMember:checked");
-		                	
-		                	checkedbox.each(function(){
-		                		let multiValue = $(this).val();
-		                		let inputHidden = "<input type='hidden' name='memNo' value='" + multiValue + "'>"
-		                		$("#updateMajorForm").append(inputHidden)
-		                	})
-		                	
-			            		$('#updateMajorModal').on('hidden.bs.modal', function () {
-			            		    $('#updateMajorForm').find('input[name="memNo"]').remove();
-			            		});
-		                }
-		                
-		                // 퇴직처리 함수
-		                function outModal(){
-		                	let checkedbox = $(".selectMember:checked");
-		                	let checkedboxCount = checkedbox.length;
-		                	
-		                	if(checkedboxCount == 1){
-		                		
-		                		// div 요소 활성화 및 비활성화 선택
-		                		$(".oneOut").css("display", "block");
-		                		$(".multiOut").css("display", "none");    		
-		                		// 한명일 때 회원이름 가져오기
-		                		let oneName = checkedbox.closest("tr").find(".memName").text();
-		                		// 가져온 이름 span요소에 추가
-		                		$(".outName").text(oneName);
-		                		// 체크박스의 밸류값 가져오기
-		                		let oneValue = checkedbox.val();
-		                		// 인풋타입 히든 만들어서 변수에 담고 퇴직 form에 어펜드
-		                		let inputHidden = "<input type='hidden' name='memNo' value='" + oneValue + "'>"
-		                		$("#outForm").append(inputHidden)
-		                		
-		                		$('#outModal').on('hidden.bs.modal', function () {
-		                		    $('#outForm').find('input[name="memNo"]').remove();
-		                		});
-		                		
-		                	}else{
-		                		
-		                		// div 요소 활성화 및 비활성화 선택
-		                		$(".multiOut").css("display", "block");
-		                		$(".oneOut").css("display", "none");
-		                		// 여러명일때 인원수 span요소에 추가
-		                		$(".outCount").text(checkedboxCount);
-		                		
-		                		// 체크박스 밸류값들 가져온 뒤 인풋타입 히든 만들어서 변수에 담고 퇴직form에 어펜드를 반복
-			                 	checkedbox.each(function(){
-			                 		let multiValue = $(this).val();
-			                		let inputHidden = "<input type='hidden' name='memNo' value='" + multiValue + "'>"
-			                		$("#outForm").append(inputHidden)
-			                 	})
-		                		
-		                		$('#outModal').on('hidden.bs.modal', function () {
-		                		    $('#outForm').find('input[name="memNo"]').remove();
-		                		});
-			                 	
-		                	}
-		                }
-		                
-		                
-		              </script>
-		
-		              <tbody align="center">
+		              
+             <script>
+       
+               $(document).ready(function(){
+                 $(".selectMember").on("change", function(){
+                   if($(this).is(":checked")){
+                     $("#outAndUpdate").css("display", "block");
+                   }else{
+                     $("#outAndUpdate").css("display", "none");
+                   }
+                 })
+                 
+                // ajax로 학과직급필터링
+                $(".ajaxSelect").on("change", function(){
+              	  console.log("함수실행");
+              	  let majorNo = $(".selectMajor option:selected").val();
+              	  let jobNo = $(".selectJob option:selected").val();
+              	  //console.log("학과번호", majorNo);
+              	  //console.log("직급번호", jobNo);
+              	  
+              	  $.ajax({
+              		  url:"${contextPath}/admin/filterMemberList.do",
+              		  type:"get",
+              		  data:"majorNo=" + majorNo + "&jobNo=" + jobNo,
+              		  success:function(list){
+              			  
+              			  console.log(list);
+              			  $(".tableBody").empty();
+              			  
+              				//filterTable = "<tbody align='center' class='tableBody'>";
+              				filterTable = "";
+              				if(list.length == 0){
+              					
+              					filterTable += "<tr>"
+              											+		"<th colspan='10'>"
+              											+			"<h6 class='fs-2 mb-0'>직원이 없습니다.</h6>"
+              											+		"</th>"
+              											+	"</tr>";
+              											
+              				}else{
+              					
+               			  for(let i=0; i<list.length; i++){
+               				  filterTable += "<tr>"
+               				  						+		"<th>"
+               				  						+			"<h6 class='fs-2 mb-0'>"
+               				  						+				"<input type='checkbox' class='selectMember' value='" + list[i].memNo + "'>"
+               				  						+			"</h6>"
+               				  						+		"</th>"
+               				  						+		"<th>"
+               				  						+			"<h6 class='fs-2 mb-0'>" + list[i].memNo + "</h6>"
+               				  						+		"</th>"
+               				  						+		"<th>"
+               				  						+			"<h6 class='fs-2 mb-0 memName'>" + list[i].memName + "</h6>"
+               				  						+		"</th>"
+               				  						+		"<th>"
+               				  						+			"<h6 class='fs-2 mb-0'>" + list[i].majorNo + "</h6>"
+               				  						+		"</th>"
+               				  						+		"<th>"
+               				  						+			"<h6 class='fs-2 mb-0'>" + list[i].jobNo + "</h6>"
+               				  						+		"</th>"
+               				  						+		"<th>"
+               				  						+			"<h6 class='fs-2 mb-0'>" + list[i].birth + "</h6>"
+               				  						+		"</th>"
+               				  						+		"<th>"
+               				  						+			"<h6 class='fs-2 mb-0'>" + list[i].email + "</h6>"
+               				  						+		"</th>"
+               				  						+		"<th>"
+               				  						+			"<h6 class='fs-2 mb-0'>" + list[i].address + "</h6>"
+               				  						+		"</th>"
+               				  						+		"<th>"
+               				  						+			"<h6 class='fs-2 mb-0'>" + list[i].hireDate + "</h6>"
+               				  						+		"</th>"
+               				  						+		"<th>"
+               				  						+			"<h6 class='fs-2 mb-0'>" + list[i].phone + "</h6>"
+               				  						+		"</th>"
+               				  						+	"</tr>";
+               			  }
+              				} 
+               			 //filterTable + "</tbody>"
+              			  $(".tableBody").append(filterTable);
+              		  }
+              		  ,error:function(){
+              			  console.log("학과직급 필터링 ajax 통신 실패");
+              		  }
+              	  })
+              	  
+                })
+                 
+                  //글자 수 처리
+                 $("tbody tr").each(function(){
+               	  let text = $(this).find("th:nth-child(8) h6").text();
+               	  
+               	  if (text.length >= 10) {
+              	        // 11번째 글자부터 자른 후에 '...'을 추가하여 표시
+              	        let newText = text.substring(0, 12) + "...";
+              	        // 셀 내용 변경
+              	        $(this).find("th:nth-child(8) h6").text(newText);
+               	  }
+               	  
+                 }) 
+                 
+               })
+               
+               
+               
+               // 직급수정 함수
+               function updateJob(){
+               	let checkedbox = $(".selectMember:checked");
+               	
+               	checkedbox.each(function(){
+               		let multiValue = $(this).val();
+               		let inputHidden = "<input type='hidden' name='memNo' value='" + multiValue + "'>"
+               		$("#updateJobForm").append(inputHidden)
+               	})
+               	
+               	
+               	$('#updateJobModal').on('hidden.bs.modal', function () {
+            		   	$('#updateJobForm').find('input[name="memNo"]').remove();
+            		});
+
+               }
+               
+               // 학과수정 함수
+               function updateMajor(){
+               	let checkedbox = $(".selectMember:checked");
+               	
+               	checkedbox.each(function(){
+               		let multiValue = $(this).val();
+               		let inputHidden = "<input type='hidden' name='memNo' value='" + multiValue + "'>"
+               		$("#updateMajorForm").append(inputHidden)
+               	})
+               	
+            		$('#updateMajorModal').on('hidden.bs.modal', function () {
+            		    $('#updateMajorForm').find('input[name="memNo"]').remove();
+            		});
+               }
+               
+               // 퇴직처리 함수
+               function outModal(){
+               	let checkedbox = $(".selectMember:checked");
+               	let checkedboxCount = checkedbox.length;
+               	
+               	if(checkedboxCount == 1){
+               		
+               		// div 요소 활성화 및 비활성화 선택
+               		$(".oneOut").css("display", "block");
+               		$(".multiOut").css("display", "none");    		
+               		// 한명일 때 회원이름 가져오기
+               		let oneName = checkedbox.closest("tr").find(".memName").text();
+               		// 가져온 이름 span요소에 추가
+               		$(".outName").text(oneName);
+               		// 체크박스의 밸류값 가져오기
+               		let oneValue = checkedbox.val();
+               		// 인풋타입 히든 만들어서 변수에 담고 퇴직 form에 어펜드
+               		let inputHidden = "<input type='hidden' name='memNo' value='" + oneValue + "'>"
+               		$("#outForm").append(inputHidden)
+               		
+               		$('#outModal').on('hidden.bs.modal', function () {
+               		    $('#outForm').find('input[name="memNo"]').remove();
+               		});
+               		
+               	}else{
+               		
+               		// div 요소 활성화 및 비활성화 선택
+               		$(".multiOut").css("display", "block");
+               		$(".oneOut").css("display", "none");
+               		// 여러명일때 인원수 span요소에 추가
+               		$(".outCount").text(checkedboxCount);
+               		
+               		// 체크박스 밸류값들 가져온 뒤 인풋타입 히든 만들어서 변수에 담고 퇴직form에 어펜드를 반복
+                 	checkedbox.each(function(){
+                 		let multiValue = $(this).val();
+                		let inputHidden = "<input type='hidden' name='memNo' value='" + multiValue + "'>"
+                		$("#outForm").append(inputHidden)
+                 	})
+               		
+               		$('#outModal').on('hidden.bs.modal', function () {
+               		    $('#outForm').find('input[name="memNo"]').remove();
+               		});
+                 	
+               	}
+               }
+              
+             </script>
+             
+		              <tbody align="center" class="tableBody">
 		              	<c:choose>
 		              		<c:when test="${empty list}">
 		              			<tr>
@@ -310,7 +380,7 @@
 		              						<h6 class="fs-2 mb-0">${m.jobNo}</h6>
 		              					</th>
 		              					<th>
-		              						<h6 class="fs-2 mb-0">${m.resident}</h6>
+		              						<h6 class="fs-2 mb-0">${m.birth}</h6>
 		              					</th>
 		              					<th>
 		              						<h6 class="fs-2 mb-0">${m.email}</h6>
@@ -331,13 +401,13 @@
 		              </tbody>
 		            </table>
 		          </div>
-		
+							<!-- 
 		          <div style="text-align: right;">
 		            <button type="button" class="btn btn-secondary">직원등록</button>
 		          </div>
-		
+		 					-->
 		          <!-- 퇴직처리 모달-->
-		          <form class="mt-4" action="${contextPath}/admin/outMember.do" method="post" id="outForm">
+		          <form class="mt-4" action="${contextPath}/admin/outMember.do" method="get" id="outForm">
 		            <div class="modal fade" id="outModal" tabindex="-1" aria-labelledby="vertical-center-modal" style="display: none;" aria-hidden="true">
 		              <div class="modal-dialog modal-dialog-centered">
 		                <div class="modal-content">
@@ -381,7 +451,7 @@
 		          </form>
 		
 		          <!-- 학과수정 모달 -->
-		          <form class="mt-4" action="${contextPath}/admin/updateMajorMember.do" method="post" id="updateMajorForm">
+		          <form class="mt-4" action="${contextPath}/admin/updateMajorMember.do" method="get" id="updateMajorForm">
 		            <div class="modal fade" id="updateMajorModal" tabindex="-1" aria-labelledby="vertical-center-modal" style="display: none;" aria-hidden="true">
 		              <div class="modal-dialog modal-dialog-centered updateModal">
 		                <div class="modal-content">
@@ -414,7 +484,7 @@
 		          </form>
 		
 		          <!-- 직급수정 모달 -->
-		          <form class="mt-4" action="${contextPath}/admin/updateJobMember.do" method="post" id="updateJobForm">
+		          <form class="mt-4" action="${contextPath}/admin/updateJobMember.do" method="get" id="updateJobForm">
 		            <div class="modal fade" id="updateJobModal" tabindex="-1" aria-labelledby="vertical-center-modal" style="display: none;" aria-hidden="true">
 		              <div class="modal-dialog modal-dialog-centered updateModal">
 		                <div class="modal-content">

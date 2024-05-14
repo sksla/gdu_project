@@ -60,4 +60,8 @@ public class AdminDao {
 		return sqlSessionTemplate.selectList("adminMapper.ajaxFilterMemberList", m);
 	}
 	
+	public int insertOneMember(MemberDto m) {
+		return sqlSessionTemplate.insert("adminMapper.insertOneMember", m);
+	}
+	
 }
