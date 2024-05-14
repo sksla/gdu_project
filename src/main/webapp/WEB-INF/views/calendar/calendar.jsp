@@ -34,11 +34,15 @@
         $("#editForm").modal("show");
         $("#startDate").val(info.dateStr);
         $("#endDate").val(info.dateStr);
+        $("#startTime").val("09:00");
+        $("#endTime").val("09:30");
       },
       select:function(info){
         $("#editForm").modal("show");
         $("#startDate").val(info.startStr);
         $("#endDate").val(info.endStr);
+        $("#startTime").val("09:00");
+        $("#endTime").val("09:30");
       },
       views:{
         
@@ -159,7 +163,7 @@
                 </div>
                 <div class="col-3">
                   <div class="text-center mb-n5">
-                    <img src="../assets/images/breadcrumb/ChatBc.png" alt="" class="img-fluid mb-n4" />
+                    
                   </div>
                 </div>
               </div>
@@ -194,7 +198,7 @@
 
                 <div class="schedule-sidebar"  style="width:20%">
                   <div class="mt-3 d-flex justify-content-center mb-9">
-                    <button type="button" class="btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target="#insertForm">일정등록</button>
+                    <button type="button" id="addEventBtn" class="btn btn-lg btn-primary" onclick="clickEvtBtn();">일정등록</button>
                   </div>
 
                   <div class="my_calender p-2">
@@ -204,31 +208,7 @@
                     </div>
                     <div class="my_calendar_list">
                       <ul>
-                      	<c:choose>
-                      		<c:when test="${ ctgList eq null }">
-                      			<li>
-		                          <span>조회된 개인 캘린더가 없습니다.</span>
-		                        </li>
-                      		</c:when>
-                      		<c:otherwise>
-                      			<c:forEach var="ctg" items="${ ctgList }">
-                      				<c:if test="${ ctg.calType eq '1' }">
-                      				
-                      				</c:if>
-                      				<li>
-			                          <div class="cal_ctg">
-			                            <div>
-			                              <input type="checkbox" class="show_chk" style="accent-color: ${ ctg.color };">
-			                              <span>${ ctg.ctgName }</span>
-			                            </div>
-			                            <div>
-			                              <button class="btn btn-sm btn-outline-primary">수정</button>
-			                            </div>
-			                          </div>
-			                        </li>
-                      			</c:forEach>
-                      		</c:otherwise>
-                      	</c:choose>
+                      	
                       </ul>
                     </div>
                   </div>
@@ -371,7 +351,7 @@
                       <tr>
                         <th width="100px">캘린더</th>
                         <td>
-                          <select id="selectCtg" name="" style="width:250px;">
+                          <select id="selectCtg" name="ctgNo" style="width:250px;">
                             <!-- 해당 회원의 개인,공유캘린더(일정카테고리) 목록-->
                             <option>나의 프로젝트</option>
                             <option>공유 캘린더(공유캘린더 생성자 이름)</option>
@@ -381,7 +361,7 @@
                       </tr>
                       <tr>
                         <th>일정 제목</th>
-                        <td><input type="text" style="width:250px;" required></td>
+                        <td><input type="text" id="calTitle" name="calTitle" style="width:250px;" required></td>
                       </tr>
                       <tr>
                         <th>시작</th>
@@ -427,7 +407,7 @@
                       </tr>
                       <tr>
                         <th>일정 내용</th>
-                        <td><textarea name="" cols="35" rows="5"></textarea></td>
+                        <td><textarea name="" cols="35" rows="5" id="calContent"></textarea></td>
                       </tr>
                     </tbody>
                   </table>
@@ -435,7 +415,7 @@
 
                 <!-- Modal footer -->
                 <div class="modal-footer justify-content-center">
-                  <button type="button" class="btn btn-primary">등록</button>
+                  <button type="button" class="btn btn-primary" onclick="ajaxInsertEvt();" data-bs-dismiss="modal">등록</button>
                   <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">취소</button>
                 </div>
 
@@ -481,7 +461,7 @@
                             <option value="" selected>오전 12시 00분</option>
                             <option>오전 12시 30분</option>
                           </select>&nbsp;
-                          <input type="checkbox" name="isAllday" id="isAllday">
+                          <input type="checkbox" name="isAllday" >
                           <label for="isAllday">종일</label>
                         </td>
                       </tr>
@@ -652,18 +632,20 @@
             	
             	ajaxSelectListCalCtg();
             	
-              // 종일 버튼 클릭시 시간input 선택 가능 여부 결정
-              $("#isAllday").on("change", function(){
-                if($("#isAllday").checked){
+            	// 종일 버튼 클릭시 시간input 선택 가능 여부 결정
+              $("#isAllday").on("click", function(){
+            	  
+                if($("#isAllday").prop("checked")){
                   $("#startTime").prop("disabled", true);
                   $("#endTime").prop("disabled", true);
-
-                  
                 }else{
                   $("#startTime").prop("disabled", false);
                   $("#endTime").prop("disabled", false);
                 }
+                
               })
+              
+              
             })
 
             // 캘린더 색상 체크박스 중복 선택 방지
@@ -676,6 +658,22 @@
                 }
               }
             }
+            
+            // 일정 등록 버튼 클릭
+            function clickEvtBtn(){
+            	
+            	$("#editForm").modal("show");
+
+              let today = new Date();
+
+              $("#startDate").val( today.toISOString().slice(0, 10));
+              $("#endDate").val( today.toISOString().slice(0, 10));
+
+              $("#startTime").val("09:00");
+              $("#endTime").val("09:30");
+              
+            }
+            
             
          		// 캘린더 색상 체크여부 유효성검사(type=1:개인, type=2:공유)
             function colorChkValidate(type){
@@ -702,6 +700,7 @@
             }
          		
          		// 일정 조회용 ajax
+         		/*
          		function selectCalendarList(){
          			
          			$.ajax({
@@ -755,7 +754,7 @@
          				
          			})
          		}
-         		
+         		*/
             
             // 캘린더 카테고리 조회용 ajax
             function ajaxSelectListCalCtg(){
@@ -780,7 +779,7 @@
 	            					myVal += "<li>"
 			                         +		"<div class='cal_ctg'>"
 			                         +			"<div>"
-			                         +				"<input type='checkbox' class='show_chk' style='accent-color: " + rep[i].color +";'>"
+			                         +				"<input type='checkbox' class='show_chk' style='accent-color: " + rep[i].color +";' checked='" + (rep[i].isShow == "Y" ? "true" : "false")  + "'>"
 			                         +				"<span>" + rep[i].ctgName + "</span>"
 			                         +			"</div>"
 			                         +			"<div>"
@@ -825,6 +824,127 @@
             	})
             }
             
+         		// 일정 등록용 ajax
+         		function ajaxInsertEvt(){
+         			// 일정 제목, 내용 value값 가져오기
+         			let evtTitle = document.getElementById("calTitle").value;
+         			let evtContent = document.getElementById("calContent").value;
+         			
+         			// 캘린더 카테고리 생성 여부
+         			let ctgValue = document.getElementById("selectCtg").value;
+         			
+         			// 종일 체크박스 체크박스 체크 여부 가져오기
+	            let isAlldayChecked = document.getElementById("isAllday").checked;
+         			let isAllday = isAlldayChecked ? 'Y' : 'N';
+	
+	            // 시작 및 종료 날짜 가져오기
+	            let startDate = new Date(document.getElementById("startDate").value);
+	            let endDate = new Date(document.getElementById("endDate").value);
+	
+	            // 시작 및 종료 시간 가져오기
+	            let startTime = document.getElementById("startTime").value;
+	            let endTime = document.getElementById("endTime").value;
+	
+	            // 시간 비교 (시간 형식을 24시간 형식으로 변환하여 비교)
+	            let startHour = parseInt(startTime.split(":")[0]);
+	            let endHour = parseInt(endTime.split(":")[0]);
+	            
+	            if(ctgValue == 0){
+	            	// 캘린더 x = value값 0 | 캘린더 o = value값 > 0
+	            	alert("생성된 캘린더가 없습니다. 캘린더를 먼저 생성해주세요.");
+	            }else if (startDate > endDate) { 
+	            	// 날짜 비교
+	            	alert("종료 날짜는 시작 날짜보다 이후여야 합니다.");
+	                
+	            }else if (!isAlldayChecked && (startHour > endHour || (startHour === endHour && parseInt(startTime.split(":")[1]) >= parseInt(endTime.split(":")[1])) ) ) {
+	            	// 종일선택되지 않았을 때의 시간 비교
+	            	alert("종료 시간은 시작 시간보다 이후여야 합니다.");
+	                
+	            }else{ //
+	            	console.log("ajax요청 가능");
+	            	let startDateTime = document.getElementById("startDate").value;
+	            	let endDateTime = document.getElementById("endDate").value;
+	            	
+	            	if(!isAlldayChecked){
+	            		startDateTime += " " + startTime;
+	            		endDateTime += " " + endTime;
+	            	}
+	            	
+	            	console.log("ctgValue", ctgValue);
+	            	console.log("evtTitle", evtTitle);
+	            	console.log("startDateTime", startDateTime);
+	            	console.log("endDateTime", endDateTime);
+	            	console.log("evtContent", evtContent);
+	            	console.log("isAllday", isAllday);
+	            	
+	            	$.ajax({
+	            		url:"${contextPath}/calendar/inserEvt.do",
+	            		type:"post",
+	            		data:{
+	            			ctgNo:ctgValue,
+	            			calTitle:evtTitle,
+	            			calContent:evtContent,
+	            			startDate:startDateTime,
+	            			endDate:endDateTime,
+	            			isAllday:isAllday
+	            		},
+	            		success:function(result){
+	            			console.log(result);
+	            			
+	            			if(result > 0){
+	            				
+	            				// 모든 입력창 값 초기화
+	            				$("#selectCtg option").each(function(){
+	            					if($(this).prop("selected")){
+	            						$(this).prop("selected", false);
+	            					}
+	            				})
+	            				if($("isAllday").prop("checked")){
+	            					$("#startTime").prop("disabled", false);
+	            					$("#endTime").prop("disabled", false);
+	            				}
+	            				$("#calTitle").val("");
+	            				$("#startDate").val(new Date());
+	            				$("#endDate").val(new Date());
+	            				$("#startTime").val("09:00");
+	            				$("#endTime").val("09:30");
+	            				$("#isAllday").prop("checked", false);
+	            				$("#calContent").val("");
+	            				
+	            				alert("일정을 성공적으로 등록했습니다.");
+	            			}else{
+	            				
+	            				// 모든 입력창 값 초기화
+	            				$("#selectCtg option").each(function(){
+	            					if($(this).prop("selected")){
+	            						$(this).prop("selected", false);
+	            					}
+	            				})
+	            				if($("isAllday").prop("checked")){
+	            					$("#startTime").prop("disabled", false);
+	            					$("#endTime").prop("disabled", false);
+	            				}
+	            				$("#calTitle").val("");
+	            				$("#startDate").val(new Date());
+	            				$("#endDate").val(new Date());
+	            				$("#startTime").val("09:00");
+	            				$("#endTime").val("09:30");
+	            				$("#isAllday").prop("checked", false);
+	            				$("#calContent").val("");
+	            				
+	            				alert("일정 등록에 실패했습니다. 잠시후 다시 시도해주세요.");
+	            			}
+	            			
+	            		},
+	            		error:function(){
+	            			console.log("일정 등록용 ajax 통신 실패");
+	            		}
+	            	})
+	            	
+	            }
+	
+	           
+	         	}
            
           </script>
 

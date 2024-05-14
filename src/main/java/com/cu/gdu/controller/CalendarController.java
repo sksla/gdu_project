@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cu.gdu.dto.CalCtgDto;
+import com.cu.gdu.dto.CalendarDto;
 import com.cu.gdu.dto.MemberDto;
 import com.cu.gdu.service.CalendarService;
 
@@ -28,6 +29,8 @@ public class CalendarController {
 	
 	/**
 	 * 일정 페이지 요청
+	 * 
+	 * @author 김영주
 	 * @return
 	 */
 	@GetMapping("/calendar.page")
@@ -37,6 +40,7 @@ public class CalendarController {
 	
 	/**
 	 * ajax 캘린더 카테고리 조회
+	 * 
 	 * @author 김영주
 	 * @param session
 	 * @return
@@ -55,6 +59,15 @@ public class CalendarController {
 		
 	}
 	
+	/**
+	 * 캘린더(카테고리) 등록
+	 * 
+	 * @author 김영주
+	 * @param ctg
+	 * @param session
+	 * @param redirectAttributes
+	 * @return
+	 */
 	@PostMapping("/insertCtg.do")
 	public String insertCtg(CalCtgDto ctg
 						   , HttpSession session
@@ -75,5 +88,26 @@ public class CalendarController {
 		return "redirect:/calendar/calendar.page";
 				
 	}
-
+	
+	/**
+	 * 일정 등록 
+	 * 
+	 * @author 김영주
+	 * @param cal
+	 * @param session
+	 * @param redirectAttributes
+	 * @return result : insert문 처리 행 수
+	 */
+	@ResponseBody
+	@PostMapping("/inserEvt.do")
+	public int insertEvent(CalendarDto cal
+						 , HttpSession session){
+		
+		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
+		cal.setCalWriter(String.valueOf(loginUser.getMemNo()));
+		
+		return calendarService.insertCalendar(cal);
+	}
+				   
+		
 }

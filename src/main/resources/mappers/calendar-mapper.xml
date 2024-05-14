@@ -92,5 +92,34 @@
 		  , #{color}	
 		  )
 	</insert>
+	
+	<!-- 일정 등록 -->
+	<insert id="insertCalendar">
+		insert
+		  into calendar
+		  (
+		  	cal_no
+		  , ctg_no
+		  , cal_title
+		  , cal_content
+		  , start_date
+		  , end_date
+		  , is_allday
+		  , cal_writer	
+		  )
+		  values
+		  (
+		  	seq_cal_no.nextval
+		  , #{ctgNo}
+		  , #{calTitle}
+		  , #{calContent}
+		  , #{startDate}
+		  , #{endDate}
+		  , #{isAllday}
+		  , #{calWriter}	
+		  )
+	
+	</insert>
+		  
 
 </mapper>

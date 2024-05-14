@@ -6,6 +6,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.cu.gdu.dto.CalCtgDto;
+import com.cu.gdu.dto.CalendarDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,8 +26,19 @@ public class CalendarDao {
 		return sqlSessionTemplate.selectList("calendarMapper.selectCalCtgList", memNo);
 	}
 	
+	/**
+	 * 캘린더(일정카테고리)
+	 * @author 김영주
+	 * 
+	 * @param ctg
+	 * @return insert문 처리 행 수
+	 */
 	public int insertCalCtg(CalCtgDto ctg) {
 		return sqlSessionTemplate.insert("calendarMapper.insertCalCtg", ctg);
+	}
+	
+	public int insertCalendar(CalendarDto cal) {
+		return sqlSessionTemplate.insert("calendarMapper.insertCalendar", cal);
 	}
 	
 }

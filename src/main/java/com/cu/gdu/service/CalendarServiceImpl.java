@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.cu.gdu.dao.CalendarDao;
 import com.cu.gdu.dto.CalCtgDto;
+import com.cu.gdu.dto.CalendarDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -30,6 +31,14 @@ public class CalendarServiceImpl implements CalendarService {
 	@Override
 	public int insertCalCtg(CalCtgDto ctg) {
 		return calendarDao.insertCalCtg(ctg);
+	}
+
+	/**
+	 * 일정 등록
+	 */
+	@Override
+	public int insertCalendar(CalendarDto cal) {
+		return calendarDao.insertCalendar(cal);
 	}
 
 }
