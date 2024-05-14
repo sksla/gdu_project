@@ -54,6 +54,12 @@ public class AffiliatedOrganController {
 	}
 	
 	// 부속기관 예약페이지
+	   @GetMapping("/affiliatedOrganResForm.page")
+	   public String affiliatedOrganFrom() {
+	      return "/affiliatedOrgan/affiliatedOrganRes";
+	   }
+	   
+	// 부속기관 예약서비스
 	@GetMapping("/affiliatedOrganRes.do")
 	public String affiliatedOrganRes(int no, Model model) {
 		model.addAttribute("affiliatedOrgan", affiliatedOrganService.selectAffiliatedOrganRes(no));
@@ -62,19 +68,21 @@ public class AffiliatedOrganController {
 	}
 	
 	// 부속기관 등록페이지 
+	
 	@GetMapping("/affiliatedOrganEnrollForm.page")
 	public String affiliatedOrganEnrollForm(Model model) {
 		List<MajorDto> list = adminService.selectMajorList();
 		model.addAttribute("list", list);
 		return "/affiliatedOrgan/affiliatedOrganEnrollForm";
 	}
+	
 
 	// 부속기관 등록서비스
 	@PostMapping("/affiliatedOrganEnroll.do")
 	public String affiliatedOrganEnroll(AffiliatedOrganDto aff
 									, Model model
 									, RedirectAttributes redirectAttributes) {
-		
+		log.debug("{}", aff);
 		int result = affiliatedOrganService.insertAffiliatedOrgan(aff);
 				
 		if(result > 0) {
