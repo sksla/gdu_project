@@ -106,7 +106,7 @@
                               <div class="list">
                                 <div class="card-body p-4">
                                   <!-- 1번 양식 -->
-                                  <div class="table-responsive mb-4">
+                                  <div class="table-responsive mb-4" style="overflow-x: hidden;">
                                     <table class="table border text-nowrap mb-0 align-middle">
                                       <thead class="text-dark fs-4">
                                         <tr>
@@ -120,7 +120,7 @@
                                             <h6 class="fs-4 fw-semibold mb-0">위치</h6>
                                           </th>
                                           <th>
-                                            <h6 class="fs-4 fw-semibold mb-0">관리자</h6>
+                                            <h6 class="fs-4 fw-semibold mb-0">담당학과</h6>
                                           </th>
                                           <th>
                                             <h6 class="fs-4 fw-semibold mb-0">예약</h6>

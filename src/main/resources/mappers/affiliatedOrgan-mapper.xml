@@ -12,6 +12,7 @@
 		<result column="latitude" property="latitude" />
 		<result column="longitude" property="longitude" />
 		<result column="major_no" property="majorNo" />
+		<result column="major_name" property="majorNo" />
 		<result column="aff_etc" property="affEtc" />	
 		<result column="reason" property="reason" />
 	</resultMap>
@@ -27,8 +28,9 @@
 		    	aff_no
 			  , aff_name
 			  , aff_location
-			  , major_no
+			  , major_name
 		 from affiliated_organ
+         join major using (major_no)
 		order by aff_no asc
   </select>
   
