@@ -57,48 +57,22 @@
         <div class="card-body">
           <div class="wrap">
             <div class="content1">
-                <div class="pic">
-                    <!-- ------------------------------------------ -->
-                    <!-- 2. With controls -->
-                    <!-- ------------------------------------------ -->
-                    <div class="col-lg-9">
-                        <!-- start With controls -->
-                        <div class="card">
-                          <div class="card-body">
-                            <div id="carouselExampleIndicators" class="carousel slide carousel-dark" data-bs-ride="carousel">
-                              <ol class="carousel-indicators">
-                                <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="" class="active"></li>
-                                <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to=""></li>
-                                <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to=""></li>
-                              </ol>
-                              <div class="carousel-inner">
-                                <div class="carousel-item active">
-                                  <img src="../assets/images/blog/blog-img1.jpg" class="d-block w-100" alt="..." />
-                                </div>
-                                <div class="carousel-item">
-                                  <img src="../assets/images/blog/blog-img2.jpg" class="d-block w-100" alt="..." />
-                                </div>
-                                <div class="carousel-item">
-                                  <img src="../assets/images/blog/blog-img3.jpg" class="d-block w-100" alt="..." />
-                                </div>
-                              </div>
-                                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button"
-                                    data-bs-slide="prev">
-                                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                  <span class="visually-hidden">Previous</span>
-                                </a>
-                                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button"
-                                    data-bs-slide="next">
-                                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                  <span class="visually-hidden">Next</span>
-                                </a>
-                            </div>
-                          </div>
-                        </div>
-                        <!-- end With controls -->
-                      </div>
+                <div class="pic" style="width:450px; display: inline-block">
+									<div class="card card-body">
+										<div class="mb-3">
+											<label for="formFileMultiple" class="form-label">사진</label>
+											<input class="form-control" type="file" id="formFileMultiple" multiple style="width:400px;"/>
+										</div>
+									</div>
+								</div>
+                <div class-="map" style="width:450px; display: inline-block">
+                	<div class="card card-body">
+										<div class="mb-3">
+											<label for="formFileMultiple" class="form-label">지도</label>
+												여기에 지도
+										</div>
+									</div>
                 </div>
-                <div class-="map">지도</div>
             </div>
             <div class="content2">
               <!-- 정보 -->
@@ -131,7 +105,7 @@
                             <div class="row align-items-center">
                               <label for="inputEmail1" class="col-3 text-end control-label col-form-label">담당학과</label>
                               <div class="form-group" style="width: 100px;">
-	                              <select class="form-select w-auto">
+	                              <select class="form-select w-auto" name="majorNo">
 	                                <c:forEach var="major" items="${ list }">
 	                                	<option value="${ major.majorNo }">${ major.majorName }</option>
 	                              	</c:forEach>
