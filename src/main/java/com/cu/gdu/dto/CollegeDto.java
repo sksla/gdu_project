@@ -1,5 +1,7 @@
 package com.cu.gdu.dto;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,5 +19,7 @@ public class CollegeDto {
 
 	private int colNo;
 	private String colName;
+	private MajorDto major;
+	private List<MajorDto> majorList;
 	
 }
