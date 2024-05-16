@@ -165,7 +165,7 @@ public class AdminController {
 	}
 	
 	@PostMapping("/insertOneMember.do")
-	public String insertOneMember(MemberDto m, RedirectAttributes redirectAttributes) {
+	public String insertOneMember(MemberDto m, RedirectAttributes redirectAttributes, String addressDetail) {
 		m.setMemPwd("1111");
 		m.setLeaveCount(12);
 		String[] resident = m.getResident().split("-");
@@ -174,6 +174,7 @@ public class AdminController {
 		m.setGender(gender);
 		m.setMemPwd(bcryptPwdEncoder.encode(m.getMemPwd()));
 		m.setResident(bcryptPwdEncoder.encode(m.getResident()));
+		m.setAddress(m.getAddress() + " " + addressDetail);
 		int result = adminService.insertOneMember(m);
 		if(result == 1) {
 			redirectAttributes.addFlashAttribute("alertMsg", "직원을 등록했습니다.");
