@@ -124,7 +124,7 @@
 														window.onload = function(){
 														    var postcode; // 변수 선언
 														    // 페이지가 로드될 때 실행되는 함수
-														    document.getElementById("address_kakao").addEventListener("click", function(){ // 주소 입력란 클릭 이벤트
+														    document.getElementById("address").addEventListener("click", function(){ // 주소 입력란 클릭 이벤트
 														        // 카카오 지도 팝업
 														        if (!postcode || postcode.iframeLoaded === false) { // 팝업이 열려있지 않을 때만 새로 열기
 														            postcode = new daum.Postcode({
@@ -154,7 +154,7 @@
                               <div class="form-group" style="width: 100px;">
 	                              <select class="form-select w-auto" name="majorNo">
 	                                <c:forEach var="major" items="${ list }">
-	                                	<option value="${ major.majorNo }">${ major.majorName }</option>
+	                                	<option name="majorNo" value="${ major.majorNo }">${ major.majorName }</option>
 	                              	</c:forEach>
 	                              </select>
                             	</div>
@@ -170,9 +170,14 @@
                           </div>
                         </div>
 	                      <div class="buttons">
-					                <button type="submit" class="btn btn-info">저장</button>
+					                <button type="submit" class="btn btn-info" id="enrollButton">저장</button>
 					                <button type="button" class="btn btn-light" onclick="history.back();">닫기</button>
 					              </div>
+					              <script>
+											    document.getElementById("enrollButton").addEventListener("click", function() {
+											        affiliatedOrganEnroll();
+											    });
+												</script>
                       </form>
                     </div>
                     <!-- end Project Assinging -->
