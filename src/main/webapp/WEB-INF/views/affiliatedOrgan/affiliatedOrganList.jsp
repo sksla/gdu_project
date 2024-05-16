@@ -146,56 +146,34 @@
                                           			</tr>
                                           		</c:forEach>
                                           	</c:otherwise>
-                                          
                                           </c:choose>
                                         </tr>
-                                        
                                       </tbody>
                                     </table>
+			                                <!--  start Pagination with Icon -->
+			                                <div class="card w-100" >
+			                                  <div class="card-body"style="margin:auto;">
+			                                    <nav aria-label="Page navigation example">
+			                                      <ul class="pagination">
+			                                        <li class="page-item ${ pi.currentPage == p ? 'disabled' : '' }">
+													                    	<a class="page-link" href="${contextPath }/aff/affiliatedOrganList.do?page=${pi.currentPage-1}">&lt;</a>
+													                    </li>
+			                    									<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+												                    	<li class="page-item ${ pi.currentPage == p ? 'disabled' : ''}">
+												                    		<a class="page-link" href="${ contextPath }/aff/affiliatedOrganList.do?page=${p}">${p}</a>
+												                    	</li>
+												                    </c:forEach>
+											                    		<li class="page-item ${ pi.currentPage == pi.maxPage ? 'disabled' : ''}">
+											                    			<a class="page-link" href="${contextPath}/aff/affiliatedOrganList.do?page=${ pi.currentPage+1 }">&gt;</a>
+											                    		</li>
+			                                    	</ul>
+			                                    </nav>
+			                                  </div>
+			                                </div>
+			                                <!--  end Pagination with Icon -->           
                                   </div>
                                   <!-- 1번 양식 -->
                                 </div>
-                              </div>
-                            </div>
-                  
-                            <div class="content3">
-                              <!-- ------------------------------------------------ -->
-                              <!-- 2. Pagination with Icon -->
-                              <!-- ------------------------------------------------ -->
-                              <div class="col-lg-4 d-flex align-items-stretch">
-                                <!--  start Pagination with Icon -->
-                                <div class="card w-100">
-                                  <div class="card-body">
-                                    <nav aria-label="Page navigation example">
-                                      <ul class="pagination">
-                                        <li class="page-item">
-                                          <a class="page-link link" href="#" aria-label="Previous">
-                                            <span aria-hidden="true">
-                                              <i class="ti ti-chevrons-left fs-4"></i>
-                                            </span>
-                                          </a>
-                                        </li>
-                                        <li class="page-item">
-                                          <a class="page-link link" href="#">1</a>
-                                        </li>
-                                        <li class="page-item">
-                                          <a class="page-link link" href="#">2</a>
-                                        </li>
-                                        <li class="page-item">
-                                          <a class="page-link link" href="#">3</a>
-                                        </li>
-                                        <li class="page-item">
-                                          <a class="page-link link" href="#" aria-label="Next">
-                                            <span aria-hidden="true">
-                                              <i class="ti ti-chevrons-right fs-4"></i>
-                                            </span>
-                                          </a>
-                                        </li>
-                                      </ul>
-                                    </nav>
-                                  </div>
-                                </div>
-                                <!--  end Pagination with Icon -->
                               </div>
                             </div>
                           </div>
@@ -277,59 +255,35 @@
                                                 <p class="mb-0 fw-normal fs-4">경영학과</p>
                                               </td>
                                               <td>
-                                                <p class="mb-0 fw-normal fs-4">02-1111-1111</p>
-                                              </td>
-                                              <td>
                                                 <p class="mb-0 fw-normal fs-4">2024-04-05</p>
                                               </td>
                                             </tr>
-                                            
                                           </tbody>
                                         </table>
+					                                <!--  start Pagination with Icon -->
+					                                <div class="card w-100">
+					                                  <div class="card-body" style="margin:auto;">
+					                                    <nav aria-label="Page navigation example">
+					                                      <ul class="pagination">
+					                                        <li class="page-item ${ pi.currentPage == p ? 'disabled' : '' }">
+															                    	<a class="page-link" href="${contextPath }/aff/affiliatedOrganList.do?page=${pi.currentPage-1}">&lt;</a>
+															                    </li>
+					                    									<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+														                    	<li class="page-item ${ pi.currentPage == p ? 'disabled' : ''}">
+														                    		<a class="page-link" href="${ contextPath }/aff/affiliatedOrganList.do?page=${p}">${p}</a>
+														                    	</li>
+														                    </c:forEach>
+													                    		<li class="page-item ${ pi.currentPage == pi.maxPage ? 'disabled' : ''}">
+													                    			<a class="page-link" href="${contextPath}/aff/affiliatedOrganList.do?page=${ pi.currentPage+1 }">&gt;</a>
+													                    		</li>
+					                                    	</ul>
+					                                    </nav>
+					                                  </div>
+					                                </div>
+					                                <!--  end Pagination with Icon -->
                                       </div>
                                     <!-- 1번 양식 -->
                                   </div>
-                                </div>
-                              </div>
-                          
-                              <div class="content5">
-                                <!-- ------------------------------------------------ -->
-                                <!-- 2. Pagination with Icon -->
-                                <!-- ------------------------------------------------ -->
-                                <div class="col-lg-4 d-flex align-items-stretch">
-                                <!--  start Pagination with Icon -->
-                                  <div class="card w-100">
-                                    <div class="card-body">
-                                      <nav aria-label="Page navigation example">
-                                        <ul class="pagination">
-                                          <li class="page-item">
-                                            <a class="page-link link" href="#" aria-label="Previous">
-                                              <span aria-hidden="true">
-                                                <i class="ti ti-chevrons-left fs-4"></i>
-                                              </span>
-                                            </a>
-                                          </li>
-                                          <li class="page-item">
-                                            <a class="page-link link" href="#">1</a>
-                                          </li>
-                                          <li class="page-item">
-                                            <a class="page-link link" href="#">2</a>
-                                          </li>
-                                          <li class="page-item">
-                                            <a class="page-link link" href="#">3</a>
-                                          </li>
-                                          <li class="page-item">
-                                            <a class="page-link link" href="#" aria-label="Next">
-                                              <span aria-hidden="true">
-                                                <i class="ti ti-chevrons-right fs-4"></i>
-                                              </span>
-                                            </a>
-                                          </li>
-                                        </ul>
-                                      </nav>
-                                    </div>
-                                  </div>
-                                <!--  end Pagination with Icon -->
                                 </div>
                               </div>
                             </div>
