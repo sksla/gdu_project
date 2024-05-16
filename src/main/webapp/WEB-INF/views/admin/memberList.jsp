@@ -11,7 +11,7 @@
   .out{margin-left:20px; margin-right:50px; cursor:pointer; color:blue;}
   .updateMajor{margin-right:50px; cursor:pointer; color:blue;}
   .updateJob{cursor:pointer; color:blue;}
-  #selectStatus{margin-left: 880px;}
+  .selectStatus{margin-left: 880px;}
   #allMember{margin-left: 20px;}
   #endMember{margin-left: 20px;}
   #searchForm {
@@ -90,15 +90,15 @@
           <div class="card">
             <div class="card-body">
 		          
-		          <form id="searchForm" action="" method="Get" align="center">
-		            <input id="searchName" type="text" class="form-control" name="" placeholder="이름으로 검색">
+		          <!-- <form id="searchForm" action="" method="Get" align="center">
 		            <button type="submit" class="searchBtn btn btn-secondary">검색</button>
-		          </form>
+		          </form> -->
+		          <input id="searchName" type="text" class="form-control searchName" name="" placeholder="이름으로 검색">
 		
-		          <div id="selectStatus">
-		            <input type="radio" id="ingMember" name="selectStatus"><span><label for="ingMember">재직</label></span>
-		            <input type="radio" id="allMember" name="selectStatus"><span><label for="allMember">전체</label></span>
-		            <input type="radio" id="endMember" name="selectStatus"><span><label for="endMember">퇴직</label></span>
+		          <div class="selectStatus">
+		            <input type="radio" id="ingMember" name="selectStatus" value="N"><span><label for="ingMember">재직</label></span>
+		            <input type="radio" id="allMember" name="selectStatus" value="all"><span><label for="allMember">전체</label></span>
+		            <input type="radio" id="endMember" name="selectStatus" value="Y"><span><label for="endMember">퇴직</label></span>
 		          </div>
 		
 		          <div class="outAndUpdate">
@@ -210,14 +210,137 @@
                $(document).ready(function(){
             	   
             	   // 퇴직학과직급 처리버튼 숨기기
-            	   $(".outAndUpdate").css("display", "none");
-                 
+            	   $(".outAndUpdate").css("display", "none");  
             	   // 라디오버튼 재직중에 체크
                  $("#ingMember").attr('checked', true);
 
                })
-               
                //////////////////////////ready(function) 종료//////////////////////////
+               
+               // 이름으로 직원 검색기능
+               $(document).on("input", ".searchName", function(){
+            	   if($(this).val().trim() == ""){
+            		   memberFilter(1);	
+            	   }else{
+            		   memberNameFilter(1);
+            	   }
+               })
+               
+               // 이름으로 직원검색
+               function memberNameFilter(page){
+            	   
+            	   let contextPath = "<c:out value='${pageContext.request.contextPath}' />";
+            	   
+				    		 let status = $(".selectStatus input[type=radio]:checked").val();
+								 let majorNo = $(".selectMajor option:selected").val();
+						     let jobNo = $(".selectJob option:selected").val();
+						     let memName = $(".searchName").val();
+						     
+							   console.log("재직N / 전체all / 퇴직Y - ", status);
+							   console.log("학과번호", majorNo);
+							   console.log("직급번호", jobNo);
+							   console.log("검색한 직원이름", memName);
+							   
+							   $.ajax({
+								   url:"${contextPath}/admin/nameFilterMemberList.do",
+								   type:"get",
+								   data:"majorNo=" + majorNo + "&jobNo=" + jobNo + "&status=" + status + "&page=" + page + "&memName=" + memName,
+								   success:function(list){
+									   
+									   console.log("ajax통신 성공시 받아온 map객체: ", list);
+									   console.log("ajax통신 성공시 받아온 map객체의 member타입의 길이: ", list.member.length);
+									   $(".tableBody").empty();
+									   $(".pagination").empty();
+									   
+					            let filterTable = "";
+					            if(list.member.length == 0){
+					
+					                filterTable += "<tr>"
+		                               +    "<th colspan='10'>"
+		                               +      "<h6 class='fs-2 mb-0'>직원이 없습니다.</h6>"
+		                               +    "</th>"
+		                               +	 "</tr>";
+					
+					            }else{
+					
+					                for(let i=0; i<list.member.length; i++){
+					                    filterTable += "<tr>"
+		                                   +   "<th>"
+		                                   +       "<h6 class='fs-2 mb-0'>"
+		                                   +           "<input type='checkbox' class='selectMember' value='" + list.member[i].memNo + "'>"
+		                                   +       "</h6>"
+		                                   +   "</th>"
+		                                   +   "<th>"
+		                                   +       "<h6 class='fs-2 mb-0'>" + list.member[i].memNo + "</h6>"
+		                                   +   "</th>"
+		                                   +   "<th>"
+		                                   +       "<h6 class='fs-2 mb-0 memName'>" + list.member[i].memName + "</h6>"
+		                                   +   "</th>"
+		                                   +   "<th>"
+		                                   +       "<h6 class='fs-2 mb-0'>" + list.member[i].majorNo + "</h6>"
+		                                   +   "</th>"
+		                                   +   "<th>"
+		                                   +       "<h6 class='fs-2 mb-0'>" + list.member[i].jobNo + "</h6>"
+		                                   +   "</th>"
+		                                   +   "<th>"
+		                                   +       "<h6 class='fs-2 mb-0'>" + list.member[i].birth + "</h6>"
+		                                   +   "</th>"
+		                                   +   "<th>"
+		                                   +       "<h6 class='fs-2 mb-0'>" + list.member[i].email + "</h6>"
+		                                   +   "</th>"
+		                                   +   "<th>"
+		                                   +       "<h6 class='fs-2 mb-0'>" + list.member[i].address + "</h6>"
+		                                   +   "</th>"
+		                                   +   "<th>"
+		                                   +       "<h6 class='fs-2 mb-0'>" + list.member[i].hireDate + "</h6>"
+		                                   +   "</th>"
+		                                   + "</tr>";
+					                }
+					            } 
+					
+							            $(".tableBody").append(filterTable);
+							            
+							            // 페이징처리
+							            let filterPage = "";
+							            if(list.pi.listCount > list.pi.boardLimit){
+								            filterPage += "<li class='page-item " + (list.pi.currentPage == 1 ? 'disabled' : '') + "'>"
+											                  +    "<a class='page-link link' onclick='memberNameFilter(" + (list.pi.currentPage-1) + ");' aria-label='Previous'>"
+											                  +        "<span aria-hidden='true'>"
+											                  +            "<i class='ti ti-chevrons-left fs-4'></i>"
+											                  +        "</span>"
+											                  +    "</a>"
+											                  + "</li>";
+					
+														for (let p=list.pi.startPage; p<=list.pi.endPage; p++) {
+														    filterPage += "<li class='page-item " + (list.pi.currentPage == p ? 'disabled' : '') + "'>"
+											                      +    "<a class='page-link link' onclick='memberNameFilter(" + p + ");' >"
+											                      +        p
+											                      +    "</a>"
+											                      + "</li>";
+														}
+					
+														filterPage += "<li class='page-item " + (list.pi.currentPage == list.pi.maxPage ? 'disabled' : '') + "'>"
+											                  +    "<a class='page-link link' onclick='memberNameFilter(" + (list.pi.currentPage+1) + ");' aria-label='Next'>"
+											                  +        "<span aria-hidden='true'>"
+											                  +            "<i class='ti ti-chevrons-right fs-4'></i>"
+											                  +        "</span>"
+											                  +    "</a>"
+											                  + "</li>";
+								
+								            $(".pagination").append(filterPage);
+							            }
+							            
+						   			},
+						        error:function(){
+						            console.log("직원정보 및 상태값 필터링 ajax 통신 실패");
+						        }
+						   			
+							   })
+
+               }
+               
+               
+               
                 
                	// 체크박스 체크시 왼쪽상단 퇴직직급학과 처리 div 보이고 안보이고 처리
                 $(document).on("change", ".selectMember" , function(){
@@ -227,108 +350,12 @@
                     $(".outAndUpdate").css("display", "none");
                   }
                 })
+                
+                
                
                 // ajax로 학과직급필터링
-								$(".ajaxSelect").on("change", function(){
-										
-										let contextPath = "<c:out value='${pageContext.request.contextPath}' />";
-									
-								    let majorNo = $(".selectMajor option:selected").val();
-								    let jobNo = $(".selectJob option:selected").val();
-								
-								    $.ajax({
-								    	//url:"${contextPath}/admin/filterMemberList.do", //직급만 웨어절 | 학과만 웨어절 | 웨어절 없는 ajax | 직급학과 둘다 웨어절
-								    		url: majorNo==0 && jobNo!=0 ? "${contextPath}/admin/jobFilterMemberList.do" : (jobNo==0 && majorNo != 0 ? "${contextPath}/admin/majorFilterMemberList.do" : (majorNo == 0 && jobNo == 0 ? "${contextPath}/admin/noFilterMemberList.do" : "${contextPath}/admin/filterMemberList.do")),
-								        type:"get",
-								        data:"majorNo=" + majorNo + "&jobNo=" + jobNo,
-								        success:function(list){
-								
-								            console.log("ajax통신 성공시 받아온 map객체: ", list);
-								            console.log("ajax통신 성공시 받아온 map객체의 member타입의 길이: ", list.member.length);
-								            $(".tableBody").empty();
-								            $(".pagination").empty();
-								
-								            let filterTable = "";
-								            if(list.member.length == 0){
-								
-								                filterTable += "<tr>"
-								                                    +   "<th colspan='10'>"
-								                                    +       "<h6 class='fs-2 mb-0'>직원이 없습니다.</h6>"
-								                                    +   "</th>"
-								                                    + "</tr>";
-								
-								            }else{
-								
-								                for(let i=0; i<list.member.length; i++){
-								                    filterTable += "<tr>"
-								                                            +   "<th>"
-								                                            +       "<h6 class='fs-2 mb-0'>"
-								                                            +           "<input type='checkbox' class='selectMember' value='" + list.member[i].memNo + "'>"
-								                                            +       "</h6>"
-								                                            +   "</th>"
-								                                            +   "<th>"
-								                                            +       "<h6 class='fs-2 mb-0'>" + list.member[i].memNo + "</h6>"
-								                                            +   "</th>"
-								                                            +   "<th>"
-								                                            +       "<h6 class='fs-2 mb-0 memName'>" + list.member[i].memName + "</h6>"
-								                                            +   "</th>"
-								                                            +   "<th>"
-								                                            +       "<h6 class='fs-2 mb-0'>" + list.member[i].majorNo + "</h6>"
-								                                            +   "</th>"
-								                                            +   "<th>"
-								                                            +       "<h6 class='fs-2 mb-0'>" + list.member[i].jobNo + "</h6>"
-								                                            +   "</th>"
-								                                            +   "<th>"
-								                                            +       "<h6 class='fs-2 mb-0'>" + list.member[i].birth + "</h6>"
-								                                            +   "</th>"
-								                                            +   "<th>"
-								                                            +       "<h6 class='fs-2 mb-0'>" + list.member[i].email + "</h6>"
-								                                            +   "</th>"
-								                                            +   "<th>"
-								                                            +       "<h6 class='fs-2 mb-0'>" + list.member[i].address + "</h6>"
-								                                            +   "</th>"
-								                                            +   "<th>"
-								                                            +       "<h6 class='fs-2 mb-0'>" + list.member[i].hireDate + "</h6>"
-								                                            +   "</th>"
-								                                            + "</tr>";
-								                }
-								            } 
-								
-								            $(".tableBody").append(filterTable);
-								            
-								            // Pagination
-								            let filterPage = "";
-								            filterPage += "<li class='page-item " + (list.pi.currentPage == 1 ? 'disabled' : '') + "'>"
-							                  +    "<a class='page-link link' href='" + contextPath + "/admin/filterMemberList.do?page=" + (list.pi.currentPage - 1) + "' aria-label='Previous'>"
-							                  +        "<span aria-hidden='true'>"
-							                  +            "<i class='ti ti-chevrons-left fs-4'></i>"
-							                  +        "</span>"
-							                  +    "</a>"
-							                  + "</li>";
-
-														for (let p = list.pi.startPage; p <= list.pi.endPage; p++) {
-														    filterPage += "<li class='page-item " + (list.pi.currentPage == p ? 'active' : '') + "'>"
-														                      +    "<a class='page-link link' href='" + contextPath + "/admin/filterMemberList.do?page=" + p + "'>"
-														                      +        p
-														                      +    "</a>"
-														                      + "</li>";
-														}
-
-														filterPage += "<li class='page-item " + (list.pi.endPage < list.pi.maxPage ? '' : 'disabled') + "'>"
-														                  +    "<a class='page-link link' href='" + contextPath + "/admin/filterMemberList.do?page=" + (list.pi.currentPage + 1) + "' aria-label='Next'>"
-														                  +        "<span aria-hidden='true'>"
-														                  +            "<i class='ti ti-chevrons-right fs-4'></i>"
-														                  +        "</span>"
-														                  +    "</a>"
-														                  + "</li>";
-								
-								            $(".pagination").append(filterPage);
-								
-								        },
-								        error:function(){
-								            console.log("학과직급 필터링 ajax 통신 실패");
-								        }
-								    })
+								$(".ajaxSelect, .selectStatus").on("change", function(){									
+										memberFilter(1);						
 								})
                 
                
@@ -409,6 +436,115 @@
                  	
                	}
                }
+               
+               
+		          function memberFilter(page){										
+							
+								let contextPath = "<c:out value='${pageContext.request.contextPath}' />";
+							
+						    let status = $(".selectStatus input[type=radio]:checked").val();
+								let majorNo = $(".selectMajor option:selected").val();
+						    let jobNo = $(".selectJob option:selected").val();
+			
+						    console.log("재직N / 전체all / 퇴직Y - ", status);
+						    console.log("학과번호", majorNo);
+						    console.log("직급번호", jobNo);
+			
+						    $.ajax({
+						    		url:"${contextPath}/admin/filterMemberList.do",
+						        type:"get",
+						        data:"majorNo=" + majorNo + "&jobNo=" + jobNo + "&status=" + status + "&page=" + page,
+						        success:function(list){
+						
+						            console.log("ajax통신 성공시 받아온 map객체: ", list);
+						            console.log("ajax통신 성공시 받아온 map객체의 member타입의 길이: ", list.member.length);
+						            $(".tableBody").empty();
+						            $(".pagination").empty();
+						
+						            let filterTable = "";
+						            if(list.member.length == 0){
+						
+						                filterTable += "<tr>"
+			                               +    "<th colspan='10'>"
+			                               +      "<h6 class='fs-2 mb-0'>직원이 없습니다.</h6>"
+			                               +    "</th>"
+			                               +	 "</tr>";
+						
+						            }else{
+						
+						                for(let i=0; i<list.member.length; i++){
+						                    filterTable += "<tr>"
+			                                   +   "<th>"
+			                                   +       "<h6 class='fs-2 mb-0'>"
+			                                   +           "<input type='checkbox' class='selectMember' value='" + list.member[i].memNo + "'>"
+			                                   +       "</h6>"
+			                                   +   "</th>"
+			                                   +   "<th>"
+			                                   +       "<h6 class='fs-2 mb-0'>" + list.member[i].memNo + "</h6>"
+			                                   +   "</th>"
+			                                   +   "<th>"
+			                                   +       "<h6 class='fs-2 mb-0 memName'>" + list.member[i].memName + "</h6>"
+			                                   +   "</th>"
+			                                   +   "<th>"
+			                                   +       "<h6 class='fs-2 mb-0'>" + list.member[i].majorNo + "</h6>"
+			                                   +   "</th>"
+			                                   +   "<th>"
+			                                   +       "<h6 class='fs-2 mb-0'>" + list.member[i].jobNo + "</h6>"
+			                                   +   "</th>"
+			                                   +   "<th>"
+			                                   +       "<h6 class='fs-2 mb-0'>" + list.member[i].birth + "</h6>"
+			                                   +   "</th>"
+			                                   +   "<th>"
+			                                   +       "<h6 class='fs-2 mb-0'>" + list.member[i].email + "</h6>"
+			                                   +   "</th>"
+			                                   +   "<th>"
+			                                   +       "<h6 class='fs-2 mb-0'>" + list.member[i].address + "</h6>"
+			                                   +   "</th>"
+			                                   +   "<th>"
+			                                   +       "<h6 class='fs-2 mb-0'>" + list.member[i].hireDate + "</h6>"
+			                                   +   "</th>"
+			                                   + "</tr>";
+						                }
+						            } 
+						
+						            $(".tableBody").append(filterTable);
+						            
+						            // 페이징처리
+						            let filterPage = "";
+						            if(list.pi.listCount > list.pi.boardLimit){
+							            filterPage += "<li class='page-item " + (list.pi.currentPage == 1 ? 'disabled' : '') + "'>"
+										                  +    "<a class='page-link link' onclick='memberFilter(" + (list.pi.currentPage-1) + ");' aria-label='Previous'>"
+										                  +        "<span aria-hidden='true'>"
+										                  +            "<i class='ti ti-chevrons-left fs-4'></i>"
+										                  +        "</span>"
+										                  +    "</a>"
+										                  + "</li>";
+				
+													for (let p=list.pi.startPage; p<=list.pi.endPage; p++) {
+													    filterPage += "<li class='page-item " + (list.pi.currentPage == p ? 'disabled' : '') + "'>"
+										                      +    "<a class='page-link link' onclick='memberFilter(" + p + ");' >"
+										                      +        p
+										                      +    "</a>"
+										                      + "</li>";
+													}
+				
+													filterPage += "<li class='page-item " + (list.pi.currentPage == list.pi.maxPage ? 'disabled' : '') + "'>"
+										                  +    "<a class='page-link link' onclick='memberFilter(" + (list.pi.currentPage+1) + ");' aria-label='Next'>"
+										                  +        "<span aria-hidden='true'>"
+										                  +            "<i class='ti ti-chevrons-right fs-4'></i>"
+										                  +        "</span>"
+										                  +    "</a>"
+										                  + "</li>";
+							
+							            $(".pagination").append(filterPage);
+						            }
+						        },
+						        error:function(){
+						            console.log("직원정보 및 상태값 필터링 ajax 통신 실패");
+						        }
+						    })
+		
+							}
              </script>
              
              
@@ -526,31 +662,31 @@
 		          <div id="search">
 		            <nav aria-label="Page navigation example">
 		              <ul class="pagination">
-		                
-		                <li class="page-item ${pi.currentPage==1 ? 'disabled' : ''}">
-		                  <a class="page-link link" href="${contextPath}/admin/memberList.do?page=${pi.currentPage-1}" aria-label="Previous">
-		                    <span aria-hidden="true">
-		                      <i class="ti ti-chevrons-left fs-4"></i>
-		                    </span>
-		                  </a>
-		                </li>
-		                
-		                <c:forEach var="p" begin="${pi.startPage}" end="${pi.endPage}">
-			                <li class="page-item">
-			                  <a class="page-link link ${pi.currentPage == p ? 'disabled' : ''}" href="${contextPath}/admin/memberList.do?page=${p}">
-			                  	${p}
+		                <c:if test="${pi.listCount > pi.boardLimit}">
+			                <li class="page-item ${pi.currentPage==1 ? 'disabled' : ''}">
+			                  <a class="page-link link" href="${contextPath}/admin/memberList.do?page=${pi.currentPage-1}" aria-label="Previous">
+			                    <span aria-hidden="true">
+			                      <i class="ti ti-chevrons-left fs-4"></i>
+			                    </span>
 			                  </a>
 			                </li>
-		                </c:forEach>
-		                
-		                <li class="page-item ${pi.currentPage==pi.maxPage ? 'disabled' : ''}">
-		                  <a class="page-link link" href="${contextPath}/admin/memberList.do?page=${pi.currentPage+1}" aria-label="Next">
-		                    <span aria-hidden="true">
-		                      <i class="ti ti-chevrons-right fs-4"></i>
-		                    </span>
-		                  </a>
-		                </li>
-		                
+			                
+			                <c:forEach var="p" begin="${pi.startPage}" end="${pi.endPage}">
+				                <li class="page-item">
+				                  <a class="page-link link ${pi.currentPage == p ? 'disabled' : ''}" href="${contextPath}/admin/memberList.do?page=${p}">
+				                  	${p}
+				                  </a>
+				                </li>
+			                </c:forEach>
+			                
+			                <li class="page-item ${pi.currentPage==pi.maxPage ? 'disabled' : ''}">
+			                  <a class="page-link link" href="${contextPath}/admin/memberList.do?page=${pi.currentPage+1}" aria-label="Next">
+			                    <span aria-hidden="true">
+			                      <i class="ti ti-chevrons-right fs-4"></i>
+			                    </span>
+			                  </a>
+			                </li>
+		                </c:if>
 		              </ul>
 		            </nav>
 		          </div>

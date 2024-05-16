@@ -60,42 +60,6 @@ public class AdminServiceImpl implements AdminService {
 		return adminDao.updateJobMember(map);
 	}
 	
-	// 직급 필터링으로 ajax통신해 직원수조회(페이징)
-	@Override
-	public int ajaxJobFilterMemberListCount(MemberDto m) {
-		return adminDao.ajaxJobFilterMemberListCount(m);
-	}
-	
-	// 직급 필터링으로 ajax통신해 직원조회
-	@Override
-	public List<MemberDto> ajaxJobFilterMemberList(Map<String, Object> map) {
-		return adminDao.ajaxJobFilterMemberList(map);
-	}
-	
-	// 학과 필터링으로 ajax통신해 직원수조회(페이징)
-	@Override
-	public int ajaxMajorFilterMemberListCount(MemberDto m) {
-		return adminDao.ajaxMajorFilterMemberListCount(m);
-	}
-	
-	// 학과 필터링으로 ajax통신해 직원조회
-	@Override
-	public List<MemberDto> ajaxMajorFilterMemberList(Map<String, Object> map) {
-		return adminDao.ajaxMajorFilterMemberList(map);
-	}
-	
-	// 필터링 없이 ajax통신해 직원수조회(페이징)
-	@Override
-	public int ajaxNoFilterMemberListCount(MemberDto m) {
-		return adminDao.ajaxNoFilterMemberListCount(m);
-	}
-	
-	// 필터링 없이 ajax통신해 직원조회
-	@Override
-	public List<MemberDto> ajaxNoFilterMemberList(Map<String, Object> map) {
-		return adminDao.ajaxNoFilterMemberList(map);
-	}
-	
 	// 학과직급 둘다 검사 후 ajax통신해 직원수조회(페이징)
 	@Override
 	public int ajaxFilterMemberListCount(MemberDto m) {
@@ -107,13 +71,23 @@ public class AdminServiceImpl implements AdminService {
 	public List<MemberDto> ajaxFilterMemberList(Map<String, Object> map) {
 		return adminDao.ajaxFilterMemberList(map);
 	}
-	
+
+	// 이름으로 검사 후 ajax통신해 직원수조회(페이징, 학과직급 포함)
+	@Override
+	public int ajaxNameFilterMemberListCount(MemberDto m) {
+		return adminDao.ajaxNameFilterMemberListCount(m);
+	}
+
+	// 이름으로 검사 후 ajax통신해 직원조회(학과직급 포함)
+	@Override
+	public List<MemberDto> ajaxNameFilterMemberList(Map<String, Object> map) {
+		return adminDao.ajaxNameFilterMemberList(map);
+	}
 
 	@Override
 	public int insertOneMember(MemberDto m) {
 		return adminDao.insertOneMember(m);
 	}
-
 
 
 

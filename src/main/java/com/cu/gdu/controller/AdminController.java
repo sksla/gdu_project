@@ -112,68 +112,7 @@ public class AdminController {
 		}
 		return "redirect:/admin/memberList.do";
 	}
-	
-	
-	// 직급 검사 후 직원조회
-	@ResponseBody
-	@GetMapping(value="/jobFilterMemberList.do", produces="application/json; charset=utf-8")
-	public Map<String, Object> ajaxJobFilterMemberList(MemberDto m, @RequestParam(value="page", defaultValue="1") int currentPage){
-		int listCount = adminService.ajaxJobFilterMemberListCount(m);
-		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 10);
-		Map<String, Object> map = new HashMap<>();
-		map.put("m", m);
-		map.put("pi", pi);
 
-		List<MemberDto> member = adminService.ajaxJobFilterMemberList(map); 
-		
-	    for (MemberDto mem : member) {
-	        mem.setBirth(mem.getBirth() + "-" + mem.getGender() + "******");
-	    }
-	    map.put("member", member);
-		log.debug("맵객체: {}", map);
-		return map;
-	}
-	
-	// 학과 검사 후 직원조회
-	@ResponseBody
-	@GetMapping(value="/majorFilterMemberList.do", produces="application/json; charset=utf-8")
-	public Map<String, Object> ajaxMajorFilterMemberList(MemberDto m, @RequestParam(value="page", defaultValue="1") int currentPage){
-		int listCount = adminService.ajaxMajorFilterMemberListCount(m);
-		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 10);
-		Map<String, Object> map = new HashMap<>();
-		map.put("m", m);
-		map.put("pi", pi);
-
-		List<MemberDto> member = adminService.ajaxMajorFilterMemberList(map); 
-		
-	    for (MemberDto mem : member) {
-	        mem.setBirth(mem.getBirth() + "-" + mem.getGender() + "******");
-	    }
-	    map.put("member", member);
-		log.debug("맵객체: {}", map);
-		return map;
-	}
-	
-	// ajax 전체 직원조회
-	@ResponseBody
-	@GetMapping(value="/noFilterMemberList.do", produces="application/json; charset=utf-8")
-	public Map<String, Object> ajaxNoFilterMemberList(MemberDto m, @RequestParam(value="page", defaultValue="1") int currentPage){
-		int listCount = adminService.ajaxNoFilterMemberListCount(m);
-		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 10);
-		Map<String, Object> map = new HashMap<>();
-		map.put("m", m);
-		map.put("pi", pi);
-		
-		List<MemberDto> member = adminService.ajaxNoFilterMemberList(map); 
-		
-		for (MemberDto mem : member) {
-			mem.setBirth(mem.getBirth() + "-" + mem.getGender() + "******");
-		}
-		map.put("member", member);
-		log.debug("맵객체: {}", map);
-		return map;
-	}
-	
 	// 학과 및 직급 검사 후 직원조회
 	@ResponseBody
 	@GetMapping(value="/filterMemberList.do", produces="application/json; charset=utf-8")
@@ -183,6 +122,7 @@ public class AdminController {
 		Map<String, Object> map = new HashMap<>();
 		map.put("m", m);
 		map.put("pi", pi);
+		//log.debug("멤버자체를 셀렉하기 전의 m: {}", m);
 		
 		List<MemberDto> member = adminService.ajaxFilterMemberList(map); 
 		
@@ -190,8 +130,29 @@ public class AdminController {
 			mem.setBirth(mem.getBirth() + "-" + mem.getGender() + "******");
 		}
 		map.put("member", member);
-		log.debug("맵객체: {}", map);
+		//log.debug("맵객체: {}", map);
 		return map;
+	}
+	
+	// 이름으로 직원조회 (학과 및 직금검사 포함)
+	@ResponseBody
+	@GetMapping(value="/nameFilterMemberList.do", produces="application/json; charset=utf-8")
+	public Map<String, Object> ajaxNameFilterMemberList(MemberDto m, @RequestParam(value="page", defaultValue="1") int currentPage){
+		int listCount = adminService.ajaxNameFilterMemberListCount(m);
+		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 10);
+		Map<String, Object> map = new HashMap<>();
+		map.put("m", m);
+		map.put("pi", pi);
+		
+		List<MemberDto> member = adminService.ajaxNameFilterMemberList(map);
+		
+		for (MemberDto mem : member) {
+			mem.setBirth(mem.getBirth() + "-" + mem.getGender() + "******");
+		}
+		map.put("member", member);
+		
+		return map;
+		
 	}
 	
 	@GetMapping("/insertOneMemberEnrollForm.do")
