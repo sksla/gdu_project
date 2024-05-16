@@ -181,7 +181,7 @@
                   <!-- 기회되면 인쇄 기능 되는 버튼...넣고싶다-->
                 </div>
 
-                <form class="">
+                <form action="" method="" class="">
                   <input type="text" class="search-style" name="" id="" placeholder="검색어 입력">
                   <button class="btn btn-outline-primary">검색</button>
                   
@@ -200,38 +200,38 @@
                   <div class="mt-3 d-flex justify-content-center mb-9">
                     <button type="button" id="addEventBtn" class="btn btn-lg btn-primary" onclick="clickEvtBtn();">일정등록</button>
                   </div>
-
-                  <div class="my_calender p-2">
-                    <div class="my_calender_title">
-                      <span><h4>내 캘린더</h4></span>
-                      <button class="btn" data-bs-toggle="modal" data-bs-target="#insert_my"><i class="ti ti-plus"></i></button>
-                    </div>
-                    <div class="my_calendar_list">
-                      <ul>
-                      	
-                      </ul>
-                    </div>
-                  </div>
-
-                  <div class="share_calendar p-2">
-                    <div class="share_calendar_title">
-                      <span><h4>공유 캘린더</h4></span>
-                      <button class="btn" data-bs-toggle="modal" data-bs-target="#insert_share_cal">
-                        <i class="ti ti-plus"></i>
-                      </button>
-                    </div>
-
-                    <div class="share_calendar_list">
-                      <ul>
-                        <li>
-                          <span>조회된 공유 일정이 없습니다.</span>
-                        </li>
-                        
-                      </ul>
-                    </div>
-
-                  </div>
-
+									<form id="ctgList_form">
+	                  <div class="my_calender p-2">
+	                    <div class="my_calender_title">
+	                      <span><h4>내 캘린더</h4></span>
+	                      <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#insert_my"><i class="ti ti-plus"></i></button>
+	                    </div>
+	                    <div class="my_calendar_list">
+	                      <ul>
+	                      	
+	                      </ul>
+	                    </div>
+	                  </div>
+	
+	                  <div class="share_calendar p-2">
+	                    <div class="share_calendar_title">
+	                      <span><h4>공유 캘린더</h4></span>
+	                      <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#insert_share">
+	                        <i class="ti ti-plus"></i>
+	                      </button>
+	                    </div>
+	
+	                    <div class="share_calendar_list">
+	                      <ul>
+	                        <li>
+	                          <span>조회된 공유 일정이 없습니다.</span>
+	                        </li>
+	                        
+	                      </ul>
+	                    </div>
+	
+	                  </div>
+									</form>
                 </div>
 
               </div>
@@ -631,6 +631,7 @@
             $(document).ready(function(){
             	
             	ajaxSelectListCalCtg();
+            	ajaxSelectCalList();
             	
             	// 종일 버튼 클릭시 시간input 선택 가능 여부 결정
               $("#isAllday").on("click", function(){
@@ -644,6 +645,13 @@
                 }
                 
               })
+              
+              // 카테고리 체크박스 클릭시 일정 조회
+              $(".show_chk").on("click", function(){
+            	  ajaxSelectCalList();
+              })
+              
+              
               
               
             })
@@ -700,67 +708,121 @@
             }
          		
          		// 일정 조회용 ajax
-         		/*
-         		function selectCalendarList(){
+         		function ajaxSelectCalList(){
+         			// 일정 담을 배열
+         			let calList = [];
          			
-         			$.ajax({
-         				url:"${contextPath}/calendar/calList.do",
-         				type:"post",
-         				data{},
-         				success:function(rep){
-         					
-         					var calendarEl = document.getElementById('calendar');
-       				    var calendar = new FullCalendar.Calendar(calendarEl, {
-       				      initialView: 'dayGridMonth',
-       				      headerToolbar: {
-       				        left: 'prev,next today',
-       				        center: 'title',
-       				        right: 'dayGridMonth,timeGridWeek,timeGridDay,list',
-       				      },
-       				      nowIndicator: true, // 현재 시간 마크
-       				    	locale: 'ko', // 한국어 설정
-       				      buttonText:{ //버튼 텍스트 변환
-       				        today:'오늘',
-       				        day:'일간',
-       				        week:'주간',
-       				        month:'월간',
-       				        list:'목록'
-       				      },
-       				      selectable: true,
-       				      dateClick:function(info){
-       				        $("#editForm").modal("show");
-       				        $("#startDate").val(info.dateStr);
-       				        $("#endDate").val(info.dateStr);
-       				      },
-       				      select:function(info){
-       				        $("#editForm").modal("show");
-       				        $("#startDate").val(info.startStr);
-       				        $("#endDate").val(info.endStr);
-       				      },
-       				      views:{
-       				        
-       				      },
-       				      events:{
-       				    	  
-       				      }
-
-       				    });
-       				    calendar.render();
-         				},
-         				error:function(){
-         					console.log("일정 조회용 ajax 통신 실패");
+         			// 조회하고자 하는 캘린더 카테고리 배열
+         			let ctgArray = [];
+         			
+         			$(".show_chk").each(function(){
+         				if($(this).prop("checked")){
+         					ctgArray.push($(this).val());		
          				}
-         				
-         				
          			})
+         			
+         			if(ctgArray.length > 0){// 카테고리 하나 이상 선택
+         				$.ajax({
+             				url:"${contextPath}/calendar/calList.do",
+             				type:"post",
+             				async:false,
+             				data:$("#ctgList_form").serialize(),
+             				success:function(rep){
+             					
+             					console.log(rep);
+             					
+             					if(rep.length > 0){
+             						for(let i=0; i<rep.length; i++){
+             							
+             							let startTimeStr = rep[i].isAllday == 'N' ? rep[i].startDate.split(" ")[1] : '';
+             							let endTimeStr = rep[i].isAllday == 'N' ? rep[i].endDate.split(" ")[1] : '';
+             							
+             							calList.push({
+             								id:rep[i].calNo,
+             								ctgNo:rep[i].ctgNo,
+             								title:rep[i].calTitle,
+             								start:new Date(rep[i].startDate),
+             								end:new Date(rep[i].endDate),
+             								timeStart:startTimeStr,
+             								timeEnd:endTimeStr,
+             								allDay:(rep[i].isAllday == 'Y' ? true : false),
+             								content:rep[i].calContent,
+             								color:rep[i].color,
+             								calWriter:rep[i].calWriter,
+             								registDate:rep[i].registDate,
+             								modifier:rep[i].modifier,
+             								modifyDate:rep[i].modifyDate
+           		
+             							})
+             						}
+             						
+             						console.log("calList",calList);
+					         			
+             					}
+             					
+             				},
+             				error:function(){
+             					console.log("일정 조회용 ajax 통신 실패");
+             				}
+             				  				
+             			})
+ 
+         			}else{ // 카테고리 하나도 선택하지 않음
+         				console.log("조회할 일정 없음");
+         			}
+         			
+         			var calendarEl = document.getElementById('calendar');
+       		    var calendar = new FullCalendar.Calendar(calendarEl, {
+       		      initialView: 'dayGridMonth',
+       		      headerToolbar: {
+       		        left: 'prev,next today',
+       		        center: 'title',
+       		        right: 'dayGridMonth,timeGridWeek,timeGridDay,list',
+       		      },
+       		      nowIndicator: true, // 현재 시간 마크
+       		      timeZone:'local', // 우리나라 시간
+       		    	locale: 'ko', // 한국어 설정
+       		      buttonText:{ //버튼 텍스트 변환
+       		        today:'오늘',
+       		        day:'일간',
+       		        week:'주간',
+       		        month:'월간',
+       		        list:'목록'
+       		      },
+       		      selectable: true,
+       		      dateClick:function(info){
+       		        $("#editForm").modal("show");
+       		        $("#startDate").val(info.dateStr);
+       		        $("#endDate").val(info.dateStr);
+       		        $("#startTime").val("09:00");
+       		        $("#endTime").val("09:30");
+       		      },
+       		      select:function(info){
+       		        $("#editForm").modal("show");
+       		        $("#startDate").val(info.startStr);
+       		        $("#endDate").val(info.endStr);
+       		        $("#startTime").val("09:00");
+       		        $("#endTime").val("09:30");
+       		      },
+       		      views:{
+       		        
+       		      },
+       		      events:calList
+       		    
+       		    })
+       		    
+       		 		calendar.render();
+       		   
+         			
          		}
-         		*/
+         		
             
             // 캘린더 카테고리 조회용 ajax
             function ajaxSelectListCalCtg(){
             	$.ajax({
             		url:"${contextPath}/calendar/ctgList.do",
             		type:"post",
+            		async:false,
             		data:{},
             		success:function(rep){
             			console.log(rep);
@@ -779,11 +841,11 @@
 	            					myVal += "<li>"
 			                         +		"<div class='cal_ctg'>"
 			                         +			"<div>"
-			                         +				"<input type='checkbox' class='show_chk' style='accent-color: " + rep[i].color +";' checked='" + (rep[i].isShow == "Y" ? "true" : "false")  + "'>"
+			                         +				"<input type='checkbox' name='showList' value='" + rep[i].ctgNo + "' class='show_chk' style='accent-color: " + rep[i].color +";' checked='" + (rep[i].isShow == "Y" ? "true" : "false")  + "'>&nbsp;"
 			                         +				"<span>" + rep[i].ctgName + "</span>"
 			                         +			"</div>"
 			                         +			"<div>"
-			                         +				"<button class='btn btn-sm btn-outline-primary'>수정</button>"
+			                         +				"<button type='button' class='btn btn-sm btn-outline-primary'>수정</button>"
 			                         +			"</div>"
 			                         +		"</div>"
 			                         + "</li>";
@@ -795,11 +857,11 @@
 	            					shVal += "<li>"
 				                         +		"<div class='cal_ctg'>"
 				                         +			"<div>"
-				                         +				"<input type='checkbox' class='show_chk' style='accent-color: " + rep[i].color +";'>"
+				                         +				"<input type='checkbox' name='showList' value='" + rep[i].ctgNo + "' class='show_chk' style='accent-color: " + rep[i].color +";'>&nbsp;"
 				                         +				"<span>" + rep[i].ctgName + "</span>"
 				                         +			"</div>"
 				                         +			"<div>"
-				                         +				"<button class='btn btn-sm btn-outline-primary'>수정</button>"
+				                         +				"<button type='button' class='btn btn-sm btn-outline-primary'>수정</button>"
 				                         +			"</div>"
 				                         +		"</div>"
 				                         + "</li>";
@@ -822,6 +884,9 @@
             		}
             		
             	})
+            	
+            	
+       		    
             }
             
          		// 일정 등록용 ajax

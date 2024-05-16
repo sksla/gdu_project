@@ -19,6 +19,7 @@ public class CalendarServiceImpl implements CalendarService {
 
 	/**
 	 * 캘린더(카테고리) 조회
+	 * @author 김영주
 	 */
 	@Override
 	public List<CalCtgDto> selectCalCtgList(int memNo) {
@@ -27,6 +28,7 @@ public class CalendarServiceImpl implements CalendarService {
 	
 	/**
 	 * 캘린더(카테고리) 등록
+	 * @author 김영주
 	 */
 	@Override
 	public int insertCalCtg(CalCtgDto ctg) {
@@ -35,10 +37,20 @@ public class CalendarServiceImpl implements CalendarService {
 
 	/**
 	 * 일정 등록
+	 * @author 김영주
 	 */
 	@Override
 	public int insertCalendar(CalendarDto cal) {
 		return calendarDao.insertCalendar(cal);
+	}
+
+	/**
+	 * 일정 조회
+	 * @author 김영주
+	 */
+	@Override
+	public List<CalendarDto> selectCalendarList(String[] showList) {
+		return calendarDao.selectCalendarList(showList);
 	}
 
 }

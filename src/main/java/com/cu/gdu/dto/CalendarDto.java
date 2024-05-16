@@ -25,9 +25,9 @@ public class CalendarDto {
 	private String isAllday;
 	private String isRepeat;
 	private String isAlert;
-	private Date registDate;
+	private String registDate;
 	private String calWriter;
-	private Date modifyDate;
+	private String modifyDate;
 	private String modifier;
 	private String status;
 }

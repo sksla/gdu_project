@@ -49,7 +49,7 @@
 	</select>
 	
 	<!-- 일정 조회 -->
-	<select id="selectCalendar" resultMap="calendarResult">
+	<select id="selectCalendarList" resultMap="calendarResult">
 		select 
 		       cal_no
 		     , e.ctg_no
@@ -67,9 +67,15 @@
 		  from calendar e
 		  join cal_ctg ctg on (e.ctg_no = ctg.ctg_no) 
 		  join member cw on (cal_writer = cw.mem_no)
-		  join member mw on (modifier_no = mw.mem_no) 
-		 where status = 'Y'
-		   <!--and cal_writer = #{}-->    
+		  left join member mw on (modifier_no = mw.mem_no) 
+		 <where>
+		  e.status = 'Y'
+		 	<foreach item="item" collection="array"
+					open="and e.ctg_no in (" separator="," close=")">
+				#{item}
+			</foreach>
+		 </where>
+		   
 	</select>
 	
 	<!-- 캘린더(카테고리) 등록 -->

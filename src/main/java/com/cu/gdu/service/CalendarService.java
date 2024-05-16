@@ -16,5 +16,8 @@ public interface CalendarService {
 	// 일정 등록
 	int insertCalendar(CalendarDto cal);
 	
+	// 일정 조회
+	List<CalendarDto> selectCalendarList(String[] showList);
+	
 	
 }

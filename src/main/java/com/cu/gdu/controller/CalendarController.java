@@ -108,6 +108,24 @@ public class CalendarController {
 		
 		return calendarService.insertCalendar(cal);
 	}
+	
+	
+	/**
+	 * 일정 조회
+	 * @author 김영주
+	 * @param showList (조회할 카테고리 고유번호 String배열)
+	 * @return
+	 */
+	@ResponseBody
+	@PostMapping(value="/calList.do", produces="application/json; charset=UTF-8")
+	public List<CalendarDto> selectCalList(String[] showList){
+	
+		List<CalendarDto> cList = new ArrayList<>();
+		
+		cList = calendarService.selectCalendarList(showList);
+		
+		return cList;
+	}
 				   
 		
 }

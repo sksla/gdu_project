@@ -27,7 +27,7 @@ public class CalendarDao {
 	}
 	
 	/**
-	 * 캘린더(일정카테고리)
+	 * 캘린더(일정카테고리) 등록
 	 * @author 김영주
 	 * 
 	 * @param ctg
@@ -37,8 +37,25 @@ public class CalendarDao {
 		return sqlSessionTemplate.insert("calendarMapper.insertCalCtg", ctg);
 	}
 	
+	/**
+	 * 일정 등록
+	 * @author 김영주
+	 * 
+	 * @param cal => 등록할 일정정보 담긴 CalendarDto객체
+	 * @return  insert문 처리 행 수 (int)
+	 */
 	public int insertCalendar(CalendarDto cal) {
 		return sqlSessionTemplate.insert("calendarMapper.insertCalendar", cal);
+	}
+	
+	/**
+	 * 일정 조회
+	 * @author 김영주
+	 * @param showList (조회할 카테고리 고유번호 String배열)
+	 * @return 일정들 담긴 List<CalendarDto> 리스트
+	 */
+	public List<CalendarDto> selectCalendarList(String[] showList){
+		return sqlSessionTemplate.selectList("calendarMapper.selectCalendarList", showList);
 	}
 	
 }
