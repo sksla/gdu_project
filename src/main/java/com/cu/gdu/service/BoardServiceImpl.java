@@ -41,7 +41,19 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	public int insertBoard(BoardDto board) {
-		return 0;
+				// board insert
+				int result1 = boardDao.insertBoard(board);
+				
+				//int result2 = 1;
+				// attachment insert
+				//List<AttachDto> attachList = board.getAttachList();
+				//if(!attachList.isEmpty()) {
+				//	result2 = 0;
+				//	for(AttachDto at : attachList) {
+				//		result2 += boardDao.insertAttach(at);
+				//	}
+				//}		
+				return result1;
 	}
 
 	@Override

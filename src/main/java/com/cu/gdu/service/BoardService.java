@@ -10,7 +10,7 @@ import com.cu.gdu.dto.ReplyDto;
 
 public interface BoardService {
 
-	// 게시판리스트 조회 서비스 (페이징)
+		// 게시판리스트 조회 서비스 (페이징)
 		int selectBoardListCount(String boardType);
 		List<BoardDto> selectBoardList(PageInfoDto pi);
 		

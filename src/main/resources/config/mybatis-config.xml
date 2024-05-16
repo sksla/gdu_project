@@ -16,6 +16,9 @@
 		<typeAlias type="com.cu.gdu.dto.CalendarDto" alias="CalendarDto"/>
 		<typeAlias type="com.cu.gdu.dto.AffiliatedOrganDto" alias="AffiliatedOrganDto"/>
 		<typeAlias type="com.cu.gdu.dto.JobDto" alias="JobDto"/>
+		<typeAlias type="com.cu.gdu.dto.BoardDto" alias="BoardDto"/>
+		<typeAlias type="com.cu.gdu.dto.AttachDto" alias="AttachDto"/>
+		<typeAlias type="com.cu.gdu.dto.ReplyDto" alias="ReplyDto"/>
 	</typeAliases>
 	
 	<mappers>
@@ -24,6 +27,7 @@
 		<mapper resource="mappers/approval-mapper.xml"/>
 		<mapper resource="mappers/calendar-mapper.xml"/>
 		<mapper resource="mappers/affiliatedOrgan-mapper.xml"/>
+		<mapper resource="mappers/board-mapper.xml"/>
 	</mappers>
 	
 </configuration>

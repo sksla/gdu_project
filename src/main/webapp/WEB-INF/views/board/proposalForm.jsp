@@ -18,6 +18,11 @@
 
     #enrollForm>table{width:100%;}
     #enrollForm>table *{ margin:5px;}
+    
+    #passwordInput {
+        display: none;
+    }
+
 </style>
 </head>
 <body>
@@ -65,25 +70,35 @@
                 <div class="innerOuter">
                   <h2>게시글 작성하기</h2>
                   <br>
-                  <form id="enrollForm" method="post" action="" enctype="">
+                  <form id="enrollForm" action="${ contextPath }/board/proposalRegist.do" method="post" enctype="">
                     <table align="center">
                       <tr>
                         <th><label for="title">제목</label></th>
-                        <td><input type="text" id="title" class="form-control" name="" required></td>
+                        <td><input type="text" id="title" class="form-control" name="boardTitle" required></td>
                       </tr>
                       <tr>
                         <th><label for="writer">작성자</label></th>
-                        <td><input type="text" id="writer" class="form-control" value="user01" name="" readonly></td>
+                        <td><input type="text" id="writer" class="form-control" value="${loginUser.memNo }" name="memNo" readonly></td>
                       </tr>
                       <tr>
                         <th><label for="upfile">첨부파일</label></th>
-                        <td><input type="file" id="upfile" class="form-control-file border" name=""></td>
+                        <td><input type="file" id="upfile" class="form-control-file border" name="uploadFile"></td>
+                      </tr>
+                      <tr>
+                      	<th><label for="secret">비밀글</label>
+                      	<td>
+                      		<input class="form-check-input primary check-light-primary" type="checkbox" id="primary-light-check" name="openStatus" value="1">
+                      		<label class="form-check-label" for="primary-light-check">비밀글</label>
+                      		<div id="passwordInput">
+											        <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password">
+											    </div>
+                      	</td>
                       </tr>
                       <tr>
                         <th colspan="2"><label for="content">내용</label></th>
                       </tr>
                       <tr>
-                        <th colspan="2"><textarea class="form-control" required name="" id="content" rows="10" style="resize:none;"></textarea></th>
+                        <th colspan="2"><textarea class="form-control" required name="boardContent" id="content" rows="10" style="resize:none;"></textarea></th>
                       </tr>
                     </table>
                     <br>
@@ -99,6 +114,17 @@
             </div>
           </div>
           
+          <!-- 비밀글 비밀번호 부분 -->
+          <script>
+			        document.getElementById('primary-light-check').addEventListener('change', function() {
+			            var passwordInputDiv = document.getElementById('passwordInput');
+			            if (this.checked) {
+			                passwordInputDiv.style.display = 'block';
+			            } else {
+			                passwordInputDiv.style.display = 'none';
+			            }
+			        });
+			    </script>
           
 					<!-- ----------------------------- 실제 내용 작성 영역 end ----------------------------- -->
         </div>
