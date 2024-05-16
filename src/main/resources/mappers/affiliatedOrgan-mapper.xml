@@ -30,7 +30,7 @@
 			  , aff_location
 			  , major_name
 		 from affiliated_organ
-         join major using (major_no)
+     join major using (major_no)
 		order by aff_no asc
   </select>
   
@@ -38,7 +38,7 @@
 	  select
 				   aff_no
 				 , aff_name
-				 , major_no
+				 , major_name
 				 , aff_location
 				 , start_date
 				 , end_date
@@ -47,6 +47,7 @@
 				 , aff_etc
 				 , reason
 		  from affiliated_organ
+		  join major using (major_no)
 		 where aff_no=#{affNo}
   </select>
 
