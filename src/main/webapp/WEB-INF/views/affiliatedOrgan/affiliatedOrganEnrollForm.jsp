@@ -7,6 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <title>부속기관 등록 페이지</title>
+
 </head>
 <body>
 	<div class="main-wrapper">
@@ -57,23 +58,40 @@
         <div class="card-body">
           <div class="wrap">
             <div class="content1">
-                <div class="pic" style="width:450px; display: inline-block">
-									<div class="card card-body">
-										<div class="mb-3">
-											<label for="formFileMultiple" class="form-label">사진</label>
-											<input class="form-control" type="file" id="formFileMultiple" multiple style="width:400px;"/>
-										</div>
+							<div class="pic">
+								<div class="card card-body">
+									<div class="mb-3">
+										<label for="formFileMultiple" class="form-label">
+											<h5>기관사진</h5>
+										</label>
+										<input class="form-control" type="file" id="formFileMultiple"  accept="image/*" style="width:800px" onchange="setThumbnail(event);"  multiple/>
+										<div id="image_container"></div>
+										<script>
+											function setThumbnail(event){
+												
+												if(event.target.files.length > 4){
+													alert("최대 4장까지만 첨부 가능합니다.");
+													event.target.value = "";
+													return;
+												}
+												for(var image of event.target.files){
+													var reader = new FileReader();
+													reader.onload = function(event){
+														var img = document.createElement("img");
+														img.setAttribute("src", event.target.result);
+														img.setAttribute("width", "200");
+														img.setAttribute("height", "200");
+														document.querySelector("div#image_container").appendChild(img);
+													};
+													console.log(image);
+													reader.readAsDataURL(image);
+												}
+											}
+										</script>						
 									</div>
 								</div>
-                <div class-="map" style="width:450px; display: inline-block">
-                	<div class="card card-body">
-										<div class="mb-3">
-											<label for="formFileMultiple" class="form-label">지도</label>
-												여기에 지도
-										</div>
-									</div>
-                </div>
-            </div>
+							</div>							
+            </div>  
             <div class="content2">
               <!-- 정보 -->
               <div class="info">
@@ -97,9 +115,38 @@
                             <div class="row align-items-center">
                               <label for="inputText2" class="col-3 text-end control-label col-form-label">위치</label>
                               <div class="col-9 border-start pb-2 pt-2">
-                                <input type="text" name="affLocation" class="form-control" id="inputText2" placeholder="" />
+                                <input type="text" name="affLocation" class="form-control" id="address" placeholder="주소를 검색하세요" />
+                                <input type="text" name="affLocation" class="form-control" id="address_detail" placeholder="상세주소" />
                               </div>
                             </div>
+                            <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+														<script>
+														window.onload = function(){
+														    var postcode; // 변수 선언
+														    // 페이지가 로드될 때 실행되는 함수
+														    document.getElementById("address_kakao").addEventListener("click", function(){ // 주소 입력란 클릭 이벤트
+														        // 카카오 지도 팝업
+														        if (!postcode || postcode.iframeLoaded === false) { // 팝업이 열려있지 않을 때만 새로 열기
+														            postcode = new daum.Postcode({
+														                oncomplete: function(data) { // 주소 선택 완료 시 실행되는 콜백 함수
+														                    document.getElementById("address").value = data.address; // 선택한 주소를 입력란에 채움
+														                    var addressDetailInput = document.querySelector("input[name=address_detail]");
+														                    if (addressDetailInput) { // 요소가 있는지 확인
+														                        addressDetailInput.focus(); // 상세 주소 입력란으로 포커스 이동
+														                    }
+														                },
+														                onclose: function() { // 팝업이 닫힐 때 실행되는 콜백 함수
+														                    var addressDetailInput = document.querySelector("input[name=address_detail]");
+														                    if (addressDetailInput) { // 요소가 있는지 확인
+														                        addressDetailInput.focus(); // 주소 입력란으로 포커스 이동
+														                    }
+														                }
+														            });
+														            postcode.open();
+														        }
+														    });
+														}
+														</script>
                           </div>
                           <div class="form-group mb-0">
                             <div class="row align-items-center">
@@ -111,14 +158,6 @@
 	                              	</c:forEach>
 	                              </select>
                             	</div>
-                            </div>
-                          </div>
-                          <div class="form-group mb-0">
-                            <div class="row align-items-center">
-                              <label for="inputText3" class="col-3 text-end control-label col-form-label">연락처</label>
-                              <div class="col-9 border-start pb-2 pt-2">
-                                <input type="text" class="form-control" id="inputText3" placeholder="" />
-                              </div>
                             </div>
                           </div>
                           <div class="form-group mb-0">
