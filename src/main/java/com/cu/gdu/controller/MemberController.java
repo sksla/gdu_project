@@ -127,14 +127,14 @@ public class MemberController {
 		String originalSignURL = loginUser.getSignUrl();
 		
 		// 파일업로드
-		Map<String, String> map = fileUtil.fileUpload(uploadFile, "sign");
+		Map<String, String> map = fileUtil.fileUpload(uploadFile,  session, "sign" );
 		loginUser.setSignUrl(map.get("filePath") + "/" + map.get("filesystemName"));
 	
 		int result = memberService.updateSignImg(loginUser);
 	
 		if(result > 0) {
 			if(originalSignURL != null) {
-				new File(originalSignURL).delete();
+				new File(session.getServletContext().getRealPath(originalSignURL)).delete();
 			}
 			return "SUCCESS";
 		}else {
@@ -152,14 +152,14 @@ public class MemberController {
 		String originalProfileURL = loginUser.getProfileUrl();
 		
 		// 파일업로드
-		Map<String, String> map = fileUtil.fileUpload(uploadFile, "profile");
+		Map<String, String> map = fileUtil.fileUpload(uploadFile,session, "profile");
 		loginUser.setProfileUrl(map.get("filePath") + "/" + map.get("filesystemName"));
 	
 		int result = memberService.updateProfileImg(loginUser);
 	
 		if(result > 0) {
 			if(originalProfileURL != null) {
-				new File(originalProfileURL).delete();
+				new File(session.getServletContext().getRealPath(originalProfileURL)).delete();
 			}
 			return "SUCCESS";
 		}else {

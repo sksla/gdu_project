@@ -8,17 +8,23 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 @Component
 public class FileUtil {
 	
-	public Map<String, String> fileUpload(MultipartFile uploadFile, String folderName){
+	
+	
+	public Map<String, String> fileUpload(MultipartFile uploadFile, HttpSession session, String folderName){
 		
-		String filePath = "/upload/" + folderName + new SimpleDateFormat("/yyyy/MM/dd").format(new Date());
+		String filePath = "/resources/upload/" + folderName + new SimpleDateFormat("/yyyy/MM/dd").format(new Date());
+		String absolutePath = session.getServletContext().getRealPath(filePath);
 		
-		File filePathDir = new File(filePath);
+		File filePathDir = new File(absolutePath);
 		if(!filePathDir.exists()) {
 			filePathDir.mkdirs();
 		}
