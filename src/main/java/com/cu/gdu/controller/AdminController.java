@@ -37,6 +37,7 @@ public class AdminController {
 	private final PagingUtil pagingUtil;
 	private final BCryptPasswordEncoder bcryptPwdEncoder;
 	
+	// 조직도페이지 조회
 	@GetMapping("/chart.do")
 	public String chart(Model model) {
 		List<CollegeDto> colList = adminService.selectCollegeList();
@@ -49,6 +50,7 @@ public class AdminController {
 		return "admin/chart";
 	}
 	
+	// 직원관리 페이지
 	@GetMapping("/memberList.do")
 	public ModelAndView memberList(@RequestParam(value="page", defaultValue="1") int currentPage
 								 , ModelAndView mv) {
@@ -70,6 +72,7 @@ public class AdminController {
 		return mv;
 	}
 
+	// 직원관리페이지에서 직원 퇴직처리
 	@GetMapping("/outMember.do")
 	public String updateOutMember(String[] memNo, RedirectAttributes redirectAttributes) {
 		int result = adminService.updateOutMember(memNo);
@@ -81,6 +84,7 @@ public class AdminController {
 		return "redirect:/admin/memberList.do";
 	}
 	
+	// 직원관리페이지에서 직원 학과수정
 	@GetMapping("/updateMajorMember.do")
 	public String updateMajorMember(int[] memNo, String majorNo, RedirectAttributes redirectAttributes) {
 		
@@ -98,6 +102,7 @@ public class AdminController {
 		return "redirect:/admin/memberList.do";
 	}
 	
+	// 직원관리페이지에서 직원 직급
 	@GetMapping("/updateJobMember.do")
 	public String updateJobMember(int[] memNo, String jobNo, RedirectAttributes redirectAttributes) {
 		Map<String, Object> map = new HashMap<>();
@@ -155,6 +160,7 @@ public class AdminController {
 		
 	}
 	
+	// 직원개별등록 페이지 조회
 	@GetMapping("/insertOneMemberEnrollForm.do")
 	public String insertOneMemberEnrollForm(Model model) {
 		List<MajorDto> majorList = adminService.selectMajorList();
@@ -164,6 +170,7 @@ public class AdminController {
 		return "admin/insertOneMember";
 	}
 	
+	// 직원개별등록
 	@PostMapping("/insertOneMember.do")
 	public String insertOneMember(MemberDto m, RedirectAttributes redirectAttributes, String addressDetail) {
 		m.setMemPwd("1111");
@@ -182,6 +189,31 @@ public class AdminController {
 			redirectAttributes.addFlashAttribute("alertMsg", "직원등록에 실패했습니다.");
 		}
 		return "redirect:/admin/memberList.do";
+	}
+	
+	// 직원상세페이지
+	@GetMapping("/memberDetail.do")
+	public String selectMemberDetail(int memNo, Model model) {
+		MemberDto m = adminService.selectMemberDetail(memNo);
+		List<MajorDto> majorList = adminService.selectMajorList();
+		List<JobDto> jobList = adminService.selectJobList();
+		model.addAttribute("m", m);
+		model.addAttribute("majorList", majorList);
+		model.addAttribute("jobList", jobList);
+		return "admin/memberDetail";
+	}
+	
+	// 직원상세페이지에서 직원정보수정
+	@PostMapping("/updateMember.do")
+	public String updateMember(MemberDto m, String addressDetail, RedirectAttributes redirectAttributes) {
+		m.setAddress(m.getAddress() + " " + addressDetail);
+		int result = adminService.updateMember(m);
+		if(result == 1) {
+			redirectAttributes.addFlashAttribute("alertMsg", "직원정보를 수정했습니다.");
+		}else {
+			redirectAttributes.addFlashAttribute("alertMsg", "직원정보 수정에 실패했습니다.");
+		}
+		return "redirect:/admin/memberDetail.do?memNo=" + m.getMemNo();
 	}
 	
 	

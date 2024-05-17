@@ -44,4 +44,9 @@ public interface AdminService {
 	// 직원개별등록
 	int insertOneMember(MemberDto m);
 	
+	// 직원상세조회 페이지
+	MemberDto selectMemberDetail(int memNo);
+	
+	// 직원상세조회 페이지
+	int updateMember(MemberDto m);
 }

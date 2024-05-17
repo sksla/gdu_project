@@ -93,7 +93,7 @@
 		          <!-- <form id="searchForm" action="" method="Get" align="center">
 		            <button type="submit" class="searchBtn btn btn-secondary">검색</button>
 		          </form> -->
-		          <input id="searchName" type="text" class="form-control searchName" name="" placeholder="이름으로 검색">
+		          <input id="searchName" type="text" class="form-control searchName" placeholder="이름으로 검색">
 		
 		          <div class="selectStatus">
 		            <input type="radio" id="ingMember" name="selectStatus" value="N"><span><label for="ingMember">재직</label></span>
@@ -168,7 +168,7 @@
 		              		<c:otherwise>
 		              			<c:forEach var="m" items="${list}">
 		              				<tr>
-		              					<th>
+		              					<th class="memberCheckbox">
 		              						<h6 class="fs-2 mb-0">
 		              							<input type="checkbox" class="selectMember" value="${m.memNo}"> 
 		              						</h6>
@@ -212,10 +212,20 @@
             	   // 퇴직학과직급 처리버튼 숨기기
             	   $(".outAndUpdate").css("display", "none");  
             	   // 라디오버튼 재직중에 체크
-                 $("#ingMember").attr('checked', true);
+                 $("#ingMember").attr('checked', true);  
 
                })
                //////////////////////////ready(function) 종료//////////////////////////
+               
+               // 테이블 클릭으로 직원 상세페이지로 이동
+               $(document).on("click", ".tableBody tr", function(){
+            	   let memNo = $(this).find(".selectMember").val();
+            	   memberDetail(memNo);
+               })
+               
+               $(document).on("click", ".memberCheckbox", function(){
+            	   $(this).stopPropagation();
+               })
                
                // 이름으로 직원 검색기능
                $(document).on("input", ".searchName", function(){
@@ -265,36 +275,36 @@
 					
 					                for(let i=0; i<list.member.length; i++){
 					                    filterTable += "<tr>"
-		                                   +   "<th>"
-		                                   +       "<h6 class='fs-2 mb-0'>"
-		                                   +           "<input type='checkbox' class='selectMember' value='" + list.member[i].memNo + "'>"
-		                                   +       "</h6>"
-		                                   +   "</th>"
-		                                   +   "<th>"
-		                                   +       "<h6 class='fs-2 mb-0'>" + list.member[i].memNo + "</h6>"
-		                                   +   "</th>"
-		                                   +   "<th>"
-		                                   +       "<h6 class='fs-2 mb-0 memName'>" + list.member[i].memName + "</h6>"
-		                                   +   "</th>"
-		                                   +   "<th>"
-		                                   +       "<h6 class='fs-2 mb-0'>" + list.member[i].majorNo + "</h6>"
-		                                   +   "</th>"
-		                                   +   "<th>"
-		                                   +       "<h6 class='fs-2 mb-0'>" + list.member[i].jobNo + "</h6>"
-		                                   +   "</th>"
-		                                   +   "<th>"
-		                                   +       "<h6 class='fs-2 mb-0'>" + list.member[i].birth + "</h6>"
-		                                   +   "</th>"
-		                                   +   "<th>"
-		                                   +       "<h6 class='fs-2 mb-0'>" + list.member[i].email + "</h6>"
-		                                   +   "</th>"
-		                                   +   "<th>"
-		                                   +       "<h6 class='fs-2 mb-0'>" + list.member[i].address + "</h6>"
-		                                   +   "</th>"
-		                                   +   "<th>"
-		                                   +       "<h6 class='fs-2 mb-0'>" + list.member[i].hireDate + "</h6>"
-		                                   +   "</th>"
-		                                   + "</tr>";
+				                                   +   "<th class='memberCheckbox'>"
+				                                   +       "<h6 class='fs-2 mb-0'>"
+				                                   +           "<input type='checkbox' class='selectMember' value='" + list.member[i].memNo + "'>"
+				                                   +       "</h6>"
+				                                   +   "</th>"
+				                                   +   "<th>"
+				                                   +       "<h6 class='fs-2 mb-0'>" + list.member[i].memNo + "</h6>"
+				                                   +   "</th>"
+				                                   +   "<th>"
+				                                   +       "<h6 class='fs-2 mb-0 memName'>" + list.member[i].memName + "</h6>"
+				                                   +   "</th>"
+				                                   +   "<th>"
+				                                   +       "<h6 class='fs-2 mb-0'>" + list.member[i].majorNo + "</h6>"
+				                                   +   "</th>"
+				                                   +   "<th>"
+				                                   +       "<h6 class='fs-2 mb-0'>" + list.member[i].jobNo + "</h6>"
+				                                   +   "</th>"
+				                                   +   "<th>"
+				                                   +       "<h6 class='fs-2 mb-0'>" + list.member[i].birth + "</h6>"
+				                                   +   "</th>"
+				                                   +   "<th>"
+				                                   +       "<h6 class='fs-2 mb-0'>" + list.member[i].email + "</h6>"
+				                                   +   "</th>"
+				                                   +   "<th>"
+				                                   +       "<h6 class='fs-2 mb-0'>" + list.member[i].address + "</h6>"
+				                                   +   "</th>"
+				                                   +   "<th>"
+				                                   +       "<h6 class='fs-2 mb-0'>" + list.member[i].hireDate + "</h6>"
+				                                   +   "</th>"
+				                                   + "</tr>";
 					                }
 					            } 
 					
@@ -474,36 +484,36 @@
 						
 						                for(let i=0; i<list.member.length; i++){
 						                    filterTable += "<tr>"
-			                                   +   "<th>"
-			                                   +       "<h6 class='fs-2 mb-0'>"
-			                                   +           "<input type='checkbox' class='selectMember' value='" + list.member[i].memNo + "'>"
-			                                   +       "</h6>"
-			                                   +   "</th>"
-			                                   +   "<th>"
-			                                   +       "<h6 class='fs-2 mb-0'>" + list.member[i].memNo + "</h6>"
-			                                   +   "</th>"
-			                                   +   "<th>"
-			                                   +       "<h6 class='fs-2 mb-0 memName'>" + list.member[i].memName + "</h6>"
-			                                   +   "</th>"
-			                                   +   "<th>"
-			                                   +       "<h6 class='fs-2 mb-0'>" + list.member[i].majorNo + "</h6>"
-			                                   +   "</th>"
-			                                   +   "<th>"
-			                                   +       "<h6 class='fs-2 mb-0'>" + list.member[i].jobNo + "</h6>"
-			                                   +   "</th>"
-			                                   +   "<th>"
-			                                   +       "<h6 class='fs-2 mb-0'>" + list.member[i].birth + "</h6>"
-			                                   +   "</th>"
-			                                   +   "<th>"
-			                                   +       "<h6 class='fs-2 mb-0'>" + list.member[i].email + "</h6>"
-			                                   +   "</th>"
-			                                   +   "<th>"
-			                                   +       "<h6 class='fs-2 mb-0'>" + list.member[i].address + "</h6>"
-			                                   +   "</th>"
-			                                   +   "<th>"
-			                                   +       "<h6 class='fs-2 mb-0'>" + list.member[i].hireDate + "</h6>"
-			                                   +   "</th>"
-			                                   + "</tr>";
+					                                   +   "<th class='memberCheckbox'>"
+					                                   +       "<h6 class='fs-2 mb-0'>"
+					                                   +           "<input type='checkbox' class='selectMember' value='" + list.member[i].memNo + "'>"
+					                                   +       "</h6>"
+					                                   +   "</th>"
+					                                   +   "<th>"
+					                                   +       "<h6 class='fs-2 mb-0'>" + list.member[i].memNo + "</h6>"
+					                                   +   "</th>"
+					                                   +   "<th>"
+					                                   +       "<h6 class='fs-2 mb-0 memName'>" + list.member[i].memName + "</h6>"
+					                                   +   "</th>"
+					                                   +   "<th>"
+					                                   +       "<h6 class='fs-2 mb-0'>" + list.member[i].majorNo + "</h6>"
+					                                   +   "</th>"
+					                                   +   "<th>"
+					                                   +       "<h6 class='fs-2 mb-0'>" + list.member[i].jobNo + "</h6>"
+					                                   +   "</th>"
+					                                   +   "<th>"
+					                                   +       "<h6 class='fs-2 mb-0'>" + list.member[i].birth + "</h6>"
+					                                   +   "</th>"
+					                                   +   "<th>"
+					                                   +       "<h6 class='fs-2 mb-0'>" + list.member[i].email + "</h6>"
+					                                   +   "</th>"
+					                                   +   "<th>"
+					                                   +       "<h6 class='fs-2 mb-0'>" + list.member[i].address + "</h6>"
+					                                   +   "</th>"
+					                                   +   "<th>"
+					                                   +       "<h6 class='fs-2 mb-0'>" + list.member[i].hireDate + "</h6>"
+					                                   +   "</th>"
+					                                   + "</tr>";
 						                }
 						            } 
 						
@@ -545,6 +555,11 @@
 						    })
 		
 							}
+		          
+		          function memberDetail(memNo){
+		        	  location.href = "${contextPath}/admin/memberDetail.do?memNo=" + memNo;
+		          }
+		         
              </script>
              
              

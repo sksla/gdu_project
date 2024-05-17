@@ -36,6 +36,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   	<result column="leave_Count" property="leaveCount" />
   	<result column="birth" property="birth" />
   	<result column="gender" property="gender" />
+  	<result column="major_no" property="memMajorNo" />
+  	<result column="job_no" property="memJobNo" />
   </resultMap>
   
   <resultMap type="JobDto" id="jobResult">
@@ -106,6 +108,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		update
 		       member
 		   set status = 'Y'
+		     , end_date = sysdate
 		 <where>
 		 	<foreach item="item" collection="array"
 		 			open="mem_no in (" separator="," close=")">
@@ -277,6 +280,41 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		  , #{gender}
 		  )
   </insert>
+  
+  <select id="selectMemberDetail" resultMap="memberResult">
+  	select
+		       mem_no
+		     , mem_name
+		     , mem_id
+		     , phone
+		     , email
+		     , address
+		     , major_name
+		     , job_name
+		     , to_char(birth, 'YYYY-MM-DD') birth
+		     , to_char(hire_date, 'YYYY-MM-DD') hire_date
+		     , to_char(end_date, 'YYYY-MM-DD') end_date
+		     , sign_url
+		     , profile_url
+		     , member.major_no
+		     , member.job_no
+		     , member.status
+		  from member
+		  join major on (member.major_no = major.major_no)
+		  join job on (member.job_no = job.job_no)
+		 where mem_no = #{memNo}
+  </select>
+  
+  <update id="updateMember">
+  	update
+  				 member
+  		 set mem_name = #{memName}
+  		   , phone = #{phone}
+  		   , major_no = #{majorNo}
+  		   , job_no = #{jobNo}
+  		   , address = #{address}
+  	 where mem_no = #{memNo} 
+  </update>
 
   
 </mapper>

@@ -88,4 +88,12 @@ public class AdminDao {
 		return sqlSessionTemplate.insert("adminMapper.insertOneMember", m);
 	}
 	
+	public MemberDto selectMemberDetail(int memNo) {
+		return sqlSessionTemplate.selectOne("adminMapper.selectMemberDetail", memNo);
+	}
+	
+	public int updateMember(MemberDto m) {
+		return sqlSessionTemplate.update("adminMapper.updateMember", m);                                                                 
+	}
+	
 }
