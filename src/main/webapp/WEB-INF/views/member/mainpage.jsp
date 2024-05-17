@@ -20,6 +20,7 @@
   <title>메인페이지</title>
   <!-- Owl Carousel  -->
   <link rel="stylesheet" href="${ contextPath }/assets/libs/owl.carousel/dist/assets/owl.carousel.min.css" />
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
@@ -117,10 +118,8 @@
                     </a>
                   </li>
 			            <script>
-			            	$(document).ready(function(){
-			            		$(".chart").on("click", function(){
-			            			location.href="${contextPath}/admin/chart.do";
-			            		})
+			            	$(document).on("click", ".chart", function(){
+			            		location.href="${contextPath}/admin/chart.do";
 			            	})
 			            </script>
                   <!-- ------------------------------- -->
