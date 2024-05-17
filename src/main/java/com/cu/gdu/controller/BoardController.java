@@ -43,7 +43,8 @@ public class BoardController {
 		String boardType = "Q";
 		int listCount = boardService.selectBoardListCount(boardType);
 		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 5);
-		List<BoardDto> list = boardService.selectBoardList(pi);
+		List<BoardDto> list = boardService.selectBoardList(pi, boardType);
+		System.out.println(list);
 		
 		mv.addObject("pi", pi)
 		  .addObject("list", list)
@@ -66,6 +67,8 @@ public class BoardController {
 		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
 		board.setMemNo((loginUser.getMemNo()));
 		board.setBoardType("Q");
+		
+		System.out.println(board);
 		
 		//List<AttachDto> attachList = new ArrayList<>();	
 		

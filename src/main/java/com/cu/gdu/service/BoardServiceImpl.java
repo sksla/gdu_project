@@ -21,12 +21,12 @@ public class BoardServiceImpl implements BoardService {
 	
 	@Override
 	public int selectBoardListCount(String boardType) {
-		return 0;
+		return boardDao.selectBoardListCount(boardType);
 	}
 
 	@Override
-	public List<BoardDto> selectBoardList(PageInfoDto pi) {
-		return null;
+	public List<BoardDto> selectBoardList(PageInfoDto pi, String boardType) {
+		return boardDao.selectBoardList(pi, boardType);
 	}
 
 	@Override

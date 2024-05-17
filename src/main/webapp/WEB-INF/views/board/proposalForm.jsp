@@ -125,6 +125,20 @@
 			            }
 			        });
 			    </script>
+			    
+			    <!-- 체크박스 체크값 변경 부분 -->
+			    <script>
+			    document.addEventListener('DOMContentLoaded', (event) => {
+					    const checkbox = document.getElementById('primary-light-check');
+					    checkbox.addEventListener('change', function() {
+					        if (this.checked) {
+					            this.value = '2';
+					        } else {
+					            this.value = '1';
+					        }
+					    });
+					});
+			    </script>
           
 					<!-- ----------------------------- 실제 내용 작성 영역 end ----------------------------- -->
         </div>

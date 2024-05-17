@@ -5,6 +5,7 @@
   <resultMap id="boardResult" type="BoardDto">
   	<id column="board_no" property="boardNo"/>
   	<result column="mem_no" property="memNo"/>
+  	<result column="mem_id" property="memId"/>
   	<result column="board_type" property="boardType"/>
   	<result column="board_title" property="boardTitle"/>
   	<result column="board_content" property="boardContent"/>
@@ -37,7 +38,45 @@
   	<result column="modify_date" property="modifyDate"/>
   </resultMap>
   	
+  <!-- 게시글 목록 조회 -->	
+  <select id="selectBoardListCount"  resultType="_int">
+		select
+					count(*)
+			from board
+		 where status = 'Y'
+		 	 and board_type = #{boardType}
+	</select>	
+  
+  <select id="selectBoardList" resultMap="boardResult">
+		select 
+            board_no
+        ,	b.mem_no
+        , mem_id
+        , board_title
+        , board_content
+        , count
+        , to_char(regist_date, 'YYYY-MM-DD') regist_date
+        , (
+            select count(*)
+              from board_attach
+             where ref_type = 'N'
+               and ref_no = board_no
+            ) attach_count
+       <if test='boardType.equals("Q")'>
+          , open_status, password
+     	 </if>
+    from board b
+    join member m on (b.mem_no = m.mem_no)
+   where b.status = 'Y'
+     and board_type = #{boardType}
+   order
+     by board_no desc
+				
+	</select>	
   	
+  	
+  	
+  <!-- 게시글 등록 -->
   <insert id="insertBoard">
 		insert
 			into board
@@ -47,9 +86,9 @@
 			, board_type
 			, board_title
 			, board_content
-			<if test="boardType == 'Q'">
-      , open_status, password
-   	  </if>
+			<if test='boardType.equals("Q")'>
+            , open_status, password
+      </if>
 			)
 			values
 			(
@@ -58,9 +97,9 @@
 			, #{boardType}
 			, #{boardTitle} 
 			, #{boardContent}
-			<if test="boardType == 'Q'">
-      , #{openStatus}, #{password}
-   	  </if>
+			<if test='boardType.equals("Q")'>
+            , #{openStatus}, #{password}
+      </if>
 			)
 	</insert>
   	

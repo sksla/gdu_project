@@ -34,4 +34,6 @@ public class BoardDto {
 	 
 	// has Many 관계
 	private List<AttachDto> attachList;
+
+	private String memId; //테이블조인으로 추가된 변수
 }
