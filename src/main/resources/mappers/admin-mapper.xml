@@ -36,8 +36,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   	<result column="leave_Count" property="leaveCount" />
   	<result column="birth" property="birth" />
   	<result column="gender" property="gender" />
-  	<result column="major_no" property="memMajorNo" />
-  	<result column="job_no" property="memJobNo" />
   </resultMap>
   
   <resultMap type="JobDto" id="jobResult">
@@ -296,8 +294,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		     , to_char(end_date, 'YYYY-MM-DD') end_date
 		     , sign_url
 		     , profile_url
-		     , member.major_no
-		     , member.job_no
 		     , member.status
 		  from member
 		  join major on (member.major_no = major.major_no)

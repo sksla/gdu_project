@@ -239,13 +239,13 @@
               		
               		// 페이지 로딩시 직원의 학과 및 직급 selected 처리
               		$(".major option").each(function(){
-              			if($(this).val() == ${m.memMajorNo}){
+              			if($(this).text() == '${m.majorNo}'){
               				$(this).attr("selected", true);
               			}
               		})
               		
               		$(".job option").each(function(){
-              			if($(this).val() == ${m.memJobNo}){
+              			if($(this).text() == '${m.jobNo}'){
               				$(this).attr("selected", true);
               			}
               		})

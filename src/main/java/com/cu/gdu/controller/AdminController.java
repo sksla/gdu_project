@@ -102,7 +102,7 @@ public class AdminController {
 		return "redirect:/admin/memberList.do";
 	}
 	
-	// 직원관리페이지에서 직원 직급
+	// 직원관리페이지에서 직원 직급수정
 	@GetMapping("/updateJobMember.do")
 	public String updateJobMember(int[] memNo, String jobNo, RedirectAttributes redirectAttributes) {
 		Map<String, Object> map = new HashMap<>();
