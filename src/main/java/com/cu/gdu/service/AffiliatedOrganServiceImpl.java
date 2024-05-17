@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.cu.gdu.dao.AdminDao;
 import com.cu.gdu.dao.AffiliatedOrganDao;
+import com.cu.gdu.dto.AffReservationDto;
 import com.cu.gdu.dto.AffiliatedOrganDto;
 import com.cu.gdu.dto.MajorDto;
 import com.cu.gdu.dto.PageInfoDto;
@@ -28,10 +29,15 @@ public class AffiliatedOrganServiceImpl implements AffiliatedOrganService {
 	public List<AffiliatedOrganDto> selectAffiliatedOrganList(PageInfoDto pi) {
 		return affiliatedOrganDao.selectAffiliatedOrganList(pi);
 	}
-
+	
 	@Override
-	public AffiliatedOrganDto selectAffiliatedOrganRes(int affNo) {
-		return affiliatedOrganDao.selectAffiliatedOrganRes(affNo);
+	public AffiliatedOrganDto selectAffiliatedOrgan(int affNo) {
+		return affiliatedOrganDao.selectAffiliatedOrgan(affNo);
+	}
+	
+	@Override
+	public int insertAffiliatedOrganRes(AffReservationDto affres) {
+		return affiliatedOrganDao.insertAffiliatedOrganRes(affres);
 	}
 
 	@Override
@@ -48,21 +54,6 @@ public class AffiliatedOrganServiceImpl implements AffiliatedOrganService {
 	public List<AffiliatedOrganDto> selectAffiliatedOrganSearchList(Map<String, String> search, PageInfoDto pi) {
 		return null;
 	}
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-	
-
-	
 
 
 

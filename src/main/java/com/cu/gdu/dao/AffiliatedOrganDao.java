@@ -7,6 +7,7 @@ import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.cu.gdu.dto.AffReservationDto;
 import com.cu.gdu.dto.AffiliatedOrganDto;
 import com.cu.gdu.dto.MajorDto;
 import com.cu.gdu.dto.PageInfoDto;
@@ -38,12 +39,12 @@ public class AffiliatedOrganDao {
 		return sqlSessionTemplate.selectOne("affiliatedOrganMapper.selectAffiliatedOrganSearchListCount", search);
 	}
 
-	public AffiliatedOrganDto selectAffiliatedOrganRes(int affNo) {
-		return sqlSessionTemplate.selectOne("affiliatedOrganMapper.selectAffiliatedOrganRes", affNo);
+	public AffiliatedOrganDto selectAffiliatedOrgan(int affNo) {
+		return sqlSessionTemplate.selectOne("affiliatedOrganMapper.selectAffiliatedOrgan", affNo);
 	}
 	
-	public AffiliatedOrganDto selectAffiliatedOrganEnroll(int affNo) {
-		return null;
+	public int insertAffiliatedOrganRes(AffReservationDto affres) {
+		return sqlSessionTemplate.selectOne("affiliatedOrganMapper.insertAffiliatedOrganRes", affres);
 	}
 	
 	public int insertAffiliatedOrgan(AffiliatedOrganDto aff) {

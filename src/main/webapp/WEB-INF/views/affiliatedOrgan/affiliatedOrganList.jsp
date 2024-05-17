@@ -137,7 +137,7 @@
                                           	</c:when>
                                           	<c:otherwise>
                                           		<c:forEach var="af" items="${ list }">
-                                          			<tr onclick="location.href='${contextPath}/aff/affiliatedOrganRes.do?no=${af.affNo}'">
+                                          			<tr onclick="location.href='${contextPath}/aff/affiliatedOrganResForm.page?no=${af.affNo}'">
                                           				<td>${ af.affNo }</td>
                                           				<td>${ af.affName }</td>
                                           				<td>${ af.affLocation }</td>

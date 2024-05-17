@@ -183,28 +183,34 @@
                   <div class="col-12">
                     <!-- start Project Assinging -->
                     <div class="card">
-                      <form class="form-horizontal r-separator">
+                      <form class="form-horizontal r-separator" action="${contextPath}/aff/affiliatedOrganRes.do" method="post">
                         <div class="card-body">
                           <h5>예약정보</h5>
                           <div class="form-group mb-0">
                             <div class="row align-items-center">
                               <label for="inputText1" class="col-3 text-end control-label col-form-label">사용기간</label>
                               <div class="col-9 border-start pb-2 pt-2">
-                                <form class="d-flex flex-row">
+                                
                                   <span class="form-group">
-                                    <input type="date" class="form-control" value="2018-05-13" style="width: 150px;">
+                                    <input type="date" class="form-control" id="startDate" name="startDate" style="width: 150px;">
                                     &nbsp;<label for="" class="form-label fw-semibold col-form-label fs-3"> ~ </label>&nbsp;
-                                    <input type="date" class="form-control" value="2018-05-13" style="width: 150px;">
+                                    <input type="date" class="form-control" id="endDate" name="endDate" style="width: 150px;">
                                   </span>
-                                </form>
+                                
                               </div>
                             </div>
                           </div>
-                          <div class="form-group mb-0">
+                          <script>
+                          	document.getElementById('startDate').value = new Date().toISOString().substring(0,10);
+                          	document.getElementById('endDate').value = new Date().toISOString().substring(0,10);
+                          </script>
+                           <div class="form-group mb-0">
                             <div class="row align-items-center">
-                              <label for="inputText2" class="col-3 text-end control-label col-form-label">사용자</label>
+                              <label for="inputText2" class="col-3 text-end control-label col-form-label">예약자</label>
                               <div class="col-9 border-start pb-2 pt-2">
-                                <input type="text" class="form-control" id="inputText2" />
+                                <input type="text" class="form-control" id="inputText2" value="${loginUser.majorNo}" readonly />
+                                <input type="hidden" class="form-control" name="memNo" id="inputText2" value="${loginUser.memNo}" />
+                                <input type="hidden" class="form-control" name="affNo" id="inputText2" value="${affiliatedOrgan.affNo}" />
                               </div>
                             </div>
                           </div>
@@ -212,49 +218,24 @@
                             <div class="row align-items-center">
                               <label for="inputText2" class="col-3 text-end control-label col-form-label">예약사유</label>
                               <div class="col-9 border-start pb-2 pt-2">
-                                <input type="text" class="form-control" id="inputText2" />
+                                <input type="text" class="form-control" name="reason" id="inputText2" />
                               </div>
                             </div>
                           </div>
                         </div>
+	                      <div class="buttons">
+				                  <button type="submit" class="btn btn-info" id="resButton">예약하기</button>
+				                  <button type="button" class="btn btn-light" onclick="history.back();">닫기</button>
+				                </div>
                       </form>
                     </div>
                     <!-- end Project Assinging -->
                   </div>
                 </div>
                 <!-- End Row -->
-                <div class="buttons">
-                  <button type="button" class="btn btn-info"  data-bs-toggle="modal" data-bs-target="#rev_aff">예약하기</button>
-                  <button type="button" class="btn btn-light">닫기</button>
-                </div>
               </div>
               <!-- 예약 끝-->  
             </div>
-
-            <!-- 예약 모달 시작 -->
-            <div class="modal fade" id="rev_aff" tabindex="-1" aria-labelledby="exampleModalLabel1">
-              <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                  <div class="modal-header d-flex align-items-center">
-                    <h4 class="modal-title" id="exampleModalLabel1">
-                    </h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div class="modal-body">
-                    <form>
-                      <div class="mb-3 d-flex flex-row">
-                        <h4>예약되었습니다.</h4>            
-                      </div>
-                    </form>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="save_info-modal" data-bs-whatever="@mdo" aria-label="Close" onclick="location.href='${contextPath}/aff/affiliatedOrgan.do'">닫기</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- 예약 모달 끝 -->  
-
           </div>
         </div>
       </div>

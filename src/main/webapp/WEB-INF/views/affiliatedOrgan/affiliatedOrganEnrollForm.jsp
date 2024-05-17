@@ -116,7 +116,7 @@
                               <label for="inputText2" class="col-3 text-end control-label col-form-label">위치</label>
                               <div class="col-9 border-start pb-2 pt-2">
                                 <input type="text" name="affLocation" class="form-control" id="address" placeholder="주소를 검색하세요" />
-                                <input type="text" name="affLocation" class="form-control" id="address_detail" placeholder="상세주소" />
+                                <input type="text" name="affLocation" class="form-control" id="address_detail" placeholder="상세주소를 입력하세요" />
                               </div>
                             </div>
                             <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -150,7 +150,7 @@
                           </div>
                           <div class="form-group mb-0">
                             <div class="row align-items-center">
-                              <label for="inputEmail1" class="col-3 text-end control-label col-form-label">담당학과</label>
+                              <label for="inputMajor" class="col-3 text-end control-label col-form-label">담당학과</label>
                               <div class="form-group" style="width: 100px;">
 	                              <select class="form-select w-auto" name="majorNo">
 	                                <c:forEach var="major" items="${ list }">

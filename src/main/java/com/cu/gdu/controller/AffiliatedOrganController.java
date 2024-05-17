@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.cu.gdu.dto.AffReservationDto;
 import com.cu.gdu.dto.AffiliatedOrganDto;
 import com.cu.gdu.dto.MajorDto;
 import com.cu.gdu.dto.PageInfoDto;
@@ -54,21 +55,31 @@ public class AffiliatedOrganController {
 	}
 	
 	// 부속기관 예약페이지
-	   @GetMapping("/affiliatedOrganResForm.page")
-	   public String affiliatedOrganFrom() {
-	      return "/affiliatedOrgan/affiliatedOrganRes";
-	   }
+	@GetMapping("/affiliatedOrganResForm.page")
+	public String affiliatedOrganFrom(int no, Model model) {	
+		model.addAttribute("affiliatedOrgan",affiliatedOrganService.selectAffiliatedOrgan(no));
+		return "/affiliatedOrgan/affiliatedOrganRes";
+	}
 	   
 	// 부속기관 예약서비스
-	@GetMapping("/affiliatedOrganRes.do")
-	public String affiliatedOrganRes(int no, Model model) {
-		model.addAttribute("affiliatedOrgan", affiliatedOrganService.selectAffiliatedOrganRes(no));
-		System.out.println(model);
+	@PostMapping("/affiliatedOrganRes.do")
+	public String affiliatedOrganRes(AffReservationDto affres
+								   , Model model
+								   , RedirectAttributes redirectAttributes) {
+		log.debug("{}", affres);
+		int result = affiliatedOrganService.insertAffiliatedOrganRes(affres);
+		if(result > 0) {
+			// 성공메세지
+			redirectAttributes.addFlashAttribute("alertMsg", "성공");
+		}else{
+			// 실패메세지
+			redirectAttributes.addFlashAttribute("alertMsg", "실패");
+			redirectAttributes.addFlashAttribute("historyBackYN", "Y");
+		}
 		return "affiliatedOrgan/affiliatedOrganRes";
 	}
 	
 	// 부속기관 등록페이지 
-	
 	@GetMapping("/affiliatedOrganEnrollForm.page")
 	public String affiliatedOrganEnrollForm(Model model) {
 		List<MajorDto> list = adminService.selectMajorList();
@@ -76,13 +87,12 @@ public class AffiliatedOrganController {
 		return "/affiliatedOrgan/affiliatedOrganEnrollForm";
 	}
 	
-
 	// 부속기관 등록서비스
 	@PostMapping("/affiliatedOrganEnroll.do")
 	public String affiliatedOrganEnroll(AffiliatedOrganDto aff
 									, Model model
 									, RedirectAttributes redirectAttributes) {
-		log.debug("{}", aff);
+		
 		int result = affiliatedOrganService.insertAffiliatedOrgan(aff);
 				
 		if(result > 0) {

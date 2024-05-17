@@ -6,17 +6,23 @@
 		<id column="aff_no" property="affNo"/>
 		<result column="aff_name" property="affName" />
 		<result column="aff_location" property="affLocation" />
-		<result column="start_date" property="startDate" />
-		<result column="end_date" property="endDate" />
-		<result column="mem_no" property="memNo" />
 		<result column="latitude" property="latitude" />
 		<result column="longitude" property="longitude" />
 		<result column="major_no" property="majorNo" />
 		<result column="major_name" property="majorNo" />
 		<result column="aff_etc" property="affEtc" />	
-		<result column="reason" property="reason" />
 	</resultMap>
 	
+	<resultMap id="affReservaationResult" type="affReservationDto">
+		<id column="aff_res_no" property="affResNo"/>
+		<result column="aff_no" property="affNo" />
+		<result column="mem_no" property="memNo" />
+		<result column="major_name" property="memNo" />
+		<result column="start_date" property="startDate" />
+		<result column="end_date" property="endDate" />
+		<result column="reason" property="reason" />
+	</resultMap>
+
 	<select id="selectAffiliatedOrganListCount" resultType="_int">
 		select
   				 count(*)
@@ -32,24 +38,33 @@
 		 from affiliated_organ
      join major using (major_no)
 		order by aff_no asc
+		
   </select>
   
-  <select id="selectAffiliatedOrganRes" resultMap="affiliatedOrganResult">
-	  select
-				   aff_no
-				 , aff_name
-				 , major_name
-				 , aff_location
-				 , start_date
-				 , end_date
-				 , latitude
-				 , longitude
-				 , aff_etc
-				 , reason
-		  from affiliated_organ
-		  join major using (major_no)
-		 where aff_no=#{affNo}
+  <select id="selectAffiliatedOrgan" resultMap="affiliatedOrganResult">
+  	select
+  				 aff_no
+		  	 , aff_name
+		  	 , aff_location
+		  	 , major_name
+		     , aff_etc
+  		from affiliated_organ
+    	join major using (major_no)
+  	 where aff_no = #{affNo}
+  	
   </select>
+  
+  <insert id="insertAffiliatedOrganRes">
+		insert
+			into aff_reservation
+			(	
+				aff_res_no, aff_no, mem_no, start_date, end_date, reason
+			)
+			values
+			(
+				seq_aff_res_no.nextval, #{affNo}, #{memNo}, #{startDate}, #{endDate}, #{reason} 
+			)
+  </insert>
 
   <insert id="insertAffiliatedOrgan">
   	insert 
