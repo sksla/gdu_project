@@ -35,4 +35,8 @@ public class MemberDto {
 	private String birth;
 	private String gender;
 	
+	// 회원의 학과, 직급번호 담을 필드 추가 (호용)
+	private int memMajorNo;
+	private int memJobNo;
+	
 }
