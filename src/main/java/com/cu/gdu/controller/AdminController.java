@@ -216,5 +216,11 @@ public class AdminController {
 		return "redirect:/admin/memberDetail.do?memNo=" + m.getMemNo();
 	}
 	
+	// 관리자 메인페이지(대시보드)로 이동
+	@GetMapping("/adminDashboard.do")
+	public String adminDashboard() {
+		return "admin/adminDashboard";
+	}
+	
 	
 }

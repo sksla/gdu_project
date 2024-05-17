@@ -242,7 +242,7 @@
                   
                   <!-- --- 관리자일때만 보이는 버튼 (톱니바퀴)---------------------------- -->
                   <li class="nav-item">
-                    <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
+                    <a class="nav-link nav-icon-hover admin" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
                       aria-expanded="false">
                       <span>
                         <i class="ti ti-settings"></i>
@@ -260,9 +260,15 @@
                     </a>
                   </li>
 			            <script>
+			            	// 조직도 페이지로 이동
 			            	$(document).on("click", ".chart", function(){
 			            		location.href="${contextPath}/admin/chart.do";
-			            	})
+			            	});
+			            	
+			            	// 관리자 메인페이지로 이동
+			            	$(document).on("click", ".admin", function(){
+			            		location.href="${contextPath}/admin/adminDashboard.do";
+			            	});
 			            </script>
                   <!-- ------------------------------- -->
 
