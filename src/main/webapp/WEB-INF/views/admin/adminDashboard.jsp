@@ -9,14 +9,27 @@
 <title>관리자_대시보드</title>
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
 <script>
-		// CDN방식이며 전역에 네이스페이스를 사용
-	  document.addEventListener('DOMContentLoaded', function() {
-    const calendarEl = document.getElementById('calendar')
-    const calendar = new FullCalendar.Calendar(calendarEl, {
-      initialView: 'dayGridMonth'
-    })
-    calendar.render()
-  }) 
+	// js 파일을 로드하고 jsp 전역에 FullCalendar namespace 설정
+	document.addEventListener('DOMContentLoaded', function(){
+		const calendarEl = document.getElementById('calendar')
+		const calendar = new FullCalendar.Calendar(calendarEl, {
+			initialView: 'dayGridMonth',
+      headerToolbar: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'dayGridMonth,timeGridWeek,timeGridDay'
+     	},
+     	nowIndicator: true, // 현재 시간 마크
+			locale:'ko',
+	    buttonText:{ //버튼 텍스트 변환
+        today:'오늘',
+        day:'일간',
+        week:'주간',
+        month:'월간',
+      },
+		})
+		calendar.render()
+	})
 </script>
 <style>
   #section{
@@ -44,6 +57,20 @@
     border-bottom: none;
     margin-bottom: 0px;
   }
+  /* 캘린더 스타일*/
+  .fc-icon{
+  	display:flex;
+  	justify-content:center;
+  	align-items:center;
+  	background:white;
+  	border: none;
+  	color:#49beff;
+  	width:40px;
+  	
+  }
+	#calendar *{
+    padding: 0px;
+	}
 </style>
 </head>
 <body>
@@ -87,32 +114,33 @@
             </div>
           </div>
 
+          <script>
+            // 휴가신청현황 호버용 스크립트문
+            document.addEventListener("DOMContentLoaded", function() {
+              var leaveReasons = document.querySelectorAll('.leaveReason');
+
+              leaveReasons.forEach(function(leaveReason) {
+                leaveReason.addEventListener('mouseenter', function() {
+                  var leaveReasonContent = leaveReason.nextElementSibling;
+                  if (leaveReasonContent && leaveReasonContent.classList.contains('leaveReasonContent')) {
+                   	leaveReasonContent.style.display = 'table-row';
+                  }
+                });
+
+                leaveReason.addEventListener('mouseleave', function() {
+                  var leaveReasonContent = leaveReason.nextElementSibling;
+                  if (leaveReasonContent && leaveReasonContent.classList.contains('leaveReasonContent')) {
+                   	leaveReasonContent.style.display = 'none';
+                  }
+                });
+              });
+            });
+          </script>
+          
           <!-- 페이지 내용 -->
           <div class="card">
             <div class="card-body">
             
-	            <script>
-	              // 휴가신청현황 호버용 스크립트문
-	              document.addEventListener("DOMContentLoaded", function() {
-	                var leaveReasons = document.querySelectorAll('.leaveReason');
-	
-	                leaveReasons.forEach(function(leaveReason) {
-	                  leaveReason.addEventListener('mouseenter', function() {
-	                    var leaveReasonContent = leaveReason.nextElementSibling;
-	                    if (leaveReasonContent && leaveReasonContent.classList.contains('leaveReasonContent')) {
-	                     	leaveReasonContent.style.display = 'table-row';
-	                    }
-	                  });
-	
-	                  leaveReason.addEventListener('mouseleave', function() {
-	                    var leaveReasonContent = leaveReason.nextElementSibling;
-	                    if (leaveReasonContent && leaveReasonContent.classList.contains('leaveReasonContent')) {
-	                     	leaveReasonContent.style.display = 'none';
-	                    }
-	                  });
-	                });
-	              });
-	            </script>
 
               <div id="section">
                 <!--학사일정&신청받은연차&강의학생등록기간-->
@@ -121,7 +149,11 @@
 	                <div id="majorSchedule">
 	                  <div>
 	                    <p class="fs-7 fw-semibold">학사일정 +</p>
-	                    <div style="border: 1px solid black; width: 650px; height: 600px;" id="calendar"></div>
+	                    <div style="border: 1px solid black; width: 650px; height: 600px;">
+												<div id="calendar">
+												
+												</div>
+	                    </div>
 	                  </div>
 	                </div>
 	                
