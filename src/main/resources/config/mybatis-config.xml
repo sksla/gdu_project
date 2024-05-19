@@ -20,6 +20,7 @@
 		<typeAlias type="com.cu.gdu.dto.AttachDto" alias="AttachDto"/>
 		<typeAlias type="com.cu.gdu.dto.ReplyDto" alias="ReplyDto"/>
 		<typeAlias type="com.cu.gdu.dto.AffReservationDto" alias="AffReservationDto"/>
+		<typeAlias type="com.cu.gdu.dto.ShareMemDto" alias="ShareMemDto"/>
 	</typeAliases>
 	
 	<mappers>
