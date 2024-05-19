@@ -25,16 +25,7 @@
 </head>
 <body>
 
-	<script>
-    if ("${alertMsg}" !== "") { // 어떤 메세지 문구가 존재할 경우
-        alert("${alertMsg}");
-        
-        // 이하의 코드는 alert 창을 띄운 후 추가적으로 실행할 내용
-        if ("${historyBackYN}" === "Y") {
-            history.back();
-        }
-    }
-	</script>
+	
 
 	<!-- Preloader -->
   <div class="preloader">

@@ -1,5 +1,6 @@
 package com.cu.gdu.service;
 
+import com.cu.gdu.dto.AttendDto;
 import com.cu.gdu.dto.MemberDto;
 
 public interface MemberService {
@@ -14,4 +15,10 @@ public interface MemberService {
 	
 	// 비밀번호 변경 서비스
 		int updatePassword (MemberDto m);
+		
+	// 출근 등록 
+		int insertAttend(AttendDto atd);
+		
+	// 출퇴근 이력 조회 서비스
+	  AttendDto selectAttend(AttendDto atd);
 }

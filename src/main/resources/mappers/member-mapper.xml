@@ -24,6 +24,18 @@
   	<result column="gender" property="gender"/>
   </resultMap>
   
+  <resultMap id="attendResult" type="AttendDto">
+  		<id column="atd_no" property="atdNo"/>
+  		<result column="mem_no" property="memNo"/>
+  		<result column="start_time" property="startTime"/>
+  		<result column="end_time" property="endTime"/>
+  		<result column="regist_date" property="registDate"/>
+  		<result column="modify_date" property="modifyDate"/>
+  		<result column="mod_no" property="modNo"/>
+  </resultMap>
+  
+  
+  
   <!--  로그인용 -->
   <select id="selectMember" resultMap="memberResult">
   <!-- * 암호화 적용 후 -->
@@ -77,7 +89,7 @@
  		 where mem_no = #{memNo}
  	</update>
   
-  
+  <!-- 출퇴근 관련 -->
   
   
   

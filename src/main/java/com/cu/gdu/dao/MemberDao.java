@@ -3,6 +3,7 @@ package com.cu.gdu.dao;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.cu.gdu.dto.AttendDto;
 import com.cu.gdu.dto.MemberDto;
 
 import lombok.RequiredArgsConstructor;
@@ -31,5 +32,14 @@ public class MemberDao {
 	
 	public int updateProfileImg(MemberDto m) {
 		return sqlSessionTemplate.update("memberMapper.updateProfileImg", m);
+	}
+	
+	public AttendDto selectAttend(AttendDto a) {
+		return sqlSessionTemplate.selectOne("memberMapper.selectAttend", a);
+	}
+	
+	public int insertAttend(AttendDto a) {
+		return sqlSessionTemplate.insert("memberMapper.insertAttend", a);
+		
 	}
 }

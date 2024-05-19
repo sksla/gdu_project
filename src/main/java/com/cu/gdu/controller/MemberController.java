@@ -2,11 +2,9 @@ package com.cu.gdu.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -18,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.cu.gdu.dto.AttendDto;
 import com.cu.gdu.dto.MemberDto;
 import com.cu.gdu.service.MemberService;
 import com.cu.gdu.util.FileUtil;
@@ -37,30 +36,28 @@ public class MemberController {
 	
 	// * 로그인 관련 ----------------------------------------
 	@PostMapping("/login.do")
-	public void login(MemberDto m, HttpServletRequest request
-					 , HttpSession session
+	public String login(MemberDto m, HttpServletRequest request
 					 , RedirectAttributes redirectAttributes
-					 , HttpServletResponse response) throws IOException {
+					 ) throws IOException {
 		
 		MemberDto loginUser = memberService.selectMember(m);
 		
 		
-		response.setContentType("text/html; charset=utf-8");
-		PrintWriter out = response.getWriter();
-		out.println("<script>");
-		
 		//if(loginUser != null && m.getMemPwd().equals(loginUser.getMemPwd()) ) 	{  // 암호화 전
 		if(loginUser != null && bcryptPwdEncoder.matches(m.getMemPwd(), loginUser.getMemPwd()) ) 	{ 
 			request.getSession().setAttribute("loginUser", loginUser);
-			out.println("alert('" + loginUser.getMemName() + "님 환영합니다~');");
-			out.println("location.href = '" + request.getContextPath() + "/member/mainpage';"); // mainpage.jsp로 이동
-		
+			redirectAttributes.addFlashAttribute("alertMsg", loginUser.getMemName() + "님 환영합니다~");
 		}else {
-			out.println("alert('로그인 실패하였습니다. 아이디 및 비밀번호를 다시 확인해주세요.')");
-			out.println("history.back();");
+			redirectAttributes.addFlashAttribute("alertMsg", "로그인 실패하였습니다. 아이디 및 비밀번호를 다시 확인해주세요.");
+			redirectAttributes.addFlashAttribute("historyBackYN", "Y");
 		}
-		out.println("</script>");
-		
+		return "redirect:/member/mainpage";
+	}
+	
+	@RequestMapping("/signout.do")
+	public String signout(HttpSession session) {
+		session.invalidate();
+		return "redirect:/";
 	}
 	
 	// * 메인페이지 -------------------------------
@@ -167,6 +164,16 @@ public class MemberController {
 			return "FAIL";
 		}
 	}
+	
+	
+	// * 출퇴근 관련 ----------------------------------------------
+	@ResponseBody
+	@GetMapping(value="/selectAttend.do", produces="application/json; charset=utf-8")
+	public AttendDto ajaxSelectAttend(AttendDto atd ) {
+		return memberService.selectAttend(atd); 
+	}
+	
+	
 	
 	
 	

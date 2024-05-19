@@ -3,6 +3,7 @@ package com.cu.gdu.service;
 import org.springframework.stereotype.Service;
 
 import com.cu.gdu.dao.MemberDao;
+import com.cu.gdu.dto.AttendDto;
 import com.cu.gdu.dto.MemberDto;
 
 import lombok.RequiredArgsConstructor;
@@ -36,6 +37,16 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public int updatePassword(MemberDto m) {
 		return memberDao.updatePassword(m);
+	}
+
+	@Override
+	public int insertAttend(AttendDto atd) {
+		return memberDao.insertAttend(atd);
+	}
+
+	@Override
+	public AttendDto selectAttend(AttendDto atd) {
+		return memberDao.selectAttend(atd);
 	}
 
 	

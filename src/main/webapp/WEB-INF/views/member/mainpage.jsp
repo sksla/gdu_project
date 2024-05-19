@@ -21,9 +21,52 @@
   <!-- Owl Carousel  -->
   <link rel="stylesheet" href="${ contextPath }/assets/libs/owl.carousel/dist/assets/owl.carousel.min.css" />
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	
+	<style>
+		.container {
+        display: flex;
+    }
+		.left-box {
+            width: 80%;
+            background-color: lightblue; /* Background color for demonstration */
+            padding: 20px;
+            text-align: center;
+        }
+    .right-box {
+        width: 20%;
+        background-color: lightcoral; /* Background color for demonstration */
+        padding: 20px;
+        text-align: center;
+    }
+  
+    .card-body {
+        display: flex;
+        align-items: center;
+        box-sizing: border-box;
+    }
+    .card-body > div,
+    .card-body > button {
+        margin-left: 10px;
+        margin-right: 10px;
+        white-space: nowrap; /* Prevent text from wrapping */
+    }
+    .card-body > button {
+        width: auto; /* Adjust button width automatically */
+	 }	
+	</style>
 </head>
 
 <body>
+	<script>
+    if ("${alertMsg}" !== "") { // 어떤 메세지 문구가 존재할 경우
+        alert("${alertMsg}");
+        
+        // 이하의 코드는 alert 창을 띄운 후 추가적으로 실행할 내용
+        if ("${historyBackYN}" === "Y") {
+            history.back();
+        }
+    }
+	</script>
   
   <!-- Preloader -->
   <div class="preloader">
@@ -225,7 +268,7 @@
                       aria-expanded="false">
                       <div class="d-flex align-items-center">
                         <div class="user-profile-img">
-                          <img src="${ contextPath }/assets/images/profile/user-1.jpg" class="rounded-circle" width="35" height="35"
+                          <img src="${ contextPath }<c:out value='${loginUser.profileUrl}' default='/assets/images/profile/user-1.jpg'/>" class="rounded-circle" width="35" height="35"
                             alt="" />
                         </div>
                       </div>
@@ -237,13 +280,13 @@
                           <h5 class="mb-0 fs-5 fw-semibold">User Profile</h5>
                         </div>
                         <div class="d-flex align-items-center py-9 mx-7 border-bottom">
-                          <img src="${ contextPath }/assets/images/profile/user-1.jpg" class="rounded-circle" width="80" height="80"
+                          <img src="${ contextPath }<c:out value='${loginUser.profileUrl}' default='/assets/images/profile/user-1.jpg'/>" class="rounded-circle" width="80" height="80"
                             alt="" />
                           <div class="ms-3">
-                            <h5 class="mb-1 fs-3">Mathew Anderson</h5>
-                            <span class="mb-1 d-block">Designer</span>
+                            <h5 class="mb-1 fs-3">${ loginUser.memName }</h5>
+                            <span class="mb-1 d-block">${ loginUser.jobNo }</span>
                             <p class="mb-0 d-flex align-items-center gap-2">
-                              <i class="ti ti-mail fs-4"></i> info@modernize.com
+                              <i class="ti ti-mail fs-4"></i> ${ loginUser.email }
                             </p>
                           </div>
                         </div>
@@ -292,7 +335,7 @@
                               </div>
                             </div>
                           </div>
-                          <a href="${ contextPath }/horizontal/authentication-login.html" class="btn btn-outline-primary">Log Out</a>
+                          <a href="${ contextPath }/member/signout.do" class="btn btn-outline-primary">Log Out</a>
                         </div>
                       </div>
 
@@ -311,53 +354,161 @@
       <!--  Header End 헤더 끝 ----------------------------->
       
       <!----------------------------- 본문 시작 -------------------->
-      <div class="body-wrapper">
+      <div class="body-wrapper flex-row">
         <div class="container-fluid">
-          <!-- 페이지 타이틀 -->
-          <div class="card bg-info-subtle shadow-none position-relative overflow-hidden mb-4">
-            <div class="card-body px-4 py-3">
-              <div class="row align-items-center my-3">
-                <div class="col-9">
-                  <h4 class="fw-semibold mb-8">전자결재작성</h4>
-                  <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                      <li class="breadcrumb-item">
-                        <a class="text-muted text-decoration-none" href="../main/index.html">Home</a>
-                      </li>
-                      <li class="breadcrumb-item" aria-current="page">전자결재</li>
-                      <li class="breadcrumb-item" aria-current="page">전자결재작성</li>
-                    </ol>
-                  </nav>
-                </div>
-                <div class="col-3">
-                  <div class="text-center mb-n5">
-                    <!-- <img src="../assets/images/breadcrumb/ChatBc.png" alt="" class="img-fluid mb-n4" /> -->
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- 페이지 내용 -->
-          <div class="card">
-            <div class="card-body">
-              여기에 내용작성
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-body">
-              여기에 내용작성
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-body">
-              여기에 내용작성
-            </div>
-          </div>
-
+          <!-- 메인 전체  -->
+          <div class="container">
+          <!-- 왼쪽 박스 부분 -->
+	          <div class="r-8 left-box">
+		          <div class="card bg-info-subtle shadow-none position-relative overflow-hidden mb-4">
+		            <div class="card-body px-4 py-3">
+		              <div class="row align-items-center my-3">
+		                <div class="col-9">
+		                  <h4 class="fw-semibold mb-8">전자결재작성</h4>
+		                  <nav aria-label="breadcrumb">
+		                    <ol class="breadcrumb">
+		                      <li class="breadcrumb-item">
+		                        <a class="text-muted text-decoration-none" href="../main/index.html">Home</a>
+		                      </li>
+		                      <li class="breadcrumb-item" aria-current="page">전자결재</li>
+		                      <li class="breadcrumb-item" aria-current="page">전자결재작성</li>
+		                    </ol>
+		                  </nav>
+		                </div>
+		                <div class="col-3">
+		                  <div class="text-center mb-n5">
+		                    <!-- <img src="../assets/images/breadcrumb/ChatBc.png" alt="" class="img-fluid mb-n4" /> -->
+		                  </div>
+		                </div>
+		              </div>
+		            </div>
+		          </div>
+		
+		          <!-- 페이지 내용 -->
+		          <div>
+			          <div class="card">
+			            <div class="card-body">
+			              여기에 내용작성
+			            </div>
+			          </div>
+			
+			          <div class="card">
+			            <div class="card-body">
+			              여기에 내용작성
+			            </div>
+			          </div>
+			
+			          <div class="card">
+			            <div class="card-body">
+			              여기에 내용작성
+			            </div>
+			          </div>
+						</div>
+					</div>
+					
+					<!-- 오른쪽 박스 부분 -->
+					<div class="right-box">
+						<div class="card">
+	            <div class="card-body">
+	              날씨
+	            </div>
+	          </div>
+	
+	          <div class="card">
+	            <div class="card-body d-flex flex-row">
+	             <button type="button" class="btn bg-info-subtle text-info" id="checkInBtn">
+                 출근
+               </button>
+               <div>08:55</div>
+               <button type="button" class="btn bg-info-subtle text-info">
+                 퇴근
+               </button>
+               <div>18:01</div>
+	            </div>
+	          </div>
+	
+	          <div class="card">
+	            <div class="card-body">
+	              채팅
+	            </div>
+	          </div>
+	          
+	          <div class="card">
+	            <div class="card-body">
+	              투두
+	            </div>
+	          </div>
+					
+					</div>
+				</div>
         </div>
+        
+        
+        <script>
+        $(document).ready(function(){
+        	ajaxAttend();
+        	
+            $("#checkInBtn").click(function(){
+                $.ajax({
+                    url: "${contextPath}/member/checkin.do",
+                    type: "POST",
+                    data: {
+                        startTime: new Date().toISOString(),
+                        memNo : ${loginUser.memNo}
+                    },
+                    success: function(result) {
+                        if(result == "SUCCESS") {
+                        	alert("출근되었습니다.");
+													ajaxAttend();
+                        } 
+                    }
+                    
+                });
+            })
+            
+            function ajaxAttend(){
+            	const registDate = new Date().toISOString().split('T')[0]; // 오늘 날짜만 추출
+            	
+            	$.ajax({
+            		url:"${contextPath}/member/selectAttend.do",
+	        			type:"get",
+	        			data: {
+	                        registDate: registDate,
+	                        memNo : ${loginUser.memNo}
+	                    },
+	        			success:function(result){
+	        				
+	        				 if(result.startTime) {
+                       $("#checkInTime").text(result.startTime);
+                   }
+                   if(result.endTime) {
+                       $("#checkOutTime").text(result.endTime);
+                   }
+	        			}
+	        			
+            	})
+            	
+            }
+            
+            
+            
+           
+        })
+    </script>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
       </div><!-- body-wrapper end-->
 
       <!-- setting start 세팅 시작 ------------------------------------->
