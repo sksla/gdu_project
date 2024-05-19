@@ -157,13 +157,13 @@ public class CalendarController {
 	/**
 	 * 일정 조회 ajax
 	 * @author 김영주
-	 * @param showList (조회할 카테고리 고유번호 String배열)
-	 * @return
+	 * @param showList
+	 * @return cList => 일정정보담긴 리스트 List<CalendarDto>
 	 */
 	@ResponseBody
 	@PostMapping(value="/calList.do", produces="application/json; charset=UTF-8")
 	public List<CalendarDto> selectCalList(String[] showList){
-	
+		
 		List<CalendarDto> cList = new ArrayList<>();
 		
 		cList = calendarService.selectCalendarList(showList);
@@ -173,6 +173,7 @@ public class CalendarController {
 	
 	/**
 	 * 일정 수정 ajax
+	 * @author 김영주
 	 * @param cal
 	 * @param session
 	 * @return 처리행수(int)
@@ -202,6 +203,35 @@ public class CalendarController {
 	}
 	
 	// 일정 관련 끝----------------------------------------------------------------------
+	
+	// 학사일정 ----------------------------------------------------------------
+	/**
+	 * 학사일정 페이지 요청
+	 * 
+	 * @author 김영주
+	 * @return
+	 */
+	@GetMapping("/univCalendar.page")
+	public String univCalendarPage() {
+		return "calendar/univCalendar";
+	}
+	
+	/**
+	 * 학사일정 조회 
+	 * @author 김영주
+	 * @return univCalList => 학사일정 담긴 리스트 (List<CalendarDto>)
+	 */
+	@ResponseBody
+	@PostMapping("/univCalList.do")
+	public List<CalendarDto> selectUnivCalList(){
+		
+		List<CalendarDto> univCalList = new ArrayList<>();
+		univCalList = calendarService.selectUnivCalList();
+		return univCalList;
+	}
+	
+	
+	// 학사 일정 끝 ---------------------------------------------------------------
 	
 	// -------김영주 부분 끝 -------------------------------------------------------------
 				   

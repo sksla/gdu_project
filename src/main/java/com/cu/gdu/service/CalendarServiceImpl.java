@@ -109,6 +109,16 @@ public class CalendarServiceImpl implements CalendarService {
 	}
 
 	
+	/**
+	 * 학사 일정 조회
+	 * author 김영주
+	 */
+	@Override
+	public List<CalendarDto> selectUnivCalList() {
+		return calendarDao.selectUnivCalList();
+	}
+
+	
 	// 김영주 부분 끝-------------------------------------------------------
 
 }

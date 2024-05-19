@@ -232,6 +232,21 @@
 		</where>  
 	</delete>
 	
+	<!-- 학사 일정 조회 -->
+	<select id="selectUnivCalList" resultMap="calendarResult">
+		 select 
+		       cal_no
+		     , cal_title
+		     , cal_content
+		     , start_date
+		     , end_date
+		     , is_allday
+         , ctg.ctg_no
+		     , color
+		  from calendar c
+      join cal_ctg ctg on (ctg_type = 3 and c.ctg_no = ctg.ctg_no)  
+	</select>
+	
 	
 		  
 

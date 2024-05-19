@@ -35,4 +35,7 @@ public interface CalendarService {
 	// 일정 삭제
 	int deleteCalendar(int delType, int delNo);
 	
+	// 학사 일정 조회
+	List<CalendarDto> selectUnivCalList();
+	
 }

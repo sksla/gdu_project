@@ -108,5 +108,14 @@ public class CalendarDao {
 		return sqlSessionTemplate.delete("calendarMapper.deleteCalendar", delInfo);
 	}
 	
+	/**
+	 * 학사 일정 조회
+	 * @author 김영주
+	 * @return 학사일정 리스트 => List<CalendarDto>
+	 */
+	public List<CalendarDto> selectUnivCalList(){
+		return sqlSessionTemplate.selectList("calendarMapper.selectUnivCalList");
+	}
+	
 	
 }

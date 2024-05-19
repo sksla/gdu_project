@@ -242,12 +242,6 @@
           </div>
 
           
-
-          <!-- Button to Open the Modal -->
-          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailForm">
-            Open modal
-          </button>
-
           <!-- 일정 상세조회 모달창 -->
           <div class="modal" id="detailForm">
             <div class="modal-dialog">
