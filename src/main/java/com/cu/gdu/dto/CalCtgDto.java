@@ -1,6 +1,7 @@
 package com.cu.gdu.dto;
 
 import java.sql.Date;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,5 +25,7 @@ public class CalCtgDto {
 	private Date registDate; 
 	private Date modifyDate; 
 	private String status;
+	private int shareCount;
+	private List<ShareMemDto> sList;
 	
 }

@@ -1,7 +1,9 @@
 package com.cu.gdu.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -27,6 +30,8 @@ import lombok.extern.slf4j.Slf4j;
 public class CalendarController {
 	private final CalendarService calendarService;
 	
+	
+	// -------김영주 시작 -------------------------------------------------------------
 	/**
 	 * 일정 페이지 요청
 	 * 
@@ -99,7 +104,7 @@ public class CalendarController {
 	 * @return result : insert문 처리 행 수
 	 */
 	@ResponseBody
-	@PostMapping("/inserEvt.do")
+	@PostMapping("/insertEvt.do")
 	public int insertEvent(CalendarDto cal
 						 , HttpSession session){
 		
@@ -126,6 +131,30 @@ public class CalendarController {
 		
 		return cList;
 	}
+	
+	@ResponseBody
+	@PostMapping("/updateEvt.do")
+	public int updateEvent(CalendarDto cal, HttpSession session) {
+		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
+		cal.setCalWriter(String.valueOf(loginUser.getMemNo()));
+		
+		return calendarService.updateCalendar(cal);
+	}
+	
+	@ResponseBody
+	@PostMapping("/deleteEvt.do")
+	public int deleteEvt(@RequestParam(value="type", defaultValue="1") int delType
+			           , int delNo) {
+		
+		Map<String, Integer> delInfo = new HashMap<>();
+		delInfo.put("type", delType);
+		delInfo.put("delNo", delNo);
+		
+		return calendarService.deleteCalendar(delInfo);
+	}
+	
+	
+	// -------김영주 부분 끝 -------------------------------------------------------------
 				   
 		
 }

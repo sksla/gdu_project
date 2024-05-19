@@ -9,15 +9,19 @@
 		<result column="ctg_name" property="ctgName"/>
 		<result column="color" property="color"/>
 		<result column="is_show" property="isShow"/>
-		<result column="regist_date" property="registDate"/>
-		<result column="modify_date" property="modifyDate"/>
 		<result column="status" property="status"/>
+		<result column="count" property="shareCount"/>
+		<collection resultMap="shareMemResult" property="sList"/>
+		
 	</resultMap>
 	
 	<resultMap type="CalendarDto" id="calendarResult">
 		<id column="cal_no" property="calNo" />
+		<!-- 
 		<result column="ctg_no" property="ctgNo" />
+		<result column="ctg_type" property="ctgType"/>
 		<result column="color" property="color" />
+		 -->
 		<result column="cal_title" property="calTitle" />
 		<result column="cal_content" property="calContent" />
 		<result column="start_date" property="startDate" />
@@ -28,54 +32,46 @@
 		<result column="modify_date" property="modifyDate" />
 		<result column="modifier_name" property="modifier" />
 		<result column="status" property="status" />
+		<association resultMap="calCtgResult" property="ctg" />
 	</resultMap>
+	
+	<resultMap type="ShareMemDto" id="shareMemResult">
+		<result column="share_ctg_no" property="shareCtgNo"/>
+		<result column="share_mem_no" property="shareMemNo"/>
+		<result column="share_mem_name" property="shareMemName"/>
+		<result column="right_level" property="rightLevel"/>
+	</resultMap>
+	
+	
 	
 	<!-- 캘린더(일정카테고리) 조회 -->
 	<select id="selectCalCtgList" resultMap="calCtgResult">
 		select 
-		       ctg_no
+		       c.ctg_no
 		     , ctg_type
-		     , mem_name
+		     , cm.mem_name cal_writer
 		     , ctg_name
 		     , color
 		     , is_show
+		     , s.ctg_no share_ctg_no
+         , s.mem_no share_mem_no
+         , sm.mem_name share_mem_name
+         , right_level
+         , (
+             select count(*)
+               from share_mem sc
+               where sc.ctg_no = ctg_no
+            ) count
 		  from cal_ctg c
-      join member on (ctg_writer = mem_no) 
+      join member cm on (ctg_writer = mem_no)
+      left join share_mem s on (s.ctg_no = c.ctg_no)
+      left join member sm on (s.mem_no = sm.mem_no)
      where c.status = 'Y'
-       and ctg_writer = #{memNo} 
+       and ctg_writer = #{memNo}
+       or s.mem_no = #{memNo}
      order
-        by ctg_no asc  
+        by c.ctg_no asc 
 		       
-	</select>
-	
-	<!-- 일정 조회 -->
-	<select id="selectCalendarList" resultMap="calendarResult">
-		select 
-		       cal_no
-		     , e.ctg_no
-		     , color
-		     , cal_title
-		     , cal_content
-		     , e.start_date
-		     , e.end_date
-		     , is_allday
-		     , to_char(e.regist_date, 'YYYY-MM-DD HH24:MI') regist_date
-		     , cw.mem_name cal_writer
-		     , to_char(e.modify_date, 'YYYY-MM-DD HH24:MI') modify_date
-		     , mw.mem_name modifier_name
-		     , e.status
-		  from calendar e
-		  join cal_ctg ctg on (e.ctg_no = ctg.ctg_no) 
-		  join member cw on (cal_writer = cw.mem_no)
-		  left join member mw on (modifier_no = mw.mem_no) 
-		 <where>
-		  e.status = 'Y'
-		 	<foreach item="item" collection="array"
-					open="and e.ctg_no in (" separator="," close=")">
-				#{item}
-			</foreach>
-		 </where>
-		   
 	</select>
 	
 	<!-- 캘린더(카테고리) 등록 -->
@@ -99,6 +95,57 @@
 		  )
 	</insert>
 	
+	<!-- 공유멤버 등록 -->
+	<insert id="insertShareMem">
+		insert
+		  into share_mem
+		  (
+		  	ctg_no
+		  , mem_no
+		  , right_level	
+		  )
+		  values
+		  (
+		  	seq_ctg_no.currval
+		  , #{shareMemNo}
+		  , #{rightLevel}	
+		  )
+		  
+	</insert>
+	
+	<!-- 일정 조회 -->
+	<select id="selectCalendarList" resultMap="calendarResult">
+		select 
+		       cal_no
+		     , cal_title
+		     , cal_content
+		     , e.start_date
+		     , e.end_date
+		     , is_allday
+		     , to_char(e.regist_date, 'YYYY-MM-DD HH24:MI') regist_date
+		     , cw.mem_name cal_writer
+		     , to_char(e.modify_date, 'YYYY-MM-DD HH24:MI') modify_date
+		     , mw.mem_name modifier_name
+		     , e.status
+		     , e.ctg_no
+		     , ctg_type
+		     , ctg_name
+		     , color
+		  from calendar e
+		  join cal_ctg ctg on (e.ctg_no = ctg.ctg_no) 
+		  join member cw on (cal_writer = cw.mem_no)
+		  left join member mw on (modifier_no = mw.mem_no) 
+		 <where>
+		  e.status = 'Y'
+		 	<foreach item="item" collection="array"
+					open="and e.ctg_no in (" separator="," close=")">
+				#{item}
+			</foreach>
+		 </where>
+		 order
+		    by cal_no asc  
+	</select>
+
 	<!-- 일정 등록 -->
 	<insert id="insertCalendar">
 		insert
@@ -126,6 +173,40 @@
 		  )
 	
 	</insert>
+	
+	<!-- 일정 수정 -->
+	<update id="updateCalendar">
+		update
+		       calendar
+		   set ctg_no = #{ctgNo}
+			   , cal_title = #{calTitle}
+			   , cal_content = #{calContent}
+			   , start_date = #{startDate}
+			   , end_date = #{endDate}
+			   , is_allday = #{isAllday}
+			   , modifier_no = #{calWriter}
+			   , modify_date = sysdate
+		 where cal_no = #{calNo}            
+	</update>
+	
+	<!-- 일정 삭제 -->
+	<delete id="deleteCalendar">
+		delete 
+		  from calendar
+		<where>
+			<choose>
+				<when test='type != null and type == 1'>
+					cal_no = #{delNo}
+				</when>
+				<when test='type != null and type == 2'>
+					ctg_no = #{delNo}
+				</when>
+			</choose>
+			
+		</where>  
+	</delete>
+	
+	
 		  
 
 </mapper>

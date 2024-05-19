@@ -17,7 +17,9 @@ public class CalendarDto {
 
 	private int calNo;
 	private int ctgNo;
-	private String color;
+	//private String ctgType;
+	//private String color;
+	private CalCtgDto ctg;
 	private String calTitle;
 	private String calContent;
 	private String startDate;

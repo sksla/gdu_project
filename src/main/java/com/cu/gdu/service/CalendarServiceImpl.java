@@ -1,6 +1,7 @@
 package com.cu.gdu.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ public class CalendarServiceImpl implements CalendarService {
 	
 	private final CalendarDao calendarDao;
 
+	// 김영주 -------------------------------------------------------
 
 	/**
 	 * 캘린더(카테고리) 조회
@@ -52,5 +54,25 @@ public class CalendarServiceImpl implements CalendarService {
 	public List<CalendarDto> selectCalendarList(String[] showList) {
 		return calendarDao.selectCalendarList(showList);
 	}
+
+	/**
+	 * 일정 수정
+	 * @author 김영주
+	 */
+	@Override
+	public int updateCalendar(CalendarDto cal) {
+		return calendarDao.updateCalendar(cal);
+	}
+
+	/**
+	 * 일정 삭제
+	 * @author 김영주
+	 */
+	@Override
+	public int deleteCalendar(Map<String, Integer> delInfo) {
+		return calendarDao.deleteCalendar(delInfo);
+	}
+	
+	// 김영주 부분 끝-------------------------------------------------------
 
 }

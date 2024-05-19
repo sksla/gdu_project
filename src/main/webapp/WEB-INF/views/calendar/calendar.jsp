@@ -29,22 +29,7 @@
         month:'월간',
         list:'목록'
       },
-      selectable: true,
-      dateClick:function(info){
-        $("#editForm").modal("show");
-        $("#startDate").val(info.dateStr);
-        $("#endDate").val(info.dateStr);
-        $("#startTime").val("09:00");
-        $("#endTime").val("09:30");
-      },
-      select:function(info){
-        $("#editForm").modal("show");
-        $("#startDate").val(info.startStr);
-        $("#endDate").val(info.endStr);
-        $("#startTime").val("09:00");
-        $("#endTime").val("09:30");
-      },
-      views:{
+			views:{
         
       },
       events:{
@@ -128,6 +113,23 @@
     border: 2px solid black ;
   }
   /* ----- ------------------------------------- ------ */
+  
+ 	.app-calendar .fc .fc-day-sun .fc-daygrid-day-number{
+	  color: red;
+	  text-decoration: none;
+	}
+	
+	
+	/* 토요일 날짜 파란색 */
+	.app-calendar .fc .fc-day-sat .fc-daygrid-day-number{
+	  color: blue;
+	  text-decoration: none;
+	}
+	.app-calendar .fc-v-event .fc-event-main  {
+		border:1px solid white;
+	}
+	
+	.fc-event{cursor:pointer;}
 </style>
 
 </head>
@@ -259,42 +261,26 @@
 
                 <!-- Modal body -->
                 <div class="modal-body">
+                	<input type="hidden" name="calNo" value="">
                   <table class="table">
                     <tbody>
                       <tr>
                         <th width="100px">캘린더</th>
                         <td>
                           <button type="button" class="label" disabled>
-                            <span style="background-color: red;"></span>
+                            <span id="ctgColor" style="background-color: red;"></span>
                           </button> &nbsp;
-                          나의 프로젝트
-                        </td>
-                        <!-- 공유캘린더일 경우-->
-                        <!--
-                        <td>
-                          <button type="button" class="label" disabled>
-                            <span style="background-color: red;"></span>
-                          </button> &nbsp;
-                          공유캘린더 
-                          <button class="btn btn-sm btn">4(공유하는 사람 수)</button>
-                        </td>
-                        -->
+                          <span id="ctgName"></span>
+                          <button id="shareListBtn" class="btn btn-sm">4(공유하는 사람 수)</button>
+                        </td> 
                       </tr>
                       <tr>
                         <th>일정 제목</th>
-                        <td>일정 제목111</td>
+                        <td id="detail_calTitle">일정 제목111</td>
                       </tr>
                       <tr>
                         <th>일정 시간</th>
-                        <td>yyyy-mm-dd hh:mm ~ yyyy-mm-dd hh:mm</td>
-                        <!-- 종일일 경우 -->
-                        <!--
-                        <td>yyyy-mm-dd(하루) or yyyy-mm-dd ~ yyyy-mm-dd(여러날) </td>
-                        -->
-                      </tr>
-                      <tr>
-                        <th>사용 용도</th>
-                        <td>이렇게 저렇게 사용</td>
+                        <td id="detail_date">yyyy-mm-dd hh:mm ~ yyyy-mm-dd hh:mm</td>
                       </tr>
                       <!-- * 공유 캘린더 일정일 경우 -->
                       <!--
@@ -309,7 +295,7 @@
                       -->
                       <tr>
                         <th>일정 내용</th>
-                        <td>일정 내용내용</td>
+                        <td id="detail_content">일정 내용내용</td>
                       </tr>
                     </tbody>
                   </table>
@@ -318,12 +304,14 @@
                 <!-- Modal footer -->
                 <div class="modal-footer justify-content-center">
                   <!--개인 캘린더 또는 공유캘린더의 등록자, 등록권한이 있는 경우-->
-                  <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateForm">수정</button>
-                  <button type="submit" class="btn btn-danger">삭제</button>
-                  <!-- --------------------------------------------------- -->
+                  <div class="editBtnForm">
+	                  <button type="button" class="btn btn-outline-secondary editModalBtn" data-bs-dismiss="modal">수정</button>
+	                  <button type="button" class="btn btn-outline-danger deleteEvtBtn" onclick="ajaxDeleteEvent();" data-bs-dismiss="modal">삭제</button> 
+                  </div>
                   <!-- 공유 캘린더일 경우 조회권한만 있는 사람-->
-                  <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">확인</button> -->
-                  <!-- ----------------------------------- -->
+                  <div class="onlyConfirmBtn" style="display:none;">
+                  	<button type="button" class="btn bg-info-subtle text-info" data-bs-dismiss="modal">확인</button>
+                  </div>
                 </div>
 
               </div>
@@ -346,6 +334,8 @@
 
                 <!-- Modal body -->
                 <div class="modal-body">
+                	<!-- 일정 수정시 일정번호 전달할 input:hidden-->
+                	<input type="hidden" id="calNo" name="calNo" value="">
                   <table class="table">
                     <tbody>
                       <tr>
@@ -415,84 +405,16 @@
 
                 <!-- Modal footer -->
                 <div class="modal-footer justify-content-center">
-                  <button type="button" class="btn btn-primary" onclick="ajaxInsertEvt();" data-bs-dismiss="modal">등록</button>
-                  <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">취소</button>
+                	<button type="button" class="btn btn-outline-secondary updateEvtBtn" onclick="ajaxUpdateEvent();" data-bs-dismiss="modal">수정</button>
+                  <button type="button" class="btn btn-outline-primary insertEvtBtn" onclick="ajaxInsertEvt();" data-bs-dismiss="modal">등록</button>
+                  <button type="button" class="btn btn bg-info-subtle text-info" data-bs-dismiss="modal">취소</button>
                 </div>
 
               </div>
             </div>
           </div>
 
-          <!-- 일정 수정 모달창 -->
-          <div class="modal" id="updateForm">
-            <div class="modal-dialog">
-              <div class="modal-content">
-
-                <!-- Modal Header -->
-                <div class="modal-header">
-                  <h4 class="modal-title">일정 수정</h4>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-
-                <!-- Modal body -->
-                <div class="modal-body">
-                  <table class="table">
-                    <tbody>
-                      <tr>
-                        <th width="100px">캘린더</th>
-                        <td>
-                          <select name="">
-                            <!-- 해당 회원의 개인,공유캘린더(일정카테고리) 목록-->
-                            <option>나의 프로젝트</option>
-                            <option selected>공유 캘린더(공유캘린더 생성자 이름)</option>
-                            <option></option>
-                          </select>
-                        </td>
-                      </tr>
-                      <tr>
-                        <th>일정 제목</th>
-                        <td><input type="text" style="width:250px;" value="기존 일정 제목" required></td>
-                      </tr>
-                      <tr>
-                        <th>시작</th>
-                        <td>
-                          <input type="date" name="" value="" required>
-                          <select width="250px">
-                            <option value="" selected>오전 12시 00분</option>
-                            <option>오전 12시 30분</option>
-                          </select>&nbsp;
-                          <input type="checkbox" name="isAllday" >
-                          <label for="isAllday">종일</label>
-                        </td>
-                      </tr>
-                      <tr>
-                        <th>종료</th>
-                        <td>
-                          <input type="date" name="" value="" required>
-                          <select>
-                            <option>오전 12시 00분</option>
-                            <option selected>오전 12시 30분</option>
-                          </select>
-                        </td>
-                      </tr>
-                      <tr>
-                        <th>일정 내용</th>
-                        <td><textarea name="" cols="35" rows="5">기존 일정 내용</textarea></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-
-                <!-- Modal footer -->
-                <div class="modal-footer justify-content-center">
-                  <button type="button" class="btn btn-primary">수정</button>
-                  <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">취소</button>
-                </div>
-
-              </div>
-            </div>
-          </div>
-
+          
           <!-- 개인 캘린더(일정카테고리) 등록 모달창 -->
           <div class="modal" id="insert_my">
             <div class="modal-dialog">
@@ -627,6 +549,13 @@
           </div>
 
           <script>
+          
+	       		// 카테고리 리스트 배열
+	          let ctgList = new Array();
+	          // 공유 캘린더 리스트 배열
+	          let shareList = new Array();
+         		// 일정 담을 배열
+       			let calList = [];
 
             $(document).ready(function(){
             	
@@ -655,6 +584,7 @@
               
               
             })
+            
 
             // 캘린더 색상 체크박스 중복 선택 방지
             function onlyOneCheck(chk){
@@ -670,17 +600,25 @@
             // 일정 등록 버튼 클릭
             function clickEvtBtn(){
             	
-            	$("#editForm").modal("show");
-
-              let today = new Date();
-
+            	$("#editForm .modal-title").html("일정 등록");
+            	
+            	let today = new Date();
+            	
               $("#startDate").val( today.toISOString().slice(0, 10));
               $("#endDate").val( today.toISOString().slice(0, 10));
 
               $("#startTime").val("09:00");
               $("#endTime").val("09:30");
               
+              // 수정 버튼 안보이게
+              $("#editForm .updateEvtBtn").css("display", "none");
+              // 등록 버튼 보이게
+              $("#editForm .insertEvtBtn").css("display", "inline");
+              
+            	$("#editForm").modal("show");
+    
             }
+            
             
             
          		// 캘린더 색상 체크여부 유효성검사(type=1:개인, type=2:공유)
@@ -706,11 +644,12 @@
                 return false;
               }
             }
+
          		
          		// 일정 조회용 ajax
          		function ajaxSelectCalList(){
-         			// 일정 담을 배열
-         			let calList = [];
+         			
+         			calList.length = 0;
          			
          			// 조회하고자 하는 캘린더 카테고리 배열
          			let ctgArray = [];
@@ -734,20 +673,25 @@
              					if(rep.length > 0){
              						for(let i=0; i<rep.length; i++){
              							
-             							let startTimeStr = rep[i].isAllday == 'N' ? rep[i].startDate.split(" ")[1] : '';
-             							let endTimeStr = rep[i].isAllday == 'N' ? rep[i].endDate.split(" ")[1] : '';
+             							let isAllday = rep[i].isAllday;
+             							let startTimeStr = isAllday == 'N' ? rep[i].startDate.split(" ")[1] : '';
+             							let endTimeStr = isAllday == 'N' ? rep[i].endDate.split(" ")[1] : '';
+             							
              							
              							calList.push({
              								id:rep[i].calNo,
-             								ctgNo:rep[i].ctgNo,
+             								ctgNo:rep[i].ctg.ctgNo,
+             								ctgType:rep[i].ctg.ctgType,
              								title:rep[i].calTitle,
              								start:new Date(rep[i].startDate),
              								end:new Date(rep[i].endDate),
-             								timeStart:startTimeStr,
-             								timeEnd:endTimeStr,
+             								startStr:rep[i].startDate, // 일정 상세조회용
+             								endStr:rep[i].endDate, // 일정 상세조회용
+             								stTime:startTimeStr, // 일정 수정용
+             								edTime:endTimeStr,	// 일정 수정용
              								allDay:(rep[i].isAllday == 'Y' ? true : false),
              								content:rep[i].calContent,
-             								color:rep[i].color,
+             								color:rep[i].ctg.color,
              								calWriter:rep[i].calWriter,
              								registDate:rep[i].registDate,
              								modifier:rep[i].modifier,
@@ -789,30 +733,219 @@
        		        month:'월간',
        		        list:'목록'
        		      },
+       		   		dayMaxEventRows: 3, 
+       		   		eventMaxStack: 3,
        		      selectable: true,
-       		      dateClick:function(info){
-       		        $("#editForm").modal("show");
-       		        $("#startDate").val(info.dateStr);
-       		        $("#endDate").val(info.dateStr);
-       		        $("#startTime").val("09:00");
-       		        $("#endTime").val("09:30");
-       		      },
-       		      select:function(info){
-       		        $("#editForm").modal("show");
-       		        $("#startDate").val(info.startStr);
-       		        $("#endDate").val(info.endStr);
-       		        $("#startTime").val("09:00");
-       		        $("#endTime").val("09:30");
-       		      },
-       		      views:{
-       		        
-       		      },
-       		      events:calList
+       		      selectMirror: true,
+	       	      select:function(info){
+	       	    		let startStr = info.startStr;
+	                let endStr = info.endStr;
+	
+	                $("#editForm .modal-title").html("일정 등록");
+	                
+	                if(startStr.indexOf("T") == -1 || endStr.indexOf("T") == -1){
+	                	// 월간 달력에서 날짜 선택했을 때(yyyy-mm-dd);
+	                  let endDate = new Date(info.end); // 2024-05-16까지 선택했을 경우 날짜는 2024-05-17T00:00:00으로 됨
+	                  endDate.setDate(endDate.getDate() - 1);
+	                  let eYear = endDate.getFullYear();
+	                  let eMonth = (endDate.getMonth() + 1) < 10 ? "0" + (endDate.getMonth() + 1) : (endDate.getMonth() + 1);
+	                  let eDate = endDate.getDate() < 10 ? "0" + endDate.getDate() : endDate.getDate();
+	                  let endDateStr = eYear + "-" + eMonth + "-" + eDate;
+	                  $("#startDate").val(info.startStr);
+	                  $("#endDate").val(endDateStr);
+	                  $("#startTime").val("09:00");
+	                  $("#endTime").val("09:30");
+	                }else{
+	                	// 주간, 일간 달력에서 날짜 선택했을 때(yyyy-mm-ddThh:mm:00~)
+	                  $("#startDate").val(info.startStr.slice(0, 10));
+	                  $("#endDate").val(info.endStr.slice(0, 10));
+	                  $("#startTime").val(info.startStr.slice(11, 16));
+	                  $("#endTime").val(info.endStr.slice(11, 16));
+	                }
+	             		// 수정 버튼 안보이게
+	                $("#editForm .updateEvtBtn").css("display", "none");
+	                // 등록 버튼 보이게
+	                $("#editForm .insertEvtBtn").css("display", "inline");
+	                
+	                $("#editForm").modal("show");
+	                
+	       	      },
+       		      events:calList,
+		       		  eventDataTransform: function(event) {                                                                                                                                
+		       				if(event.allDay && event.start !== event.end) {                                                                                                                                               
+			       				// 이벤트 데이터에서 end 날짜 값을 가져옴
+			       			 	let end = new Date(event.end);
+	
+			       			  // 하루를 더함
+			       			  end.setDate(end.getDate() + 1);
+	
+			       			  event.end = end; 
+	
+				       			return event;  
+		       			                                                                                                                  
+		       				}
+		       			}, 
+		       			eventClick:function(info){ // 일정 클릭시
+		       				let event = info.event;
+		       			
+		       				
+		       				let id = event.id;
+									let ctgNo = event.extendedProps.ctgNo;
+									let ctgType = event.extendedProps.ctgType;
+									let title= event.title;
+									let start = event.start;
+									let end = event.end;
+									let startStr = event.extendedProps.startStr;
+									let endStr = event.extendedProps.endStr;
+									let stTime = event.extendedProps.stTime;
+									let edTime = event.extendedProps.edTime;
+									let allDay = event.allDay;
+									let isAllday = ( event.allDay ? 'Y' : 'N' );
+									let content = event.extendedProps.content;
+									let color = event.color
+									let calWriter = event.extendedProps.calWriter;
+									let registDate = event.extendedProps.registDate;
+									let modifier = event.extendedProps.modifier;
+									let modifyDate = event.extendedProps.modifyDate;
+									
+									
+									if(event.allDay && start !== end){
+										// 이벤트 데이터에서 end 날짜 값을 가져옴
+			       			 	let fixedEnd = new Date(end);
+	
+			       			  // 하루를 다시 빼기
+			       			  fixedEnd.setDate(end.getDate() - 1);
+	
+			       			  end = fixedEnd;
+									}
+									
+									// 일정이 속한 캘린더(카테고리) 찾기
+									for(let i=0; i<ctgList.length; i++){
+										if(ctgNo == ctgList[i].ctgNo){
+											$("#ctgColor").css("background-color", ctgList[i].color);
+											$("#ctgName").html(ctgList[i].ctgName);
+											
+											// 공유 개인 일정에 따라 공유멤버 볼 수 있는 버튼 보이기 여부 결정
+											if(ctgType == "1"){ // 개인
+												$("#shareListBtn").css("display", "none");
+												// 수정삭제버튼 보이고 확인버튼 안보임
+												$("#detailForm .editBtnForm").css("display", "block");
+												$("#detailForm .onlyConfirmBtn").css("display", "hidden");
+											
+												
+											}else{ // 공유
+												$("#shareListBtn").css("display", "inline");
+											  $("#shareListBtn").html(ctgList[i].shareCount);
+											  
+											  let sList = ctgList[i].sList;
+											  
+											  for(let j=0; j<sList.length; j++){
+												  if(sList[j].shareMemNo == "${loginUser.memNo}" || sList[j].rightLevel == "1"){
+													  // 로그인한 회원의 권한이 조회/등록일 경우 => 수정삭제버튼 보임
+													  $("#detailForm .editBtnForm").css("display", "block");
+														$("#detailForm .onlyConfirmBtn").css("display", "hidden");
+												  }else{
+													  // 로그인한 회원의 권한이 조회만일 경우 => 확인버튼 보임
+													  $("#detailForm .editBtnForm").css("display", "hidden");
+														$("#detailForm .onlyConfirmBtn").css("display", "block");
+												  }
+											  }
+											}
+											
+										}
+									}
+									
+									// 일정 번호
+									$("#detailForm input[name='calNo']").val(id);
+									
+									
+									// 일정제목
+									$("#detailForm #detail_calTitle").text(title);
+									
+									// 일정 시간(기간)
+									if(allDay && startStr == endStr){
+										// 종일 일정이고 시작날짜와 끝날짜가 같을 때
+										$("#detailForm #detail_date").text(startStr);
+									}else{
+										$("#detailForm #detail_date").text(startStr + " ~ " + endStr);
+									}
+									
+									// 일정 내용
+									if(content == "" || content == null){
+										$("#detail_content").text("내용 없음");
+									}else{
+										
+										$("#detailForm #detail_content").text(content);
+									}
+									
+			       			// 수정 버튼 클릭시 모달창
+									$("#detailForm .editBtnForm .editModalBtn").on("click", function(){
+										
+										$("#editForm .modal-title").html("일정 수정");
+										
+										// 모달창 초기화
+										resetEditModal();
+										$("#editForm #calNo").val(id); // 일정번호
+										$("#editForm #selectCtg").val(ctgNo);
+										$("#editForm #calTitle").val(title);
+										$("#editForm #startTime").val(stTime)
+										$("#editForm #endTime").val(edTime);
+										
+										if(allDay){
+											
+											$("#editForm #startDate").val(startStr);
+											$("#editForm #endDate").val(endStr);
+											$("#isAllday").prop("checked", true);
+											$("#startTime").val("09:00");
+		                  $("#endTime").val("09:30");
+											$("#startTime").prop("disabled", true);
+		                  $("#endTime").prop("disabled", true);
+		           
+										}else{
+											$("#isAllday").prop("checked", false);
+											$("#startTime").prop("disabled", false);
+		                  $("#endTime").prop("disabled", false);
+											$("#editForm #startDate").val(startStr.slice(0,10));
+											$("#editForm #endDate").val(endStr.slice(0,10));
+											
+										}
+										
+										$("#editForm #calContent").val(content);
+										
+										// 수정 버튼 보이게
+			              $("#editForm .updateEvtBtn").css("display", "inline");
+			              // 등록 버튼 안보이게
+			              $("#editForm .insertEvtBtn").css("display", "none");
+										
+										$("#editForm").modal("show");
+										
+										
+									});
+			       			
+									$("#detailForm .editBtnForm .deleteEvtBtn").val(id);
+									
+									$("#detailForm").modal("show");
+								
+		       	
+		       			}
+		       			
+		       			
        		    
        		    })
        		    
-       		 		calendar.render();
-       		   
+     		 			calendar.render();
+       		    
+	       		  $(".fc-day-number").each(function(){
+	
+	       				var day = $(this).text();
+	       				$(this).text("");
+	
+		       			day = day.replace("일","");
+	
+	       				$(this).text(day);
+	
+	       			});
+       		    
          			
          		}
          		
@@ -834,6 +967,10 @@
             			if(rep.length > 0){
             				
 	            			for(let i=0; i<rep.length; i++){
+	            				
+	            				// 조회된 ctgDto를 카테고리 배열에 넣기
+	            				ctgList.push(rep[i]);
+	            				
 	            				if(rep[i].ctgType == "1"){
 	            					
 	            					selectCtg += "<option value='" + rep[i].ctgNo + "'>" + rep[i].ctgName + "</option>";
@@ -845,7 +982,7 @@
 			                         +				"<span>" + rep[i].ctgName + "</span>"
 			                         +			"</div>"
 			                         +			"<div>"
-			                         +				"<button type='button' class='btn btn-sm btn-outline-primary'>수정</button>"
+			                         +				"<button type='button' class='btn btn-sm'><i class='ti ti-edit'></i></button>"
 			                         +			"</div>"
 			                         +		"</div>"
 			                         + "</li>";
@@ -861,10 +998,13 @@
 				                         +				"<span>" + rep[i].ctgName + "</span>"
 				                         +			"</div>"
 				                         +			"<div>"
-				                         +				"<button type='button' class='btn btn-sm btn-outline-primary'>수정</button>"
+				                         +				"<button type='button' class='btn btn-sm btn-outline-primary'><i class='ti ti-edit'></button>"
 				                         +			"</div>"
 				                         +		"</div>"
 				                         + "</li>";
+				                         
+				                // 공유멤버 담기         
+				                shareList.push(rep[i].sList);         
 	            				}
 	            			}
             			}else{
@@ -889,13 +1029,39 @@
        		    
             }
             
+            // 일정 수정, 등록용 모달창 초기화
+            function resetEditModal(){
+            	// 등록, 수정 모달창 안의 입력창 값 초기화
+            	let today = new Date();
+            	
+            	
+							$("#selectCtg option").each(function(){
+								if($(this).prop("selected")){
+									$(this).prop("selected", false);
+								}
+							})
+							if($("isAllday").prop("checked")){
+								$("#startTime").prop("disabled", false);
+								$("#endTime").prop("disabled", false);
+							}
+            	$("#editForm #calNo").val("");
+							$("#calTitle").val("");
+              $("#startDate").val( today.toISOString().slice(0, 10));
+              $("#endDate").val( today.toISOString().slice(0, 10));
+							$("#startTime").val("09:00");
+							$("#endTime").val("09:30");
+							$("#isAllday").prop("checked", false);
+							$("#calContent").val("");
+            }
+            
+            
          		// 일정 등록용 ajax
          		function ajaxInsertEvt(){
          			// 일정 제목, 내용 value값 가져오기
          			let evtTitle = document.getElementById("calTitle").value;
          			let evtContent = document.getElementById("calContent").value;
          			
-         			// 캘린더 카테고리 생성 여부
+         			// 캘린더 카테고리 생성 여부, 카테고리 번호
          			let ctgValue = document.getElementById("selectCtg").value;
          			
          			// 종일 체크박스 체크박스 체크 여부 가져오기
@@ -926,7 +1092,7 @@
 	            	alert("종료 시간은 시작 시간보다 이후여야 합니다.");
 	                
 	            }else{ //
-	            	console.log("ajax요청 가능");
+	            	//console.log("ajax요청 가능");
 	            	let startDateTime = document.getElementById("startDate").value;
 	            	let endDateTime = document.getElementById("endDate").value;
 	            	
@@ -934,16 +1100,16 @@
 	            		startDateTime += " " + startTime;
 	            		endDateTime += " " + endTime;
 	            	}
-	            	
+	            	/*
 	            	console.log("ctgValue", ctgValue);
 	            	console.log("evtTitle", evtTitle);
 	            	console.log("startDateTime", startDateTime);
 	            	console.log("endDateTime", endDateTime);
 	            	console.log("evtContent", evtContent);
 	            	console.log("isAllday", isAllday);
-	            	
+	            	*/
 	            	$.ajax({
-	            		url:"${contextPath}/calendar/inserEvt.do",
+	            		url:"${contextPath}/calendar/insertEvt.do",
 	            		type:"post",
 	            		data:{
 	            			ctgNo:ctgValue,
@@ -954,51 +1120,20 @@
 	            			isAllday:isAllday
 	            		},
 	            		success:function(result){
-	            			console.log(result);
 	            			
+            				// 모든 입력창 값 초기화
+            				resetEditModal();
+            				
 	            			if(result > 0){
 	            				
-	            				// 모든 입력창 값 초기화
-	            				$("#selectCtg option").each(function(){
-	            					if($(this).prop("selected")){
-	            						$(this).prop("selected", false);
-	            					}
-	            				})
-	            				if($("isAllday").prop("checked")){
-	            					$("#startTime").prop("disabled", false);
-	            					$("#endTime").prop("disabled", false);
-	            				}
-	            				$("#calTitle").val("");
-	            				$("#startDate").val(new Date());
-	            				$("#endDate").val(new Date());
-	            				$("#startTime").val("09:00");
-	            				$("#endTime").val("09:30");
-	            				$("#isAllday").prop("checked", false);
-	            				$("#calContent").val("");
 	            				
 	            				alert("일정을 성공적으로 등록했습니다.");
 	            			}else{
 	            				
-	            				// 모든 입력창 값 초기화
-	            				$("#selectCtg option").each(function(){
-	            					if($(this).prop("selected")){
-	            						$(this).prop("selected", false);
-	            					}
-	            				})
-	            				if($("isAllday").prop("checked")){
-	            					$("#startTime").prop("disabled", false);
-	            					$("#endTime").prop("disabled", false);
-	            				}
-	            				$("#calTitle").val("");
-	            				$("#startDate").val(new Date());
-	            				$("#endDate").val(new Date());
-	            				$("#startTime").val("09:00");
-	            				$("#endTime").val("09:30");
-	            				$("#isAllday").prop("checked", false);
-	            				$("#calContent").val("");
-	            				
 	            				alert("일정 등록에 실패했습니다. 잠시후 다시 시도해주세요.");
 	            			}
+	            			
+	            			ajaxSelectCalList();
 	            			
 	            		},
 	            		error:function(){
@@ -1010,6 +1145,126 @@
 	
 	           
 	         	}
+         		
+         		
+         		
+         		// 일정 수정용 ajax
+         		function ajaxUpdateEvent(){
+         			// 일정 번호 value값 가져오기
+         			let calNoValue = document.getElementById("calNo").value;
+         			
+         			// 일정 제목, 내용 value값 가져오기
+         			let evtTitle = document.getElementById("calTitle").value;
+         			let evtContent = document.getElementById("calContent").value;
+         			
+         			// 캘린더 카테고리 생성 여부, 카테고리 번호값
+         			let ctgValue = document.getElementById("selectCtg").value;
+         			
+         			// 종일 체크박스 체크박스 체크 여부 가져오기
+	            let isAlldayChecked = document.getElementById("isAllday").checked;
+         			let isAllday = isAlldayChecked ? 'Y' : 'N';
+	
+	            // 시작 및 종료 날짜 가져오기
+	            let startDate = new Date(document.getElementById("startDate").value);
+	            let endDate = new Date(document.getElementById("endDate").value);
+	
+	            // 시작 및 종료 시간 가져오기
+	            let startTime = document.getElementById("startTime").value;
+	            let endTime = document.getElementById("endTime").value;
+	
+	            // 시간 비교 (시간 형식을 24시간 형식으로 변환하여 비교)
+	            let startHour = parseInt(startTime.split(":")[0]);
+	            let endHour = parseInt(endTime.split(":")[0]);
+	            
+	            if(ctgValue == 0){
+	            	// 캘린더 x = value값 0 | 캘린더 o = value값 > 0
+	            	alert("생성된 캘린더가 없습니다. 캘린더를 먼저 생성해주세요.");
+	            }else if (startDate > endDate) { 
+	            	// 날짜 비교
+	            	alert("종료 날짜는 시작 날짜보다 이후여야 합니다.");
+	                
+	            }else if (!isAlldayChecked && (startHour > endHour || (startHour === endHour && parseInt(startTime.split(":")[1]) >= parseInt(endTime.split(":")[1])) ) ) {
+	            	// 종일선택되지 않았을 때의 시간 비교
+	            	alert("종료 시간은 시작 시간보다 이후여야 합니다.");
+	                
+	            }else{ //
+	            	//console.log("ajax요청 가능");
+	            	let startDateTime = document.getElementById("startDate").value;
+	            	let endDateTime = document.getElementById("endDate").value;
+	            	
+	            	if(!isAlldayChecked){
+	            		startDateTime += " " + startTime;
+	            		endDateTime += " " + endTime;
+	            	}
+	            	
+	            	$.ajax({
+	            		url:"${contextPath}/calendar/updateEvt.do",
+	            		type:"post",
+	            		data:{
+	            			calNo:calNoValue,
+	            			ctgNo:ctgValue,
+	            			calTitle:evtTitle,
+	            			calContent:evtContent,
+	            			startDate:startDateTime,
+	            			endDate:endDateTime,
+	            			isAllday:isAllday
+	            		},
+	            		success:function(result){
+	            			console.log(result);
+	            			
+            				// 모든 입력창 값 초기화
+            				resetEditModal();
+            				
+	            			if(result > 0){
+	            				alert("일정을 성공적으로 수정했습니다.");
+	            			}else{
+	            				alert("일정 수정에 실패했습니다. 잠시후 다시 시도해주세요.");
+	            			}
+	            			
+	            			ajaxSelectCalList();
+	            			
+	            		},
+	            		error:function(){
+	            			console.log("일정 수정용 ajax 통신 실패");
+	            		}
+	            	})
+	            	
+	            }
+	            
+         		}
+         		
+            // 일정 삭제용 ajax
+            function ajaxDeleteEvent(){
+            	
+            	if(confirm("일정 삭제 후에는 복구가 불가합니다. \n정말 삭제하시겠습니까?")){
+            		
+            		$.ajax({
+            			url:"${contextPath}/calendar/deleteEvt.do",
+            			type:"post",
+            			data:{
+            				type:1,
+            				delNo:$("#detailForm input[name='calNo']").val()
+            			},
+            			success:function(result){
+            				if(result > 0){
+            					alert("일정이 성공적으로 삭제되었습니다.");
+            				}else{
+            					alert("일정 삭제에 실패했습니다. 잠시후 다시 시도해주세요.");
+            				}
+            				
+           					ajaxSelectCalList();
+            				
+            			},
+            			error:function(){
+            				console.log("일정 삭제용 ajax통신실패");
+            			}
+            		})
+            		
+            	}
+            	
+            }
+         		
+         		
            
           </script>
 

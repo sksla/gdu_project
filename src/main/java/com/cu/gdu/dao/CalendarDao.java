@@ -1,6 +1,7 @@
 package com.cu.gdu.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
@@ -57,5 +58,20 @@ public class CalendarDao {
 	public List<CalendarDto> selectCalendarList(String[] showList){
 		return sqlSessionTemplate.selectList("calendarMapper.selectCalendarList", showList);
 	}
+	
+	/**
+	 * 일정 수정
+	 * @author 김영주
+	 * @param cal => 수정할 일정정보 담긴 CalendarDto객체
+	 * @return update문 처리 행 수 (int)
+	 */
+	public int updateCalendar(CalendarDto cal) {
+		return sqlSessionTemplate.update("calendarMapper.updateCalendar", cal);
+	}
+	
+	public int deleteCalendar(Map<String, Integer> delInfo) {
+		return sqlSessionTemplate.delete("calendarMapper.deleteCalendar", delInfo);
+	}
+	
 	
 }
