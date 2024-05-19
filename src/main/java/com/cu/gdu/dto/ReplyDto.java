@@ -17,7 +17,7 @@ public class ReplyDto {
 
 	 private int replyNo;
 	 private int boardNo;
-	 private int memNo;
+	 private String writerMem;
 	 private String replyContent;
 	 private String registDate;
 	 private String modifyDate;

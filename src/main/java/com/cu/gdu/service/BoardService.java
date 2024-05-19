@@ -15,7 +15,7 @@ public interface BoardService {
 		List<BoardDto> selectBoardList(PageInfoDto pi, String boardType);
 		
 		// 게시판검색리스트 조회 서비스 (페이징)
-		int selectSearchListCount(Map<String, String> search);
+		int selectSearchListCount(Map<String, String> search  );
 		List<BoardDto> selectSearchList(Map<String, String> search, PageInfoDto pi);
 		
 		// 게시판작성하기 서비스
@@ -33,6 +33,9 @@ public interface BoardService {
 		
 		// 댓글삭제 서비스
 		int deleteReply(int replyNo);
+		
+		// 댓글수정 서비스
+		int modifyReply(ReplyDto reply);
 		
 		// 게시판수정 서비스
 		List<AttachDto> selectDelFileList(String[] delFileNo); // 삭제시킬 첨부파일들에 대한 정보 조회용

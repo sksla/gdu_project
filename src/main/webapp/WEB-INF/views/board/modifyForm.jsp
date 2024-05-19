@@ -12,9 +12,8 @@
 <link rel="stylesheet" href="${contextPath}/assets/libs/ckeditor/samples/toolbarconfigurator/lib/codemirror/neo.css">
 <link rel="stylesheet" href="${contextPath}/assets/libs/ckeditor/samples/css/samples.css">
 
-<!-- 상세 스타일 -->
+<!-- 수정 스타일 -->
 <style>
-    
     .innerOuter{    
       width:900px;
       margin:auto;
@@ -23,12 +22,9 @@
 
     table *{margin:5px;}
     table{width:100%;}
-    
-    #passwordInput {
-        display: none;
-    }
-
+    .origin_del{cursor:pointer;}
 </style>
+
 </head>
 <body>
 	<div class="main-wrapper">
@@ -50,7 +46,7 @@
             <div class="card-body px-4 py-3">
               <div class="row align-items-center">
                 <div class="col-9">
-                  <h4 class="fw-semibold mb-8">게시글 등록</h4>
+                  <h4 class="fw-semibold mb-8">게시글 수정</h4>
                   <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                       <li class="breadcrumb-item">
@@ -69,46 +65,46 @@
           <!-- 페이지 내용 -->
           <div class="card">
             <div class="card-body">
-
               <div class="content">
                 <div class="innerOuter">
-                  <h2>게시글 작성하기</h2>
+                  <h2>게시글 수정하기</h2>
                   <br>
-                  <form id="enrollForm" action="${ contextPath }/board/proposalRegist.do" method="post" enctype="multipart/form-data">
+        
+                	<form id="updateForm" action="${ contextPath }/board/modify.do" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="boardNo" value="${ board.boardNo }">
                     <table align="center">
                       <tr>
                         <th><label for="title">제목</label></th>
-                        <td><input type="text" id="title" class="form-control" name="boardTitle" required></td>
+                        <td><input type="text" id="title" class="form-control" name="boardTitle" value="${board.boardTitle}" required></td>
                       </tr>
                       <tr>
                         <th><label for="writer">작성자</label></th>
-                        <td><input type="text" id="writer" class="form-control" value="${loginUser.memId }" name="memId" readonly>
-                        		<input type="hidden" id="memNo" class="form-control" value="${loginUser.memNo }" name="memNo" readonly>
+                        <td><input type="text" id="writer" class="form-control" name="memId" value="${board.memId}" readonly></td>
+                      </tr>
+                      <tr>
+                        <th style="vertical-align:baseline"><label for="upfile">첨부파일</label></th>
+                        <td>
+                          <input type="file" id="upfile" class="form-control-file border" name="uploadFiles" multiple>
+														<br> 
+														<div class="d-flex"> <div>현재 업로드된 파일 : </div>
+		                          <!-- 기존의 첨부파일 목록들 -->
+																<c:forEach var="at" items="${ board.attachList }">
+																<div>
+																	<a href="${ contextPath }${at.filePath}/${at.filesystemName}" download="${ at.originalName }">${ at.originalName }</a>
+																	<span class="origin_del" data-fileno="${ at.fileNo }">x</span>
+																</div>
+																</c:forEach>
+														</div>
                         </td>
-                      </tr>
-                      <tr>
-                        <th><label for="upfile">첨부파일</label></th>
-                        <td><input type="file" id="upfile" class="form-control-file border" name="uploadFiles" multiple></td>
-                      </tr>
-                      <tr>
-                      	<th><label for="secret">비밀글</label>
-                      	<td>
-                      		<input class="form-check-input primary check-light-primary" type="checkbox" id="primary-light-check" name="openStatusCheckbox" value="1">
-                      		<input type="hidden" name="openStatus" value="1"> <!-- 선택되지 않은 경우를 위한 hidden input 추가 -->
-                      		<label class="form-check-label" for="primary-light-check">비밀글</label>
-                      		<div id="passwordInput">
-											        <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password (4자리)" maxlength="4">
-											    </div>
-                      	</td>
                       </tr>
                       <tr>
                         <th colspan="2"><label for="content">내용</label></th>
                       </tr>
                       <tr>
-                        <th colspan="2">
+                       <th colspan="2">
                         <!--<textarea class="form-control" required name="boardContent" id="content" rows="10" style="resize:none;"></textarea> -->
                         <textarea cols="80" id="testedit" name="boardContent" rows="10" data-sample="1" data-sample-short required>
-		                    	내용을 작성하세요.
+		                    	${ board.boardContent }
 		                  	</textarea>
 			                  <div style="display:none;">
 				                  <textarea cols="80" id="editor1" disabled>
@@ -120,8 +116,8 @@
                     <br>
         
                     <div align="center">
-                      <button type="submit" class="btn btn-primary">등록하기</button>
-                      <button type="reset" class="btn btn-danger">취소하기</button>
+                      <button type="submit" class="btn btn-primary">수정하기</button>
+                      <button type="button" class="btn btn-danger" onclick="javascript:history.go(-1);">이전으로</button>
                     </div>
                   </form>
                 </div>
@@ -130,31 +126,26 @@
             </div>
           </div>
           
-          <!-- 비밀글 비밀번호 부분 -->
-          <script>
-			        document.getElementById('primary-light-check').addEventListener('change', function() {
-			            var passwordInputDiv = document.getElementById('passwordInput');
-			            if (this.checked) {
-			                passwordInputDiv.style.display = 'block';
-			            } else {
-			                passwordInputDiv.style.display = 'none';
-			            }
-			        });
-			    </script>
-			    
-			    <!-- 체크박스 체크값 변경 부분 -->
-			    <script>
-			    document.addEventListener('DOMContentLoaded', (event) => {
-			        const checkbox = document.getElementById('primary-light-check');
-			        checkbox.addEventListener('change', function() {
-			            if (this.checked) {
-			            	document.querySelector('input[name="openStatus"]').value = '2'; // hidden input의 값 변경
-			            } else {
-			            	document.querySelector('input[name="openStatus"]').value = '1'; // hidden input의 값 변경
-			            }
-			        });
-			    });
-			    </script>
+          
+           <script>
+                	$(document).ready(function(){
+                		$(".origin_del").on("click", function(){
+                			// 삭제하고자 하는 해당 첨부파일 번호를 form submit시 넘기기 위한 작업
+                			// => 해당 form요소내에 input type="hidden" 만들어서 append
+                			// <input type="hidden" name="delFileNo" value="클릭한첨부파일번호">
+                			let inputEl = document.createElement("input");
+                			inputEl.type = "hidden";
+                			inputEl.name = "delFileNo";
+                			inputEl.value = $(this).data("fileno");
+                			
+                			document.getElementById("updateForm").append(inputEl);
+                			
+                			// 화면으로부터 사라지도록 작업
+                			$(this).parent().remove();
+                		})
+                	})
+                
+                </script>
           
 					<!-- ----------------------------- 실제 내용 작성 영역 end ----------------------------- -->
         </div>
@@ -169,6 +160,7 @@
 	
 	<!-- footer-->
   <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
+	
 	
 	<!-- ck editor 연동 스크립트 -->
   <script src="${ contextPath }/assets/libs/ckeditor/ckeditor.js" type="text/javascript"></script>

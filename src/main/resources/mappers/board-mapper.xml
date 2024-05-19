@@ -32,7 +32,8 @@
   <resultMap id="replyResult" type="ReplyDto">
   	<id column="reply_no" property="replyNo"/>
   	<result column="board_no" property="boardNo"/>
-  	<result column="mem_no" property="memNo"/>
+  	<result column="mem_no" property="writerMem"/>
+  	<result column="mem_id" property="writerMem"/>
   	<result column="reply_content" property="replyContent"/>
   	<result column="regist_date" property="registDate"/>
   	<result column="modify_date" property="modifyDate"/>
@@ -73,6 +74,43 @@
      by board_no desc
 				
 	</select>	
+	
+	<!-- 검색 -->
+	<select id="selectSearchListCount" resultType="_int">
+		select
+        count(*)
+		  from board b
+		  join member using (mem_no)
+		 where b.status = 'Y'
+		   and ${condition} like '%' || #{keyword} || '%'
+		   and board_type = #{boardType}
+	</select>
+	
+	<select id="selectSearchList" resultMap="boardResult">
+			select 
+            board_no
+        ,	b.mem_no
+        ,	board_title
+        , mem_id
+        , count
+        , to_char(regist_date, 'YYYY-MM-DD') regist_date
+        , (
+            select count(*)
+              from board_attach
+             where ref_type = 'N'
+               and ref_no = board_no
+            ) attach_count
+         <if test='boardType.equals("Q")'>
+          , open_status, password
+     	 </if>
+    from board b
+    join member m on b.mem_no = m.mem_no
+   where b.status = 'Y'
+   	 and ${condition} like '%' || #{keyword} || '%' 
+   	 and board_type = #{boardType}
+   order
+     by board_no desc
+	</select>
   	
   	
   	
@@ -102,7 +140,151 @@
       </if>
 			)
 	</insert>
-  	
-  	
+	
+	<insert id="insertAttach">
+		insert
+			into board_attach
+			(
+				file_no
+			, file_path
+			, filesystem_name
+			, original_name
+			, ref_type
+			, ref_no
+			)
+			values
+			(
+			  seq_board_file_no.nextval
+			, #{filePath}
+			, #{filesystemName}
+			, #{originalName}
+			, #{refType}
+			<choose>
+				<when test="refNo == 0">
+				, seq_board_no.currval
+				</when>
+				<otherwise>
+				, #{refNo}
+				</otherwise>
+			</choose>
+			)
+	</insert>
+	
+	
+	
+	<!-- 게시글 조회 -->
+	<update id="updateIncreaseCount">
+		update
+					board
+			 set count = count+1
+			 where board_no = #{boardNo}
+	</update>
+	
+	<select id="selectBoard" resultMap="boardResult">
+		select
+		    board_no
+		  , board_title
+		  , mem_id
+		  , board_content
+		  , to_char(regist_date, 'YYYY-MM-dd') regist_date
+		  , file_no
+		  , file_path
+		  , filesystem_name
+		  , original_name
+		  from board b
+		  join member using(mem_no)
+		  left join board_attach on (ref_type = 'N' and ref_no =  board_no)
+		  where b.status = 'Y'
+		    and board_no = #{boardNo}
+	</select>
+	
+	<select id="selectReplyList" resultMap="replyResult">
+		 select
+						reply_no
+					, reply_content
+					, mem_id
+					, to_char(regist_date, 'YYYY-MM-DD') regist_date
+			from reply r
+      join member using(mem_no)
+			where board_no = #{boardNo}
+			  and r.status = 'Y'
+		 order by reply_no desc
+	</select>
+	
+	<insert id="insertReply">
+		insert 
+			into reply
+			(
+				reply_no
+			, reply_content
+			, board_no
+			, mem_no
+			)
+			values
+			(
+				seq_reply_no.nextval
+			, #{replyContent}
+			, #{boardNo}
+			, #{writerMem}
+			)
+	</insert>
+	
+	<update id="deleteReply">
+		update
+					reply
+			 set status = 'N'
+		 where reply_no = #{replyNo}
+	</update>
+	
+	<update id="modifyReply">
+		update
+					reply
+			 set reply_content = #{replyContent}
+		 where reply_no = #{replyNo}
+	</update>
+	
+	
+	
+	<!-- 게시글 수정, 삭제 -->
+	<select id="selectDelFileList" resultMap="attachResult">
+		select
+					file_no
+				, file_path
+				, filesystem_name
+				, original_name
+			from board_attach
+			<where>
+				<foreach item="item" collection="array"
+								open="file_no in (" separator="," close=")">
+					#{item}										
+				</foreach>
+			</where>
+	</select>
+	
+	<update id="updateBoard">
+		update
+					board
+			 set board_title = #{boardTitle}
+			 	 , board_content = #{boardContent}
+			where board_no = #{boardNo}
+	</update>
+	
+  <delete id="deleteAttach">
+		delete
+			from board_attach
+			<where>
+				<foreach item="item" collection="array"
+								open="file_no in (" separator="," close=")">
+					#{item}										
+				</foreach>
+			</where>
+	</delete>	
+  
+  <update id="deleteBoard">
+		update 
+				board
+			set status = 'N'
+			where board_no = #{boardNo}
+	</update>
   	
 </mapper>
