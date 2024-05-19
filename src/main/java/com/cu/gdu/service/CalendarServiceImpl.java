@@ -1,5 +1,6 @@
 package com.cu.gdu.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -38,6 +39,25 @@ public class CalendarServiceImpl implements CalendarService {
 	}
 
 	/**
+	 * 캘린더(카테고리) 수정
+	 * @author 김영주
+	 */
+	@Override
+	public int updateCalCtg(CalCtgDto ctg) {
+		return calendarDao.updateCalCtg(ctg);
+	}
+	
+	/**
+	 * 캘린더(카테고리) 삭제
+	 * @author 김영주
+	 */
+	@Override
+	public int deleteCalCtg(int ctgNo) {
+		return calendarDao.deleteCalCtg(ctgNo);
+	}
+	
+	
+	/**
 	 * 일정 등록
 	 * @author 김영주
 	 */
@@ -69,9 +89,25 @@ public class CalendarServiceImpl implements CalendarService {
 	 * @author 김영주
 	 */
 	@Override
-	public int deleteCalendar(Map<String, Integer> delInfo) {
+	public int deleteCalendar(int delType, int delNo) {
+		
+		Map<String, Integer> delInfo = new HashMap<>();
+		delInfo.put("type", delType);
+		delInfo.put("delNo", delNo);
+		
 		return calendarDao.deleteCalendar(delInfo);
 	}
+
+	
+	/**
+	 * 일정 개수 조회
+	 * @author 김영주
+	 */
+	@Override
+	public int selectCalListCount(int ctgNo) {
+		return calendarDao.selectCalListCount(ctgNo);
+	}
+
 	
 	// 김영주 부분 끝-------------------------------------------------------
 

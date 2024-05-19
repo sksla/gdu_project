@@ -95,6 +95,24 @@
 		  )
 	</insert>
 	
+	<!-- 캘린더(카테고리) 수정 -->
+	<update id="updateCalCtg">
+		update
+		       cal_ctg
+		   set ctg_name = #{ctgName}
+		     , color = #{color}
+		     , modify_date = sysdate
+		 where ctg_no = #{ctgNo}       
+	</update>
+	
+	<!-- 캘린더(카테고리) 삭제 -->
+	<delete id="deleteCalCtg">
+		delete
+		  from cal_ctg
+		 where ctg_no = #{ctgNo}
+   
+	</delete>
+	
 	<!-- 공유멤버 등록 -->
 	<insert id="insertShareMem">
 		insert
@@ -173,6 +191,14 @@
 		  )
 	
 	</insert>
+	
+	<!-- 일정 개수 조회 -->
+	<select id="selectCalListCount" resultType="_int">
+		select 
+		       count(*)
+		  from calendar
+		 where ctg_no = #{ctgNo}      
+	</select>
 	
 	<!-- 일정 수정 -->
 	<update id="updateCalendar">

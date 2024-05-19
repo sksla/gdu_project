@@ -39,6 +39,34 @@ public class CalendarDao {
 	}
 	
 	/**
+	 * 캘린더(일정카테고리) 수정
+	 * @param ctg
+	 * @return update문 처리 행수 (int)
+	 */
+	public int updateCalCtg(CalCtgDto ctg) {
+		return sqlSessionTemplate.update("calendarMapper.updateCalCtg", ctg);
+	}
+	
+	/**
+	 * 캘린더(카테고리) 삭제
+	 * @param ctgNo
+	 * @return delete문 처리 행수 (int)
+	 */
+	public int deleteCalCtg(int ctgNo) {
+		return sqlSessionTemplate.delete("calendarMapper.deleteCalCtg", ctgNo);
+	}
+	
+	
+	/**
+	 * 일정 개수 조회
+	 * @param ctgNo 일정 카테고리 번호
+	 * @return 일정 개수(int)
+	 */
+	public int selectCalListCount(int ctgNo) {
+		return sqlSessionTemplate.selectOne("calendarMapper.selectCalListCount", ctgNo);
+	}
+	
+	/**
 	 * 일정 등록
 	 * @author 김영주
 	 * 
@@ -69,6 +97,13 @@ public class CalendarDao {
 		return sqlSessionTemplate.update("calendarMapper.updateCalendar", cal);
 	}
 	
+	/**
+	 * 일정 삭제
+	 * 
+	 * @author 김영주
+	 * @param delInfo
+	 * @return delete문 처리 행 수 (int)
+	 */
 	public int deleteCalendar(Map<String, Integer> delInfo) {
 		return sqlSessionTemplate.delete("calendarMapper.deleteCalendar", delInfo);
 	}

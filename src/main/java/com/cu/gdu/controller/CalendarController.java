@@ -43,6 +43,8 @@ public class CalendarController {
 		return "calendar/calendar";
 	}
 	
+	// 캘린더(카테고리) --------------------------------------------------------------
+	
 	/**
 	 * ajax 캘린더 카테고리 조회
 	 * 
@@ -95,6 +97,43 @@ public class CalendarController {
 	}
 	
 	/**
+	 * 캘린더(카테고리) 수정
+	 * 
+	 * @param ctg
+	 * @return
+	 */
+	@ResponseBody
+	@PostMapping("/updateCtg.do")
+	public int updateCtg(CalCtgDto ctg) {
+		
+		return calendarService.updateCalCtg(ctg);
+	}
+	
+	
+	@ResponseBody
+	@PostMapping("/deleteCtg.do")
+	public int deleteCtg(int ctgNo) {
+		int count = calendarService.selectCalListCount(ctgNo);
+		
+		int totalResult = 0;
+		
+		if(count > 0) {
+			int result1 = calendarService.deleteCalendar(2, ctgNo);
+			if(result1 == count) {
+				totalResult = calendarService.deleteCalCtg(ctgNo);
+			}
+		}else {
+			totalResult = calendarService.deleteCalCtg(ctgNo);
+		}
+		
+		return totalResult;
+	}
+	
+	
+	// 캘린더(카테고리) 끝 --------------------------------------------------------------
+	
+	// 일정 관련 ----------------------------------------------------------------------
+	/**
 	 * 일정 등록 
 	 * 
 	 * @author 김영주
@@ -116,7 +155,7 @@ public class CalendarController {
 	
 	
 	/**
-	 * 일정 조회
+	 * 일정 조회 ajax
 	 * @author 김영주
 	 * @param showList (조회할 카테고리 고유번호 String배열)
 	 * @return
@@ -132,6 +171,12 @@ public class CalendarController {
 		return cList;
 	}
 	
+	/**
+	 * 일정 수정 ajax
+	 * @param cal
+	 * @param session
+	 * @return 처리행수(int)
+	 */
 	@ResponseBody
 	@PostMapping("/updateEvt.do")
 	public int updateEvent(CalendarDto cal, HttpSession session) {
@@ -141,18 +186,22 @@ public class CalendarController {
 		return calendarService.updateCalendar(cal);
 	}
 	
+	
+	/**
+	 * 일정 삭제 ajax
+	 * @param delType
+	 * @param delNo
+	 * @return
+	 */
 	@ResponseBody
 	@PostMapping("/deleteEvt.do")
 	public int deleteEvt(@RequestParam(value="type", defaultValue="1") int delType
 			           , int delNo) {
 		
-		Map<String, Integer> delInfo = new HashMap<>();
-		delInfo.put("type", delType);
-		delInfo.put("delNo", delNo);
-		
-		return calendarService.deleteCalendar(delInfo);
+		return calendarService.deleteCalendar(delType, delNo);
 	}
 	
+	// 일정 관련 끝----------------------------------------------------------------------
 	
 	// -------김영주 부분 끝 -------------------------------------------------------------
 				   

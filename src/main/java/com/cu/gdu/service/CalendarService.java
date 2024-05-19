@@ -14,6 +14,15 @@ public interface CalendarService {
 	// 캘린더(일정 카테고리) 추가
 	int insertCalCtg(CalCtgDto ctg);
 	
+	// 캘린더(일정 카테고리) 수정
+	int updateCalCtg(CalCtgDto ctg);
+	
+	// 캘린더(카테고리) 삭제
+	int deleteCalCtg(int ctgNo);
+	
+	// 일정 개수 조회
+	int selectCalListCount(int ctgNo);
+	
 	// 일정 등록
 	int insertCalendar(CalendarDto cal);
 	
@@ -24,6 +33,6 @@ public interface CalendarService {
 	int updateCalendar(CalendarDto cal);
 	
 	// 일정 삭제
-	int deleteCalendar(Map<String, Integer> delInfo);
+	int deleteCalendar(int delType, int delNo);
 	
 }
