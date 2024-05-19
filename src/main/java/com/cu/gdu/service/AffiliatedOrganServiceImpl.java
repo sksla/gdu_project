@@ -20,6 +20,7 @@ public class AffiliatedOrganServiceImpl implements AffiliatedOrganService {
 
 	private final AffiliatedOrganDao affiliatedOrganDao;
 	
+	// * ------------------- 부속기관 목록관련 -------------------
 	@Override
 	public int selectAffiliatedOrganListCount() {
 		return affiliatedOrganDao.selectAffiliatedOrganListCount();
@@ -35,16 +36,29 @@ public class AffiliatedOrganServiceImpl implements AffiliatedOrganService {
 		return affiliatedOrganDao.selectAffiliatedOrgan(affNo);
 	}
 	
+	// * ------------------- 부속기관 예약관련 -------------------
 	@Override
 	public int insertAffiliatedOrganRes(AffReservationDto affres) {
 		return affiliatedOrganDao.insertAffiliatedOrganRes(affres);
 	}
 
 	@Override
+	public int selectAffiliatedOrganResListCount() {
+		return affiliatedOrganDao.selectAffiliatedOrganResListCount();
+	}
+
+	@Override
+	public List<AffReservationDto> selectAffiliatedOrganResList(PageInfoDto pi) {
+		return affiliatedOrganDao.selectAffiliatedOrganResList(pi);
+	}
+	
+	// * ------------------- 부속기관 등록관련 -------------------
+	@Override
 	public int insertAffiliatedOrgan(AffiliatedOrganDto aff) {
 		return affiliatedOrganDao.insertAffiliatedOrgan(aff);
 	}
 	
+	// * ------------------- 부속기관 검색관련 -------------------
 	@Override
 	public int selectAffiliatedOrganSearchListCount(Map<String, String> search) {
 		return 0;
@@ -55,6 +69,7 @@ public class AffiliatedOrganServiceImpl implements AffiliatedOrganService {
 		return null;
 	}
 
+	
 
 
 }

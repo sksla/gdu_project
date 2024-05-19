@@ -130,13 +130,13 @@
                                       <tbody>
                                         <tr>
                                           <c:choose>
-                                          	<c:when test="${ empty list }">
+                                          	<c:when test="${ empty aflist }">
                                           		<tr>
                                           			<td colspan="5"> 조회된 기관이 없습니다.</td>
                                           		</tr>
                                           	</c:when>
                                           	<c:otherwise>
-                                          		<c:forEach var="af" items="${ list }">
+                                          		<c:forEach var="af" items="${ aflist }">
                                           			<tr onclick="location.href='${contextPath}/aff/affiliatedOrganResForm.page?no=${af.affNo}'">
                                           				<td>${ af.affNo }</td>
                                           				<td>${ af.affName }</td>
@@ -208,57 +208,34 @@
                                               <th>
                                                 <h6 class="fs-4 fw-semibold mb-0">사용기간</h6>
                                               </th>
+                                              <th>
+                                                <h6 class="fs-4 fw-semibold mb-0">사유</h6>
+                                              </th>
                                             </tr>
                                           </thead>
                                           <tbody>
-                                            <tr>
-                                              <td>
-                                                <div class="d-flex align-items-center">
-                                                  <div class="ms-3">
-                                                    <h6 class="fs-4 fw-semibold mb-0">1</h6>
-                                                  </div>
-                                                </div>
-                                              </td>
-                                              <td>
-                                                <p class="mb-0 fw-normal fs-4">연구실1</p>
-                                              </td>
-                                              <td>
-                                                <div class="d-flex align-items-center">
-                                                  <p class="mb-0 fw-normal fs-4">11호</p>
-                                                </div>
-                                              </td>
-                                              <td>
-                                                <p class="mb-0 fw-normal fs-4">경영학과</p>
-                                              </td>
-
-                                              <td>
-                                                <p class="mb-0 fw-normal fs-4">2024-04-05</p>
-                                              </td>
-                                            </tr>
-                                            <tr>
-                                              <td>
-                                                <div class="d-flex align-items-center">
-                                                  <div class="ms-3">
-                                                    <h6 class="fs-4 fw-semibold mb-0">1</h6>
-                                                  </div>
-                                                </div>
-                                              </td>
-                                              <td>
-                                                <p class="mb-0 fw-normal fs-4">연구실1</p>
-                                              </td>
-                                              <td>
-                                                <div class="d-flex align-items-center">
-                                                  <p class="mb-0 fw-normal fs-4">11호</p>
-                                                </div>
-                                              </td>
-                                              <td>
-                                                <p class="mb-0 fw-normal fs-4">경영학과</p>
-                                              </td>
-                                              <td>
-                                                <p class="mb-0 fw-normal fs-4">2024-04-05</p>
-                                              </td>
-                                            </tr>
-                                          </tbody>
+		                                        <tr>
+		                                          <c:choose>
+		                                          	<c:when test="${ empty reslist }">
+		                                          		<tr>
+		                                          			<td colspan="5"> 조회된 기관이 없습니다.</td>
+		                                          		</tr>
+		                                          	</c:when>
+		                                          	<c:otherwise>
+		                                          		<c:forEach var="res" items="${ reslist }">
+		                                          			<tr>
+		                                          				<td></td>
+		                                          				<td>${ res.affName }</td>
+		                                          				<td>${ res.affLocation }</td>
+		                                          				<td>${ res.majorNo }</td>
+		                                          				<td>${ res.startDate }~${ res.endDate }</td>
+		                                          				<td>${ res.reason }</td>
+		                                          			</tr>
+		                                          		</c:forEach>
+		                                          	</c:otherwise>
+		                                          </c:choose>
+		                                        </tr>
+		                                      </tbody>
                                         </table>
 					                                <!--  start Pagination with Icon -->
 					                                <div class="card w-100">

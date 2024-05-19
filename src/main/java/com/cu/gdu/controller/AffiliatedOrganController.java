@@ -33,6 +33,7 @@ public class AffiliatedOrganController {
 	private final PagingUtil pagingUtil;
 	private final AdminService adminService;
 	
+	// * ------------------- 부속기관 목록관련 -------------------
 	// 부속기관 리스트 페이지
 	@GetMapping("/affiliatedOrgan.page")
 	public String affiliatedOrgan() {
@@ -41,19 +42,21 @@ public class AffiliatedOrganController {
 	
 	// 부속기관리스트 조회 
 	@GetMapping("/affiliatedOrganList.do")
-	public ModelAndView list(@RequestParam(value="page", defaultValue="1") int currentPage, ModelAndView mv) {
+	public ModelAndView aflist(@RequestParam(value="page", defaultValue="1") int currentPage, ModelAndView mv) {
 		
 		int listCount = affiliatedOrganService.selectAffiliatedOrganListCount();
 		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 5);
-		List<AffiliatedOrganDto> list = affiliatedOrganService.selectAffiliatedOrganList(pi);
-		System.out.println(list);
+		List<AffiliatedOrganDto> aflist = affiliatedOrganService.selectAffiliatedOrganList(pi);
+		//System.out.println(list);
 		mv.addObject("pi", pi)
-		  .addObject("list", list)
+		  .addObject("aflist", aflist)
 		  .setViewName("/affiliatedOrgan/affiliatedOrganList");
 		
 		return mv;
 	}
 	
+	
+	// * ------------------- 부속기관 예약관련 -------------------
 	// 부속기관 예약페이지
 	@GetMapping("/affiliatedOrganResForm.page")
 	public String affiliatedOrganFrom(int no, Model model) {	
@@ -79,6 +82,23 @@ public class AffiliatedOrganController {
 		return "affiliatedOrgan/affiliatedOrganRes";
 	}
 	
+	// 부속기관 예약목록 페이지 조회
+	@GetMapping("/affiliatedOrganResList.do")
+	public ModelAndView resList(@RequestParam(value="page", defaultValue="1") int currentPage, ModelAndView mv) {
+			
+		int listCount = affiliatedOrganService.selectAffiliatedOrganResListCount();
+		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 5);
+		List<AffReservationDto> reslist = affiliatedOrganService.selectAffiliatedOrganResList(pi);
+		System.out.println(list);
+		mv.addObject("pi", pi)
+		  .addObject("reslist", reslist)
+		  .setViewName("/affiliatedOrgan/affiliatedOrganResList");
+			
+			return mv;
+		}
+
+	
+	// * ------------------- 부속기관 등록관련 -------------------
 	// 부속기관 등록페이지 
 	@GetMapping("/affiliatedOrganEnrollForm.page")
 	public String affiliatedOrganEnrollForm(Model model) {
@@ -106,6 +126,8 @@ public class AffiliatedOrganController {
 		return "redirect:/aff/affiliatedOrganList.do";
 	}
 	
+
+	// * ------------------- 부속기관 검색관련 -------------------
 	// 검색
 	@GetMapping("/affiliatedOrganSearch.do")
 	public ModelAndView search(@RequestParam(value="page", defaultValue="1") int currentPage,

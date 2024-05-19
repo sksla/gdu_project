@@ -22,6 +22,13 @@ public interface AffiliatedOrganService {
 	AffiliatedOrganDto selectAffiliatedOrgan(int affNo);
 	int insertAffiliatedOrganRes(AffReservationDto affres);
 	
+	// 부속기관 예약목록
+	int selectAffiliatedOrganResListCount();
+	List<AffReservationDto> selectAffiliatedOrganResList(PageInfoDto pi);
+	
 	// 부속기관 등록
 	int insertAffiliatedOrgan(AffiliatedOrganDto aff);
+	
+	
+	
 }

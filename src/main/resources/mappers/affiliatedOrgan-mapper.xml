@@ -16,13 +16,16 @@
 	<resultMap id="affReservaationResult" type="affReservationDto">
 		<id column="aff_res_no" property="affResNo"/>
 		<result column="aff_no" property="affNo" />
+		<result column="aff_name" property="affNo" />
 		<result column="mem_no" property="memNo" />
+		<result column="major_name" property="majorNo" />
 		<result column="major_name" property="memNo" />
 		<result column="start_date" property="startDate" />
 		<result column="end_date" property="endDate" />
 		<result column="reason" property="reason" />
 	</resultMap>
 
+	<!-- 부속기관 목록관련 -->
 	<select id="selectAffiliatedOrganListCount" resultType="_int">
 		select
   				 count(*)
@@ -38,7 +41,6 @@
 		 from affiliated_organ
      join major using (major_no)
 		order by aff_no asc
-		
   </select>
   
   <select id="selectAffiliatedOrgan" resultMap="affiliatedOrganResult">
@@ -54,6 +56,7 @@
   	
   </select>
   
+  <!-- 부속기관 예약관련 -->
   <insert id="insertAffiliatedOrganRes">
 		insert
 			into aff_reservation
@@ -65,7 +68,27 @@
 				seq_aff_res_no.nextval, #{affNo}, #{memNo}, #{startDate}, #{endDate}, #{reason} 
 			)
   </insert>
+  
+  <select id="selectAffiliatedOrganResListCount" resultType="_int">
+		select
+  				 count(*)
+			from aff_reservation
+	</select>
+	
+	<select id="selectAffiliatedOrganResList" resultMap="affReservaationResult">
+  	select
+				   aff_name
+				 , aff_location
+				 , major_name
+				 , start_date
+				 , end_date
+				 , reason
+		  from aff_reservation
+		  join affiliated_organ using (aff_no)
+		  join major using (major_no)
+  </select>
 
+	<!-- 부속기관 등록관련 -->
   <insert id="insertAffiliatedOrgan">
   	insert 
   		into affiliated_organ
@@ -79,5 +102,7 @@
 			 	 , #{affLocation}, #{latitude}, #{longitude}, #{affEtc}
 			 	 )
   </insert>
+  
+  
 
 </mapper>

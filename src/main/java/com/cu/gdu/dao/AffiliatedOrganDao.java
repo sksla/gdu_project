@@ -18,8 +18,10 @@ import lombok.RequiredArgsConstructor;
 @Repository
 public class AffiliatedOrganDao {
 
+	public static final int selectAffiliatedOrganResListCount = 0;
 	private final SqlSessionTemplate sqlSessionTemplate;
 	
+	// * ------------------- 부속기관 목록관련 -------------------
 	public int selectAffiliatedOrganListCount() {
 		return sqlSessionTemplate.selectOne("affiliatedOrganMapper.selectAffiliatedOrganListCount");
 	}
@@ -35,20 +37,38 @@ public class AffiliatedOrganDao {
 		return sqlSessionTemplate.selectList("affiliatedOrganMapper.selectAffiliatedOrganList", null, rowBounds);
 	}
 	
-	public int selectAffiliatedOrganSearchListCount(Map<String, String> search) {
-		return sqlSessionTemplate.selectOne("affiliatedOrganMapper.selectAffiliatedOrganSearchListCount", search);
-	}
-
 	public AffiliatedOrganDto selectAffiliatedOrgan(int affNo) {
 		return sqlSessionTemplate.selectOne("affiliatedOrganMapper.selectAffiliatedOrgan", affNo);
 	}
 	
+	// * ------------------- 부속기관 예약관련 -------------------
 	public int insertAffiliatedOrganRes(AffReservationDto affres) {
-		return sqlSessionTemplate.selectOne("affiliatedOrganMapper.insertAffiliatedOrganRes", affres);
+		return sqlSessionTemplate.insert("affiliatedOrganMapper.insertAffiliatedOrganRes", affres);
 	}
 	
+	public int selectAffiliatedOrganResListCount() {
+		return sqlSessionTemplate.selectOne("affiliatedOrganMapper.selectAffiliatedOrganResListCount");
+	}
+	
+	public List<AffReservationDto> selectAffiliatedOrganResList(PageInfoDto pi){
+		
+		int limit = pi.getBoardLimit();
+		int offset = (pi.getCurrentPage() - 1) * limit;
+		
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		
+		return sqlSessionTemplate.selectList("affiliatedOrganMapper.selectAffiliatedOrganResList", rowBounds);
+	}
+	
+	// * ------------------- 부속기관 등록관련 -------------------
 	public int insertAffiliatedOrgan(AffiliatedOrganDto aff) {
 		return sqlSessionTemplate.insert("affiliatedOrganMapper.insertAffiliatedOrgan", aff);
+	}
+
+	// * ------------------- 부속기관 검색관련 ------------------- 
+
+	public int selectAffiliatedOrganSearchListCount(Map<String, String> search) {
+		return sqlSessionTemplate.selectOne("affiliatedOrganMapper.selectAffiliatedOrganSearchListCount", search);
 	}
 
 	
