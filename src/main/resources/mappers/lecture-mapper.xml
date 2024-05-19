@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="lectureMapper">
+
+	<resultMap id="stuAttentdResult" type="stuAttendDto">
+		<id column="attend_no" property="attendNo"/>
+		<result column="stu_no" property="stuNo" />
+		<result column="stu_name" property="stuName" />
+		<result column="attendance" property="attendance" />
+		<result column="lecture_no" property="lectureNo" />
+		<result column="lecture_date" property="lectureDate" />
+	</resultMap>
+	
+	<!-- 출석 관련 -->
+	
+	
+	
+</mapper>
