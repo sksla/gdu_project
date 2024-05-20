@@ -76,10 +76,6 @@ public class BoardController {
 		  return mv;
 	}
 	
-	
-	
-	
-	
 	// * 건의게시판 작성 관련 ------------------------------------------
 	@GetMapping("/proposalForm.page")
 	public String proregistForm() {
@@ -181,14 +177,7 @@ public class BoardController {
 	public String ajaxModifyReply(ReplyDto reply ) {
 		return boardService.modifyReply(reply) > 0 ?"SUCCESS" : "FAIL";
 	}
-	
-	
-	
-	
-	
-	
-	
-	
+
 	// * 게시글 수정 및 삭제 관련 ------------------------------------------------------
 	@PostMapping("/modifyForm.page")
 	public String modifyForm(int no, Model model) {
@@ -257,6 +246,16 @@ public class BoardController {
 	}
 	
 	
-
+	// * 공지게시판------------------------------------------
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	// * 공지게시판------------------------------------------
 
 }
