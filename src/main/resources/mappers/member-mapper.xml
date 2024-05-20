@@ -34,6 +34,19 @@
   		<result column="mod_no" property="modNo"/>
   </resultMap>
   
+  <resultMap id="vacationResult" type="VacationDto">
+  		<id column="vac_no" property="vacNo"/>
+  		<result column="mem_no" property="memNo"/>
+  		<result column="vac_used" property="vacUsed"/>
+  		<result column="vac_option" property="vacOption"/>
+  		<result column="regist_date" property="registDate"/>
+  		<result column="vac_reason" property="vacReason"/>
+  		<result column="doc_no" property="docNo"/>
+  		<result column="status" property="status"/>
+  		<result column="start_date" property="startDate"/>
+  		<result column="end_date" property="endDate"/>
+  </resultMap>
+  
   
   
   <!--  로그인용 -->
