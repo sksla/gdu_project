@@ -21,6 +21,7 @@ import com.cu.gdu.dto.JobDto;
 import com.cu.gdu.dto.MajorDto;
 import com.cu.gdu.dto.MemberDto;
 import com.cu.gdu.dto.PageInfoDto;
+import com.cu.gdu.dto.VacationDto;
 import com.cu.gdu.service.AdminService;
 import com.cu.gdu.util.PagingUtil;
 
@@ -218,8 +219,26 @@ public class AdminController {
 	
 	// 관리자 메인페이지(대시보드)로 이동
 	@GetMapping("/adminDashboard.do")
-	public String adminDashboard() {
+	public String adminDashboard(Model model) {
+		List<VacationDto> vacList = adminService.selectDashboardVacation();
+		model.addAttribute("vacList", vacList);
 		return "admin/adminDashboard";
+	}
+	
+	// 관리자 대시보드에서 단과학과직급 그래프표시
+	@ResponseBody
+	@GetMapping(value="/adminChart.do", produces="application/json; charset=utf-8")
+	public Map<String, Object> adminChart(){
+		Map<String, Object> map = new HashMap<>();
+		List<CollegeDto> colList = adminService.selectCollegeList();
+		List<MajorDto> majorList = adminService.selectMajorList();
+		List<JobDto> jobList = adminService.selectJobList();
+		List<MemberDto> memList = adminService.selectDashboardMemberList();
+		map.put("colList", colList);
+		map.put("majorList", majorList);
+		map.put("jobList", jobList);
+		map.put("memList", memList);
+		return map;
 	}
 	
 	

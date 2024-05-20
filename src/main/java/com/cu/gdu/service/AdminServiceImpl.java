@@ -11,6 +11,7 @@ import com.cu.gdu.dto.JobDto;
 import com.cu.gdu.dto.MajorDto;
 import com.cu.gdu.dto.MemberDto;
 import com.cu.gdu.dto.PageInfoDto;
+import com.cu.gdu.dto.VacationDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -108,6 +109,18 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public int updateMember(MemberDto m) {
 		return adminDao.updateMember(m);
+	}
+
+	// 관리자 대시보드 그래프에 띄울 직원수
+	@Override
+	public List<MemberDto> selectDashboardMemberList() {
+		return adminDao.selectDashboardMemberList();
+	}
+
+	// 관리자 대시보드 휴가신청현황 조회
+	@Override
+	public List<VacationDto> selectDashboardVacation() {
+		return adminDao.selectDashboardVacation();
 	}
 
 

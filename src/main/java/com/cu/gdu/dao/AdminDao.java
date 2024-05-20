@@ -12,6 +12,7 @@ import com.cu.gdu.dto.JobDto;
 import com.cu.gdu.dto.MajorDto;
 import com.cu.gdu.dto.MemberDto;
 import com.cu.gdu.dto.PageInfoDto;
+import com.cu.gdu.dto.VacationDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -84,16 +85,28 @@ public class AdminDao {
 		return sqlSessionTemplate.selectList("adminMapper.ajaxNameFilterMemberList", map, rowBounds);
 	}
 	
+	// 직원개별등록
 	public int insertOneMember(MemberDto m) {
 		return sqlSessionTemplate.insert("adminMapper.insertOneMember", m);
 	}
 	
+	// 직원상세조회 페이지
 	public MemberDto selectMemberDetail(int memNo) {
 		return sqlSessionTemplate.selectOne("adminMapper.selectMemberDetail", memNo);
 	}
 	
+	// 직원상세조회 페이지
 	public int updateMember(MemberDto m) {
 		return sqlSessionTemplate.update("adminMapper.updateMember", m);                                                                 
+	}
+	
+	// 관리자 대시보드 그래프에 띄울 직원수
+	public List<MemberDto> selectDashboardMemberList(){
+		return sqlSessionTemplate.selectList("adminMapper.selectDashboardMemberList");
+	}
+	
+	public List<VacationDto> selectDashboardVacation(){
+		return sqlSessionTemplate.selectList("adminMapper.selectDashboardVacation");
 	}
 	
 }
