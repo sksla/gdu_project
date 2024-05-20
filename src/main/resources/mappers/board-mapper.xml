@@ -189,7 +189,7 @@
 		    board_no
 		  , board_title
 		  , mem_id
-		  , mam_name
+		  , mem_name
 		  , board_content
 		  , to_char(regist_date, 'YYYY-MM-dd') regist_date
 		  , file_no

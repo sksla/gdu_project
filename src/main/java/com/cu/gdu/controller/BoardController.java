@@ -284,12 +284,12 @@ public class BoardController {
 	}
 		
 	// * 공지게시판 작성 관련 ------------------------------------------
-	@GetMapping("/noticeRegistForm.page")
+	@GetMapping("/noticeEnrollForm.page")
 	public String noticeRegistForm() {
-		return "board/noticeRegistForm";
+		return "board/noticeEnrollForm";
 	}
 		
-	@PostMapping("noticeRegist.do")
+	@PostMapping("noticeEnroll.do")
 	public String noticeRegist(BoardDto board, List<MultipartFile> uploadFiles
 							 , HttpSession session, RedirectAttributes redirectAttributes	) {
 		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
@@ -352,10 +352,10 @@ public class BoardController {
 	}
 		
 	// * 공지글 수정 및 삭제 관련 ------------------------------------------------------
-	@PostMapping("/noticeModifyForm.page")
+	@GetMapping("/noticeModifyForm.page")
 	public String noticeModifyForm(int no, Model model) {
 		model.addAttribute("board", boardService.selectBoard(no));
-		return "board/noticeModifyForm";
+		return "board/noticeModify";
 	}	
 			
 	@PostMapping("/noticeModify.do")

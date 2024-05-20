@@ -57,7 +57,7 @@
               <span class="hide-menu">게시판</span>
             </li>
             <li class="sidebar-item">
-              <a class="sidebar-link" href="./main/index.html" aria-expanded="false">
+              <a class="sidebar-link" href="${contextPath}/board/noticeList.do" aria-expanded="false">
                 <span>
                   <i class="ti ti-clipboard-check"></i>
                 </span>
