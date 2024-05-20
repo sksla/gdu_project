@@ -13,16 +13,11 @@ import lombok.ToString;
 @Setter
 @Builder
 @ToString
-public class ApprovalDocDto {
-
-	private String status;
-	private String draftDate;
-	private String modifyDate;
-	private String docContent;
-	private String drafter;
-	private int prePeriod;
-	private int appNo;
+public class ApproverDto {
+	
+	private int approverNo;
+	private String approver;
 	private int docNo;
-	private String docTitle;
+	private int appType;
 	
 }

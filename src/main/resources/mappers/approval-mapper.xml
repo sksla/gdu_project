@@ -1,10 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="approvalMapper">
+	
+	<resultMap type="ApprovalFormDto" id="appFormResult">
+		<id column="app_no" property="appNo"/>
+		<result column="app_form_name" property="appFormName"/>
+		<result column="app_form" property="appForm"/>
+		<result column="app_category" property="appCategory"/>
+		<result column="tmp" property="tmp"/>
+	</resultMap>
+
+	<resultMap type="MajorDto" id="majorResult">
+		<id column="major_no" property="majorNo"/>
+		<result column="major_name" property="majorName"/>
+		<result column="status" property="status"/>
+	</resultMap>
+	
+	<resultMap type="CollegeDto" id="collegeResult">
+		<id column="col_no" property="colNo"/>
+		<result column="col_name" property="colName"/>
+		<collection resultMap="majorResult" property="majorList"/>
+	</resultMap>
+	
+	<resultMap id="memberResult" type="MemberDto">
+  	<id column="mem_no" property="memNo"/>
+  	<result column="major_name" property="majorNo"/>
+  	<result column="job_name" property="jobNo"/>
+  	<result column="mem_name" property="memName"/>
+  	<result column="mem_id" property="memId"/>
+  	<result column="mem_pwd" property="memPwd"/>
+  	<result column="phone" property="phone"/>
+  	<result column="email" property="email"/>
+  	<result column="address" property="address"/>
+  	<result column="resident" property="resident"/>
+  	<result column="hire_date" property="hireDate"/>
+  	<result column="end_date" property="endDate"/>
+  	<result column="status" property="status"/>
+  	<result column="salary" property="salary"/>
+  	<result column="sign_url" property="signUrl"/>
+  	<result column="profile_url" property="profileUrl"/>
+  	<result column="leave_count" property="leaveCount"/>
+  	<result column="birth" property="birth"/>
+  	<result column="gender" property="gender"/>
+  </resultMap>
 
 	<select id="selectAppCategory" resultType="String">
 		select distinct app_category
 		  from app_form
+		 where tmp = 'N'
 		 order
 		    by app_category
 	</select>
@@ -13,6 +56,7 @@
 		select count(*)
 		  from app_form
 		 where app_form_name = #{appFormName}
+		   and tmp = 'N'
 	</select>
 
 	<insert id="insertAppForm">
@@ -33,5 +77,44 @@
 					 , #{tmp}
 					 )
 	</insert>
+	
+	<select id="selectCollegeMajorList" resultMap="collegeResult">
+		select col_no
+		     , col_name
+		     , major_no
+		     , major_name
+		  from major
+		  join college using (col_no)
+		 where status = 'Y'
+	</select>
+	
+	<select id="selectFormListByCategory" resultMap="appFormResult">
+		select app_form_name
+				 , app_no
+		  from app_form
+		 where tmp = 'N'
+       and app_category = #{appCategory}
+	</select>
+	
+	<select id="selectAppFormContent" resultType="String">
+		select app_form
+		  from app_form
+		 where app_no = #{appNo}
+	</select>
+	
+	<select id="selectMemberByMajor" resultMap="memberResult">
+		select
+           mem_no
+         , major_name
+         , job_name
+         , mem_name
+  		from member
+  		join major on (member.major_no = major.major_no)
+		  join job on (member.job_no = job.job_no)
+  	 where member.status = 'N'
+  	 	 and member.major_no = #{majorNo}
+	</select>
+	
+	
 	
 </mapper>

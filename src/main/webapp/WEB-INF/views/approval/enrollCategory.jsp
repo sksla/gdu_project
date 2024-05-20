@@ -140,7 +140,8 @@
           console.log($("input[name=appFormName]").val());
         })
     		
-    		if(${empty appCategories} == "true"){
+    		if(${empty appCategories} == true){
+    			console.log(${empty appCategories});
 					$("#insertDocType").parent().css("display", "none");
     			$(".exist-category").css("display", "none")
 					.attr("disabled", true);
@@ -151,7 +152,6 @@
     	})
     		
   		$("#insertDocType").on("change", function(){
-  			console.log("실행");
         if($(this).prop("checked")){
           $(".exist-category").css("display", "none")
           										.attr("disabled", true);
@@ -168,7 +168,7 @@
       // 결재 양식명 중복 체크 ajax
       function AjaxValidateFormName(){
     		
-    		let test;
+    		let result;
     		$.ajax({
     			url:"${contextPath}/approval/validateFormName.do",
           data: {appFormName: $("input[name=appFormName]").val()},
@@ -186,7 +186,7 @@
           }
     		})
     		
-    		return test;
+    		return result;
     	}
       
       function enrollAppForm(type){

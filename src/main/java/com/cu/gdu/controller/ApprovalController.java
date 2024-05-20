@@ -1,5 +1,7 @@
 package com.cu.gdu.controller;
 
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cu.gdu.dto.ApprovalFormDto;
+import com.cu.gdu.dto.CollegeDto;
+import com.cu.gdu.dto.MemberDto;
 import com.cu.gdu.service.ApprovalService;
 
 import lombok.RequiredArgsConstructor;
@@ -63,10 +67,38 @@ public class ApprovalController {
 	
 	// 결재문서
 	// 결재문서 작성 페이지
-	@GetMapping("/enrollAppSoc.page")
+	@GetMapping("/enrollAppDoc.page")
 	public String enrollAppDocPage(Model model) {
 		model.addAttribute("appCategories", approvalService.selectAppCategory());
 		return "approval/enrollAppDoc";
+	}
+	
+	@GetMapping("/majorTreeList.do")
+	@ResponseBody
+	public List<CollegeDto> ajaxSelectmajorList() {
+		return approvalService.selectCollegeMajorList();
+	}
+	
+	// 양식 목록 가져오기
+	@GetMapping("/formList.do")
+	@ResponseBody
+	public List<ApprovalFormDto> ajaxFormList(String appCategory) {
+		return approvalService.selectFormListByCategory(appCategory);
+	}
+	
+	// 양식 내용 조회
+	@GetMapping(value="/formContent.do", produces="text/html; charset=utf-8;")
+	@ResponseBody
+	public String ajaxFormContent(int appNo) {
+		log.debug(approvalService.selectAppFormContent(appNo));
+		return approvalService.selectAppFormContent(appNo);
+	}
+	
+	// 학과별 직원 조회
+	@GetMapping(value="/memberList.do", produces="application/json; charset=utf-8;")
+	@ResponseBody
+	public List<MemberDto> ajaxMemberList(int majorNo){
+		return approvalService.selectMemberByMajor(majorNo);
 	}
 	
 	// 결재문서 등록

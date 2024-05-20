@@ -55,7 +55,7 @@
             <span class="hide-menu">전자결재</span>
           </li>
           <li class="sidebar-item">
-            <a href="${contextPath}/approval/enrollAppSoc.page" class="btn btn-light btn-lg my-3 fw-semibold" style="width:100%;">
+            <a href="${contextPath}/approval/enrollAppDoc.page" class="btn btn-lg my-3 fw-semibold" style="width:100%;">
             	<i class="ti ti-clipboard-text"></i>&nbsp;&nbsp;기안하기
             </a>
           </li>
