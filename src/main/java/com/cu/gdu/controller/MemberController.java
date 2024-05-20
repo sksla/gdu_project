@@ -2,6 +2,7 @@ package com.cu.gdu.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,14 +13,19 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cu.gdu.dto.AttendDto;
 import com.cu.gdu.dto.MemberDto;
+import com.cu.gdu.dto.PageInfoDto;
+import com.cu.gdu.dto.VacationDto;
 import com.cu.gdu.service.MemberService;
 import com.cu.gdu.util.FileUtil;
+import com.cu.gdu.util.PagingUtil;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +39,7 @@ public class MemberController {
 	private final MemberService memberService;
 	private final BCryptPasswordEncoder bcryptPwdEncoder;
 	private final FileUtil fileUtil;
+	private final PagingUtil pagingUtil;
 	
 	// * 로그인 관련 ----------------------------------------
 	@PostMapping("/login.do")
@@ -187,9 +194,27 @@ public class MemberController {
 	
 	
 	
+	// * 휴가 목록 조회 관련 --------------------------
+	@GetMapping("/vacationList.do")
+	public ModelAndView vacationList (@RequestParam(value="page" ,defaultValue="1") int currentPage
+									, ModelAndView mv ) {
+		int listCount = memberService.selectVacationListCount();
+		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 5);
+		List<VacationDto> list = memberService.selectVacationList(pi);
+		System.out.println(list);
+		
+		mv.addObject("pi", pi)
+		  .addObject("list", list)
+		  .setViewName("member/vacationList");
+		
+		return mv;
+	}
 	
-	
-	
+	// * 휴가 신청 관련 --------------------------------------
+	@GetMapping("/vacationForm.page")
+	public String vacregistForm() {
+		return "member/vacationForm";
+	}
 	
 	
 	

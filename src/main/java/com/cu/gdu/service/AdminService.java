@@ -8,6 +8,7 @@ import com.cu.gdu.dto.JobDto;
 import com.cu.gdu.dto.MajorDto;
 import com.cu.gdu.dto.MemberDto;
 import com.cu.gdu.dto.PageInfoDto;
+import com.cu.gdu.dto.VacationDto;
 
 public interface AdminService {
 	
@@ -49,4 +50,11 @@ public interface AdminService {
 	
 	// 직원상세조회 페이지
 	int updateMember(MemberDto m);
+	
+	// 관리자 대시보드 그래프에 띄울 직원수
+	List<MemberDto> selectDashboardMemberList();
+	
+	// 관리자 대시보드에 띄울 신청받은 연차신청 7개 조회
+	List<VacationDto> selectDashboardVacation();
+	
 }

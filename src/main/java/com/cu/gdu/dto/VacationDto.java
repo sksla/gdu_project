@@ -1,6 +1,7 @@
 package com.cu.gdu.dto;
 
 import java.sql.Date;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,5 +30,7 @@ public class VacationDto {
 	private String endDate;
 	private int vacTypeNo;
 	private String vacType;
+	private List<MemberDto> memberList;
+	private List<MajorDto> majorList;
 	
 }

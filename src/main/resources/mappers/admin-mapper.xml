@@ -45,6 +45,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   	<result column="status" property="status" />
   	<result column="job_Level" property="jobLevel" />
   </resultMap>
+  
+  <resultMap type="VacationDto" id="vacationResult">
+  	<id column="vac_no" property="vacNo" />
+  	<result column="mem_no" property="memNo" />
+  	<result column="vac_used" property="vacUsed" />
+  	<result column="vac_option" property="vacOption" />
+  	<result column="regist_date" property="registDate" />
+  	<result column="vac_reason" property="vacReason" />
+  	<result column="doc_no" property="docNo" />
+  	<result column="status" property="status" />
+  	<result column="start_date" property="startDate" />
+  	<result column="end_date" property="endDate" />
+  	<result column="vac_type_no" property="vacTypeNo" />
+  	<result column="vac_type" property="vacType" />
+  </resultMap>
 
   <select id="selectCollegeList" resultMap="collegeResult">
   	select
@@ -311,6 +326,40 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   		   , address = #{address}
   	 where mem_no = #{memNo} 
   </update>
+  
+  <select id="selectDashboardMemberList" resultMap="memberResult">
+  	select
+  				 mem_no
+  			 , mem_name
+  			 , major_name
+  			 , job_name
+  		from member
+  	  join major on (member.major_no = major.major_no)
+		  join job on (member.job_no = job.job_no)
+  	 where member.status = 'N'
+  </select>
+  
+  <select id="selectDashboardVacation" resultMap="vacationResult">
+    select 
+    		   vac.*
+	    from (
+	      select
+			         member.mem_no,
+			         major_name,
+			         mem_name,
+			         start_date,
+			         vacation.end_date,
+			         vacation.status,
+			         vac_reason,
+			         vac_type
+		      from member
+		      join vacation ON (member.mem_no = vacation.mem_no)
+		      join major on (member.major_no = major.major_no)
+		     where member.status = 'N'
+		     order by vac_no desc
+	   ) vac
+	   where rownum between 1 and 7
+  </select>
 
   
 </mapper>
