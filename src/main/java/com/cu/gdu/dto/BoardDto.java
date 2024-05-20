@@ -30,10 +30,11 @@ public class BoardDto {
 	 private String openStatus;
 	 private String password;
 	 private String status;
-	 private int attachCount; 
+	 private int attachCount;  
 	 
 	// has Many 관계
 	private List<AttachDto> attachList;
 
 	private String memId; //테이블조인으로 추가된 변수
+	private String memName; // 이름 조회용 변수 추가
 }
