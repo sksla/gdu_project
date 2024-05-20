@@ -108,6 +108,7 @@
 			, mem_no
 			, start_time
 			, regist_date
+			, status
 			)
 			values
 			(
@@ -115,6 +116,14 @@
 			, #{memNo}
 			, SYSDATE
 			, SYSDATE
+			,<choose>
+		    <when test="startTime &lt; '09:00'">
+		        '정상'
+		    </when>
+		    <otherwise>
+		        '지각'
+		    </otherwise>
+			 </choose>
 			)
 	</insert>
 	

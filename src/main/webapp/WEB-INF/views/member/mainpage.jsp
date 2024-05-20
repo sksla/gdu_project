@@ -415,7 +415,7 @@
 	            </div>
 	          </div>
 	
-	          <div class="card py-3">
+	          <div class="card py-3 ">
 	            <div class=" d-flex flex-row align-items-center">
 	             <button type="button" class="btn bg-info-subtle text-info"  id="checkInBtn">
                  출근
@@ -451,10 +451,16 @@
         	
         	
             $("#checkInBtn").click(function(){
+            	const options = { hour12: false, timeZone: 'Asia/Seoul' };
+            	const currentTimeString = new Date().toLocaleTimeString('ko-KR', options);
+            	
                 $.ajax({
                     url: "${contextPath}/member/checkin.do",
                     type: "POST",
-                    data: "memNo=${loginUser.memNo}",
+                    data: {
+				  						startTime:currentTimeString,
+				  						memNo:${loginUser.memNo}
+				  					},
                     success: function(result) {
                         if(result == "SUCCESS") {
                         	alert("출근되었습니다.");
