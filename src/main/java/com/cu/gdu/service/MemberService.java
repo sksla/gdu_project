@@ -19,6 +19,9 @@ public interface MemberService {
 	// 출근 등록 
 		int insertAttend(AttendDto atd);
 		
+	// 퇴근 등록
+		int updateAttend(AttendDto atd);
+		
 	// 출퇴근 이력 조회 서비스
 	  AttendDto selectAttend(AttendDto atd);
 }

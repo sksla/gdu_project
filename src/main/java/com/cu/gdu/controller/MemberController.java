@@ -173,6 +173,18 @@ public class MemberController {
 		return memberService.selectAttend(atd); 
 	}
 	
+	@ResponseBody
+	@PostMapping("/checkin.do")
+	public String ajaxCheckin(AttendDto atd) {
+		return memberService.insertAttend(atd) > 0 ? "SUCCESS" : "FAIL";
+	}
+	
+	@ResponseBody
+	@PostMapping("/checkout.do")
+	public String ajaxCheckout(AttendDto atd) {
+		return memberService.updateAttend(atd) > 0 ? "SUCCESS" : "FAIL";
+	}
+	
 	
 	
 	

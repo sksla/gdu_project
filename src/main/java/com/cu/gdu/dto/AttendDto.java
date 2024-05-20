@@ -17,7 +17,7 @@ public class AttendDto {
 
 	
 	 private int atdNo;
-	 private int memNo;
+	 private String memNo;
 	 private String startTime;
 	 private String endTime;
 	 private String registDate;

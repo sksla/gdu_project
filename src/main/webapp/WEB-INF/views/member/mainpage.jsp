@@ -27,14 +27,14 @@
         display: flex;
     }
 		.left-box {
-            width: 80%;
-            background-color: lightblue; /* Background color for demonstration */
-            padding: 20px;
-            text-align: center;
-        }
+        width: 80%;
+        
+        padding: 20px;
+        text-align: center;
+    }
     .right-box {
         width: 20%;
-        background-color: lightcoral; /* Background color for demonstration */
+        
         padding: 20px;
         text-align: center;
     }
@@ -46,13 +46,24 @@
     }
     .card-body > div,
     .card-body > button {
-        margin-left: 10px;
-        margin-right: 10px;
+       
         white-space: nowrap; /* Prevent text from wrapping */
     }
     .card-body > button {
         width: auto; /* Adjust button width automatically */
-	 }	
+	 }
+	  .bg-info-subtle {
+        height: 35px;
+        width: 100px;
+        margin-right: 3px;
+        white-space: nowrap;
+        padding: 0 5px;
+    }
+
+    #checkInTime, #checkOutTime {
+        width: 70px;
+        margin-right: 3px;
+    }	
 	</style>
 </head>
 
@@ -360,51 +371,41 @@
           <div class="container">
           <!-- 왼쪽 박스 부분 -->
 	          <div class="r-8 left-box">
-		          <div class="card bg-info-subtle shadow-none position-relative overflow-hidden mb-4">
-		            <div class="card-body px-4 py-3">
-		              <div class="row align-items-center my-3">
-		                <div class="col-9">
-		                  <h4 class="fw-semibold mb-8">전자결재작성</h4>
-		                  <nav aria-label="breadcrumb">
-		                    <ol class="breadcrumb">
-		                      <li class="breadcrumb-item">
-		                        <a class="text-muted text-decoration-none" href="../main/index.html">Home</a>
-		                      </li>
-		                      <li class="breadcrumb-item" aria-current="page">전자결재</li>
-		                      <li class="breadcrumb-item" aria-current="page">전자결재작성</li>
-		                    </ol>
-		                  </nav>
-		                </div>
-		                <div class="col-3">
-		                  <div class="text-center mb-n5">
-		                    <!-- <img src="../assets/images/breadcrumb/ChatBc.png" alt="" class="img-fluid mb-n4" /> -->
-		                  </div>
-		                </div>
-		              </div>
-		            </div>
-		          </div>
-		
-		          <!-- 페이지 내용 -->
-		          <div>
-			          <div class="card">
-			            <div class="card-body">
-			              여기에 내용작성
-			            </div>
+					      <div class="row" style="height:50%">
+			          	<div class="col-lg-6 d-flex align-items-strech">
+			          		<div class="card w-100">
+				          		<div class="card-body">
+				          		분할1
+				          		</div>
+				          	</div>
+			          	</div>
+			          	<div class="col-lg-6 d-flex align-items-strech">
+			          		<div class="card w-100">
+				          		<div class="card-body">
+				          		분할2
+				          		</div>
+				          	</div>
+			          	</div>
 			          </div>
-			
-			          <div class="card">
-			            <div class="card-body">
-			              여기에 내용작성
-			            </div>
+			          
+			          <div class="row" style="height:50%">
+			          	<div class="col-lg-6 d-flex align-items-strech">
+			          		<div class="card w-100">
+				          		<div class="card-body">
+				          		분할1
+				          		</div>
+				          	</div>
+			          	</div>
+			          	<div class="col-lg-6 d-flex align-items-strech">
+			          		<div class="card w-100">
+				          		<div class="card-body">
+				          		분할2
+				          		</div>
+				          	</div>
+			          	</div>
 			          </div>
-			
-			          <div class="card">
-			            <div class="card-body">
-			              여기에 내용작성
-			            </div>
-			          </div>
-						</div>
-					</div>
+		          
+						</div> <!-- 왼쪽 박스 부분 끝 -->
 					
 					<!-- 오른쪽 박스 부분 -->
 					<div class="right-box">
@@ -414,16 +415,16 @@
 	            </div>
 	          </div>
 	
-	          <div class="card">
-	            <div class="card-body d-flex flex-row">
-	             <button type="button" class="btn bg-info-subtle text-info" id="checkInBtn">
+	          <div class="card py-3">
+	            <div class=" d-flex flex-row align-items-center">
+	             <button type="button" class="btn bg-info-subtle text-info"  id="checkInBtn">
                  출근
                </button>
-               <div>08:55</div>
-               <button type="button" class="btn bg-info-subtle text-info">
+               <div id="checkInTime" ></div>
+               <button type="button" class="btn bg-info-subtle text-info" id="checkOutBtn">
                  퇴근
                </button>
-               <div>18:01</div>
+               <div id="checkOutTime"></div>
 	            </div>
 	          </div>
 	
@@ -443,19 +444,17 @@
 				</div>
         </div>
         
-        
-        <script>
+        <!-- 출퇴근 부분 -->
+        <script> 
         $(document).ready(function(){
         	ajaxAttend();
+        	
         	
             $("#checkInBtn").click(function(){
                 $.ajax({
                     url: "${contextPath}/member/checkin.do",
                     type: "POST",
-                    data: {
-                        startTime: new Date().toISOString(),
-                        memNo : ${loginUser.memNo}
-                    },
+                    data: "memNo=${loginUser.memNo}",
                     success: function(result) {
                         if(result == "SUCCESS") {
                         	alert("출근되었습니다.");
@@ -463,7 +462,26 @@
                         } 
                     }
                     
-                });
+                })
+            })
+            
+            $("#checkOutBtn").click(function(){
+            	const registDate = new Date().toISOString().split('T')[0]; // 오늘 날짜만 추출
+                $.ajax({
+                    url: "${contextPath}/member/checkout.do",
+                    type: "POST",
+                    data: {
+					  						registDate:registDate,
+					  						memNo:${loginUser.memNo}
+					  					},
+                    success: function(result) {
+                        if(result == "SUCCESS") {
+                        	alert("퇴근되었습니다.");
+													ajaxAttend();
+                        } 
+                    }
+                    
+                })
             })
             
             function ajaxAttend(){
@@ -473,16 +491,18 @@
             		url:"${contextPath}/member/selectAttend.do",
 	        			type:"get",
 	        			data: {
-	                        registDate: registDate,
-	                        memNo : ${loginUser.memNo}
-	                    },
+      						registDate:registDate,
+      						memNo:${loginUser.memNo}
+      					},
 	        			success:function(result){
 	        				
 	        				 if(result.startTime) {
                        $("#checkInTime").text(result.startTime);
+                       $("#checkInBtn").prop("disabled", true);
                    }
                    if(result.endTime) {
                        $("#checkOutTime").text(result.endTime);
+                       $("#checkOutBtn").prop("disabled", true);
                    }
 	        			}
 	        			
