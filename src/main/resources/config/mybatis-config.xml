@@ -23,6 +23,7 @@
 		<typeAlias type="com.cu.gdu.dto.ShareMemDto" alias="ShareMemDto"/>
 		<typeAlias type="com.cu.gdu.dto.AttendDto" alias="AttendDto"/>
 		<typeAlias type="com.cu.gdu.dto.StuAttendDto" alias="StuAttendDto"/>
+		<typeAlias type="com.cu.gdu.dto.VacationDto" alias="VacationDto" />
 	</typeAliases>
 	
 	<mappers>
