@@ -89,7 +89,7 @@ public class AffiliatedOrganController {
 		int listCount = affiliatedOrganService.selectAffiliatedOrganResListCount();
 		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 5);
 		List<AffReservationDto> reslist = affiliatedOrganService.selectAffiliatedOrganResList(pi);
-		System.out.println(list);
+		System.out.println(reslist);
 		mv.addObject("pi", pi)
 		  .addObject("reslist", reslist)
 		  .setViewName("/affiliatedOrgan/affiliatedOrganResList");
