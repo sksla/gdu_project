@@ -6,6 +6,7 @@
   	<id column="board_no" property="boardNo"/>
   	<result column="mem_no" property="memNo"/>
   	<result column="mem_id" property="memId"/>
+  	<result column="mem_name" property="memName"/>
   	<result column="board_type" property="boardType"/>
   	<result column="board_title" property="boardTitle"/>
   	<result column="board_content" property="boardContent"/>
@@ -34,6 +35,7 @@
   	<result column="board_no" property="boardNo"/>
   	<result column="mem_no" property="writerMem"/>
   	<result column="mem_id" property="writerMem"/>
+  	<result column="mem_name" property="memName"/>
   	<result column="reply_content" property="replyContent"/>
   	<result column="regist_date" property="registDate"/>
   	<result column="modify_date" property="modifyDate"/>
@@ -53,6 +55,7 @@
             board_no
         ,	b.mem_no
         , mem_id
+        , mem_name
         , board_title
         , board_content
         , count
@@ -92,6 +95,7 @@
         ,	b.mem_no
         ,	board_title
         , mem_id
+        , mem_name
         , count
         , to_char(regist_date, 'YYYY-MM-DD') regist_date
         , (
@@ -185,6 +189,7 @@
 		    board_no
 		  , board_title
 		  , mem_id
+		  , mem_name
 		  , board_content
 		  , to_char(regist_date, 'YYYY-MM-dd') regist_date
 		  , file_no
@@ -203,6 +208,7 @@
 						reply_no
 					, reply_content
 					, mem_id
+					, mem_name
 					, to_char(regist_date, 'YYYY-MM-DD') regist_date
 			from reply r
       join member using(mem_no)

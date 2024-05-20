@@ -49,6 +49,11 @@ public class MemberServiceImpl implements MemberService {
 		return memberDao.selectAttend(atd);
 	}
 
+	@Override
+	public int updateAttend(AttendDto atd) {
+		return memberDao.updateAttend(atd);
+	}
+
 	
 
 }

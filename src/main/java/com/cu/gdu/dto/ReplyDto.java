@@ -22,4 +22,6 @@ public class ReplyDto {
 	 private String registDate;
 	 private String modifyDate;
 	 private String status;
+	 
+	 private String memName; // 작성자 이름 변수 추가 - 김영주
 }

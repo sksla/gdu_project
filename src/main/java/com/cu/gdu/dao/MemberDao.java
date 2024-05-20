@@ -40,6 +40,10 @@ public class MemberDao {
 	
 	public int insertAttend(AttendDto a) {
 		return sqlSessionTemplate.insert("memberMapper.insertAttend", a);
-		
 	}
+	
+	public int updateAttend(AttendDto a) {
+		return sqlSessionTemplate.update("memberMapper.updateAttend", a);
+	}
+	
 }

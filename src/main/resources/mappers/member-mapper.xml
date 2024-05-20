@@ -90,7 +90,50 @@
  	</update>
   
   <!-- 출퇴근 관련 -->
-  
+  <select id="selectAttend" resultMap="attendResult">
+		 select
+						atd_no
+					, TO_CHAR(start_time, 'HH24:MI') as start_time
+          , TO_CHAR(end_time, 'HH24:MI') as end_time
+			from attend
+			where mem_no = #{memNo}
+		 		and to_char(regist_date, 'YYYY-MM-DD') = #{registDate}
+	</select>
+	
+	<insert id="insertAttend">
+		insert 
+			into attend
+			(
+				atd_no
+			, mem_no
+			, start_time
+			, regist_date
+			, status
+			)
+			values
+			(
+				seq_attend_no.nextval
+			, #{memNo}
+			, SYSDATE
+			, SYSDATE
+			,<choose>
+		    <when test="startTime &lt; '09:00'">
+		        '정상'
+		    </when>
+		    <otherwise>
+		        '지각'
+		    </otherwise>
+			 </choose>
+			)
+	</insert>
+	
+	<update id="updateAttend">
+		update
+					attend
+			 set end_time = SYSDATE
+		 where mem_no = #{memNo}
+			 and to_char(regist_date, 'YYYY-MM-DD') = #{registDate}
+	</update>
   
   
   
