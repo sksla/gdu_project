@@ -47,7 +47,7 @@ public class BoardController {
 									, ModelAndView mv ) {
 		String boardType = "Q";
 		int listCount = boardService.selectBoardListCount(boardType);
-		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 5);
+		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 8);
 		List<BoardDto> list = boardService.selectBoardList(pi, boardType);
 		System.out.println(list);
 		
@@ -66,7 +66,7 @@ public class BoardController {
 		log.debug("search: {}", search);
 		search.put("boardType", "Q");
 		int listCount = boardService.selectSearchListCount(search);
-		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount,currentPage , 5, 5);
+		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount,currentPage , 5, 8);
 		List<BoardDto> list = boardService.selectSearchList(search, pi);
 		
 		mv.addObject("pi", pi)
@@ -254,7 +254,7 @@ public class BoardController {
 									, ModelAndView mv ) {
 		String boardType = "N";
 		int listCount = boardService.selectBoardListCount(boardType);
-		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 5);
+		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 8);
 		List<BoardDto> list = boardService.selectBoardList(pi, boardType);
 		System.out.println(list);
 			
@@ -273,7 +273,7 @@ public class BoardController {
 		log.debug("search: {}", search);
 		search.put("boardType", "N");
 		int listCount = boardService.selectSearchListCount(search);
-		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount,currentPage , 5, 5);
+		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount,currentPage , 5, 8);
 		List<BoardDto> list = boardService.selectSearchList(search, pi);
 			
 		mv.addObject("pi", pi)
