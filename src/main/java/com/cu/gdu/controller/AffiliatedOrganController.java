@@ -1,23 +1,30 @@
 package com.cu.gdu.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cu.gdu.dto.AffReservationDto;
 import com.cu.gdu.dto.AffiliatedOrganDto;
+import com.cu.gdu.dto.AttachDto;
 import com.cu.gdu.dto.MajorDto;
 import com.cu.gdu.dto.PageInfoDto;
 import com.cu.gdu.service.AdminService;
 import com.cu.gdu.service.AffiliatedOrganService;
+import com.cu.gdu.util.FileUtil;
 import com.cu.gdu.util.PagingUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -31,6 +38,7 @@ public class AffiliatedOrganController {
 	
 	private final AffiliatedOrganService affiliatedOrganService;
 	private final PagingUtil pagingUtil;
+	private final FileUtil fileUtil;
 	private final AdminService adminService;
 	
 	// * ------------------- 부속기관 목록관련 -------------------
@@ -61,6 +69,7 @@ public class AffiliatedOrganController {
 	@GetMapping("/affiliatedOrganResForm.page")
 	public String affiliatedOrganFrom(int no, Model model) {	
 		model.addAttribute("affiliatedOrgan",affiliatedOrganService.selectAffiliatedOrgan(no));
+		
 		return "/affiliatedOrgan/affiliatedOrganRes";
 	}
 	   
@@ -81,6 +90,7 @@ public class AffiliatedOrganController {
 		}
 		return "affiliatedOrgan/affiliatedOrganRes";
 	}
+	
 	
 	// 부속기관 예약목록 페이지 조회
 	@GetMapping("/affiliatedOrganResList.do")
@@ -109,13 +119,30 @@ public class AffiliatedOrganController {
 	
 	// 부속기관 등록서비스
 	@PostMapping("/affiliatedOrganEnroll.do")
-	public String affiliatedOrganEnroll(AffiliatedOrganDto aff
-									, Model model
-									, RedirectAttributes redirectAttributes) {
+	public String affiliatedOrganEnroll(AffiliatedOrganDto aff, List<MultipartFile> uploadFiles
+									   , HttpSession session, Model model, RedirectAttributes redirectAttributes) {
 		
+		List<AttachDto> attachList = new ArrayList<>();	
+		
+		for(MultipartFile uploadFile: uploadFiles) {
+			if(uploadFile != null && !uploadFile.isEmpty()) {
+				//파일 업로드
+				Map<String, String> map = fileUtil.fileUpload(uploadFile, session, "aff");
+					
+				// insert할 데이터 => AttachDto객체만들기 => attachList쌓기
+				attachList.add( AttachDto.builder()
+						  .filePath(map.get("filePath"))
+						  .filesystemName(map.get("filesystemName"))
+						  .originalName(map.get("originalName"))
+						  .refType("A")
+						  .build());			
+			}
+		}
+		aff.setAttachList(attachList); // 첨부파일이 없었을 경우 텅빈리스트
+
 		int result = affiliatedOrganService.insertAffiliatedOrgan(aff);
 				
-		if(result > 0) {
+		if(attachList.isEmpty() && result == 1 || !attachList.isEmpty() && result == attachList.size()) {
 			// 성공메세지
 			redirectAttributes.addFlashAttribute("alertMsg", "성공");
 		}else{

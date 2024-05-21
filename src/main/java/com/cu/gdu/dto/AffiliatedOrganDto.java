@@ -1,5 +1,7 @@
 package com.cu.gdu.dto;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,4 +24,7 @@ public class AffiliatedOrganDto {
 	private String latitude;
 	private String longitude;
 	private String affEtc;
+	
+	// has Many 관계
+	private List<AttachDto> attachList;
 }

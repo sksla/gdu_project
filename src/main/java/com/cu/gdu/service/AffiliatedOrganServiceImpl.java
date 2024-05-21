@@ -9,6 +9,7 @@ import com.cu.gdu.dao.AdminDao;
 import com.cu.gdu.dao.AffiliatedOrganDao;
 import com.cu.gdu.dto.AffReservationDto;
 import com.cu.gdu.dto.AffiliatedOrganDto;
+import com.cu.gdu.dto.AttachDto;
 import com.cu.gdu.dto.MajorDto;
 import com.cu.gdu.dto.PageInfoDto;
 
@@ -55,7 +56,20 @@ public class AffiliatedOrganServiceImpl implements AffiliatedOrganService {
 	// * ------------------- 부속기관 등록관련 -------------------
 	@Override
 	public int insertAffiliatedOrgan(AffiliatedOrganDto aff) {
-		return affiliatedOrganDao.insertAffiliatedOrgan(aff);
+		
+		// 부속기관 insert
+		int result1 = affiliatedOrganDao.insertAffiliatedOrgan(aff);
+		
+		int result2 = 1;
+		// attachment insert
+		List<AttachDto> attachList = aff.getAttachList();
+		if(!attachList.isEmpty()) {
+			result2 = 0;
+			for(AttachDto at : attachList) {
+				result2 += affiliatedOrganDao.insertAttach(at);
+			}
+		}	
+		return result1 * result2;
 	}
 	
 	// * ------------------- 부속기관 검색관련 -------------------
@@ -68,6 +82,10 @@ public class AffiliatedOrganServiceImpl implements AffiliatedOrganService {
 	public List<AffiliatedOrganDto> selectAffiliatedOrganSearchList(Map<String, String> search, PageInfoDto pi) {
 		return null;
 	}
+
+	
+
+	
 
 	
 

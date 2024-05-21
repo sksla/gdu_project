@@ -57,41 +57,43 @@
       <div class="card">
         <div class="card-body">
           <div class="wrap">
-            <div class="content1">
-							<div class="pic">
-								<div class="card card-body">
-									<div class="mb-3">
-										<label for="formFileMultiple" class="form-label">
-											<h5>기관사진</h5>
-										</label>
-										<input class="form-control" type="file" id="formFileMultiple"  accept="image/*" style="width:800px" onchange="setThumbnail(event);"  multiple/>
-										<div id="image_container"></div>
-										<script>
-											function setThumbnail(event){
-												
-												if(event.target.files.length > 4){
-													alert("최대 4장까지만 첨부 가능합니다.");
-													event.target.value = "";
-													return;
+            <form class="form-horizontal r-separator" action="${contextPath}/aff/affiliatedOrganEnroll.do" method="post" enctype="multipart/form-data">
+	            <div class="content1">
+								<div class="pic">
+									<div class="card card-body">
+										<div class="mb-3">
+											<label for="formFileMultiple" class="form-label">
+												<h5>기관사진</h5>
+											</label>
+											<input class="form-control" type="file" name="uploadFiles" id="upfile"  accept="image/*" style="width:800px" onchange="setThumbnail(event);" multiple/>
+											<div id="image_container"></div>
+											<script>
+												function setThumbnail(event){
+													
+													if(event.target.files.length > 4){
+														alert("최대 4장까지만 첨부 가능합니다.");
+														event.target.value = "";
+														return;
+													}
+													for(var image of event.target.files){
+														var reader = new FileReader();
+														reader.onload = function(event){
+															var img = document.createElement("img");
+															img.setAttribute("src", event.target.result);
+															img.setAttribute("width", "200");
+															img.setAttribute("height", "200");
+															document.querySelector("div#image_container").appendChild(img);
+														};
+														console.log(image);
+														reader.readAsDataURL(image);
+													}
 												}
-												for(var image of event.target.files){
-													var reader = new FileReader();
-													reader.onload = function(event){
-														var img = document.createElement("img");
-														img.setAttribute("src", event.target.result);
-														img.setAttribute("width", "200");
-														img.setAttribute("height", "200");
-														document.querySelector("div#image_container").appendChild(img);
-													};
-													console.log(image);
-													reader.readAsDataURL(image);
-												}
-											}
-										</script>						
+											</script>						
+										</div>
 									</div>
-								</div>
-							</div>							
-            </div>  
+								</div>							
+	            </div>  
+            
             <div class="content2">
               <!-- 정보 -->
               <div class="info">
@@ -100,7 +102,6 @@
                   <div class="col-12">
                     <!-- start Project Assinging -->
                     <div class="card">
-                      <form class="form-horizontal r-separator" action="${contextPath}/aff/affiliatedOrganEnroll.do" method="post">
                         <div class="card-body">
                           <h5>기관정보</h5>
                           <div class="form-group mb-0">
@@ -178,7 +179,6 @@
 											        affiliatedOrganEnroll();
 											    });
 												</script>
-                      </form>
                     </div>
                     <!-- end Project Assinging -->
                   </div>
@@ -186,6 +186,8 @@
                 <!-- End Row -->
               </div>
               <!-- 정보 끝 -->
+              </div>  
+              </form>
             </div>           
           </div>
         </div>

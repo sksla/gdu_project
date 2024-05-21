@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.cu.gdu.dto.AffReservationDto;
 import com.cu.gdu.dto.AffiliatedOrganDto;
+import com.cu.gdu.dto.AttachDto;
 import com.cu.gdu.dto.MajorDto;
 import com.cu.gdu.dto.PageInfoDto;
 
@@ -49,7 +50,7 @@ public class AffiliatedOrganDao {
 	public int selectAffiliatedOrganResListCount() {
 		return sqlSessionTemplate.selectOne("affiliatedOrganMapper.selectAffiliatedOrganResListCount");
 	}
-	
+
 	public List<AffReservationDto> selectAffiliatedOrganResList(PageInfoDto pi){
 		
 		int limit = pi.getBoardLimit();
@@ -64,12 +65,18 @@ public class AffiliatedOrganDao {
 	public int insertAffiliatedOrgan(AffiliatedOrganDto aff) {
 		return sqlSessionTemplate.insert("affiliatedOrganMapper.insertAffiliatedOrgan", aff);
 	}
+	
+	public int insertAttach(AttachDto at) {
+		return sqlSessionTemplate.insert("affiliatedOrganMapper.insertAttach", at);
+	}
 
 	// * ------------------- 부속기관 검색관련 ------------------- 
 
 	public int selectAffiliatedOrganSearchListCount(Map<String, String> search) {
 		return sqlSessionTemplate.selectOne("affiliatedOrganMapper.selectAffiliatedOrganSearchListCount", search);
 	}
+
+	
 
 	
 
