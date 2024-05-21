@@ -48,7 +48,7 @@
     display: flex;
     flex-direction: column;
   }
-  #content1 *, #content2 *, #content3 *{padding: 5px;}
+  #content1 *, #content2 *, #content3 *{padding: 3px;}
   #content3{
     display: flex;
     align-items: center;
@@ -73,6 +73,14 @@
   }
 	#calendar *{
     padding: 0px;
+	}
+  .app-calendar .fc .fc-day-sun .fc-daygrid-day-number{
+	  color: red;
+	  text-decoration: none;
+	}
+	.app-calendar .fc .fc-day-sat .fc-daygrid-day-number{
+	  color: blue;
+	  text-decoration: none;
 	}
 	/* 그래프 스타일 */
 	#content2{
@@ -178,7 +186,7 @@
 	                <div id="majorSchedule">
 	                  <div>
 	                    <p class="fs-7 fw-semibold">학사일정 +</p>
-	                    <div style="border: 1px solid black; width: 650px; height: 600px;" class="calendar-sidebar app-calendar">
+	                    <div style="width: 650px; height: 600px;" class="calendar-sidebar app-calendar">
 												<div id="calendar">
 												
 												</div>

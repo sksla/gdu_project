@@ -310,4 +310,9 @@ public class AdminController {
 		return "redirect:/admin/setting.do";
 	}
 	
+	@GetMapping("/requestMemberLeave.page")
+	public String requestMemberLeave() {
+		return "admin/requestMemberLeave";
+	}
+	
 }
