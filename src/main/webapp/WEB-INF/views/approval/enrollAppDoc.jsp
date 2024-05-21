@@ -123,7 +123,7 @@
 
           <!-- 페이지 내용 -->
           <form id="appForm" method="post" action="${contextPath}/approval/enroll.do">
-          	<input type="hidden" id="status" name="status" value="O">
+          	<input type="hidden" id="status" name="status" value="20">
           	<input type="hidden" name="drafter" value="${loginUser.memNo}">
             <div class="mb-4" style="display: flex; justify-content: space-between;">
               <span>
@@ -702,8 +702,9 @@
     			alert("결재자와 수신자를 지정해주세요.")
     			return false;
     		}
+    		$("#status").val(20);
     		// 협조자
-    		$("#appForm>input[name='collaborator']").each(function(index, el){
+    		$("#appForm>input[name='collaboratorNo']").each(function(index, el){
     			$(el).remove();
     		});
     		if($(".selected_collaborator").length != 0){
@@ -715,6 +716,7 @@
        			}
     				$("#appForm").append('<input type="hidden" name="collaboratorNo" value="' + $(el).children().eq(0).text() + '">');
     			})
+    			$("#status").val(10);
     		}else{
     			for(let i=1; i<=5; i++){
     				let $collaborator = $(".collaborator" + i);
@@ -724,7 +726,7 @@
     			}
     		}
     		// 결재자
-    		$("#appForm>input[name='approver']").remove();
+    		$("#appForm>input[name='approverNo']").remove();
     		if($(".selected_approver").length != 0){
     			let $selectedApproverProp = $(".selected_approver>span");
     			$(".approver").eq(0).text("미결");
@@ -738,7 +740,7 @@
     			}
     		}
     		// 수신자
-    		$("#appForm>input[name='receiver']").remove();
+    		$("#appForm>input[name='receiverNo']").remove();
     		if($(".selected_receiver").length != 0){
     			let $selectedReceiverProp = $(".selected_receiver>span");
     			$(".receiver").eq(0).text("미결");
@@ -759,9 +761,15 @@
     	//
       function enrollAppForm(type){
     	  if(type == 1){
-    		  $("#status").val("O");
+    		  if(!confirm("결재문서를 기안하시겠습니까?")){
+    			  return false;
+    		  }
     	  }else if(type == 2){
-    		  $("#status").val("T");
+    		  if(confirm("임시저장 문서로 저장하시겠습니까?")){
+	    		  $("#status").val(0);
+    		  }else{
+    			  return false;
+    		  }
     	  }
     	}
     	

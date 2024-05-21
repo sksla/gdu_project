@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -14,7 +15,9 @@ import com.cu.gdu.dto.ApprovalDocDto;
 import com.cu.gdu.dto.ApprovalFormDto;
 import com.cu.gdu.dto.CollegeDto;
 import com.cu.gdu.dto.MemberDto;
+import com.cu.gdu.dto.PageInfoDto;
 import com.cu.gdu.service.ApprovalService;
+import com.cu.gdu.util.PagingUtil;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ApprovalController {
 	
 	private final ApprovalService approvalService;
+	private final PagingUtil pagingUtil;
 	
 	// 전자결재 메인페이지
 	@GetMapping("/main.do")
@@ -33,7 +37,7 @@ public class ApprovalController {
 		return "approval/appMain";
 	}
 
-	// 결재양식
+	// **************************** 결재양식 ****************************
 	// 결재양식 등록 페이지
 	@GetMapping("/enrollCategory.page")
 	public String enrollCategoryPage(Model model){
@@ -67,7 +71,7 @@ public class ApprovalController {
 		return "approval/appMain";
 	}
 	
-	// 결재문서
+	// **************************** 결재 문서 ****************************
 	// 결재문서 작성 페이지
 	@GetMapping("/enrollAppDoc.page")
 	public String enrollAppDocPage(Model model) {
@@ -104,13 +108,13 @@ public class ApprovalController {
 	
 	// 결재문서 등록
 	@PostMapping("/enroll.do")
-	public String enrollApproval(ApprovalDocDto appDoc, 
+	public String enrollApproval(ApprovalDocDto appDoc,
 								 int approverNo, 
 								 int receiverNo,
 								 String[] collaboratorNo,
 								 RedirectAttributes redirectAttributes) {
 		int result = approvalService.insertApp(appDoc, approverNo, receiverNo, collaboratorNo);
-		int success = collaboratorNo.length + 2;
+		int success = (collaboratorNo != null ? collaboratorNo.length : 0) + 2;
 		if(result == success) {
 			redirectAttributes.addFlashAttribute("alertMsg", "결재문서를 기안했습니다.");
 		} else {
@@ -118,6 +122,19 @@ public class ApprovalController {
 			redirectAttributes.addFlashAttribute("historyBackYN", "Y");
 		}
 		return "redirect:/approval/main.do";
+	}
+	
+	// **************************** 결재 보관함 ****************************
+	// 진행중인 결재문서 조회
+	@GetMapping("/ongoingBoard.page")
+	public String ongoinBoardPage(@RequestParam(value="page", defaultValue="1")int currenrPage, Model model) {
+		model.addAttribute("appCategories", approvalService.selectAppCategory());
+		int listCount = approvalService.selectCountOngoingBoardList();
+		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currenrPage, 5, 8);
+		log.debug("{}", approvalService.selectOngoingDocList(pi));
+		model.addAttribute("appDocList", approvalService.selectOngoingDocList(pi));
+		model.addAttribute("pi", pi);
+		return "approval/ongoingBoard";
 	}
 	
 }

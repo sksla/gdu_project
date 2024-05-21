@@ -9,6 +9,7 @@ import com.cu.gdu.dto.ApprovalDocDto;
 import com.cu.gdu.dto.ApprovalFormDto;
 import com.cu.gdu.dto.CollegeDto;
 import com.cu.gdu.dto.MemberDto;
+import com.cu.gdu.dto.PageInfoDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -52,13 +53,17 @@ public class ApprovalServiceImpl implements ApprovalService {
 	public int insertApp(ApprovalDocDto appDoc, int approverNo, int receiverNo, String[] collaboratorNo) {
 		
 		int result1 = approvalDao.insertAppDoc(appDoc);
-		int result2 = 0;
-		for(String collaborator : collaboratorNo) {
-			int colAppType = 10;
-			result2 += approvalDao.insertApprover(Integer.parseInt(collaborator), colAppType++);
+		int result2 = 1;
+		if(Integer.parseInt(appDoc.getStatus()) != 0) {
+			result2 = 0;
+			if(collaboratorNo != null) {
+				for(String collaborator : collaboratorNo) {
+					result2 += approvalDao.insertApprover(Integer.parseInt(collaborator), 10);
+				}
+			}
+			result2 += approvalDao.insertApprover(approverNo, 20);
+			result2 += approvalDao.insertApprover(receiverNo, 30);
 		}
-		result2 += approvalDao.insertApprover(approverNo, 20);
-		result2 += approvalDao.insertApprover(receiverNo, 30);
 		
 		return result1 * result2;
 	}
@@ -72,5 +77,17 @@ public class ApprovalServiceImpl implements ApprovalService {
 	public String selectAppFormContent(int appNo) {
 		return approvalDao.selectAppFormContent(appNo);
 	}
+	
+	@Override
+	public int selectCountOngoingBoardList() {
+		return approvalDao.selectCountOngoingBoardList();
+	}
+
+	@Override
+	public List<ApprovalDocDto> selectOngoingDocList(PageInfoDto pi) {
+		return approvalDao.selectOngoingDocList(pi);
+	}
+
+	
 	
 }

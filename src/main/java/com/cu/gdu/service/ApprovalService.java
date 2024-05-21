@@ -6,6 +6,7 @@ import com.cu.gdu.dto.ApprovalDocDto;
 import com.cu.gdu.dto.ApprovalFormDto;
 import com.cu.gdu.dto.CollegeDto;
 import com.cu.gdu.dto.MemberDto;
+import com.cu.gdu.dto.PageInfoDto;
 
 public interface ApprovalService {
 
@@ -37,5 +38,10 @@ public interface ApprovalService {
 	// 양식 내용 불러오기
 	String selectAppFormContent(int appNo);
 	
-	// 결재문서 목록 조회
+	// 진행중인 결재문서 목록 개수 조회
+	int selectCountOngoingBoardList();
+	
+	// 진행중인 결재문서 목록 조회
+	List<ApprovalDocDto> selectOngoingDocList(PageInfoDto pi);
+	
 }

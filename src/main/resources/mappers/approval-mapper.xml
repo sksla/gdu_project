@@ -2,12 +2,25 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="approvalMapper">
 	
+	<!-- ResultMap 구역 -->
 	<resultMap type="ApprovalFormDto" id="appFormResult">
 		<id column="app_no" property="appNo"/>
 		<result column="app_form_name" property="appFormName"/>
 		<result column="app_form" property="appForm"/>
 		<result column="app_category" property="appCategory"/>
 		<result column="tmp" property="tmp"/>
+	</resultMap>
+	
+	<resultMap type="ApprovalDocDto" id="appDocResult">
+		<id column="doc_no" property="docNo"/>
+		<result column="status_name" property="status"/>
+		<result column="draft_date" property="draftDate"/>
+		<result column="modify_date" property="modifyDate"/>
+		<result column="doc_content" property="docContent"/>
+		<result column="drafter" property="drafter"/>
+		<result column="pre_period" property="prePeriod"/>
+		<result column="app_category" property="appNo"/>
+		<result column="doc_title" property="docTitle"/>
 	</resultMap>
 
 	<resultMap type="MajorDto" id="majorResult">
@@ -43,7 +56,9 @@
   	<result column="birth" property="birth"/>
   	<result column="gender" property="gender"/>
   </resultMap>
-
+  
+  
+	<!-- 쿼리문 구역 -->
 	<select id="selectAppCategory" resultType="String">
 		select distinct app_category
 		  from app_form
@@ -125,6 +140,7 @@
 		     , app_no
 		     , doc_no
 		     , doc_title
+		     , status
 		       )
 		values (
 		       #{docContent}
@@ -133,6 +149,7 @@
 		     , #{appNo}
 		     , seq_doc_no.nextval
 		     , #{docTitle}
+		     , #{status}
 		       )
 	</insert>
 	
@@ -152,5 +169,25 @@
 		     , #{appType}
 		       )
 	</insert>
+	
+	<select id="selectCountOngoingBoardList" resultType="_int">
+		select count(*)
+		  from app_doc
+		 where status not in (0, 40)
+	</select>
+	
+	<select id="selectOngoingDocList" resultMap="appDocResult">
+		select doc_no
+		     , doc_title
+		     , to_char(draft_date, 'YYYY-MM-DD') draft_date
+		     , app_category
+		     , status_name
+		  from app_doc
+		  join app_status on (status = status_no)
+		  join app_form on (app_doc.app_no = app_form.app_no)
+		 where app_doc.status not in (0, 40)
+		 order
+		    by draft_date
+	</select>
 	
 </mapper>

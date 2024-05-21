@@ -23,7 +23,7 @@ public class ApprovalDocDto {
 	private String docContent;
 	private String drafter;
 	private String prePeriod;
-	private int appNo;
+	private String appNo;
 	private int docNo;
 	private String docTitle;
 	

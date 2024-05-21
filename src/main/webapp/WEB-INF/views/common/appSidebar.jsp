@@ -68,7 +68,7 @@
             </a>
             <ul aria-expanded="false" class="collapse first-level">
               <li class="sidebar-item">
-                <a href="" class="sidebar-link">
+                <a href="${contextPath}/approval/ongoingBoard.page" class="sidebar-link">
                   <div class="round-16 d-flex align-items-center justify-content-center">
                     <i class="ti ti-circle"></i>
                   </div>
@@ -76,7 +76,7 @@
                 </a>
               </li>
               <li class="sidebar-item">
-                <a href="" class="sidebar-link">
+                <a href="${contextPath}/approval/completeBoard.page" class="sidebar-link">
                   <div class="round-16 d-flex align-items-center justify-content-center">
                     <i class="ti ti-circle"></i>
                   </div>
@@ -84,7 +84,7 @@
                 </a>
               </li>
               <li class="sidebar-item">
-                <a href="" class="sidebar-link">
+                <a href="${contextPath}/approval/rejectBoard.page" class="sidebar-link">
                   <div class="round-16 d-flex align-items-center justify-content-center">
                     <i class="ti ti-circle"></i>
                   </div>
@@ -92,7 +92,7 @@
                 </a>
               </li>
               <li class="sidebar-item">
-                <a href="" class="sidebar-link">
+                <a href="${contextPath}/approval/collectBoard.page" class="sidebar-link">
                   <div class="round-16 d-flex align-items-center justify-content-center">
                     <i class="ti ti-circle"></i>
                   </div>
@@ -108,7 +108,7 @@
                 </a>
               </li>
               <li class="sidebar-item">
-                <a href="" class="sidebar-link">
+                <a href="${contextPath}/approval/receiveBoard.page" class="sidebar-link">
                   <div class="round-16 d-flex align-items-center justify-content-center">
                     <i class="ti ti-circle"></i>
                   </div>
