@@ -51,10 +51,21 @@
                 <div class="table-responsive mb-4">
                     <table class="table table-borderless text-center align-middle mb-0">
                         <tbody >
+							              <!-- 보상 연차의 총 사용 일수를 계산하는 반복문 -->
+														<c:forEach var="v" items="${list}">
+														    <c:if test="${v.vacOption == '보상'}">
+														        <c:set var="totalPlusVac" value="${totalPlusVac + v.vacUsed}" scope="page" />
+														    </c:if>
+														    <c:if test="${v.vacOption == '사용' && v.vacType == '포상'}">
+														        <c:set var="totalPlusVacUsed" value="${totalPlusVacUsed + v.vacUsed}" scope="page" />
+														    </c:if>
+														</c:forEach>
+				              			
+				              			 <c:set var="totalVac" value="${ loginUser.leaveCount  + (totalPlusVac - totalPlusVacUsed)}" scope="session" /> <!-- 총 잔여연차 -->
                             <tr class="bg-light">
                                 <td class="bg-transparent">지급연차<br>${ loginUser.leaveCount }일</td>
-                                <td class="bg-transparent">보상연차<br>2일</td>
-                                <td class="bg-transparent">잔여연차<br>10일</td>
+                                <td class="bg-transparent">보상연차<br>${ totalPlusVac - totalPlusVacUsed }일</td>
+                                <td class="bg-transparent">잔여연차<br>${ totalVac } 일</td>
                             </tr>
                         </tbody>
                     </table>
@@ -109,110 +120,69 @@
                         </tr>
                     </thead>
                     <tbody class="text-center">
-                      <tr>
-                        <td>
-                          <p class="mb-0 fw-normal fs-4">1</p>
-                        </td>
-                        <td>
-                          <p class="mb-0 fw-normal fs-4">연차</p>
-                        </td>
-                        <td>
-                          <p class="mb-0 fw-normal fs-4">1일</p>
-                        </td>
-                        <td>
-                          <p class="mb-0 fw-normal fs-4">2024-05-07</p>
-                        </td>
-                        <td>
-                            <span class="badge rounded-pill bg-success-subtle text-success fw-semibold fs-2">대기</span>
-                        </td>
-                       
-                      </tr>
-                      <tr>
-                        <td>
-                          <p class="mb-0 fw-normal fs-4">2</p>
-                        </td>
-                        <td>
-                          <p class="mb-0 fw-normal fs-4">반차</p>
-                        </td>
-                        <td>
-                          <p class="mb-0 fw-normal fs-4">0.5일</p>
-                        </td>
-                        <td>
-                          <p class="mb-0 fw-normal fs-4">2024-05-05</p>
-                        </td>
-                        <td>
-                            <span
-                          class="badge rounded-pill bg-primary-subtle text-primary fw-semibold fs-2">승인</span>
-                        </td>
-                        
-                      </tr>
-                      <tr>
-                        <td>
-                          <p class="mb-0 fw-normal fs-4">3</p>
-                        </td>
-                        <td>
-                          <p class="mb-0 fw-normal fs-4">병가</p>
-                        </td>
-                        <td>
-                          <p class="mb-0 fw-normal fs-4">2일</p>
-                        </td>
-                        <td>
-                          <p class="mb-0 fw-normal fs-4">2024-05-01</p>
-                        </td>
-                        <td>
-                            <span class="badge rounded-pill bg-danger-subtle text-danger fw-semibold fs-2">반려</span>
-                        </td>
-                        
-                      </tr>
-                      <tr>
-                        <td>
-                          <p class="mb-0 fw-normal fs-4">4</p>
-                        </td>
-                        <td>
-                          <p class="mb-0 fw-normal fs-4">연차</p>
-                        </td>
-                        <td>
-                          <p class="mb-0 fw-normal fs-4">2일</p>
-                        </td>
-                        <td>
-                          <p class="mb-0 fw-normal fs-4">2024-04-12</p>
-                        </td>
-                        <td>
-                            <span
-                            class="badge rounded-pill bg-primary-subtle text-primary fw-semibold fs-2">승인</span>
-                        </td>
-                        
-                      </tr>
+                    	<c:choose>
+                			<c:when test="${ empty list }">
+                				<tr>
+                					<td colspan="7">조회된 리스트가 없습니다.</td>
+                				</tr>
+                			</c:when>
+				              <c:otherwise>
+				                	<c:forEach var="v" items="${list}">
+										        <tr onclick="showModal('${contextPath}/board/${b.memId == loginUser.memId ? 'detail.do' : 'increase.do'}?no=${b.boardNo}', ${b.openStatus}, '${b.password}');">
+										            <td><p class="mb-0 fw-normal fs-4">${v.vacNo}</p></td>
+										            <td><p class="mb-0 fw-normal fs-4">${v.vacOption}</p></td>
+										            <td><p class="mb-0 fw-normal fs-4">${v.vacUsed}일</p></td>
+										            <td><p class="mb-0 fw-normal fs-4">${v.registDate}</p></td>
+										            <td>
+										            <c:choose>
+										            	<c:when test="${v.status eq 1}">
+                            					<span class="badge rounded-pill bg-success-subtle text-success fw-semibold fs-2">대기</span>
+										            	</c:when>
+										            	<c:when test="${v.status eq 2}">
+						                          <span class="badge rounded-pill bg-primary-subtle text-primary fw-semibold fs-2">승인</span>
+										            	</c:when>
+										            	<c:when test="${v.status eq 3}">
+						                          <span class="badge rounded-pill bg-danger-subtle text-danger fw-semibold fs-2">반려</span>
+										            	</c:when>
+										            	<c:otherwise>
+							                        
+										            	</c:otherwise>
+										            </c:choose>
+										            <td>
+										        </tr>
+                				</c:forEach>
+                			</c:otherwise>
+                		</c:choose>
                     </tbody>
                   </table>
                 </div>
   
-                <!-- 페이징바 -->
-                <ul class="pagination justify-content-center">
-                  <li class="page-item">
-                    <a class="page-link link" href="#" aria-label="Previous">
-                      <span aria-hidden="true">
-                        <i class="ti ti-chevrons-left fs-4"></i>
-                      </span>
-                    </a>
-                  </li>
-                  <li class="page-item">
-                    <a class="page-link link active" href="#">1</a>
-                  </li>
-                  <li class="page-item">
-                    <a class="page-link link" href="#">2</a>
-                  </li>
-                  <li class="page-item">
-                    <a class="page-link link" href="#">3</a>
-                  </li>
-                  <li class="page-item">
-                    <a class="page-link link" href="#" aria-label="Next">
-                      <span aria-hidden="true">
-                        <i class="ti ti-chevrons-right fs-4"></i>
-                      </span>
-                    </a>
-                  </li>
-                </ul>
+              <!-- 페이징바 -->
+              <div id="pagingArea">
+              <ul class="pagination justify-content-center">
+                <li class="page-item ${ pi.currentPage == 1 ? 'disabled' : '' }">
+                  <a class="page-link link" href="${ contextPath }/member/vacationList.do?page=${pi.currentPage-1}" aria-label="Previous">
+                    <span aria-hidden="true">
+                      <i class="ti ti-chevrons-left fs-4"></i>
+                    </span>
+                  </a>
+                </li>
+                <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">	
+	                <li class="page-item ">
+	                  <a class="page-link link ${ pi.currentPage == p ? 'active' : '' }" href="${ contextPath }/member/vacationList.do?page=${p}">${ p }</a>
+	                </li>
+                </c:forEach>
+                
+                <li class="page-item ${ pi.currentPage == pi.maxPage ? 'disabled' : '' }">
+                  <a class="page-link link" href="${ contextPath }/member/vacationList.do?page=${pi.currentPage + 1}" aria-label="Next">
+                    <span aria-hidden="true">
+                      <i class="ti ti-chevrons-right fs-4"></i>
+                    </span>
+                  </a>
+                </li>
+              </ul>
+              </div>
+              <!-- 페이징바 끝 -->
   
               </div>
           </div>

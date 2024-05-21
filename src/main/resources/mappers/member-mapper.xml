@@ -45,6 +45,9 @@
   		<result column="status" property="status"/>
   		<result column="start_date" property="startDate"/>
   		<result column="end_date" property="endDate"/>
+  		<result column="vac_type_no" property="vacTypeNo"/>
+  		<result column="vac_type" property="vacType"/>
+  		
   </resultMap>
   
   
@@ -148,8 +151,68 @@
 			 and to_char(regist_date, 'YYYY-MM-DD') = #{registDate}
 	</update>
   
-  
-  
+  <!-- 휴가 목록 조회  -->
+  <select id="selectVacationList" resultMap="vacationResult">
+		select 
+          vac_no
+        ,	mem_no
+        , vac_used
+        , vac_option
+        , to_char(regist_date, 'YYYY-MM-DD') regist_date
+        , vac_reason
+        , doc_no
+        , status
+        , to_char(start_date, 'YYYY-MM-DD') start_date
+        , to_char(end_date, 'YYYY-MM-DD') end_date
+        , v.vac_type_no
+        , v.vac_type
+        , vac_type_date
+    from vacation v
+    left join vacation_type t on (t.vac_type_no = v.vac_type_no)
+   where mem_no = #{memNo}
+   order
+     by vac_no desc
+	</select>
+	
+	<select id="selectVacationListCount"  resultType="_int">
+		select
+					count(*)
+			from vacation
+		 where mem_no = #{memNo}
+	</select>	
+	
+	<!-- 휴가 신청 -->
+	<insert id="insertVacation">
+		insert
+			into vacation
+			(
+				vac_no
+			, mem_no
+			, vac_used
+			, vac_option
+			, vac_reason
+			, start_date
+			, end_date
+			, vac_type
+			)
+			values
+			(
+				seq_vac_no.nextval
+			, #{memNo}
+			, #{vacUsed}
+			, '사용'
+			, #{vacReason}
+			, #{startDate}
+			, #{endDate}
+			, #{vacType}
+			)
+	</insert>
+	<update id="updateMemVac">
+		update
+					member
+			 set leave_count = leave_count - #{vacUsed}
+			 where mem_no = #{memNo}
+	</update>
   
   
   

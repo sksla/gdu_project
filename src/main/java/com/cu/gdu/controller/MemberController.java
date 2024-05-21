@@ -53,7 +53,7 @@ public class MemberController {
 		//if(loginUser != null && m.getMemPwd().equals(loginUser.getMemPwd()) ) 	{  // 암호화 전
 		if(loginUser != null && bcryptPwdEncoder.matches(m.getMemPwd(), loginUser.getMemPwd()) ) 	{ 
 			request.getSession().setAttribute("loginUser", loginUser);
-			redirectAttributes.addFlashAttribute("alertMsg", loginUser.getMemName() + "님 환영합니다~");
+			//redirectAttributes.addFlashAttribute("alertMsg", loginUser.getMemName() + "님 환영합니다~");
 		}else {
 			redirectAttributes.addFlashAttribute("alertMsg", "로그인 실패하였습니다. 아이디 및 비밀번호를 다시 확인해주세요.");
 			redirectAttributes.addFlashAttribute("historyBackYN", "Y");
@@ -197,11 +197,13 @@ public class MemberController {
 	// * 휴가 목록 조회 관련 --------------------------
 	@GetMapping("/vacationList.do")
 	public ModelAndView vacationList (@RequestParam(value="page" ,defaultValue="1") int currentPage
-									, ModelAndView mv ) {
-		int listCount = memberService.selectVacationListCount();
+									, ModelAndView mv
+									, HttpSession session) {
+		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
+		int memNo = loginUser.getMemNo();
+		int listCount = memberService.selectVacationListCount(memNo);
 		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 5);
-		List<VacationDto> list = memberService.selectVacationList(pi);
-		System.out.println(list);
+		List<VacationDto> list = memberService.selectVacationList(pi, memNo);
 		
 		mv.addObject("pi", pi)
 		  .addObject("list", list)
@@ -216,6 +218,21 @@ public class MemberController {
 		return "member/vacationForm";
 	}
 	
+	@PostMapping("vacationRegist.do")
+	public String vacationRegist(VacationDto vac, RedirectAttributes redirectAttributes, HttpSession session) {
+		System.out.println(vac);
+		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
+		int result = memberService.insertVacation(vac);
+		int result2 = memberService.updateMemVac(vac);
+		if( result * result2 > 0 ) {
+			session.setAttribute("loginUser", memberService.selectMember(loginUser));
+			redirectAttributes.addFlashAttribute("alertMsg", "휴가신청 성공하였습니다.");
+		}else {
+		redirectAttributes.addFlashAttribute("alertMsg", "휴가신청 실패하였습니다.");
+		}
+		
+		return "redirect:/member/vacationList.do";
+	}
 	
 	
 	

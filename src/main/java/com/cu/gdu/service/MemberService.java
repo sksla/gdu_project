@@ -30,9 +30,10 @@ public interface MemberService {
 		AttendDto selectAttend(AttendDto atd);
 	  
 	// 휴가 목록 조회
-	   int selectVacationListCount();
-	   List<VacationDto> selectVacationList(PageInfoDto pi);
+	   int selectVacationListCount(int memNo);
+	   List<VacationDto> selectVacationList(PageInfoDto pi, int memNo);
 	  
-	// 휴가 신청 서비스
+	// 휴가 신청 서비스, 멤버 연차 차감
 	   int insertVacation(VacationDto v);
+	   int updateMemVac(VacationDto v);
 }

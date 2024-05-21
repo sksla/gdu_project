@@ -59,18 +59,23 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public int selectVacationListCount() {
-		return 0;
+	public int selectVacationListCount(int memNo) {
+		return memberDao.selectVacationListCount(memNo);
 	}
 
 	@Override
-	public List<VacationDto> selectVacationList(PageInfoDto pi) {
-		return null;
+	public List<VacationDto> selectVacationList(PageInfoDto pi, int memNo) {
+		return memberDao.selectVacationList(pi, memNo);
 	}
 
 	@Override
 	public int insertVacation(VacationDto v) {
-		return 0;
+		return memberDao.insertVacation(v);
+	}
+
+	@Override
+	public int updateMemVac(VacationDto v) {
+		return memberDao.updateMemVac(v);
 	}
 
 	
