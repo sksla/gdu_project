@@ -75,7 +75,7 @@
             </li>
 
             <li class="sidebar-item">
-              <a class="sidebar-link" href="${ contextPath }/board/dataBoardList.do" aria-expanded="false">
+              <a class="sidebar-link" href="${ contextPath }/board/dataBoardList.page" aria-expanded="false">
                 <span>
                   <i class="ti ti-paperclip"></i>
                 </span>

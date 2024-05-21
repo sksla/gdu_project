@@ -2,6 +2,7 @@ package com.cu.gdu.controller;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -425,17 +426,183 @@ public class BoardController {
 	
 	// * 자료게시판 시작-----------------김영주---------------------------
 	
+	// 목록 페이지 요청
+	@GetMapping("/dataBoardList.page")
+	public String dataBoardPage() {
+		return "/board/dataBoardList";
+	}
+	
+	@ResponseBody
+	@GetMapping(value="/dataSearch.do", produces="application/json; charset=utf-8")
+	public Map<String, Object> searchDataBoardList(@RequestParam(value="page", defaultValue="1") int currentPage,
+				@RequestParam Map<String, String> search) {
+		
+		log.debug("search: {}", search);
+		search.put("boardType", "D");
+		
+		List<BoardDto> list = new ArrayList<>();
+		
+		int listCount = 0;
+		PageInfoDto pi = null;
+		
+		if(search.get("keyword") == null || search.get("keyword").equals("")) {
+			// keyword="" ==> 전체목록 조회
+			listCount = boardService.selectBoardListCount(search.get("boardType"));
+			pi = pagingUtil.getPageInfoDto(listCount, currentPage , 5, 10);
+			list = boardService.selectBoardList(pi, search.get("boardType"));
+			
+		}else {
+			// keyword가 빈값이 아닌경우 => 검색목록 조회
+			listCount = boardService.selectSearchListCount(search);
+			pi = pagingUtil.getPageInfoDto(listCount, currentPage , 5, 10);
+			list = boardService.selectSearchList(search, pi);
+		}
+		
+		
+		Map<String, Object> searchMap = new HashMap<>();
+		searchMap.put("list", list);
+		searchMap.put("pi", pi);
+		
+		  
+		return searchMap;
+	}
+	
+	// 게시글 등록페이지
+	@GetMapping("/insertDataForm.page")
+	public String insertDataFormPage() {
+		return "/board/dataBoardInsertForm";
+	}
+	
+	// 게시글 등록
+	@PostMapping("dataRegist.do")
+	public String insertDataBoard(BoardDto board, List<MultipartFile> uploadFiles
+								, HttpSession session, RedirectAttributes redirectAttributes) {
+		MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
+		board.setMemNo((loginUser.getMemNo()));
+		board.setBoardType("D");
+
+		System.out.println(board);
+
+		List<AttachDto> attachList = new ArrayList<>();
+
+		for (MultipartFile uploadFile : uploadFiles) {
+			if (uploadFile != null && !uploadFile.isEmpty()) {
+				// 파일 업로드
+				Map<String, String> map = fileUtil.fileUpload(uploadFile, session, "board");
+
+				// insert할 데이터 => AttachDto객체만들기 => attachList쌓기
+				attachList
+						.add(AttachDto.builder().filePath(map.get("filePath")).filesystemName(map.get("filesystemName"))
+								.originalName(map.get("originalName")).refType("N").build());
+
+			}
+		}
+		board.setAttachList(attachList); // 첨부파일이 없었을 경우 텅빈리스트
+
+		int result = boardService.insertBoard(board);
+
+		// 성공시 => alert메세지와 함께 목록페이지로 이동
+		// 실패시 => alert메세지와 함께 작성페이지에 그대로
+
+		if (attachList.isEmpty() && result == 1 || !attachList.isEmpty() && result == attachList.size()) {
+			redirectAttributes.addFlashAttribute("alertMsg", "게시판 작성에 성공하였습니다.");
+		} else {
+			redirectAttributes.addFlashAttribute("alertMsg", "게시판 작성에 실패하였습니다.");
+			redirectAttributes.addFlashAttribute("historyBackYN", "Y");
+		}
+
+		return "redirect:/board/dataBoardList.page";
+	}
+	
+	// 자료게시글 상세
+	@GetMapping("/dataIncrease.do")
+	public String increaseData(int no) { // 조회수 증가용 (내글이 아닌 게시글 클릭시에만 호출)
+		// 조회수 증가
+		boardService.updateIncreaseCount(no);
+		
+		// 상세페이지 요청
+		return "redirect:/board/dataDetail.do?no=" + no;
+	}
+	
+	// /board/detail.do?no=글번호
+	@GetMapping("/dataDetail.do") // 게시글 상세 조회용 (내가 작성한 게시글 클릭시 곧바로 호출 | 수정완료 후 호출 곧바로 호출)
+	public String dataDetail(int no, Model model) {
+		// 상세페이지에 필요한 데이터 담아서 포워딩
+		model.addAttribute("board", boardService.selectBoard(no));
+		
+		return "board/dataBoardDetail";
+	}
 	
 	
+	// 자료 게시글 수정 및 삭제
+	@PostMapping("/dataModifyForm.do")
+	public String dataModifyForm(int no, Model model) {
+		model.addAttribute("board", boardService.selectBoard(no));
+		return "board/dataBoardModifyForm";
+	}	
 	
+	@PostMapping("/dataModify.do")
+	public String dataModify(BoardDto board, String[] delFileNo
+						, List<MultipartFile> uploadFiles
+						, HttpSession session
+						, RedirectAttributes redirectAttributes) {
+		
+		// 삭제할 파일에 대한 정보를 조회해두기
+		List<AttachDto> delFileList = boardService.selectDelFileList(delFileNo);
+		
+		// 게시글 정보 수정 (update board)
+		
+		// 삭제할 첨부파일 => delete attachment + 파일자체를 삭제
+		// 추가할 첨부파일 => 파일들 업로드 + insert attachment
+		List<AttachDto> addFileList = new ArrayList<>();
+		for(MultipartFile uploadFile : uploadFiles) {
+			if(uploadFile != null && !uploadFile.isEmpty()) {
+				Map<String, String> map = fileUtil.fileUpload(uploadFile, session, "board");
+				addFileList.add( AttachDto.builder()
+										 .originalName(map.get("originalName"))
+										 .filePath(map.get("filePath"))
+										 .filesystemName(map.get("filesystemName"))
+										 .refType("N")
+										 .refNo(board.getBoardNo())
+										 .build()) ;
+				
+			}
+		}
+		
+		board.setAttachList(addFileList);
+		// board : 글번호, 제목, 내용, 추가시킬첨부파일에대한정보(attachList)
+		
+		int result = boardService.updateBoard(board, delFileNo);
 	
+		if(result > 0) {
+			// 성공시 
+			// => 삭제할 첨부파일이 있었다면 => 해당 파일 찾아서 삭제되도록
+			for(AttachDto at : delFileList) {
+				new File(session.getServletContext().getRealPath(at.getFilePath() + "/" + at.getFilesystemName())).delete();
+			}
+			
+			redirectAttributes.addFlashAttribute("alertMsg", "게시글이 성공적으로 수정되었습니다.");
+		}else {
+			// 실패시
+			redirectAttributes.addFlashAttribute("alertMsg", "게시글 수정 실패");
+			redirectAttributes.addFlashAttribute("historyBackYN", "Y");
+		}
 	
+		return "redirect:/board/dataDetail.do?no=" + board.getBoardNo();
+	}
 	
-	
-	
-	
-	
-	
+	@PostMapping("/dataDelete.do")
+	public String deleteDataBoard(int no ,RedirectAttributes redirectAttributes	) {
+		int result = boardService.deleteBoard(no);
+		
+		if(result > 0) {
+			redirectAttributes.addFlashAttribute("alertMsg", "게시글이 성공적으로 삭제되었습니다.");
+			
+		}else {
+			redirectAttributes.addFlashAttribute("alertMsg", "게시글 삭제에 실패했습니다.");
+		}
+		return "redirect:/board/dataBoardList.page";
+	}
 	
 	
 	

@@ -7,7 +7,12 @@
 <head>
 <meta charset="UTF-8">
 <title>자료게시판 등록</title>
-<!-- 리스트 스타일 -->
+
+<!-- cs editor 관련 css파일 연동 -->
+<link rel="stylesheet" href="${contextPath}/assets/libs/ckeditor/samples/toolbarconfigurator/lib/codemirror/neo.css">
+<link rel="stylesheet" href="${contextPath}/assets/libs/ckeditor/samples/css/samples.css">
+
+<!-- 등록 스타일 -->
 <style>
   .innerOuter{    
     width:900px;
@@ -15,8 +20,9 @@
     background:white;
   }
 
-  #enrollForm>table{width:100%;}
-  #enrollForm>table *{ margin:5px;}
+  table *{margin:5px;}
+  table{width:100%;}
+  
 
 </style>
 
@@ -44,11 +50,11 @@
                   <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                       <li class="breadcrumb-item">
-                        <a class="text-muted text-decoration-none" href="../main/index.html">Home</a>
+                        <a class="text-muted text-decoration-none" href="${ contextPath }/member/mainpage">Home</a>
                       </li>
                       <li class="breadcrumb-item" aria-current="page">게시판</li>
                       <li class="breadcrumb-item">
-                        <a class="text-muted text-decoration-none" href="../main/index.html">자료게시판</a>
+                        <a class="text-muted text-decoration-none" href="${ contextPath }/board/dataBoardList.page">자료게시판</a>
                       </li>
                       <li class="breadcrumb-item" aria-current="page">자료게시글 작성</li>
                     </ol>
@@ -70,27 +76,48 @@
               <div class="content">
               <br><br>
                 <div class="innerOuter">
-                  <h2>게시글 작성하기</h2>
+                  <h2>자료게시글 작성하기</h2>
                   <br>
-                  <form id="enrollForm" method="post" action="" enctype="">
+                  <form id="enrollForm" method="post" action="${ contextPath }/board/dataRegist.do" enctype="multipart/form-data">
                     <table align="center">
                       <tr>
                         <th><label for="title">제목</label></th>
-                        <td><input type="text" id="title" class="form-control" name="" required></td>
+                        <td><input type="text" id="title" class="form-control" name="boardTitle" required maxlength="15" placeholder="제목 입력(15자 이내)"></td>
                       </tr>
                       <tr>
                         <th><label for="writer">작성자</label></th>
-                        <td><input type="text" id="writer" class="form-control" value="user01" name="" readonly></td>
+                        <td>
+                        	<input type="text" id="writer" class="form-control" value="${ loginUser.memName }" name="memName" readonly>
+                        	
+                       	</td>
                       </tr>
                       <tr>
                         <th><label for="upfile">첨부파일</label></th>
-                        <td><input type="file" id="upfile" class="form-control-file border" name=""></td>
+                        <td>
+                        	<input type="file" id="upfile" class="form-control-file border" name="uploadFiles" multiple required>
+                       	</td>
+                      </tr>
+                      <tr>
+                      	<th></th>
+                      	<td>
+                      		<div class="fileList_wrap" style="border:1px solid lightgray; display:none;">
+	                        	<ul id="fileList" class="file-list"></ul>
+                      		</div>
+                      	</td>
                       </tr>
                       <tr>
                         <th colspan="2"><label for="content">내용</label></th>
                       </tr>
                       <tr>
-                        <th colspan="2"><textarea class="form-control" required name="" id="content" rows="10" style="resize:none;"></textarea></th>
+                        <th colspan="2">
+                        <!--<textarea class="form-control" required name="" id="content" rows="10" style="resize:none;"></textarea>-->
+                       	<textarea cols="80" id="testedit" name="boardContent" rows="10" data-sample="1" data-sample-short style="resize:none;" required placeholder="내용 입력">
+		                    </textarea>
+		                  	<div style="display:none;">
+				                  <textarea cols="80" id="editor1" style="resize:none;" disabled>
+													</textarea>
+												</div>
+                       </th>
                       </tr>
                     </table>
                     <br>
@@ -100,6 +127,50 @@
                       <button type="reset" class="btn btn-danger">취소하기</button>
                     </div>
                   </form>
+                  
+                  <script>
+                  
+									
+										$(document).ready(function(){
+											
+											let totalSize = 0;
+											
+											$("#upfile").change(function(evt){
+												
+												
+												// input:file 요소에 change이벤트 발생됨
+												// 현재이벤트가발생된요소 =>evt.target	// <input type='file'>
+												// 현재선택된파일들 evt.target.files	// FileList {0:File, 1:File, 2:File, ...}
+												
+												let fileNames = "";
+												const files= evt.target.files;	// FileList {0:File, 1:File, 2:File, ..., length:x}
+												
+												for(let i=0; i<files.length; i++){
+													if(files[i].size > 10*1024*1024){	// 첨부파일 한개의 크기가 10MB를 초과했을 경우
+														alert("첨부파일의 최대 크기는 10MB까지 입니다.");
+														evt.target.value="";
+														return;
+													}
+													totalSize += files[i].size;
+													if(totalSize > 100*1024*1024){// 누적된 첨부파일의 전체 크기가 100MB를 초과했을 경우
+														alert("전체 첨부파일의 최대 크기는 100MB까지 입니다.");
+														evt.target.value="";
+														return;
+													}
+													
+													fileNames += "<li>" + files[i].name + "</li>";
+													
+												}
+												
+												$("#fileList").html(fileNames);
+												
+												$(".fileList_wrap").css("display", (files.length > 0 ? "block" : "none" ));
+												
+											})
+										})
+										
+										
+									</script>
                 </div>
                 <br><br>
               </div> 
@@ -122,6 +193,11 @@
 	
 	<!-- footer-->
   <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
+  
+  <!-- ck editor 연동 스크립트 -->
+  <script src="${ contextPath }/assets/libs/ckeditor/ckeditor.js" type="text/javascript"></script>
+  <script src="${ contextPath }/assets/libs/ckeditor/samples/js/sample.js" type="text/javascript"></script>
+  <script src="${ contextPath }/assets/js/plugins/ckeditor-init.js" type="text/javascript"></script>
 	
 </body>
 </html>
