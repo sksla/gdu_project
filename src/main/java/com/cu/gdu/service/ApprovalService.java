@@ -29,7 +29,7 @@ public interface ApprovalService {
 	List<MemberDto> selectMemberByMajor(int majorNo);
 	
 	// 결재문서 등록
-	int insertApp(ApprovalDocDto appDoc);
+	int insertApp(ApprovalDocDto appDoc, int approverNo, int receiverNo, String[] collaboratorNo);
 	
 	// 문서구분으로 양식 목록 조회
 	List<ApprovalFormDto> selectFormListByCategory(String appCategory);

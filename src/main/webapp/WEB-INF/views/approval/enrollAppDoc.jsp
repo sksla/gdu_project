@@ -122,8 +122,9 @@
           </div>
 
           <!-- 페이지 내용 -->
-          <form id="appForm" action="">
-          	<input type="hidden" id="tmp_yn" name="status" value="O">
+          <form id="appForm" method="post" action="${contextPath}/approval/enroll.do">
+          	<input type="hidden" id="status" name="status" value="O">
+          	<input type="hidden" name="drafter" value="${loginUser.memNo}">
             <div class="mb-4" style="display: flex; justify-content: space-between;">
               <span>
                 <button onclick="return enrollAppForm(1);" class="btn btn-info me-1 mb-1 px-4 fs-4">기안하기</button>
@@ -156,7 +157,7 @@
                       <div class="mb-4 row align-items-center">
                         <label for="" class="form-label fw-semibold col-sm-3 col-form-label fs-4">문서양식</label>
                         <div class="col-sm-9">
-                          <select class="form-select" id="selectAppForm" aria-label="Default select example">
+                          <select class="form-select" name="appNo" id="selectAppForm" aria-label="Default select example">
                             <option selected value="0" disabled>문서구분을 선택하세요.</option>
                           </select>
                         </div>
@@ -169,11 +170,11 @@
                       <div class="row align-items-center">
                         <label for="" class="form-label fw-semibold col-sm-3 col-form-label fs-4">보존기한</label>
                         <div class="col-sm-9">
-                          <select class="form-select" aria-label="Default select example">
-                            <option value="1" selected>1년</option>
-                            <option value="5">5년</option>
-                            <option value="10">10년</option>
-                            <option value="20">영구보존</option>
+                          <select class="form-select" name="prePeriod" aria-label="Default select example">
+                            <option selected>1년</option>
+                            <option>5년</option>
+                            <option>10년</option>
+                            <option>영구보존</option>
                           </select>
                         </div>
                       </div>
@@ -245,33 +246,33 @@
                     </tr>
                     <tr class="major_area">
                       <td width="12.5%" style="height: 30px;" class="drafter">${ loginUser.majorNo }</td>
-                      <td class="collaborator1">국문과</td>
+                      <td class="collaborator1">-</td>
                       <td class="collaborator2">-</td>
                       <td class="collaborator3">-</td>
                       <td class="collaborator4">-</td>
                       <td class="collaborator5">-</td>
-                      <td class="approver">전기과</td>
-                      <td class="receiver">행정</td>
+                      <td class="approver">-</td>
+                      <td class="receiver">-</td>
                     </tr>
                     <tr class="job_area">
                       <td width="12.5%" style="height: 30px;" class="drafter">${ loginUser.jobNo }</td>
-                      <td class="collaborator1">교슈</td>
+                      <td class="collaborator1">-</td>
                       <td class="collaborator2">-</td>
                       <td class="collaborator3">-</td>
                       <td class="collaborator4">-</td>
                       <td class="collaborator5">-</td>
-                      <td class="approver">학과장</td>
-                      <td class="receiver">관리자</td>
+                      <td class="approver">-</td>
+                      <td class="receiver">-</td>
                     </tr>
                     <tr class="name_area">
                       <td width="12.5%" style="height: 30px;" class="drafter">${loginUser.memName}</td>
-                      <td class="collaborator1">김호용</td>
+                      <td class="collaborator1">-</td>
                       <td class="collaborator2">-</td>
                       <td class="collaborator3">-</td>
                       <td class="collaborator4">-</td>
                       <td class="collaborator5">-</td>
-                      <td class="approver">임세진</td>
-                      <td class="receiver">김영주</td>
+                      <td class="approver">-</td>
+                      <td class="receiver">-</td>
                     </tr>
                   </table>
                 </div>
@@ -305,7 +306,7 @@
                   <div class="row">
                     <label for="example-text-input" class="col-md-2 col-form-label fs-4">제목</label>
                     <div class="">
-                      <input class="form-control" type="text" value="" id="example-text-input" placeholder="결재문서의 제목을 입력해주세요"/>
+                      <input class="form-control" type="text" name="docTitle" id="example-text-input" placeholder="결재문서의 제목을 입력해주세요"/>
                     </div>
                   </div>
                 </div>
@@ -313,7 +314,7 @@
                 <div class="card-body">
                   <label for="example-text-input" class="col-md-2 col-form-label fs-4">내용</label>
                  	<div class="col-md-12">
-                    <textarea cols="80" id="testedit" name="" rows="10" data-sample="1" data-sample-short>
+                    <textarea cols="80" id="testedit" name="docContent" rows="10" data-sample="1" data-sample-short>
                     	양식을 선택하세요.
                   	</textarea>
 	                  <div style="display:none;">
@@ -362,12 +363,14 @@
               aria-label="Close"></button>
           </div>
           <div class="modal-body mx-4 my-2">
+          	<!-- 자주쓰는 결재선에 이식
             <div class="mb-4 pb-4 row align-items-center border-bottom">
               <label for="" class="form-label fw-semibold col-sm-2 col-form-label fs-4">결재선 이름</label>
               <div class="col-sm-7">
                 <input type="text" class="form-control">
               </div>
             </div>
+             -->
             <form class="input-group mb-3">
               <div class="col-3">
                 <div class="input-group">
@@ -407,7 +410,6 @@
 	                </div>
 	              </div>
               </div>
-              <button id="testtest">test</button>
               <div class="selected_app_mem list_box_wrap">
               	<div class="my-1" style="display: block; height: 35px; text-align:right;">
               		<button class="btn btn-light fw-semibold" onclick="resetEnrollLineModal();">초기화</button>
@@ -469,14 +471,14 @@
               </div>
             </div>
           </div>
-          <div class="modal-footer justify-content-center py-4">
+          <div class="modal-footer justify-content-center pb-4 pt-7">
             <button type="button" class="btn btn-primary waves-effect text-start"
-              data-bs-dismiss="modal" onclick="confirmAppLine();">
+              onclick="confirmAppLine();">
               확인
             </button>
             <button type="button" class="btn bg-danger-subtle text-danger  waves-effect text-start"
               data-bs-dismiss="modal">
-              취소
+              닫기
             </button>
           </div>
         </div>
@@ -487,10 +489,6 @@
     
     <!-- 해당 페이지 JavaScript 영역 start -->
     <script>
-    	
-    	// 결재구분 변경에 따라 양식 목록이 바뀌는 이벤트
-        
-    	// 결재구분에 따라 양식 목록을 가져오는 ajax
     	
     	// treeview의 부서 목록 전역변수
     	let majorTree = [];
@@ -645,7 +643,7 @@
     		if($(target).text() == "전체선택"){
     			$(".my_mem_list>div").each(function(index, el){
 	    			if(!$(el).hasClass("selected_mem")){
-	    				$(el).addClass("selected_mem");    				
+	    				$(el).addClass("selected_mem");
 	    			}
 	    		})
 	    		$(target).text("전체해제");
@@ -669,7 +667,7 @@
     		}else{
     			$selectedMem.each(function(index, el1){
     				let isMem = false;
-    				$boxMem.children().each(function(index, el2){
+    				$(".selected_app_mem .mem_list").children().each(function(index, el2){
     					if($(el1).children("span").eq(0).text() == $(el2).children("span").eq(0).text()){
     						alert("동일한 직원이 이미 결재선에 존재합니다.");
     						isMem = true;
@@ -700,6 +698,10 @@
     	
     	// 선택한 결재선 적용
     	function confirmAppLine(){
+    		if($(".app_approver>.mem_list").html().trim() == "" || $(".app_receiver>.mem_list").html().trim() == ""){
+    			alert("결재자와 수신자를 지정해주세요.")
+    			return false;
+    		}
     		// 협조자
     		$("#appForm>input[name='collaborator']").each(function(index, el){
     			$(el).remove();
@@ -711,7 +713,7 @@
     				for(let i=1; i<=$collaborator.length-1; i++){
        				$collaborator.eq(i).text( $(el).children("span").eq(i).text() );
        			}
-    				$("#appForm").append('<input type="hidden" name="collaborator' + (index+1) + '" value="' + $(el).eq(0).text() + '">');
+    				$("#appForm").append('<input type="hidden" name="collaboratorNo" value="' + $(el).children().eq(0).text() + '">');
     			})
     		}else{
     			for(let i=1; i<=5; i++){
@@ -729,7 +731,7 @@
     			for(let i=1; i<=$(".approver").length-1; i++){
     				$(".approver").eq(i).text( $selectedApproverProp.eq(i).text() );
     			}
-    			$("#appForm").append('<input type="hidden" name="approver" value="' + $selectedApproverProp.eq(0).text() + '">');
+    			$("#appForm").append('<input type="hidden" name="approverNo" value="' + $selectedApproverProp.eq(0).text() + '">');
     		}else{
     			for(let i=0; i<$(".approver").length; i++){
     				$(".approver").eq(i).text("-");  
@@ -743,21 +745,23 @@
     			for(let i=1; i<=$(".receiver").length-1; i++){
     				$(".receiver").eq(i).text( $selectedReceiverProp.eq(i).text() );    				
     			}
-    			$("#appForm").append('<input type="hidden" name="receiver" value="' + $selectedApproverProp.eq(0).text() + '">');
+    			$("#appForm").append('<input type="hidden" name="receiverNo" value="' + $selectedReceiverProp.eq(0).text() + '">');
     		}else{
     			for(let i=0; i<$(".receiver").length; i++){
     				$(".receiver").eq(i).text("-");
     			}
     		}
+    		resetEnrollLineModal();
+    		$("#app_line_modal").modal("hide");
     	}
     	// *****************************************************************
       
     	//
       function enrollAppForm(type){
     	  if(type == 1){
-    		  $("#tmp_yn").val("O");
+    		  $("#status").val("O");
     	  }else if(type == 2){
-    		  $("#tmp_yn").val("T");
+    		  $("#status").val("T");
     	  }
     	}
     	

@@ -115,6 +115,42 @@
   	 	 and member.major_no = #{majorNo}
 	</select>
 	
+	<insert id="insertAppDoc">
+		insert
+		  into app_doc
+		       (
+		       doc_content
+		     , drafter
+		     , pre_period
+		     , app_no
+		     , doc_no
+		     , doc_title
+		       )
+		values (
+		       #{docContent}
+		     , #{drafter}
+		     , #{prePeriod}
+		     , #{appNo}
+		     , seq_doc_no.nextval
+		     , #{docTitle}
+		       )
+	</insert>
 	
+	<insert id="insertApprover">
+		insert
+		  into approver
+		       (
+		       approver_no
+		     , approver
+		     , doc_no
+		     , app_type
+		       )
+		values (
+		       seq_approver_no.nextval
+		     , #{memNo}
+		     , seq_doc_no.currval
+		     , #{appType}
+		       )
+	</insert>
 	
 </mapper>

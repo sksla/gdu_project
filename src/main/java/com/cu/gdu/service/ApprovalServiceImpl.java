@@ -49,8 +49,18 @@ public class ApprovalServiceImpl implements ApprovalService {
 	}
 
 	@Override
-	public int insertApp(ApprovalDocDto appDoc) {
-		return 0;
+	public int insertApp(ApprovalDocDto appDoc, int approverNo, int receiverNo, String[] collaboratorNo) {
+		
+		int result1 = approvalDao.insertAppDoc(appDoc);
+		int result2 = 0;
+		for(String collaborator : collaboratorNo) {
+			int colAppType = 10;
+			result2 += approvalDao.insertApprover(Integer.parseInt(collaborator), colAppType++);
+		}
+		result2 += approvalDao.insertApprover(approverNo, 20);
+		result2 += approvalDao.insertApprover(receiverNo, 30);
+		
+		return result1 * result2;
 	}
 
 	@Override

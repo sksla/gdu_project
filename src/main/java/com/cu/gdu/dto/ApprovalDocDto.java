@@ -1,5 +1,7 @@
 package com.cu.gdu.dto;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,9 +22,13 @@ public class ApprovalDocDto {
 	private String modifyDate;
 	private String docContent;
 	private String drafter;
-	private int prePeriod;
+	private String prePeriod;
 	private int appNo;
 	private int docNo;
 	private String docTitle;
+	
+	private List<ApproverDto> collaborators;
+	private ApproverDto approver;
+	private ApproverDto receiver;
 	
 }

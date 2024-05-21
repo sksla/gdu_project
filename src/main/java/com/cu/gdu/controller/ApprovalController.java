@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.cu.gdu.dto.ApprovalDocDto;
 import com.cu.gdu.dto.ApprovalFormDto;
 import com.cu.gdu.dto.CollegeDto;
 import com.cu.gdu.dto.MemberDto;
@@ -90,7 +92,6 @@ public class ApprovalController {
 	@GetMapping(value="/formContent.do", produces="text/html; charset=utf-8;")
 	@ResponseBody
 	public String ajaxFormContent(int appNo) {
-		log.debug(approvalService.selectAppFormContent(appNo));
 		return approvalService.selectAppFormContent(appNo);
 	}
 	
@@ -102,6 +103,21 @@ public class ApprovalController {
 	}
 	
 	// 결재문서 등록
-	
+	@PostMapping("/enroll.do")
+	public String enrollApproval(ApprovalDocDto appDoc, 
+								 int approverNo, 
+								 int receiverNo,
+								 String[] collaboratorNo,
+								 RedirectAttributes redirectAttributes) {
+		int result = approvalService.insertApp(appDoc, approverNo, receiverNo, collaboratorNo);
+		int success = collaboratorNo.length + 2;
+		if(result == success) {
+			redirectAttributes.addFlashAttribute("alertMsg", "결재문서를 기안했습니다.");
+		} else {
+			redirectAttributes.addFlashAttribute("alertMsg", "기안 실패.");
+			redirectAttributes.addFlashAttribute("historyBackYN", "Y");
+		}
+		return "redirect:/approval/main.do";
+	}
 	
 }

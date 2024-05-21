@@ -11,6 +11,8 @@
 		<typeAlias type="com.cu.gdu.dto.CollegeDto" alias="CollegeDto"/>
 		<typeAlias type="com.cu.gdu.dto.ApprovalFormDto" alias="ApprovalFormDto"/>
 		<typeAlias type="com.cu.gdu.dto.ApprovalDocDto" alias="ApprovalDocDto"/>
+		<typeAlias type="com.cu.gdu.dto.ApprovalHistoryDto" alias="ApprovalHistoryDto"/>
+		<typeAlias type="com.cu.gdu.dto.ApproverDto" alias="ApproverDto"/>
 		<typeAlias type="com.cu.gdu.dto.MajorDto" alias="majorDto"/>
 		<typeAlias type="com.cu.gdu.dto.CalCtgDto" alias="CalCtgDto"/>
 		<typeAlias type="com.cu.gdu.dto.CalendarDto" alias="CalendarDto"/>
