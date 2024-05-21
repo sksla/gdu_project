@@ -448,13 +448,13 @@ public class BoardController {
 		if(search.get("keyword") == null || search.get("keyword").equals("")) {
 			// keyword="" ==> 전체목록 조회
 			listCount = boardService.selectBoardListCount(search.get("boardType"));
-			pi = pagingUtil.getPageInfoDto(listCount, currentPage , 5, 10);
+			pi = pagingUtil.getPageInfoDto(listCount, currentPage , 5, 8);
 			list = boardService.selectBoardList(pi, search.get("boardType"));
 			
 		}else {
 			// keyword가 빈값이 아닌경우 => 검색목록 조회
 			listCount = boardService.selectSearchListCount(search);
-			pi = pagingUtil.getPageInfoDto(listCount, currentPage , 5, 10);
+			pi = pagingUtil.getPageInfoDto(listCount, currentPage , 5, 8);
 			list = boardService.selectSearchList(search, pi);
 		}
 		
