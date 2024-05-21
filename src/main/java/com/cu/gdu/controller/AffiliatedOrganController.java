@@ -53,11 +53,20 @@ public class AffiliatedOrganController {
 	public ModelAndView aflist(@RequestParam(value="page", defaultValue="1") int currentPage, ModelAndView mv) {
 		
 		int listCount = affiliatedOrganService.selectAffiliatedOrganListCount();
-		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 8);
-		List<AffiliatedOrganDto> aflist = affiliatedOrganService.selectAffiliatedOrganList(pi);
+		PageInfoDto affPi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 8);
+		List<AffiliatedOrganDto> aflist = affiliatedOrganService.selectAffiliatedOrganList(affPi);
+		
+		PageInfoDto resPi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 8);
+		List<AffReservationDto> reslist = affiliatedOrganService.selectAffiliatedOrganResList(resPi);
+		
+		log.debug("resList : " + reslist);
+		log.debug("resPi : " + resPi );
+		
 		//System.out.println(list);
-		mv.addObject("pi", pi)
+		mv.addObject("affPi", affPi)
 		  .addObject("aflist", aflist)
+		  .addObject("resPi", resPi)
+		  .addObject("reslist", reslist)
 		  .setViewName("/affiliatedOrgan/affiliatedOrganList");
 		
 		return mv;
@@ -92,7 +101,7 @@ public class AffiliatedOrganController {
 	}
 	
 	
-	// 부속기관 예약목록 페이지 조회
+	/* 부속기관 예약목록 페이지 조회
 	@GetMapping("/affiliatedOrganResList.do")
 	public ModelAndView resList(@RequestParam(value="page", defaultValue="1") int currentPage, ModelAndView mv) {
 			
@@ -106,7 +115,7 @@ public class AffiliatedOrganController {
 			
 			return mv;
 		}
-
+*/
 	
 	// * ------------------- 부속기관 등록관련 -------------------
 	// 부속기관 등록페이지 

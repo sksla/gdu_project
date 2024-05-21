@@ -24,7 +24,7 @@
 		<result column="ref_type" property="refType"/>
   </resultMap>
 	
-	<resultMap id="affReservaationResult" type="affReservationDto">
+	<resultMap id="affReservationResult" type="affReservationDto">
 		<id column="aff_res_no" property="affResNo"/>
 		<result column="aff_no" property="affNo" />
 		<result column="aff_name" property="affNo" />
@@ -34,6 +34,7 @@
 		<result column="start_date" property="startDate" />
 		<result column="end_date" property="endDate" />
 		<result column="reason" property="reason" />
+		<result column="aff_location" property="affLocation" />
 	</resultMap>
 
 	<!-- 부속기관 목록관련 -->
@@ -54,6 +55,7 @@
 		order by aff_no asc
   </select>
   
+  <!-- 부속기관 예약관련 -->
   <select id="selectAffiliatedOrgan" resultMap="affiliatedOrganResult">
   	select
   				 aff_no
@@ -64,10 +66,8 @@
   		from affiliated_organ
     	join major using (major_no)
   	 where aff_no = #{affNo}
-  	
   </select>
   
-  <!-- 부속기관 예약관련 -->
   <insert id="insertAffiliatedOrganRes">
 		insert
 			into aff_reservation
@@ -86,7 +86,7 @@
 			from aff_reservation
 	</select>
 
-	<select id="selectAffiliatedOrganResList" resultMap="affReservaationResult">
+	<select id="selectAffiliatedOrganResList" resultMap="affReservationResult">
   	select
 				   aff_name
 				 , aff_location

@@ -21,4 +21,6 @@ public class AffReservationDto {
 	private String startDate;
 	private String endDate;
 	private String reason;
+	private String majorNo;
+	private String affLocation;
 }

@@ -62,13 +62,13 @@
                 <div>
                   <!-- Nav tabs -->
                   <ul class="nav nav-tabs" role="tablist">
-                    <li class="nav-item">
-                      <a class="nav-link active" data-bs-toggle="tab" href="#home" role="tab">
+                    <li class="nav-item" role="presentation">
+                      <a class="nav-link active affListTag" data-bs-toggle="tab" href="#home" role="tab">
                         <span>부속기관 목록</span>
                       </a>
                     </li>
-                    <li class="nav-item">
-                      <a class="nav-link" data-bs-toggle="tab" href="#profile" role="tab">
+                    <li class="nav-item" role="presentation">
+                      <a class="nav-link affResListTag" data-bs-toggle="tab" id="profile" href="#profile" role="tab">
                         <span>부속기관 예약목록</span>
                       </a>
                     </li>
@@ -170,7 +170,7 @@
 			                                    </nav>
 			                                  </div>
 			                                </div>
-			                                <!--  end Pagination with Icon -->           
+			                                <!--  end Pagination with Icon -->
                                   </div>
                                   <!-- 1번 양식 -->
                                 </div>
@@ -225,7 +225,7 @@
 		                                          		<c:forEach var="res" items="${ reslist }">
 		                                          			<tr>
 		                                          				<td></td>
-		                                          				<td>${ res.affName }</td>
+		                                          				<td>${ res.affNo }</td>
 		                                          				<td>${ res.affLocation }</td>
 		                                          				<td>${ res.majorNo }</td>
 		                                          				<td>${ res.startDate }~${ res.endDate }</td>
@@ -238,8 +238,10 @@
 		                                      </tbody>
                                         </table>
 					                                <!--  start Pagination with Icon -->
+					                                  
 					                                <div class="card w-100">
 					                                  <div class="card-body" style="margin:auto;">
+					                                  	<!--  
 					                                    <nav aria-label="Page navigation example">
 					                                      <ul class="pagination">
 					                                        <li class="page-item ${ pi.currentPage == p ? 'disabled' : '' }">
@@ -255,8 +257,10 @@
 													                    		</li>
 					                                    	</ul>
 					                                    </nav>
+					                                    -->
 					                                  </div>
 					                                </div>
+					                                
 					                                <!--  end Pagination with Icon -->
                                       </div>
                                     <!-- 1번 양식 -->
@@ -279,6 +283,15 @@
       </div>
       
     </div><!-- page-wrapper end -->
+    
+    <script>
+    /*
+    	$(document).ready(function(){
+    		if(${resSuccess} == "Y"){
+    		}
+    	})
+    	*/
+    </script>
     
     <!-- 세팅메뉴(바) -->
 	    <jsp:include page="/WEB-INF/views/common/settingbar.jsp"/>

@@ -7,6 +7,24 @@
 <head>
 <meta charset="UTF-8">
 <title>부속기관 예약페이지</title>
+  <style>
+	.picArea, .mapArea{
+		width:450px;
+		height:300px;
+	}
+	/* ::marker = 숫자 */
+	.carousel-indicators [data-bs-target]::marker {
+		font-size: 0;
+	}
+	
+	.carousel-item img{
+		width: 450px;
+		height:300px;
+	}
+	.content1{
+		margin:auto;
+	}
+	 </style>
 </head>
 <body>
 	<div class="main-wrapper">
@@ -56,11 +74,52 @@
       <div class="card">
         <div class="card-body">
           <div class="wrap">
-            <div class="content1" style="display:flex;">
-                <div class="pic" style="width:450px; margin-right: 180px;">
-                    사진
+            <div class="content1" style="display:flex; justify-content:center;">
+							<div class="picArea">
+								<div class="h-250 w-400">
+                    <!-- start With indicators -->
+                    <div class=" h-300 w-400">
+                      <div class="">
+                        <div class="">
+                        </div>
+                        <div id="carouselExampleIndicators" class="carousel slide carousel-dark" data-bs-ride="carousel">
+                          <c:choose>
+                          <c:when test="${not empty affiliatedOrgan.attachList}">
+	                          <ol class="carousel-indicators">
+	                            <c:forEach var="at" items="${affiliatedOrgan.attachList}" varStatus="status">
+									                <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="${status.index}" class="${status.first ? 'active' : ''}"></li>
+									            </c:forEach>
+	                          </ol>
+	                          <div class="carousel-inner ">
+	                          <c:set var="isFirst" value="true" />
+		                          <c:forEach var="at" items="${affiliatedOrgan.attachList}" varStatus="loop">
+		                            <div class="carousel-item ${ loop.first ? 'active' : '' }">
+		                              <img src="${ contextPath }${at.filePath}/${at.filesystemName}" class="d-block" />
+		                            </div>
+		                          </c:forEach>  
+	                          </div>
+	                          <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button"
+	                            data-bs-slide="prev">
+	                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+	                            <span class="visually-hidden">Previous</span>
+	                          </a>
+	                          <a class="carousel-control-next" href="#carouselExampleIndicators" role="button"
+	                            data-bs-slide="next">
+	                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+	                            <span class="visually-hidden">Next</span>
+	                          </a>
+                          </c:when>
+                          <c:otherwise>
+                          	
+                          </c:otherwise>
+                        	</c:choose>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- end With indicators -->
+                  </div>     
                 </div>
-                <div id="map" style="width:400px;height:400px; float:right;"></div>
+                <div class="mapArea" id="map" style="width:450px;height:300px; float:left;"></div>
 							
 								<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0de54283cd0dd1d88f4512fabccae71c&libraries=services,clusterer,drawing"></script>
 							
@@ -112,6 +171,7 @@
                });
                </script>
             </div>
+            <br>
             <div class="content2">
               <!-- 정보 -->
               <div class="info">
