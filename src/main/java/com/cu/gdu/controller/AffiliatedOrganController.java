@@ -53,7 +53,7 @@ public class AffiliatedOrganController {
 	public ModelAndView aflist(@RequestParam(value="page", defaultValue="1") int currentPage, ModelAndView mv) {
 		
 		int listCount = affiliatedOrganService.selectAffiliatedOrganListCount();
-		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 5);
+		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 8);
 		List<AffiliatedOrganDto> aflist = affiliatedOrganService.selectAffiliatedOrganList(pi);
 		//System.out.println(list);
 		mv.addObject("pi", pi)
@@ -97,7 +97,7 @@ public class AffiliatedOrganController {
 	public ModelAndView resList(@RequestParam(value="page", defaultValue="1") int currentPage, ModelAndView mv) {
 			
 		int listCount = affiliatedOrganService.selectAffiliatedOrganResListCount();
-		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 5);
+		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 8);
 		List<AffReservationDto> reslist = affiliatedOrganService.selectAffiliatedOrganResList(pi);
 		System.out.println(reslist);
 		mv.addObject("pi", pi)
@@ -164,7 +164,7 @@ public class AffiliatedOrganController {
 		log.debug("search :{}", search);
 		
 		int listCount = affiliatedOrganService.selectAffiliatedOrganSearchListCount(search);
-		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 5);
+		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 8);
 		List<AffiliatedOrganDto> list = affiliatedOrganService.selectAffiliatedOrganSearchList(search, pi);
 		
 		mv.addObject("pi", pi)
