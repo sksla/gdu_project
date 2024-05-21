@@ -202,7 +202,7 @@ public class MemberController {
 		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
 		int memNo = loginUser.getMemNo();
 		int listCount = memberService.selectVacationListCount(memNo);
-		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 5);
+		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 8);
 		List<VacationDto> list = memberService.selectVacationList(pi, memNo);
 		
 		mv.addObject("pi", pi)
