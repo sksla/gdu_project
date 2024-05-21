@@ -49,7 +49,7 @@
         <nav class="sidebar-nav scroll-sidebar" data-simplebar>
           <ul id="sidebarnav">
             <li class="sidebar-item">
-              <a class="sidebar-link" href="http://www.naver.com" aria-expanded="false">
+              <a class="sidebar-link" href="${contextPath}/admin/adminDashboard.do" aria-expanded="false">
                 <span>
                   <i class="ti ti-aperture"></i>
                 </span>
@@ -155,6 +155,16 @@
                 <span class="hide-menu">자원</span>
               </a>
             </li>
+            <!------------------------설정------------------------>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="${contextPath}/admin/setting.do" aria-expanded="false">
+                <span>
+                  <i class="ti ti-aperture"></i>
+                </span>
+                <span class="hide-menu">설정</span>
+              </a>
+            </li>
+            
           </ul>   
         </nav>
 

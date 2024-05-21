@@ -57,4 +57,22 @@ public interface AdminService {
 	// 관리자 대시보드에 띄울 신청받은 연차신청 7개 조회
 	List<VacationDto> selectDashboardVacation();
 	
+	// 관리자 설정페이지 학과전체조회
+	List<MajorDto> selectAdminSetMajorList();
+	
+	// 관리자 설정페이지 직급전체조회
+	List<JobDto> selectAdminSetJobList();
+	
+	// 관리자 설정페이지 학과생성
+	int insertMajor(MajorDto major);
+	
+	// 관리자 설정페이지에서 학과수정
+	int updateMajor(MajorDto major);
+	
+	// 관리자 설정페이지 직급생성
+	int insertJob(JobDto job);
+	
+	// 관리자 설정페이지 직급수정
+	int updateJob(JobDto job);
+	
 }

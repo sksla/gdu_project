@@ -105,8 +105,39 @@ public class AdminDao {
 		return sqlSessionTemplate.selectList("adminMapper.selectDashboardMemberList");
 	}
 	
+	// 관리자 대시보드 연차신정온것 조회
 	public List<VacationDto> selectDashboardVacation(){
 		return sqlSessionTemplate.selectList("adminMapper.selectDashboardVacation");
+	}
+	
+	// 관리자 설정페이지 학과전체조회
+	public List<MajorDto> selectAdminSetMajorList(){
+		return sqlSessionTemplate.selectList("adminMapper.selectAdminSetMajorList");
+	}
+	
+	// 관리자 설정페이지 직급전체조회
+	public List<JobDto> selectAdminSetJobList(){
+		return sqlSessionTemplate.selectList("adminMapper.selectAdminSetJobList");
+	}
+	
+	// 관리자 설정페이지 학과생성
+	public int insertMajor(MajorDto major) {
+		return sqlSessionTemplate.insert("adminMapper.insertMajor", major);
+	}
+	
+	// 관리사 설정페이지 학과수정
+	public int updateMajor(MajorDto major) {
+		return sqlSessionTemplate.update("adminMapper.updateMajor", major);
+	}
+	
+	// 관리자 설정페이지 직급생성
+	public int insertJob(JobDto job) {
+		return sqlSessionTemplate.insert("adminMapper.insertJob", job);
+	}
+	
+	// 관리자 설정페이지 직급수정
+	public int updateJob(JobDto job) {
+		return sqlSessionTemplate.update("adminMapper.updateJob", job);
 	}
 	
 }

@@ -59,6 +59,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   	<result column="end_date" property="endDate" />
   	<result column="vac_type_no" property="vacTypeNo" />
   	<result column="vac_type" property="vacType" />
+  	<collection resultMap="memberResult" property="memberList" />
+  	<collection resultMap="majorResult" property="majorList" />
   </resultMap>
 
   <select id="selectCollegeList" resultMap="collegeResult">
@@ -115,6 +117,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		     , job_level
 		  from job
 		 where status = 'Y'
+		 order
+    		by job_level asc
   </select>
   
   <update id="updateOutMember">
@@ -344,11 +348,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     		   vac.*
 	    from (
 	      select
+	      			 vac_no,
 			         member.mem_no,
 			         major_name,
 			         mem_name,
-			         start_date,
-			         vacation.end_date,
+			         to_char(vacation.start_date, 'YYYY-MM-DD') start_date,	
+			         to_char(vacation.end_date, 'YYYY-MM-DD') end_date,	
 			         vacation.status,
 			         vac_reason,
 			         vac_type
@@ -356,10 +361,83 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		      join vacation ON (member.mem_no = vacation.mem_no)
 		      join major on (member.major_no = major.major_no)
 		     where member.status = 'N'
+		       and vac_option = '사용'
 		     order by vac_no desc
 	   ) vac
 	   where rownum between 1 and 7
   </select>
-
+  
+  <select id="selectAdminSetMajorList" resultMap="majorResult">
+  	select
+		       major_no
+		     , col_no
+		     , major_name
+		     , status
+		  from major
+  </select>
+  
+  <select id="selectAdminSetJobList" resultMap="jobResult">
+		select
+		       job_no
+		     , job_name
+		     , job_type
+		     , status
+		     , job_level
+		  from job
+  </select>
+  
+  <insert id="insertMajor">
+  	insert
+  		into major
+  		(
+  			major_no
+  		, col_no
+  		, major_name
+  		, status
+  		)
+  		values
+  		(
+  			seq_major_no.nextval
+  		, #{colNo}
+  		, #{majorName}
+  		, 'Y'
+  		)
+  </insert>
+  
+  <update id="updateMajor">
+  	update
+  			   major
+  		 set major_name = #{majorName}
+  		   , status = #{status}
+  	 where major_no = #{majorNo}
+  </update>
+  
+  <insert id="insertJob">
+  	insert
+  	  into job
+  	  (
+  	  	job_no
+  	  , job_name
+  	  , job_type
+  	  , status
+  	  , job_level
+  	  )
+  	  values
+  	  (
+  	  	seq_job_no.nextval
+  	  , #{jobName}
+  	  , #{jobType}
+  	  , 'Y'
+  	  , #{jobLevel}
+  	  )
+  </insert>
+  
+  <update id="updateJob">
+  	update
+  			   job
+  		 set job_name = #{jobName}
+  		   , status = #{status}
+  	 where job_no = #{jobNo}
+  </update>
   
 </mapper>

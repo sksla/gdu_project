@@ -222,6 +222,10 @@ public class AdminController {
 	public String adminDashboard(Model model) {
 		List<VacationDto> vacList = adminService.selectDashboardVacation();
 		model.addAttribute("vacList", vacList);
+		//log.debug("vacList: {}", vacList);
+		for(VacationDto v : vacList) {
+			v.setStatus(v.getStatus().equals("1") ? "대기" : v.getStatus().equals("2") ? "승인" : "반려");
+		}
 		return "admin/adminDashboard";
 	}
 	
@@ -241,5 +245,69 @@ public class AdminController {
 		return map;
 	}
 	
+	// 관리자 설정페이지에 띄울 값들
+	@GetMapping("/setting.do")
+	public String adminSettings(Model model) {
+		List<CollegeDto> colList = adminService.selectCollegeList();
+		List<MajorDto> majorList = adminService.selectAdminSetMajorList();
+		List<JobDto> jobList = adminService.selectJobList();
+		List<JobDto> jobListAll = adminService.selectAdminSetJobList();
+		model.addAttribute("jobListAll", jobListAll);
+		model.addAttribute("jobList", jobList);
+		model.addAttribute("colList", colList);
+		model.addAttribute("majorList", majorList);
+		return "admin/updateAdmin";
+	}
+	
+	// 관리자 설정페이지 학과생성
+	@GetMapping("/insertMajor.do")
+	public String insertMajor(MajorDto major, RedirectAttributes redirectAttributes) {
+		//log.debug("학과: {}", major);
+		int result = adminService.insertMajor(major);
+		if(result == 1) {
+			redirectAttributes.addFlashAttribute("alertMsg", "학과가 생성됐습니다.");
+		}else {
+			redirectAttributes.addFlashAttribute("alertMsg", "학과생성에 실패했습니다.");
+		}
+		return "redirect:/admin/setting.do";
+	}
+	
+	// 관리자 설정페이지 학과수정
+	@GetMapping("/updateMajor.do")
+	public String updateMajor(MajorDto major, RedirectAttributes redirectAttributes) {
+		int result = adminService.updateMajor(major);
+		if(result == 1) {
+			redirectAttributes.addFlashAttribute("alertMsg", "학과를 수정했습니다.");
+		}else {
+			redirectAttributes.addFlashAttribute("alertMsg", "학과수정에 실패했습니다.");
+		}
+		return "redirect:/admin/setting.do";
+	}
+	
+	// 관리자 설정페이지 직급생성
+	@GetMapping("/insertJob.do")
+	public String insertJob(JobDto job, RedirectAttributes redirectAttributes) {
+		job.setJobLevel(job.getJobLevel() - 1);
+		//log.debug("job: {}", job);
+		int result = adminService.insertJob(job);
+		if(result == 1) {
+			redirectAttributes.addFlashAttribute("alertMsg", "직급을 생성하셨습니다..");
+		}else {
+			redirectAttributes.addFlashAttribute("alertMsg", "직급생성에 실패했습니다.");
+		}
+		return "redirect:/admin/setting.do";
+	}
+	
+	// 관리자 설정페이지 직급수정
+	@GetMapping("/updateJob.do")
+	public String updateJob(JobDto job, RedirectAttributes redirectAttributes) {
+		int result = adminService.updateJob(job);
+		if(result == 1) {
+			redirectAttributes.addFlashAttribute("alertMsg", "직급을 수정했습니다.");
+		}else {
+			redirectAttributes.addFlashAttribute("alertMsg", "직급수정에 실패했습니다.");
+		}
+		return "redirect:/admin/setting.do";
+	}
 	
 }

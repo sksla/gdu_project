@@ -23,7 +23,7 @@
      	nowIndicator: true, // 현재 시간 마크
 			locale:'ko',
 	    buttonText:{ //버튼 텍스트 변환
-        today:'오늘',
+        today:'오 늘',
         day:'일간',
         week:'주간',
         month:'월간',
@@ -209,31 +209,35 @@
 	                        </thead>
 	                        <tbody>
 	                        	<c:forEach var="v" items="${vacList}">
-		                          <tr class="leaveReason">
-		                            <td>
-		                              <p class="mb-0 fw-normal fs-4">xx과</p>
-		                            </td>
-		                            <td>
-		                              <p class="mb-0 fw-normal fs-4">홍길동</p>
-		                            </td>
-		                            <td>
-		                              <p class="mb-0 fw-normal fs-4">YYYY/MM/DD~YYYY/MM/DD</p>
-		                            </td>
-		                            <td>
-		                              <p class="mb-0 fw-normal fs-4" align="center">N</p>
-		                            </td>
-		                          </tr>
-		                          <tr class="leaveReasonContent">
-		                            <td colspan="4">
-		                              <div class="card" style="width: 400px; height: 250px;">
-		                                <div class="card-body">
-		                                  <p class="fs-5 fw-semibold">연차사유(정기)</p>
-		                                  <hr>
-		                                  <p>적혀있는 연차사유</p>
-		                                </div>
-		                              </div>
-		                            </td>
-		                          </tr>
+	                        		<c:forEach var="major" items="${v.majorList}">
+	                        			<c:forEach var="member" items="${v.memberList}">
+				                          <tr class="leaveReason">
+				                            <td>
+				                              <p class="mb-0 fw-normal fs-4">${major.majorName}</p>
+				                            </td>
+				                            <td>
+				                              <p class="mb-0 fw-normal fs-4">${member.memName}</p>
+				                            </td>
+				                            <td>
+				                              <p class="mb-0 fw-normal fs-4">${v.startDate}~${v.endDate}</p>
+				                            </td>
+				                            <td>
+				                              <p class="mb-0 fw-normal fs-4" align="center">${v.status}</p>
+				                            </td>
+				                          </tr>
+				                          <tr class="leaveReasonContent">
+				                            <td colspan="4">
+				                              <div class="card" style="width: 400px; height: 250px;">
+				                                <div class="card-body">
+				                                  <p class="fs-5 fw-semibold">연차사유(${v.vacType})</p>
+				                                  <hr>
+				                                  <p>${v.vacReason}</p>
+				                                </div>
+				                              </div>
+				                            </td>
+				                          </tr>
+			                          </c:forEach>
+		                          </c:forEach>
 	                          </c:forEach>
 	                        </tbody>
 	                      </table>

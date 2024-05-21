@@ -123,6 +123,42 @@ public class AdminServiceImpl implements AdminService {
 		return adminDao.selectDashboardVacation();
 	}
 
+	// 관리자 설정페이지 학과전체조회
+	@Override
+	public List<MajorDto> selectAdminSetMajorList() {
+		return adminDao.selectAdminSetMajorList();
+	}
+
+	// 관리자 설정페이지 직급전체조회
+	@Override
+	public List<JobDto> selectAdminSetJobList() {
+		return adminDao.selectAdminSetJobList();
+	}
+
+	// 관리자 설정페이지 학과생성
+	@Override
+	public int insertMajor(MajorDto major) {
+		return adminDao.insertMajor(major);
+	}
+
+	// 관리자 설정페이지에서 학과수정
+	@Override
+	public int updateMajor(MajorDto major) {
+		return adminDao.updateMajor(major);
+	}
+
+	// 관리자 설정페이지에서 직급생성
+	@Override
+	public int insertJob(JobDto job) {
+		return adminDao.insertJob(job);
+	}
+
+	// 관리자 설정페이지에서 직급수정
+	@Override
+	public int updateJob(JobDto job) {
+		return adminDao.updateJob(job);
+	}
+
 
 
 }
