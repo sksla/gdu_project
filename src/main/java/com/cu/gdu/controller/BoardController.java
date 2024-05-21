@@ -474,7 +474,7 @@ public class BoardController {
 	}
 	
 	// 게시글 등록
-	@PostMapping("dataRegist.do")
+	@PostMapping("/dataRegist.do")
 	public String insertDataBoard(BoardDto board, List<MultipartFile> uploadFiles
 								, HttpSession session, RedirectAttributes redirectAttributes) {
 		MemberDto loginUser = (MemberDto) session.getAttribute("loginUser");
