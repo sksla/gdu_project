@@ -68,4 +68,11 @@ public class MemberDao {
 		return sqlSessionTemplate.update("memberMapper.updateMemVac", v);
 	}
 	
+	public int selectPlusVacCount() {
+		return sqlSessionTemplate.selectOne("memberMapper.selectPlusVacCount");
+	}
+	
+	public int selectUsedPlusVacCount(int memNo) {
+		return sqlSessionTemplate.selectOne("memberMapper.selectUsedPlusVacCount", memNo);
+	}
 }

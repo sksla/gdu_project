@@ -51,20 +51,11 @@
                 <div class="table-responsive mb-4">
                     <table class="table table-borderless text-center align-middle mb-0">
                         <tbody >
-							              <!-- 보상 연차의 총 사용 일수를 계산하는 반복문 -->
-														<c:forEach var="v" items="${list}">
-														    <c:if test="${v.vacOption == '보상'}">
-														        <c:set var="totalPlusVac" value="${totalPlusVac + v.vacUsed}" scope="page" />
-														    </c:if>
-														    <c:if test="${v.vacOption == '사용' && v.vacType == '포상'}">
-														        <c:set var="totalPlusVacUsed" value="${totalPlusVacUsed + v.vacUsed}" scope="page" />
-														    </c:if>
-														</c:forEach>
-				              			
-				              			 <c:set var="totalVac" value="${ loginUser.leaveCount  + (totalPlusVac - totalPlusVacUsed)}" scope="session" /> <!-- 총 잔여연차 -->
+							              
+				              			 <c:set var="totalVac" value="${ (loginUser.leaveCount  + plusVacCount) - usedPlusCount }" scope="session" /> <!-- 총 잔여연차 -->
                             <tr class="bg-light">
                                 <td class="bg-transparent">지급연차<br>${ loginUser.leaveCount }일</td>
-                                <td class="bg-transparent">보상연차<br>${ totalPlusVac - totalPlusVacUsed }일</td>
+                                <td class="bg-transparent">보상연차<br>${ plusVacCount - usedPlusCount }일</td>
                                 <td class="bg-transparent">잔여연차<br>${ totalVac } 일</td>
                             </tr>
                         </tbody>

@@ -78,6 +78,16 @@ public class MemberServiceImpl implements MemberService {
 		return memberDao.updateMemVac(v);
 	}
 
+	@Override
+	public int selectPlusVacCount() {
+		return memberDao.selectPlusVacCount();
+	}
+
+	@Override
+	public int selectUsedPlusVacCount(int memNo) {
+		return memberDao.selectUsedPlusVacCount(memNo);
+	}
+
 	
 
 }
