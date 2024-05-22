@@ -130,6 +130,71 @@
 	}
 	
 	.fc-event{cursor:pointer;}
+	
+	
+	/* 결재선 모달 스타일 */
+  .list_box_wrap{
+ 		width: 30%;
+    height: 400px;
+  }
+  .app_mem .mem_list{
+  	height:160px;	
+  	overflow: auto;
+ 	}
+  .mem_list_box{
+    border: 1px solid lightgrey;
+    width: 100%;
+    height: 93%;
+  }
+  .mem_list>div{
+    font-size: 14px;
+    padding: 8.5px 5px;
+  }
+  .mem_list>div:hover{
+    background-color: #F2F2F2;
+    color: rgb(90, 106, 133);
+    cursor: pointer;
+  }
+  .selected_app_mem{
+    width: 40%;
+  }
+  .selected_app_mem>div{
+    display: flex;
+    flex-direction: row;
+  }
+  .selected_mem{
+    background-color: #03A9F3;
+    color: white;
+  }
+  .calOwner{background-color: #EEEEEE; pointer-events: none;}
+  .app_mem_etc{
+    height: 100%;
+    width: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .app_mem_etc:hover{
+    cursor: pointer;
+  }
+  .box_header{
+  	height: 20px;
+    font-weight: bold;
+    font-size: 14px;
+    text-align: center;
+    border-bottom: 1px solid lightgrey;
+  }
+  .app_mem{
+    width: 80%;
+    border: 1px solid lightgrey;
+    height: 100%;
+    
+  }
+  .list-group .badge{display:none;}
+  .box_content_wrap{
+  	height:95%;
+  	overflow: auto;
+  }
 </style>
 
 </head>
@@ -218,7 +283,7 @@
 	                  <div class="share_calendar p-2">
 	                    <div class="share_calendar_title">
 	                      <span><h4>공유 캘린더</h4></span>
-	                      <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#insert_share">
+	                      <button type="button" class="btn" data-bs-toggle="modal" onclick="openInsertShareModal();" data-bs-target="#insert_share">
 	                        <i class="ti ti-plus"></i>
 	                      </button>
 	                    </div>
@@ -482,7 +547,7 @@
 
           <!-- 공유 캘린더(일정카테고리) 등록 모달창 -->
           <div class="modal" id="insert_share">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-lg">
               <div class="modal-content">
 
                 <!-- Modal Header -->
@@ -493,11 +558,12 @@
 
                 <!-- Modal body -->
                 <div class="modal-body">
+                
                   <table class="table">
                     <tbody>
                       <tr>
                         <th width="120px">공유 캘린더명</th>
-                        <td><input type="text" style="width:250px;" required></td>
+                        <td><input type="text" id="share_ctgName" name="ctgName" style="width:250px;" maxlength="15" required placeholder="15자 이내"></td>
                       </tr>
                       <tr>
                         <th>캘린더 색</th>
@@ -532,24 +598,133 @@
                         <th colspan="2">공유대상</th>
                       </tr>
                       <tr>
-                        <td colspan="2"></td>
-                      </tr>
-                      
-                    </tbody>
-                  </table>
-                </div>
+                        <td colspan="2">
+                        	<form class="input-group">
+							              <div class="col-4">
+							                <div class="input-group">
+							                  <input type="text" class="form-control" placeholder="검색어 입력" aria-label="Recipient's username" aria-describedby="basic-addon2">
+							                  <button class="btn btn-outline-secondary me-2">검색</button>
+							                </div>
+							              </div>
+							              <span class="mx-2">
+							                <div class="custom-control py-2 custom-radio">
+							                  <input type="radio" id="customRadio1" name="customRadio" class="form-check-input" checked/>
+							                  <label class="form-check-label" for="customRadio1">이름으로 검색</label>
+							                </div>
+							              </span>
+							              <span class="mx-2">
+							                <div class="custom-control py-2 custom-radio">
+							                  <input type="radio" id="customRadio2" name="customRadio" class="form-check-input" />
+							                  <label class="form-check-label" for="customRadio2">학과로 검색</label>
+							                </div>
+							              </span>
+							            </form>
+							            
+            							<form id="shareCtgForm" action="${contextPath }/calendar/insertCtg.do?ctgType=2" method="post">
+	            							<input type="hidden" name="ctgName" value="">
+	            							<input type="hidden" name="color" value="">
+								            <div class="d-flex flex-row">
+								            	<div class="me-2 list_box_wrap">
+								            		<div class="my-1 text-end" style="height: 30px"></div>
+									              <div class="mem_list_box">
+									                <div class="box_header">부서목록</div>
+									                <div id="myTreeview" class="box_content_wrap"></div>
+									              </div>
+								              </div>
+								              <div class="list_box_wrap">
+								              	<div class="my-1 text-end" style="height: 30px">
+								              		<button class="btn btn-sm text-info fw-semibold select_all_btn" style="display:none;" onclick="selectAllMem(this);">전체선택</button>
+								              	</div>
+									              <div class="mem_list_box">
+									                <div class="box_header">직원목록</div>
+									                <div class="mem_list my_mem_list box_content_wrap" style="overflow-y: auto">
+									                  
+									                </div>
+									              </div>
+								              </div>
+					            
+								            	<div class="selected_app_mem list_box_wrap">
+								              	<div class="my-1" style="display: block; height: 30px; text-align:right;">
+								              		<button class="btn btn-sm btn-light fw-semibold" onclick="resetEnrollLineModal();">초기화</button>
+								              	</div>
+								                <div style="height: 180px; margin-bottom: 10px;">
+								                  <div class="app_mem_etc">
+								                    <div>
+								                      <div class="mb-2 add_collaborator" onclick="addAppMember('levelOne');">
+								                        <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="m10.5 9l3 3l-3 3"/><path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z" opacity="0.5"/></g></svg>
+								                      </div>
+								                      <div class="remove_collaborator" onclick="removeAppMember('levelOne');">
+								                        <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="m13.5 9l-3 3l3 3"/><path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z" opacity="0.5"/></g></svg>
+								                      </div>
+								                    </div>
+								                  </div>
+								                  <div class="app_levelOne app_mem">
+								                    <div class="box_header">조회,등록</div>
+								                    <div class="mem_list">
+								                    
+								                    </div>
+								                  </div>
+								                </div>
+								                <div style="height: 180px; margin-bottom: 10px;">
+								                  <div class="app_mem_etc">
+								                    <div>
+								                      <div class="mb-2 add_approver" onclick="addAppMember('levelTwo');">
+								                        <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="m10.5 9l3 3l-3 3"/><path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z" opacity="0.5"/></g></svg>
+								                      </div>
+								                      <div class="remove_approver" onclick="removeAppMember('levelTwo');">
+								                        <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="m13.5 9l-3 3l3 3"/><path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z" opacity="0.5"/></g></svg>
+								                      </div>
+								                    </div>
+								                  </div>
+								                  <div class="app_levelTwo app_mem">
+								                    <div class="box_header">조회</div>
+								                    <div class="mem_list">
+								                    
+								                    </div>
+								                  </div>
+								                </div>
+					                
+					              		</div> 
+					              		<!-- selected_app_mem end --> 
+					                </div>
+			                  
+				                <!-- 직원 선택 끝 -->
+				                
+                     	</td>
+                   	</tr>
+               		</tbody>
+                </table>
 
                 <!-- Modal footer -->
                 <div class="modal-footer justify-content-center">
-                  <button type="button" class="btn btn-primary">등록</button>
-                  <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">취소</button>
+                  <div class="editBtn">
+	                	<button type="button" class="btn btn-outline-secondary" onclick="" data-bs-dismiss="modal">수정</button> 
+	               		<button type="button" class="btn btn-outline-danger" onclick="" data-bs-dismiss="modal">삭제</button>
+	               	</div>
+	               	<div class="insertBtn">
+	                  <button type="submit" class="btn btn-outline-primary insertMyBtn" onclick="return insertShareCtgVali();">등록</button>
+	                  <button type="button" class="btn btn-info" data-bs-dismiss="modal">취소</button>
+	               	</div>
                 </div>
-
+							</form>
               </div>
             </div>
           </div>
+          
+          
+          
+          
+          
 
           <script>
+          	// 현재 로그인한 회원번호 
+          	let memNo = ${loginUser.memNo};
+          	// 전체 회원(트리뷰에서 조회함)
+          	let memList = new Array();
+          	
+          
+		       	// treeview의 부서 목록 전역변수
+		      	let majorTree = [];
           
 	       		// 카테고리 리스트 배열
 	          let ctgList = new Array();
@@ -581,11 +756,199 @@
             	  ajaxSelectCalList();
               })
               
-              
+		          // 결재선 선택 모달용 javascript **************************************
+		      		// 부서목록 리스트 조회
+		      		createMajorList();
               
               
             })
             
+            
+            
+            // 결재선 모달용 javascript ********************************************
+			    	// treeview의 부서 목록 생성
+			    	function createMajorList(){    		
+			    		$.ajax({
+			    			url:"${contextPath}/approval/majorTreeList.do",
+			    			type:"get",
+			    			success: function(list){
+			    				for(let i=0; i<list.length; i++){
+			    					majorTree[i] = {};
+			    					majorTree[i].text = list[i].colName;
+			    					majorTree[i].tags = [list[i].colNo, "college"];
+			    					majorTree[i].nodes = [];
+			    					let majorList = list[i].majorList;
+			    					for(let j=0; j<majorList.length; j++){
+			    						majorTree[i].nodes[j] = {};
+			    						majorTree[i].nodes[j].text = majorList[j].majorName;
+			    						majorTree[i].nodes[j].tags = [majorList[j].majorNo, "major"];
+			    					}
+			    				}
+			    				testTreeView();
+			    			},
+			    			error: function(){
+			    				console.log("부서 목록 조회 실패");
+			    			}    			
+			    		})
+			    		
+			    	}
+            
+	         	// 부서목록 treeview 생성 함수
+	        	function testTreeView(){
+	        	 
+	        	 
+	        		
+	            $("#myTreeview").treeview({
+	                levels: 1,
+	                selectedBackColor: "#03a9f3",
+	                onhoverColor: "rgba(0, 0, 0, 0.05)",
+	                expandIcon: "ti ti-plus",
+	                collapseIcon: "ti ti-minus",
+	                nodeIcon: "ti ti-circle",
+	                data: majorTree,
+	                showTags: true,
+	                highlightSelected: true,
+	            }).on("click", function(){
+	            	let $badge = $(".node-selected").find(".badge");
+	            	if($badge.eq(1).text() == "major"){
+	            		$.ajax({
+	            			url:"${contextPath}/approval/memberList.do",
+	            			data:{ majorNo: $badge.eq(0).text() },
+	            			type:"get",
+	            			success: function(list){
+	            				$(".my_mem_list").empty();
+	            				
+	            				
+	            				for(const member of list){
+	            					let $newEl = $("<div>" + member.memName + " (" + member.majorNo + ", " + member.jobNo + ")" + "</div>");
+	            					$newEl.append("<span class='hide'>" + member.memNo + "</span>")
+	            								.append("<span class='hide'>" + member.majorNo + "</span>")
+	            								.append("<span class='hide'>" + member.jobNo + "</span>")
+	            								.append("<span class='hide'>" + member.memName + "</span>");
+	            								
+	            					if(memNo == member.memNo){
+	            						$newEl.addClass("calOwner");
+	            					}
+	            						
+	            					$(".my_mem_list").append($newEl);
+	            				
+	            				}
+	            				
+	            				if(list.length == 0 || list.length == 1 && $(".my_mem_list div").hasClass("calOwner")){
+	            					$("#insert_share .select_all_btn").css("display", "none");
+	            					$("#insert_share .select_all_btn").text("전체선택");
+	            				}else{
+	            					$("#insert_share .select_all_btn").css("display", "inline" );
+	            					$("#insert_share .select_all_btn").text("전체선택");
+	            				}
+	            				
+	            				
+	            				
+	            			},
+	            			error: function(){
+	            				console.log("부서목록 생성 ajax 통신 실패");
+	            			}
+	            		})
+	            	}
+	            });
+	          }
+            
+	        	// 직원 목록 선택
+	        	$(".mem_list").on("click", "div", function(){
+	        		// 컨트롤 누른경우 : 겹처서 선택, 하나씩 해제
+	        		// 컨트롤 안 누른 경우 : 해당 객체 하나만 선택(선택되어 있어도)
+	        		if(window.event.ctrlKey){
+	        			if( $(this).hasClass("selected_mem") ){
+	           			$(this).removeClass("selected_mem");
+	           		}else{
+	           			$(this).addClass("selected_mem");
+	           		}
+	        		}else{
+	           		$(".mem_list > div").removeClass("selected_mem");
+	        			if( !$(this).hasClass("selected_mem") ){
+	        				$(this).addClass("selected_mem");
+	        			}
+	        		}
+	        	})
+        	
+	        	// 전체선택 버튼 클릭시
+	        	function selectAllMem(target){
+	        		if($(target).text() == "전체선택"){
+	        			$(".my_mem_list>div").each(function(index, el){
+	    	    			if(!$(el).hasClass("selected_mem") && !$(el).hasClass("calOwner")){
+	    	    				$(el).addClass("selected_mem");
+	    	    			}
+	    	    		})
+	    	    		$(target).text("전체해제");
+	        		}else{
+	    	    		$(".my_mem_list>div").each(function(index, el){
+	        				$(el).removeClass("selected_mem");    				
+	    	    		})
+	    	    		$(target).text("전체선택");
+	        		}
+	        	}
+            
+	        	// 화살표 클릭시 결재자 추가
+	        	function addAppMember(appType){
+	        		// 선택된 회원영역
+	        		let $selectedMem = $(".my_mem_list>.selected_mem");
+	        		// 이동하려는 구역 박스
+	        		let $boxMem = $(".app_" + appType + ">.mem_list");
+	        		
+        			$selectedMem.each(function(index, el1){
+        				let isMem = false;
+        				$(".selected_app_mem .mem_list").children().each(function(index, el2){
+        					if($(el1).children("span").eq(0).text() == $(el2).children("span").eq(0).text()){
+        						alert("동일한 직원이 이미 결재선에 존재합니다.");
+        						isMem = true;
+        					}
+        				})
+        				if(!isMem){
+           				let $test = $boxMem.append( $(el1).clone()
+           																					.append("<input type='hidden' name='" + appType + "' value='" + $(el1).children("span").eq(0).text() + "'>")
+           																					.addClass("selected_" + appType));    					
+        				}else{
+    							return false;
+        				}
+           		})
+           		/*
+	        		if(appType == "levelOne" && ($boxMem.children("div").length + $selectedMem.length > 5)){
+	        			alert("협조자는 최대 5명까지 선택할 수 있습니다.");
+	        		}
+	        		else if(appType != "levelOne" && $boxMem.children("div").length + $selectedMem.length > 1){
+	        			alert("결재자, 수신자는 1명만 선택할 수 있습니다.");
+	        		}else{
+	        			
+	        		}
+        			*/
+	        	}
+	        	// 화살표 클릭시 결재자 제거
+	        	function removeAppMember(appType){
+	        		let $boxMem = $(".app_" + appType + ">.mem_list").children(".selected_mem").each(function(index, el){
+	        			$(el).remove();
+	        		});
+	        	}
+        	
+	        	// 결재선 등록 모달 초기화 => 공유 멤버 등록 모달 초기화
+	         	function resetEnrollLineModal(){
+	         		createMajorList();
+             	$(".mem_list").each(function(index, el){
+             		$(el).empty();
+             	})
+             	
+             	let $loginUserEl = $("<div class='calOwner'>${loginUser.memName} (${loginUser.majorNo}, ${loginUser.jobNo})</div>");
+							$loginUserEl.append("<span class='hide'>${loginUser.memNo}</span>")
+						    								.append("<span class='hide'>${loginUser.majorNo}</span>")
+						    								.append("<span class='hide'>${loginUser.jobNo}</span>")
+						    								.append("<span class='hide'>${loginUser.memName}</span>")
+						    								.append("<input type='hidden' name='levelOne' value='${loginUser.memNo}'>");
+							
+						    								
+							
+							$(".app_levelOne>.mem_list").append($loginUserEl); 	
+	         	}
+        	
+        	
 
             // 캘린더 색상 체크박스 중복 선택 방지
             function onlyOneCheck(chk){
@@ -623,30 +986,65 @@
             
             
          		// 캘린더 색상 체크여부 유효성검사(type=1:개인, type=2:공유)
+         		// + 캘린더명이 빈값이지 않는지 유효성 검사 추가
             function colorChkValidate(type){
-              let modalId = "";
+         			
+              let modalId = type == 1 ? "insert_my" : "insert_share";
               let count = 0;
-
-              if(type == 1){
-                modalId = "insert_my";
-              }else if(type == 2){
-                modalId = "insert_share";
-              }
-
+              
               $("#" + modalId + " input[type='checkbox']").each(function(){
                 if($(this).prop("checked")){
     	            count++;
     	          }
            
               })
-
-              if(count == 0){
-                alert("색깔을 선택해주세요!");
+							if($("#" + modalId + " input[name='ctgName']").val().trim() == ""){
+								let typeStr = ( type == 1 ? "내" : "공유" );
+								alert(typeStr + " 캘린더명을 입력해주세요!");
+								
+								return false;
+								
+							}else if(count == 0){
+                alert("색상을 선택해주세요!");
                 return false;
               }
               
+              
+              
               return true;
             }
+         		
+         		// 공유 캘린더 등록 버튼 클릭시 유효성 검사
+         		function insertShareCtgVali(){
+         			// 자신 외의 공유할 직원을 선택하지 않았을 때
+         			
+         			// 
+         			$("#shareCtgForm input[name='ctgName']").val($("#share_ctgName").val());
+         			
+         			$("#insert_share input[type='checkbox']").each(function(){
+	              if($(this).prop("checked")){
+			         		$("#shareCtgForm input[name='color']").val($(this).val());
+	  	          }
+                   
+              })
+         			
+         			let $shareMemDivEl = $(".selected_app_mem .mem_list").children();
+         			console.log("공유직원 수 : ", $shareMemDivEl.length);
+         			console.log("이름 : ", $("#shareCtgForm input[name='ctgName']").val());
+         			console.log("색상 : ", $("#shareCtgForm input[name='color']").val());
+         			
+         			if(!colorChkValidate(2)){
+         				// 캘린더명 입력 안했을 때
+         				// 체크박스 하나도 선택하지 않았을 때
+         				return false;
+         			}else if($shareMemDivEl.length <= 1) {
+         				alert("캘린더를 공유할 직원을 선택해주세요.");
+         				return false;
+         			}
+         			
+         			
+         			return true;
+         		}
 
          		
          		
@@ -669,6 +1067,41 @@
       	
          		}
          		
+         		// 공유 캘린더 추가버튼 클릭시
+            function openInsertShareModal(){
+         			
+         			$("#insert_share modal-title").html("공유 캘린더 등록");
+         			
+         			// 모달창 초기화
+            	resetEnrollLineModal();
+            	$("#insert_share input[name='ctgName']").val("");
+		     			$("#insert_share input[type='checkbox']").each(function(){
+		              	$(this).prop("checked", false);
+		     			})
+		     			
+		     			$("#insert_share #customRadio1").prop("checked", true);
+		     			$("#insert_share #customRadio2").prop("checked", false);
+		     			
+		     			$("#insert_share .editBtn").css("display", "none");
+         			$("#insert_share .insertBtn").css("display", "block");
+         			$("#insert_share .select_all_btn").css("display", "none");
+         			$("#inser_share .select_all_btn").text("전체선택");
+         			/*
+         			let $loginUserEl = $("<div class='calOwner'>${loginUser.memName} (${loginUser.majorNo}, ${loginUser.jobNo})</div>");
+							$loginUserEl.append("<span class='hide'>${loginUser.memNo}</span>")
+						    								.append("<span class='hide'>${loginUser.majorNo}</span>")
+						    								.append("<span class='hide'>${loginUser.jobNo}</span>")
+						    								.append("<span class='hide'>${loginUser.memName}</span>")
+						    								.append("<input type='hidden' name='levelOne' value='${loginUser.memNo}'>");
+							
+						    								
+							
+	    				$(".app_levelOne>.mem_list").append($loginUserEl);
+         			*/
+         			
+            	$("#insert_share").modal("show");
+            }
+     		
          		// 내캘린더(개인) 수정버튼 클릭시
          		function openEditMyModal(ctgNo){
 							$("#insert_my modal-title").html("내 캘린더 수정");
@@ -749,11 +1182,11 @@
 	            					shVal += "<li>"
 				                         +		"<div class='cal_ctg'>"
 				                         +			"<div>"
-				                         +				"<input type='checkbox' name='showList' value='" + rep[i].ctgNo + "' class='show_chk' style='accent-color: " + rep[i].color +";'>&nbsp;"
+				                         +				"<input type='checkbox' name='showList' value='" + rep[i].ctgNo + "' class='show_chk' style='accent-color: " + rep[i].color +";' checked='" + (rep[i].isShow == "Y" ? "true" : "false")  + "'>&nbsp;"
 				                         +				"<span>" + rep[i].ctgName + "</span>"
 				                         +			"</div>"
 				                         +			"<div>"
-				                         +				"<button type='button' class='btn btn-sm btn-outline-primary'><i class='ti ti-edit'></button>"
+				                         +				"<button type='button' class='btn btn-sm' onclick='openEditShareModal(" + rep[i].ctgNo + ", " + memNo + ");'><i class='ti ti-edit'></button>"
 				                         +			"</div>"
 				                         +		"</div>"
 				                         + "</li>";
@@ -790,7 +1223,7 @@
             	let $ctgNoVal = $("#insert_my input[name='ctgNo']").val();
             	let $color = "";
             	
-            	if( $ctgNameVal == null || $ctgNameVal == ""){
+            	if( $ctgNameVal == null || $ctgNameVal.trim() == ""){
             		alert("캘린더 이름을 입력해주세요!");
             	}else if(colorChkValidate(1)){
             		
@@ -1237,7 +1670,10 @@
 	            if(ctgValue == 0){
 	            	// 캘린더 x = value값 0 | 캘린더 o = value값 > 0
 	            	alert("생성된 캘린더가 없습니다. 캘린더를 먼저 생성해주세요.");
-	            }else if (startDate > endDate) { 
+	            }else if(evtTitle == null || evtTitle.trim() == ""){
+	            	// 제목에 빈값이 들어갔는지 비교
+	            	alert("일정 제목을 입력해주세요.");
+         			}else if (startDate > endDate) { 
 	            	// 날짜 비교
 	            	alert("종료 날짜는 시작 날짜보다 이후여야 합니다.");
 	                
@@ -1333,7 +1769,9 @@
 	            if(ctgValue == 0){
 	            	// 캘린더 x = value값 0 | 캘린더 o = value값 > 0
 	            	alert("생성된 캘린더가 없습니다. 캘린더를 먼저 생성해주세요.");
-	            }else if (startDate > endDate) { 
+	            }else if(evtTitle == null || evtTitle.trim() == ""){
+	            	alert("일정 제목을 입력해주세요");
+         			}else if (startDate > endDate) { 
 	            	// 날짜 비교
 	            	alert("종료 날짜는 시작 날짜보다 이후여야 합니다.");
 	                
@@ -1434,6 +1872,10 @@
 	
 	<!-- footer-->
   <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
+  
+   <!-- treeview 연동 스크립트 -->
+	<script src="../assets/libs/bootstrap-tree/dist/bootstrap-treeview.min.js"></script>
+	<script src="../assets/js/plugins/bootstrap-treeview-init.js"></script>
 	
 </body>
 </html>
