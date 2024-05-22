@@ -146,7 +146,7 @@
 								<!-- Modal footer -->
 								<div class="modal-footer justify-content-center">
 									<c:choose>
-										<c:when test="${ not empty loginUser and loginUser.status eq 'A'}">
+										<c:when test="${ not empty loginUser and loginUser.jobName eq '행정관리'}">
 											<!-- 관리자만 보여지는 버튼-->
 											<button type="button" class="btn btn-outline-secondary"
 												data-bs-toggle="modal" data-bs-target="#updateForm">수정</button>
@@ -241,7 +241,7 @@
 								<!-- Modal footer -->
 								<div class="modal-footer justify-content-center">
 									
-									<c:if test="${ not empty loginUser and loginUser.status eq 'A' }">
+									<c:if test="${ not empty loginUser and loginUser.jobName eq '행정관리' }">
 										<!-- 관리자만 보여지는 버튼-->
 										<button type="button" class="btn btn-outline-secondary updateEvtBtn" data-bs-dismiss="modal">등록</button>
 										<button type="button" class="btn btn-outline-primary insertEvtBtn" data-bs-dismiss="modal">수정</button>
