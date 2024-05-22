@@ -18,4 +18,5 @@ public class ShareMemDto {
 	private String shareMemNo;
 	private String shareMemName;
 	private String rightLevel;
+	private String insertType; // 처음 캘린더 등록(N) | 공유 캘린더 수정할때 추가됐는지(U)
 }

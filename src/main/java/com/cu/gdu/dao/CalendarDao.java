@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.cu.gdu.dto.CalCtgDto;
 import com.cu.gdu.dto.CalendarDto;
+import com.cu.gdu.dto.ShareMemDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -115,6 +116,15 @@ public class CalendarDao {
 	 */
 	public List<CalendarDto> selectUnivCalList(){
 		return sqlSessionTemplate.selectList("calendarMapper.selectUnivCalList");
+	}
+	
+	/**
+	 * 공유 멤버 등록
+	 * @param sm
+	 * @return insert문 처리한 행 수 (int)
+	 */
+	public int insertShareMem(ShareMemDto sh) {
+		return sqlSessionTemplate.insert("calendarMapper.insertShareMem", sh);
 	}
 	
 	

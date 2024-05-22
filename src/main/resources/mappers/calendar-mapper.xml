@@ -11,7 +11,7 @@
 		<result column="is_show" property="isShow"/>
 		<result column="status" property="status"/>
 		<result column="count" property="shareCount"/>
-		<collection resultMap="shareMemResult" property="sList"/>
+		<collection resultMap="shareMemResult" property="shList"/>
 		
 	</resultMap>
 	
@@ -67,6 +67,7 @@
       left join share_mem s on (s.ctg_no = c.ctg_no)
       left join member sm on (s.mem_no = sm.mem_no)
      where c.status = 'Y'
+       and ctg_type in ('1', '2')
        and ctg_writer = #{memNo}
        or s.mem_no = #{memNo}
      order
@@ -124,7 +125,14 @@
 		  )
 		  values
 		  (
-		  	seq_ctg_no.currval
+		  	<choose>
+					<when test='insertType != null and insertType.equals("N")'>
+						seq_ctg_no.currval
+					</when>
+					<otherwise>
+						#{shareCtgNo}
+					</otherwise>
+				</choose>
 		  , #{shareMemNo}
 		  , #{rightLevel}	
 		  )

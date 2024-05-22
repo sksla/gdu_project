@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import com.cu.gdu.dao.CalendarDao;
 import com.cu.gdu.dto.CalCtgDto;
 import com.cu.gdu.dto.CalendarDto;
+import com.cu.gdu.dto.ShareMemDto;
+import com.cu.gdu.dto.ShareMemDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -35,7 +37,22 @@ public class CalendarServiceImpl implements CalendarService {
 	 */
 	@Override
 	public int insertCalCtg(CalCtgDto ctg) {
-		return calendarDao.insertCalCtg(ctg);
+		
+		// 캘린더(카테고리) insert
+		int result1 = calendarDao.insertCalCtg(ctg);
+		
+		int result2 = 1;
+		// 공유직원 insert
+		List<ShareMemDto> sList = ctg.getShList();
+		if(!sList.isEmpty()) {
+			result2 = 0;
+			for(ShareMemDto sh : sList) {
+				result2 += calendarDao.insertShareMem(sh);
+			}
+		}
+		
+		
+		return result1 * result2;
 	}
 
 	/**

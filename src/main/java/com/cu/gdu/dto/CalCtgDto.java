@@ -26,6 +26,6 @@ public class CalCtgDto {
 	private Date modifyDate; 
 	private String status;
 	private int shareCount;
-	private List<ShareMemDto> sList;
+	private List<ShareMemDto> shList;
 	
 }
