@@ -430,7 +430,7 @@
 	
 	          <div class="card">
 	            <div class="card-body">
-	              채팅
+	              <a class="btn btn-secondary" href="${ contextPath }/chat/room.page">채팅하기</a>
 	            </div>
 	          </div>
 	          

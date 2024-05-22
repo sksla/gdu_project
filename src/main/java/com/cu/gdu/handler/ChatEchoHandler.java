@@ -1,6 +1,9 @@
 package com.cu.gdu.handler;
 
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.web.socket.CloseStatus;
@@ -56,11 +59,16 @@ public class ChatEchoHandler extends TextWebSocketHandler {
 		log.debug("현재 웹소켓으로 메세지를 보낸 회원의 정보: {}", session.getAttributes().get("loginUser"));
 		log.debug("현재 웹소켓으로 전달된 메세지 내용: {}", message.getPayload());
 		
+		// 현재 시간을 가져와서 포맷팅합니다.
+	    String currentTime = new SimpleDateFormat("HH:mm").format(new Date());
+		
 		// 현재 해당 웹소켓에 연결되어있는 모든 클라이언트들에게 현재 들어온 메세지를 재발송함 (작성자 본인포함)
 		for(WebSocketSession client : sessionList) {
 			// 전달하고자 하는 메세지의 형식 : 메세지유형(chat/entry/exit)|메세지내용|발신자아이디|...
 			String msg = "chat|" + message.getPayload() + "|" 
-						+ ((MemberDto)session.getAttributes().get("loginUser")).getMemName();
+						+ ((MemberDto)session.getAttributes().get("loginUser")).getMemName()+ "|"
+		                + currentTime + "|"
+				        + ((MemberDto)session.getAttributes().get("loginUser")).getProfileUrl();
 			client.sendMessage(new TextMessage(msg)); // * 채팅방jsp의 onMessage function실행됨
 			
 		}

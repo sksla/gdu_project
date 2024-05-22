@@ -347,322 +347,20 @@
                       <div class="chat-box w-xs-100">
                         <div class="chat-box-inner p-9" data-simplebar>
                           <div class="chat-list chat active-chat" data-user-id="1">
-                            <div class="hstack gap-3 align-items-start mb-7 justify-content-start">
-                              <img src="../assets/images/profile/user-8.jpg" alt="user8" width="40" height="40"
-                                class="rounded-circle" />
-                              <div>
-                                <h6 class="fs-2 text-muted">
-                                  Andrew, 2 hours ago
-                                </h6>
-                                <div class="p-2 text-bg-light rounded-1 d-inline-block text-dark fs-3">
-                                  If I don’t like something, I’ll stay away
-                                  from it.
-                                </div>
-                              </div>
-                            </div>
-                            <div class="hstack gap-3 align-items-start mb-7 justify-content-end">
-                              <div class="text-end">
-                                <h6 class="fs-2 text-muted">2 hours ago</h6>
-                                <div class="p-2 bg-info-subtle text-dark rounded-1 d-inline-block fs-3">
-                                  If I don’t like something, I’ll stay away
-                                  from it.
-                                </div>
-                              </div>
-                            </div>
-                            <div class="hstack gap-3 align-items-start mb-7 justify-content-start">
-                              <img src="../assets/images/profile/user-8.jpg" alt="user8" width="40" height="40"
-                                class="rounded-circle" />
-                              <div>
-                                <h6 class="fs-2 text-muted">
-                                  Andrew, 2 hours ago
-                                </h6>
-                                <div class="p-2 text-bg-light rounded-1 d-inline-block text-dark fs-3">
-                                  I want more detailed information.
-                                </div>
-                              </div>
-                            </div>
-                            <div class="hstack gap-3 align-items-start mb-7 justify-content-end">
-                              <div class="text-end">
-                                <h6 class="fs-2 text-muted">2 hours ago</h6>
-                                <div class="p-2 bg-info-subtle text-dark mb-1 d-inline-block rounded-1 fs-3">
-                                  If I don’t like something, I’ll stay away
-                                  from it.
-                                </div>
-                                <div class="p-2 bg-info-subtle text-dark rounded-1 fs-3">
-                                  They got there early, and they got really
-                                  good seats.
-                                </div>
-                              </div>
-                            </div>
-                            <div class="hstack gap-3 align-items-start mb-7 justify-content-start">
-                              <img src="../assets/images/profile/user-8.jpg" alt="user8" width="40" height="40"
-                                class="rounded-circle" />
-                              <div>
-                                <h6 class="fs-2 text-muted">
-                                  Andrew, 2 hours ago
-                                </h6>
-                                <div class="rounded-2 overflow-hidden">
-                                  <img src="../assets/images/products/product-1.jpg" alt="" class="w-100" />
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <!-- 2 -->
-                          <div class="chat-list chat" data-user-id="2">
-                            <div class="hstack gap-3 align-items-start mb-7 justify-content-start">
-                              <img src="../assets/images/profile/user-8.jpg" alt="user8" width="40" height="40"
-                                class="rounded-circle" />
-                              <div>
-                                <h6 class="fs-2 text-muted">
-                                  Andrew, 2 hours ago
-                                </h6>
-                                <div class="p-2 text-bg-light rounded-1 d-inline-block text-dark fs-3">
-                                  If I don’t like something, I’ll stay away
-                                  from it.
-                                </div>
-                              </div>
-                            </div>
-                            <div class="hstack gap-3 align-items-start mb-7 justify-content-end">
-                              <div class="text-end">
-                                <h6 class="fs-2 text-muted">2 hours ago</h6>
-                                <div class="p-2 bg-info-subtle text-dark rounded-1 d-inline-block fs-3">
-                                  If I don’t like something, I’ll stay away
-                                  from it.
-                                </div>
-                              </div>
-                            </div>
-                            <div class="hstack gap-3 align-items-start mb-7 justify-content-start">
-                              <img src="../assets/images/profile/user-8.jpg" alt="user8" width="40" height="40"
-                                class="rounded-circle" />
-                              <div>
-                                <h6 class="fs-2 text-muted">
-                                  Andrew, 2 hours ago
-                                </h6>
-                                <div class="p-2 text-bg-light rounded-1 d-inline-block text-dark fs-3">
-                                  I want more detailed information.
-                                </div>
-                              </div>
-                            </div>
-                            <div class="hstack gap-3 align-items-start mb-7 justify-content-end">
-                              <div class="text-end">
-                                <h6 class="fs-2 text-muted">2 hours ago</h6>
-                                <div class="p-2 bg-info-subtle text-dark mb-1 d-inline-block rounded-1 fs-3">
-                                  If I don’t like something, I’ll stay away
-                                  from it.
-                                </div>
-                                <div class="p-2 bg-info-subtle text-dark rounded-1 fs-3">
-                                  They got there early, and they got really
-                                  good seats.
-                                </div>
-                              </div>
-                            </div>
-                            <div class="hstack gap-3 align-items-start mb-7 justify-content-start">
-                              <img src="../assets/images/profile/user-8.jpg" alt="user8" width="40" height="40"
-                                class="rounded-circle" />
-                              <div>
-                                <h6 class="fs-2 text-muted">
-                                  Andrew, 2 hours ago
-                                </h6>
-                                <div class="rounded-2 overflow-hidden">
-                                  <img src="../assets/images/products/product-1.jpg" alt="" class="w-100" />
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <!-- 3 -->
-                          <div class="chat-list chat" data-user-id="3">
-                            <div class="hstack gap-3 align-items-start mb-7 justify-content-start">
-                              <img src="../assets/images/profile/user-8.jpg" alt="user8" width="40" height="40"
-                                class="rounded-circle" />
-                              <div>
-                                <h6 class="fs-2 text-muted">
-                                  Andrew, 2 hours ago
-                                </h6>
-                                <div class="p-2 text-bg-light rounded-1 d-inline-block text-dark fs-3">
-                                  If I don’t like something, I’ll stay away
-                                  from it.
-                                </div>
-                              </div>
-                            </div>
-                            <div class="hstack gap-3 align-items-start mb-7 justify-content-end">
-                              <div class="text-end">
-                                <h6 class="fs-2 text-muted">2 hours ago</h6>
-                                <div class="p-2 bg-info-subtle text-dark rounded-1 d-inline-block fs-3">
-                                  If I don’t like something, I’ll stay away
-                                  from it.
-                                </div>
-                              </div>
-                            </div>
-                            <div class="hstack gap-3 align-items-start mb-7 justify-content-start">
-                              <img src="../assets/images/profile/user-8.jpg" alt="user8" width="40" height="40"
-                                class="rounded-circle" />
-                              <div>
-                                <h6 class="fs-2 text-muted">
-                                  Andrew, 2 hours ago
-                                </h6>
-                                <div class="p-2 text-bg-light rounded-1 d-inline-block text-dark fs-3">
-                                  I want more detailed information.
-                                </div>
-                              </div>
-                            </div>
-                            <div class="hstack gap-3 align-items-start mb-7 justify-content-end">
-                              <div class="text-end">
-                                <h6 class="fs-2 text-muted">2 hours ago</h6>
-                                <div class="p-2 bg-info-subtle text-dark mb-1 d-inline-block rounded-1 fs-3">
-                                  If I don’t like something, I’ll stay away
-                                  from it.
-                                </div>
-                                <div class="p-2 bg-info-subtle text-dark rounded-1 fs-3">
-                                  They got there early, and they got really
-                                  good seats.
-                                </div>
-                              </div>
-                            </div>
-                            <div class="hstack gap-3 align-items-start mb-7 justify-content-start">
-                              <img src="../assets/images/profile/user-8.jpg" alt="user8" width="40" height="40"
-                                class="rounded-circle" />
-                              <div>
-                                <h6 class="fs-2 text-muted">
-                                  Andrew, 2 hours ago
-                                </h6>
-                                <div class="rounded-2 overflow-hidden">
-                                  <img src="../assets/images/products/product-1.jpg" alt="" class="w-100" />
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <!-- 4 -->
-                          <div class="chat-list chat" data-user-id="4">
-                            <div class="hstack gap-3 align-items-start mb-7 justify-content-start">
-                              <img src="../assets/images/profile/user-8.jpg" alt="user8" width="40" height="40"
-                                class="rounded-circle" />
-                              <div>
-                                <h6 class="fs-2 text-muted">
-                                  Andrew, 2 hours ago
-                                </h6>
-                                <div class="p-2 text-bg-light rounded-1 d-inline-block text-dark fs-3">
-                                  If I don’t like something, I’ll stay away
-                                  from it.
-                                </div>
-                              </div>
-                            </div>
-                            <div class="hstack gap-3 align-items-start mb-7 justify-content-end">
-                              <div class="text-end">
-                                <h6 class="fs-2 text-muted">2 hours ago</h6>
-                                <div class="p-2 bg-info-subtle text-dark rounded-1 d-inline-block fs-3">
-                                  If I don’t like something, I’ll stay away
-                                  from it.
-                                </div>
-                              </div>
-                            </div>
-                            <div class="hstack gap-3 align-items-start mb-7 justify-content-start">
-                              <img src="../assets/images/profile/user-8.jpg" alt="user8" width="40" height="40"
-                                class="rounded-circle" />
-                              <div>
-                                <h6 class="fs-2 text-muted">
-                                  Andrew, 2 hours ago
-                                </h6>
-                                <div class="p-2 text-bg-light rounded-1 d-inline-block text-dark fs-3">
-                                  I want more detailed information.
-                                </div>
-                              </div>
-                            </div>
-                            <div class="hstack gap-3 align-items-start mb-7 justify-content-end">
-                              <div class="text-end">
-                                <h6 class="fs-2 text-muted">2 hours ago</h6>
-                                <div class="p-2 bg-info-subtle text-dark mb-1 d-inline-block rounded-1 fs-3">
-                                  If I don’t like something, I’ll stay away
-                                  from it.
-                                </div>
-                                <div class="p-2 bg-info-subtle text-dark rounded-1 fs-3">
-                                  They got there early, and they got really
-                                  good seats.
-                                </div>
-                              </div>
-                            </div>
-                            <div class="hstack gap-3 align-items-start mb-7 justify-content-start">
-                              <img src="../assets/images/profile/user-8.jpg" alt="user8" width="40" height="40"
-                                class="rounded-circle" />
-                              <div>
-                                <h6 class="fs-2 text-muted">
-                                  Andrew, 2 hours ago
-                                </h6>
-                                <div class="rounded-2 overflow-hidden">
-                                  <img src="../assets/images/products/product-1.jpg" alt="" class="w-100" />
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <!-- 5 -->
-                          <div class="chat-list chat" data-user-id="5">
-                            <div class="hstack gap-3 align-items-start mb-7 justify-content-start">
-                              <img src="../assets/images/profile/user-8.jpg" alt="user8" width="40" height="40"
-                                class="rounded-circle" />
-                              <div>
-                                <h6 class="fs-2 text-muted">
-                                  Andrew, 2 hours ago
-                                </h6>
-                                <div class="p-2 text-bg-light rounded-1 d-inline-block text-dark fs-3">
-                                  If I don’t like something, I’ll stay away
-                                  from it.
-                                </div>
-                              </div>
-                            </div>
-                            <div class="hstack gap-3 align-items-start mb-7 justify-content-end">
-                              <div class="text-end">
-                                <h6 class="fs-2 text-muted">2 hours ago</h6>
-                                <div class="p-2 bg-info-subtle text-dark rounded-1 d-inline-block fs-3">
-                                  If I don’t like something, I’ll stay away
-                                  from it.
-                                </div>
-                              </div>
-                            </div>
-                            <div class="hstack gap-3 align-items-start mb-7 justify-content-start">
-                              <img src="../assets/images/profile/user-8.jpg" alt="user8" width="40" height="40"
-                                class="rounded-circle" />
-                              <div>
-                                <h6 class="fs-2 text-muted">
-                                  Andrew, 2 hours ago
-                                </h6>
-                                <div class="p-2 text-bg-light rounded-1 d-inline-block text-dark fs-3">
-                                  I want more detailed information.
-                                </div>
-                              </div>
-                            </div>
-                            <div class="hstack gap-3 align-items-start mb-7 justify-content-end">
-                              <div class="text-end">
-                                <h6 class="fs-2 text-muted">2 hours ago</h6>
-                                <div class="p-2 bg-info-subtle text-dark mb-1 d-inline-block rounded-1 fs-3">
-                                  If I don’t like something, I’ll stay away
-                                  from it.
-                                </div>
-                                <div class="p-2 bg-info-subtle text-dark rounded-1 fs-3">
-                                  They got there early, and they got really
-                                  good seats.
-                                </div>
-                              </div>
-                            </div>
-                            <div class="hstack gap-3 align-items-start mb-7 justify-content-start">
-                              <img src="../assets/images/profile/user-8.jpg" alt="user8" width="40" height="40"
-                                class="rounded-circle" />
-                              <div>
-                                <h6 class="fs-2 text-muted">
-                                  Andrew, 2 hours ago
-                                </h6>
-                                <div class="rounded-2 overflow-hidden">
-                                  <img src="../assets/images/products/product-1.jpg" alt="" class="w-100" />
-                                </div>
-                              </div>
-                            </div>
+                      		 <!-- 채팅부분 -->
+                        
+                            
                           </div>
                         </div>
+                        
+                        <!-- 채팅 푸터 시작 -->
                         <div class="px-9 py-6 border-top chat-send-message-footer">
                           <div class="d-flex align-items-center justify-content-between">
                             <div class="d-flex align-items-center gap-2 w-85">
                               <a class="position-relative nav-icon-hover z-index-5" href="javascript:void(0)">
                                 <i class="ti ti-mood-smile text-dark bg-hover-primary fs-7"></i></a>
                               <input type="text" class="form-control message-type-box text-muted border-0 p-0 ms-2"
-                                placeholder="Type a Message" fdprocessedid="0p3op" />
+                                placeholder="Type a Message" fdprocessedid="0p3op" id="messageInput" />
                             </div>
                             <ul class="list-unstyledn mb-0 d-flex align-items-center">
                               <li>
@@ -680,10 +378,12 @@
                             </ul>
                           </div>
                         </div>
-                      </div>
-                      <!-- 채팅방 부분 끝 -->
+                        <!--  채팅 푸터 끝 -->
+                        
+                    </div>
+           <!-- 채팅방 부분 끝 -->
                       
-                      <!-- 미디어 파일 부분 -->
+                      <!-- 미디어 파일 부분 
                       <div class="app-chat-offcanvas border-start">
                         <div class="custom-app-scroll mh-n100" data-simplebar>
                           <div class="p-3 d-flex align-items-center justify-content-between">
@@ -840,7 +540,7 @@
                           </div>
                         </div>
                       </div>
-                      <!-- 미디어 파일 부분 끝 -->
+                      미디어 파일 부분 끝 -->
                     </div>
 
                   </div>
@@ -855,12 +555,12 @@
 					   		sock.onclose = onClose;
 					   
 					      // 메세지를 출력시키는 영역의 요소객체
-					   		const $chatArea = $(".chat-area");
+					   		const $chatArea = $(".active-chat");
 					      
 					      // 전송하기 버튼 클릭시 실행되는 function
 					      function sendMessage(){ // 사용자가 입력한 채팅메세지를 웹소켓으로 전송
-					    	  sock.send( $("#message").val() ); // * websocket으로 메세지 전달(=> ChatEchoHandler의 handleMessage 메소드 실행)
-					      	$("#message").val("");
+					    	  sock.send( $("#messageInput").val() ); // * websocket으로 메세지 전달(=> ChatEchoHandler의 handleMessage 메소드 실행)
+					      	$("#messageInput").val("");
 					      }
 					      
 					      // 나에게 메세지가 왔을 때 실행되는 function
@@ -873,24 +573,24 @@
 					      	let $chatDiv = $("<div>"); // 채팅창에 append시킬 div요소 (각 조건에 따라 다르게 제작)
 					      	if(msgArr[0] =="chat"){// 채팅메세지일 경우
 					      		
-					      		/*
-					      		<div class="chat-message mine">
-					            <div class="send-message">내가보낸 메세지내가보낸 메세지내가보낸 메세지내가보낸 메세지내가보낸 메세지</div>
-					         </div>   
-					         
-					         <div class="chat-message other">
-					            <span class="send-user">상대방</span>
-					            <div class="send-message">남이보낸 메세지남이보낸 메세지남이보낸 메세지남이보낸 메세지남이보낸 메세지남이보낸 메세지</div>
-					         </div>
-					      		*/
-					      		// 내가보낸메세지든 상대방이보낸메세지든 공통적으로 만들어야되는 요소작업
-										$chatDiv.addClass("chat-message")
-														.addClass(msgArr[2] == "${loginUser.userId}" ? "mine" : "other") 
-														.append( $("<div>").addClass("send-message").text(msgArr[1]) );
 					      		
-					      		// 상대방이 보낸 메세지일 경우만 따로 진행해야되는 작업
-					      		$chatDiv.hasClass("other")
-					      			&&  $chatDiv.prepend( $("<span>").addClass("send-user").text(msgArr[2]) );
+					      		// 내가보낸메세지든 상대방이보낸메세지든 공통적으로 만들어야되는 요소작업
+										$chatDiv.addClass("hstack gap-3 align-items-start mb-7")
+														.addClass(msgArr[2] == "${loginUser.memName}" ? "justify-content-end" : "justify-content-start") ;
+										if ($chatDiv.hasClass("justify-content-end")) {
+								            $chatDiv.append(
+								              $("<div>").addClass("text-end")
+								                .append($("<h6>").addClass("fs-2 text-muted").text(msgArr[3]))
+								                .append($("<div>").addClass("p-2 bg-info-subtle text-dark rounded-1 d-inline-block fs-3").text(msgArr[1]))
+								            );
+								          } else {
+								            $chatDiv.append(
+								              $("<img>").attr("src", "${contextPath}/"+ msgArr[4]).attr("alt", "user8").attr("width", "40").attr("height", "40").addClass("rounded-circle"),
+								              $("<div>")
+								                .append($("<h6>").addClass("fs-2 text-muted").text(msgArr[2] + ", " + msgArr[3] ))
+								                .append($("<div>").addClass("p-2 text-bg-light rounded-1 d-inline-block text-dark fs-3").text(msgArr[1]))
+								            );
+								          }
 					      		
 					      	}else { // 입장 또는 퇴장메세지일 경우
 					      		
@@ -918,6 +618,16 @@
 					      function onClose(){
 					    	  location.href = "/${contextPath}";
 					      }
+					      
+					      
+					      // 메세지 입력후 엔터치면 전송되는 function
+					      document.getElementById('messageInput').addEventListener('keyup', function(event) {
+					          if (event.key === 'Enter') {
+					            sendMessage();
+					          }
+					        });
+					      
+					      
 					   </script>
               
               
