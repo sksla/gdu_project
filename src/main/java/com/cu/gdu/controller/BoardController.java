@@ -353,7 +353,7 @@ public class BoardController {
 	}
 		
 	// * 공지글 수정 및 삭제 관련 ------------------------------------------------------
-	@GetMapping("/noticeModifyForm.page")
+	@PostMapping("/noticeModifyForm.page")
 	public String noticeModifyForm(int no, Model model) {
 		model.addAttribute("board", boardService.selectBoard(no));
 		return "board/noticeModify";
