@@ -76,6 +76,11 @@ public class AffiliatedOrganDao {
 		return sqlSessionTemplate.selectOne("affiliatedOrganMapper.selectAffiliatedOrganSearchListCount", search);
 	}
 
+	public List<AffiliatedOrganDto> selectAffiliatedOrganSearchList(Map<String, String> search, PageInfoDto pi) {
+		RowBounds rowBounds = new RowBounds((pi.getCurrentPage()-1) * pi.getBoardLimit(), pi.getBoardLimit());
+		return sqlSessionTemplate.selectList("affiliatedOrganMapper.selectAffiliatedOrganSearchList", search, rowBounds);
+	}
+
 	
 
 	

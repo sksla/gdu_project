@@ -50,13 +50,15 @@ public class AffiliatedOrganController {
 	
 	// 부속기관리스트 조회 
 	@GetMapping("/affiliatedOrganList.do")
-	public ModelAndView aflist(@RequestParam(value="page", defaultValue="1") int currentPage, ModelAndView mv) {
+	public ModelAndView aflist(@RequestParam(value="page", defaultValue="1") int currentPage
+							 , @RequestParam(value="tab", defaultValue="affList") String tab
+							 , String myPage
+							 , ModelAndView mv) {
 		
-		int listCount = affiliatedOrganService.selectAffiliatedOrganListCount();
-		PageInfoDto affPi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 8);
+		PageInfoDto affPi = pagingUtil.getPageInfoDto(affiliatedOrganService.selectAffiliatedOrganListCount(), currentPage, 5, 8);
 		List<AffiliatedOrganDto> aflist = affiliatedOrganService.selectAffiliatedOrganList(affPi);
 		
-		PageInfoDto resPi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 8);
+		PageInfoDto resPi = pagingUtil.getPageInfoDto(affiliatedOrganService.selectAffiliatedOrganResListCount(), currentPage, 5, 8);
 		List<AffReservationDto> reslist = affiliatedOrganService.selectAffiliatedOrganResList(resPi);
 		
 		log.debug("resList : " + reslist);
@@ -67,6 +69,8 @@ public class AffiliatedOrganController {
 		  .addObject("aflist", aflist)
 		  .addObject("resPi", resPi)
 		  .addObject("reslist", reslist)
+		  .addObject("tab", tab)
+		  .addObject("myPage", myPage)
 		  .setViewName("/affiliatedOrgan/affiliatedOrganList");
 		
 		return mv;

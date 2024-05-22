@@ -99,7 +99,7 @@
            </li>
 
            <li class="sidebar-item">
-             <a class="sidebar-link" href="./main/app-kanban.html" aria-expanded="false">
+             <a class="sidebar-link" href="${ contextPath }/lec/stuAttend.page" aria-expanded="false">
                <span>
                  <i class="ti ti-list-check"></i>
                </span>

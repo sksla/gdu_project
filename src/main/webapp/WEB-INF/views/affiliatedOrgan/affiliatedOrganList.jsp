@@ -6,10 +6,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>부속기관목록</title>
+<title>부속기관</title>
 </head>
 <body>
-	
 	<div class="main-wrapper">
 	
 		<!-- 각 페이지 별 사이드 바 -->
@@ -23,30 +22,28 @@
 	    <!----------------------------- 본문 시작 -------------------->
 	    <div class="body-wrapper">
         <div class="container-fluid">
+        <!-- ----------------------------- 실제 내용 작성 영역 ----------------------------- -->
           <!-- 페이지 타이틀 -->
           <div class="card bg-info-subtle shadow-none position-relative overflow-hidden mb-4">
             <div class="card-body px-4 py-3">
-              <div class="row align-items-center">
+            
+              <div class="row align-items-center my-3">
+              
                 <div class="col-9">
                   <h4 class="fw-semibold mb-8">부속기관</h4>
                   <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                       <li class="breadcrumb-item">
-                        <a class="text-muted text-decoration-none" href="../main/index.html"
-                          >Home</a
-                        >
+                        <a class="text-muted text-decoration-none" href="../main/index.html">Home</a>
                       </li>
                       <li class="breadcrumb-item" aria-current="page">부속기관</li>
                     </ol>
                   </nav>
                 </div>
+                
                 <div class="col-3">
                   <div class="text-center mb-n5">
-                    <img
-                      src=""
-                      alt=""
-                      class="img-fluid mb-n4"
-                    />
+                    
                   </div>
                 </div>
               </div>
@@ -54,28 +51,25 @@
           </div>
 
           <!-- 페이지 내용 -->
-
-          <div class="col-md-6" style="width: 1000px;">
-            <!-- start Default Tab -->
-            <div class="card">
-              <div class="card-body">
-                <div>
+          <div class="card">
+            <div class="card-body">
+              <div>
                   <!-- Nav tabs -->
                   <ul class="nav nav-tabs" role="tablist">
-                    <li class="nav-item" role="presentation">
-                      <a class="nav-link active affListTag" data-bs-toggle="tab" href="#home" role="tab">
+                    <li class="nav-item">
+                      <a class="nav-link active" data-bs-toggle="tab" href="#affList" role="tab">
                         <span>부속기관 목록</span>
                       </a>
                     </li>
-                    <li class="nav-item" role="presentation">
-                      <a class="nav-link affResListTag" data-bs-toggle="tab" id="profile" href="#profile" role="tab">
+                    <li class="nav-item">
+                      <a class="nav-link" data-bs-toggle="tab" href="#resList" role="tab">
                         <span>부속기관 예약목록</span>
                       </a>
                     </li>
                   </ul>
                   <!-- Tab panes -->
                   <div class="tab-content">
-                    <div class="tab-pane active" id="home" role="tabpanel">
+                    <div class="tab-pane active" id="affList" role="tabpanel">
                       <div class="p-3">
                         <div class="card">
                           <div class="card-body">
@@ -92,16 +86,38 @@
                                   </div>
                                   &nbsp;
                                   <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="검색어를 입력하세요." aria-label="Recipient's username" aria-describedby="basic-addon2">  
-                                    <button type="button col-3" class="btn btn-info">검색</button>
+                                    <input type="text" class="form-control" name="keyword" value="${ search.keyword }" placeholder="검색어를 입력하세요." aria-label="Recipient's username" aria-describedby="basic-addon2">  
+                                    <button class="btn btn-info" type="submit">검색</button>
                                   </div>
                                 </form>
+                                <c:if test="${ not empty search }">
+						                      <script>
+									                  $(document).ready(function(){
+									                     $("#searchForm select").val("${search.condition}");
+									                  
+									                     // 검색후 페이지일 경우 페이징바의 페이지 클릭시
+									                     $("#pagingArea a").on("click", function(){
+									                        
+									                        if($(this).hasClass("ti-chevrons-left")){
+									                           $("#searchForm input[name=page]").val(${affPi.currentPage-1});                    
+									                        }else if($(this).hasClass("ti-chevrons-right")){
+									                           $("#searchForm input[name=page]").val(${affPi.currentPage+1});
+									                        }else {
+									                           $("#searchForm input[name=page]").val($(this).text());
+									                        }
+									                        $("#searchForm").submit();
+									                        
+									                        return false; // 기본 이벤트 제거(즉, a태그에 작성되어있는 href="/list.do" 실행안되도록)
+									                     })
+									                  })
+									            	 </script>
+					                     </c:if>
+                                
                               </div>
                               <div class="button">
                                 <button type="button" class="btn btn-info" onclick="location.href='${contextPath}/aff/affiliatedOrganEnrollForm.page'">등록하기</button>
                               </div>
                             </div>
-                  
                             <div class="content2">
                               <div class="list">
                                 <div class="card-body p-4">
@@ -150,37 +166,39 @@
                                         </tr>
                                       </tbody>
                                     </table>
-			                                <!--  start Pagination with Icon -->
-			                                <div class="card w-100" >
-			                                  <div class="card-body"style="margin:auto;">
-			                                    <nav aria-label="Page navigation example">
-			                                      <ul class="pagination">
-			                                        <li class="page-item ${ pi.currentPage == p ? 'disabled' : '' }">
-													                    	<a class="page-link" href="${contextPath }/aff/affiliatedOrganList.do?page=${pi.currentPage-1}">&lt;</a>
-													                    </li>
-			                    									<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
-												                    	<li class="page-item ${ pi.currentPage == p ? 'disabled' : ''}">
-												                    		<a class="page-link" href="${ contextPath }/aff/affiliatedOrganList.do?page=${p}">${p}</a>
-												                    	</li>
-												                    </c:forEach>
-											                    		<li class="page-item ${ pi.currentPage == pi.maxPage ? 'disabled' : ''}">
-											                    			<a class="page-link" href="${contextPath}/aff/affiliatedOrganList.do?page=${ pi.currentPage+1 }">&gt;</a>
-											                    		</li>
-			                                    	</ul>
-			                                    </nav>
-			                                  </div>
-			                                </div>
-			                                <!--  end Pagination with Icon -->
-                                  </div>
-                                  <!-- 1번 양식 -->
+                                   </div>
+										              <!-- 페이징바 -->
+											            <ul class="pagination justify-content-center">
+															        <li class="page-item ${affPi.currentPage == 1 ? 'disabled' : ''}">
+															            <a class="page-link link" href="${contextPath}/aff/affiliatedOrganList.do?page=${affPi.currentPage-1}&tab=affList" aria-label="Previous">
+															                <span aria-hidden="true">
+															                    <i class="ti ti-chevrons-left fs-4"></i>
+															                </span>
+															            </a>
+															        </li>
+															        <c:forEach var="p" begin="${affPi.startPage}" end="${affPi.endPage}">
+															            <li class="page-item ${affPi.currentPage == p ? 'active' : ''}">
+															                <a class="page-link link" href="${contextPath}/aff/affiliatedOrganList.do?page=${p}&tab=affList">${p}</a>
+															            </li>
+															        </c:forEach>
+															        <li class="page-item ${affPi.currentPage == affPi.maxPage ? 'disabled' : ''}">
+															            <a class="page-link link" href="${contextPath}/aff/affiliatedOrganList.do?page=${affPi.currentPage+1}&tab=affList" aria-label="Next">
+															                <span aria-hidden="true">
+															                    <i class="ti ti-chevrons-right fs-4"></i>
+															                </span>
+															            </a>
+															        </li>
+															    </ul>
+										 							<!-- 페이징바 -->             
+										              </div> 
                                 </div>
                               </div>
                             </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <div class="tab-pane p-3" id="profile" role="tabpanel">
+
+                    <div class="tab-pane p-3" id="resList" role="tabpanel">
                       <div class="p-3">
                         <div class="card">
                           <div class="card-body">
@@ -189,7 +207,7 @@
                                 <div class="list">
                                   <div class="card-body p-4">
                                     <!-- 1번 양식 -->
-                                      <div class="table-responsive mb-4">
+                                      <div class="table-responsive mb-4" style="overflow-x: hidden;">
                                         <table class="table border text-nowrap mb-0 align-middle">
                                           <thead class="text-dark fs-4">
                                             <tr>
@@ -237,33 +255,30 @@
 		                                        </tr>
 		                                      </tbody>
                                         </table>
-					                                <!--  start Pagination with Icon -->
-					                                  
-					                                <div class="card w-100">
-					                                  <div class="card-body" style="margin:auto;">
-					                                  	<!--  
-					                                    <nav aria-label="Page navigation example">
-					                                      <ul class="pagination">
-					                                        <li class="page-item ${ pi.currentPage == p ? 'disabled' : '' }">
-															                    	<a class="page-link" href="${contextPath }/aff/affiliatedOrganList.do?page=${pi.currentPage-1}">&lt;</a>
-															                    </li>
-					                    									<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
-														                    	<li class="page-item ${ pi.currentPage == p ? 'disabled' : ''}">
-														                    		<a class="page-link" href="${ contextPath }/aff/affiliatedOrganList.do?page=${p}">${p}</a>
-														                    	</li>
-														                    </c:forEach>
-													                    		<li class="page-item ${ pi.currentPage == pi.maxPage ? 'disabled' : ''}">
-													                    			<a class="page-link" href="${contextPath}/aff/affiliatedOrganList.do?page=${ pi.currentPage+1 }">&gt;</a>
-													                    		</li>
-					                                    	</ul>
-					                                    </nav>
-					                                    -->
-					                                  </div>
-					                                </div>
-					                                
-					                                <!--  end Pagination with Icon -->
-                                      </div>
-                                    <!-- 1번 양식 -->
+                                       </div>
+					                              <!-- 페이징바 -->
+														            <ul class="pagination justify-content-center">
+																	        <li class="page-item ${resPi.currentPage == 1 ? 'disabled' : ''}">
+																	            <a class="page-link link" href="${contextPath}/aff/affiliatedOrganList.do?page=${resPi.currentPage-1}&tab=resList&myPage=res" aria-label="Previous">
+																	                <span aria-hidden="true">
+																	                    <i class="ti ti-chevrons-left fs-4"></i>
+																	                </span>
+																	            </a>
+																	        </li>
+																	        <c:forEach var="p" begin="${resPi.startPage}" end="${resPi.endPage}">
+																	            <li class="page-item ${resPi.currentPage == p ? 'active' : ''}">
+																	                <a class="page-link link" href="${contextPath}/aff/affiliatedOrganList.do?page=${p}&tab=resList&myPage=res">${p}</a>
+																	            </li>
+																	        </c:forEach>
+																	        <li class="page-item ${resPi.currentPage == resPi.maxPage ? 'disabled' : ''}">
+																	            <a class="page-link link" href="${contextPath}/aff/affiliatedOrganList.do?page=${resPi.currentPage+1}&tab=resList&myPage=res" aria-label="Next">
+																	                <span aria-hidden="true">
+																	                    <i class="ti ti-chevrons-right fs-4"></i>
+																	                </span>
+																	            </a>
+																	        </li>
+														   					</ul>
+										 										<!-- 페이징바 -->       
                                   </div>
                                 </div>
                               </div>
@@ -272,6 +287,7 @@
                         </div>
                       </div>
                     </div>
+                  </div>
                   </div>
                 </div>
               </div>
@@ -283,14 +299,50 @@
       </div>
       
     </div><!-- page-wrapper end -->
-    
-    <script>
-    /*
+		<script>
     	$(document).ready(function(){
-    		if(${resSuccess} == "Y"){
+    		if(${myPage} == "res"){
+    			
     		}
     	})
-    	*/
+    </script>
+		<script>
+			document.addEventListener('DOMContentLoaded', function () {
+			// Initialize Bootstrap tab
+				var triggerTabList = [].slice.call(document.querySelectorAll('.nav-tabs a[data-bs-toggle="tab"]'));
+				triggerTabList.forEach(function (triggerEl) {
+					var tabTrigger = new bootstrap.Tab(triggerEl);
+					triggerEl.addEventListener('click', function (event) {
+						event.preventDefault();
+						tabTrigger.show();
+						// Get the target tab id and update the URL
+						var targetTabId = triggerEl.getAttribute('href').replace('#', '');
+						var currentTabId = getCurrentTabId();
+						if (currentTabId !== targetTabId) {
+							window.history.pushState({}, '', window.location.pathname + '?tab=' + targetTabId);
+						}
+					});
+				});
+				
+				// Check for tab parameter in URL and activate corresponding tab
+				var urlParams = new URLSearchParams(window.location.search);
+				var tab = urlParams.get('tab');
+				if (tab) {
+					var tabElement = document.querySelector('.nav-tabs a[href="#' + tab + '"]');
+					if (tabElement) {
+						var tab = new bootstrap.Tab(tabElement);
+						tab.show();
+					}
+				}
+				        
+				function getCurrentTabId() {
+					var currentTabElement = document.querySelector('.nav-tabs a.nav-link.active');
+					if (currentTabElement) {
+						return currentTabElement.getAttribute('href').replace('#', '');
+					}
+						return null;
+				}
+			});
     </script>
     
     <!-- 세팅메뉴(바) -->
@@ -300,33 +352,6 @@
 	
 	<!-- footer-->
   <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 </body>
 </html>

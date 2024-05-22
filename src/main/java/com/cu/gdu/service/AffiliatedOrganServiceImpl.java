@@ -75,12 +75,12 @@ public class AffiliatedOrganServiceImpl implements AffiliatedOrganService {
 	// * ------------------- 부속기관 검색관련 -------------------
 	@Override
 	public int selectAffiliatedOrganSearchListCount(Map<String, String> search) {
-		return 0;
+		return affiliatedOrganDao.selectAffiliatedOrganSearchListCount(search);
 	}
 
 	@Override
 	public List<AffiliatedOrganDto> selectAffiliatedOrganSearchList(Map<String, String> search, PageInfoDto pi) {
-		return null;
+		return affiliatedOrganDao.selectAffiliatedOrganSearchList(search, pi);
 	}
 
 	
