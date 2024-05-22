@@ -310,9 +310,37 @@ public class AdminController {
 		return "redirect:/admin/setting.do";
 	}
 	
+	// 근무/연차페이지
 	@GetMapping("/requestMemberLeave.page")
-	public String requestMemberLeave() {
+	public String requestMemberLeave(@RequestParam(value="page", defaultValue="1") int currentPage, Model model) {
+		int listCount = adminService.selectRequestMemberListCount();
+		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 10);
+		List<VacationDto> vacList = adminService.selectRequestMemberList(pi);
+		List<MajorDto> majorList = adminService.selectMajorList();
+		List<JobDto> jobList = adminService.selectJobList();
+		for(VacationDto v : vacList) {
+			v.setStatus(v.getStatus().equals("1") ? "대기" : v.getStatus().equals("2") ? "승인" : "반려");
+		}
+		log.debug("vacList값: {}", vacList);
+		model.addAttribute("pi", pi);
+		model.addAttribute("vacList", vacList);
+		model.addAttribute("majorList", majorList);
+		model.addAttribute("jobList", jobList);
 		return "admin/requestMemberLeave";
 	}
 	
+	// 근무/연차신청현황 페이지 ajax로 학과 직급 필터링
+	@ResponseBody
+	@GetMapping(value="/filterRequestMemberLeaveList.do", produces="application/json; charset=utf-8")
+	public Map<String, Object> ajaxFilterRequestLeaveMemberList(MemberDto m, @RequestParam(value="page", defaultValue="1") int currentPage){
+		int listCount = adminService.ajaxFilterSelectRequestLeaveMemberListCount(m);
+		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 10);
+		Map<String, Object> map = new HashMap<>();
+		map.put("m", m);
+		map.put("pi", pi);
+		List<VacationDto> vacList = adminService.ajaxFilterSelectRequestLeaveMemberList(map);
+		map.put("vacList", vacList);
+		return map;
+	}
+
 }

@@ -440,4 +440,77 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   	 where job_no = #{jobNo}
   </update>
   
+  <select id="selectRequestMemberListCount" resultType="_int">
+  	select
+  				 count(*)
+  		from vacation
+  	 where vac_option = '사용'
+  </select>
+  
+  <select id="selectRequestMemberList" resultMap="vacationResult">
+    select
+	    		 vac_no,
+	         member.mem_no,
+	         mem_name,
+	         major_name,
+	         job_name,
+	         to_char(vacation.start_date, 'YYYY-MM-DD') start_date,	
+	         to_char(vacation.end_date, 'YYYY-MM-DD') end_date,
+	         vac_used,
+	         vacation.status,
+	         vac_reason,
+	         vac_type
+      from member
+      join vacation ON (member.mem_no = vacation.mem_no)
+      join major on (member.major_no = major.major_no)
+      join job on (member.job_no = job.job_no)
+     where member.status = 'N'
+       and vac_option = '사용'
+     order 
+     	  by vac_no desc
+  </select>
+  
+  <select id="ajaxFilterSelectRequestLeaveMemberListCount" resultType="_int">
+		select
+					 count(*)
+		  from vacation
+		  join member on (vacation.mem_no = member.mem_no)
+		 where vac_option = '사용'
+	  	<if test="majorNo != 0">
+	  		and major_no = #{majorNo}
+	  	</if>
+	  	<if test="jobNo != 0">
+	  		and job_no = #{jobNo}
+	  	</if>
+  </select>
+  
+  <select id="ajaxFilterSelectRequestLeaveMemberList" resultMap="vacationResult">  	
+    select
+	    		 vac_no,
+	         member.mem_no,
+	         mem_name,
+	         major_name,
+	         job_name,
+	         to_char(vacation.start_date, 'YYYY-MM-DD') start_date,	
+	         to_char(vacation.end_date, 'YYYY-MM-DD') end_date,
+	         vac_used,
+	         vacation.status,
+	         vac_reason,
+	         vac_type
+      from member
+      join vacation ON (member.mem_no = vacation.mem_no)
+      join major on (member.major_no = major.major_no)
+      join job on (member.job_no = job.job_no)
+     where member.status = 'N'
+       and vac_option = '사용'
+		 <if test="m.majorNo != 0">
+		 	 and member.major_no = #{m.majorNo}
+		 </if>
+		 <if test="m.jobNo != 0">
+		   and member.job_no = #{m.jobNo}
+		 </if>
+	     order 
+	     	  by vac_no desc
+  </select>
+  
 </mapper>

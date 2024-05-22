@@ -62,7 +62,7 @@ public class AdminDao {
 		return sqlSessionTemplate.selectOne("adminMapper.ajaxFilterMemberListCount", m);
 	}
 	
-	// 학과및직급 필터링으로 ajax통신해 직원수조회
+	// 학과및직급 필터링으로 ajax통신해 직원조회 및 페이징
 	public List<MemberDto> ajaxFilterMemberList(Map<String, Object> map){
 		PageInfoDto pi = (PageInfoDto)map.get("pi");
 		int limit = pi.getBoardLimit();
@@ -140,4 +140,31 @@ public class AdminDao {
 		return sqlSessionTemplate.update("adminMapper.updateJob", job);
 	}
 	
+	// 근무/연차페이지 직원수 조회
+	public int selectRequestMemberListCount() {
+		return sqlSessionTemplate.selectOne("adminMapper.selectRequestMemberListCount");
+	}
+	
+	// 근무/연차페이지 연차신청한 직원조회
+	public List<VacationDto> selectRequestMemberList(PageInfoDto pi){
+		int limit = pi.getBoardLimit();
+		int offset = (pi.getCurrentPage()-1) * limit;
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return sqlSessionTemplate.selectList("adminMapper.selectRequestMemberList", pi, rowBounds);
+	}
+	
+	// 필터를 통해 근무/연차신청한 직원 페이지 직원수 조회
+	public int ajaxFilterSelectRequestLeaveMemberListCount(MemberDto m) {
+		return sqlSessionTemplate.selectOne("adminMapper.ajaxFilterSelectRequestLeaveMemberListCount", m);
+	}
+	
+	// 필터를 통해 근무/연차신청한 직원 페이지 직원조회 및 페이징
+	public List<VacationDto> ajaxFilterSelectRequestLeaveMemberList(Map<String, Object> map){
+		PageInfoDto pi = (PageInfoDto)map.get("pi");
+		int limit = pi.getBoardLimit();
+		int offset = (pi.getCurrentPage()-1) * limit;
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return sqlSessionTemplate.selectList("adminMapper.ajaxFilterSelectRequestLeaveMemberList", map, rowBounds);
+	}
+
 }

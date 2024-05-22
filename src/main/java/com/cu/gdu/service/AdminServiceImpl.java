@@ -159,6 +159,30 @@ public class AdminServiceImpl implements AdminService {
 		return adminDao.updateJob(job);
 	}
 
+	// 근무/연차페이지 직원수 조회
+	@Override
+	public int selectRequestMemberListCount() {
+		return adminDao.selectRequestMemberListCount();
+	}
+
+	// 근무/연차페이지 연차신청한 직원조회 및 페이징바
+	@Override
+	public List<VacationDto> selectRequestMemberList(PageInfoDto pi) {
+		return adminDao.selectRequestMemberList(pi);
+	}
+
+	// 필터를 통해 근무/연차신청한 직원 페이지 직원수 조회
+	@Override
+	public int ajaxFilterSelectRequestLeaveMemberListCount(MemberDto m) {
+		return adminDao.ajaxFilterSelectRequestLeaveMemberListCount(m);
+	}
+
+	// 필터를 통해 근무/연차신청한 직원 페이지 직원조회 및 페이징바
+	@Override
+	public List<VacationDto> ajaxFilterSelectRequestLeaveMemberList(Map<String, Object> map) {
+		return adminDao.ajaxFilterSelectRequestLeaveMemberList(map);
+	}
+
 
 
 }

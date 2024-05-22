@@ -75,4 +75,16 @@ public interface AdminService {
 	// 관리자 설정페이지 직급수정
 	int updateJob(JobDto job);
 	
+	// 근무/연차신청한 직원 페이지 직원수 조회 및 페이징바
+	int selectRequestMemberListCount();
+	List<VacationDto> selectRequestMemberList(PageInfoDto pi);
+	
+	// 필터를 통해 근무/연차신청한 직원 페이지 직원수 조회 및 페이징바
+	int ajaxFilterSelectRequestLeaveMemberListCount(MemberDto m);
+	List<VacationDto> ajaxFilterSelectRequestLeaveMemberList(Map<String, Object> map);
+	/*
+	// 학과 및 직급필터링으로 ajax통신해 직원조회 및 페이징
+	int ajaxFilterMemberListCount(MemberDto m);
+	List<MemberDto> ajaxFilterMemberList(Map<String, Object> map);
+	*/
 }

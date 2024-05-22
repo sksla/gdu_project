@@ -149,9 +149,6 @@
 		                    <h6 class="fs-3 fw-semibold mb-0">이메일</h6>
 		                  </th>
 		                  <th>
-		                    <h6 class="fs-3 fw-semibold mb-0">주소</h6>
-		                  </th>
-		                  <th>
 		                    <h6 class="fs-3 fw-semibold mb-0">입사일</h6>
 		                  </th>
 		                </tr>
@@ -192,9 +189,6 @@
 		              						<h6 class="fs-2 mb-0">${m.email}</h6>
 		              					</th>
 		              					<th>
-		              						<h6 class="fs-2 mb-0">${m.address}</h6>
-		              					</th>
-		              					<th>
 		              						<h6 class="fs-2 mb-0">${m.hireDate}</h6>
 		              					</th>
 		              				</tr>
@@ -228,7 +222,7 @@
                })
                
                // 이름으로 직원 검색기능
-               $(document).on("input", ".searchName", function(){
+               $(document).on("keyup", ".searchName", function(){
             	   if($(this).val().trim() == ""){
             		   memberFilter(1);	
             	   }else{
@@ -297,9 +291,6 @@
 				                                   +   "</th>"
 				                                   +   "<th>"
 				                                   +       "<h6 class='fs-2 mb-0'>" + list.member[i].email + "</h6>"
-				                                   +   "</th>"
-				                                   +   "<th>"
-				                                   +       "<h6 class='fs-2 mb-0'>" + list.member[i].address + "</h6>"
 				                                   +   "</th>"
 				                                   +   "<th>"
 				                                   +       "<h6 class='fs-2 mb-0'>" + list.member[i].hireDate + "</h6>"
@@ -456,10 +447,6 @@
 								let majorNo = $(".selectMajor option:selected").val();
 						    let jobNo = $(".selectJob option:selected").val();
 			
-						    console.log("재직N / 전체all / 퇴직Y - ", status);
-						    console.log("학과번호", majorNo);
-						    console.log("직급번호", jobNo);
-			
 						    $.ajax({
 						    		url:"${contextPath}/admin/filterMemberList.do",
 						        type:"get",
@@ -506,9 +493,6 @@
 					                                   +   "</th>"
 					                                   +   "<th>"
 					                                   +       "<h6 class='fs-2 mb-0'>" + list.member[i].email + "</h6>"
-					                                   +   "</th>"
-					                                   +   "<th>"
-					                                   +       "<h6 class='fs-2 mb-0'>" + list.member[i].address + "</h6>"
 					                                   +   "</th>"
 					                                   +   "<th>"
 					                                   +       "<h6 class='fs-2 mb-0'>" + list.member[i].hireDate + "</h6>"

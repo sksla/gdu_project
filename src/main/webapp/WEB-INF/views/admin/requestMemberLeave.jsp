@@ -109,25 +109,21 @@
                       </th>
                       <th>
                         <h6 class="fs-3 fw-semibold mb-0">
-                          <select class="form-select mb-n2" name="" style="width: 130px;">
-                              <option selected>전체학과</option>
-                              <option value="">학과명1</option>
-                              <option value="">학과명2</option>
-                              <option value="">학과명3</option>
-                              <option value="">학과명4</option>
+                          <select class="form-select mb-n2 ajaxSelect selectMajor" style="width: 130px;">
+                              <option value="0" selected>전체학과</option>
+                              <c:forEach var="major" items="${majorList}">
+                              	<option value="${major.majorNo}">${major.majorName}</option>
+                          		</c:forEach>
                           </select>
                         </h6>
                       </th>
                       <th>
                         <h6 class="fs-3 fw-semibold mb-0">
-                          <select class="form-select mb-n2" name="" style="width: 130px;">
-                            <option selected>전체직급</option>
-                            <option value="">직급명1</option>
-                            <option value="">직급명2</option>
-                            <option value="">직급명3</option>
-                            <option value="">직급명4</option>
-                            <option value="">직급명5</option>
-                            <option value="">직급명6</option>
+                          <select class="form-select mb-n2 ajaxSelect selectJob" style="width: 130px;">
+                            <option value="0" selected>전체직급</option>
+                            <c:forEach var="j" items="${jobList}">
+                            	<option value="${j.jobNo}">${j.jobName}</option>
+                            </c:forEach>
                           </select>
                         </h6>
                       </th>
@@ -145,49 +141,64 @@
                       </th>
                     </tr>
                   </thead>
-                  <tbody align="center">
-                    <tr class="leaveReason">
-                      <th>
-                        <h6 class="fs-2 mb-0">
-                          <input type="checkbox" name="" class="selectMember">
-                        </h6>
-                      </th>
-                      <th>
-                        <h6 class="fs-2 mb-0">15-76096582</h6>
-                      </th>
-                      <th>
-                        <h6 class="fs-2 mb-0">홍길동</h6>
-                      </th>
-                      <th>
-                        <h6 class="fs-2 mb-0">경영학과</h6>
-                      </th>
-                      <th>
-                        <h6 class="fs-2 mb-0">과장</h6>
-                      </th>
-                      <th>
-                        <h6 class="fs-2 mb-0">YYYY/MM/DD</h6>
-                      </th>
-                      <th>
-                        <h6 class="fs-2 mb-0">YYYY/MM/DD</h6>
-                      </th>
-                      <th>
-                        <h6 class="fs-2 mb-0">3일 사용</h6>
-                      </th>
-                      <th>
-                        <h6 class="fs-2 mb-0">Y</h6>
-                      </th>
-                    </tr>
-                    <tr class="leaveReasonContent">
-                      <td colspan="4">
-                        <div class="card" style="width: 400px; height: 250px;">
-                          <div class="card-body">
-                            <p class="fs-5 fw-semibold">연차사유(정기)</p>
-                            <hr>
-                            <p>적혀있는 연차사유</p>
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
+                  <tbody align="center" class="tableBody">
+                  	<c:choose>
+                  		<c:when test="${empty vacList}">
+                  			<tr class="leaveReason">
+		                      <th colspan="9">
+		                        <h6 class="fs-2 mb-0">직원이 없습니다.</h6>
+		                      </th>
+                  			</tr>
+                  		</c:when>
+                  		<c:otherwise>
+		                  	<c:forEach var="v" items="${vacList}">
+		                  		<c:forEach var="member" items="${v.memberList}">
+				                    <tr class="leaveReason">
+				                      <th>
+				                        <h6 class="fs-2 mb-0">
+				                          <input type="checkbox" value="${v.vacNo}" class="selectMember">
+				                        </h6>
+				                      </th>
+				                      <th>
+				                        <h6 class="fs-2 mb-0">${v.memNo}</h6>
+				                      </th>
+				                      <th>
+				                        <h6 class="fs-2 mb-0">${member.memName}</h6>
+				                      </th>
+				                      <th>
+				                        <h6 class="fs-2 mb-0">${member.majorNo}</h6>
+				                      </th>
+				                      <th>
+				                        <h6 class="fs-2 mb-0">${member.jobNo}</h6>
+				                      </th>
+				                      <th>
+				                        <h6 class="fs-2 mb-0">${v.startDate}</h6>
+				                      </th>
+				                      <th>
+				                        <h6 class="fs-2 mb-0">${v.endDate}</h6>
+				                      </th>
+				                      <th>
+				                        <h6 class="fs-2 mb-0">${v.vacUsed}일 사용</h6>
+				                      </th>
+				                      <th>
+				                        <h6 class="fs-2 mb-0">${v.status}</h6>
+				                      </th>
+				                    </tr>
+				                    <tr class="leaveReasonContent">
+				                      <td colspan="4">
+				                        <div class="card" style="width: 400px; height: 250px;">
+				                          <div class="card-body">
+				                            <p class="fs-5 fw-semibold">연차사유(${v.vacType})</p>
+				                            <hr>
+				                            <p>${v.vacReason}</p>
+				                          </div>
+				                        </div>
+				                      </td>
+				                    </tr>
+			                    </c:forEach>
+		                    </c:forEach>
+	                    </c:otherwise>
+                    </c:choose>
                   </tbody>
                 </table>
                 <br><br>
@@ -197,60 +208,145 @@
                 </div>
               </form>
 
+							
+							
 							<script>
-							 // 휴가신청현황 호버용 스크립트문
-							 document.addEventListener("DOMContentLoaded", function() {
-							   var leaveReasons = document.querySelectorAll('.leaveReason');
+								// ajax로 학과 및 직급 필터링 메소드 호출
+								$(document).on("change", ".ajaxSelect", function(){
+									memberFilter(1);
+								})
+								
+								// ajax로 학과 및 직급 필터링 메소드
+								function memberFilter(page){
+									let contextPath = "<c:out value='${pageContext.request.contextPath}' />";
+									let majorNo = $(".selectMajor option:selected").val();
+									let jobNo = $(".selectJob option:selected").val();
+									
+									$.ajax({
+										url:"${contextPath}/admin/filterRequestMemberLeaveList.do",
+										type:"get",
+										data:"majorNo=" + majorNo + "&jobNo=" + jobNo + "&page=" + page,
+										success:function(map){
+											$(".tableBody").empty();
+											$(".pagination").empty();
+											
+											let filterTable = "";
+											if(map.vacList.length == 0){
+												filterTable +=  "<tr class='leaveReason'>"
+							                      +			"<th colspan='9'>"
+							                      +				"<h6 class='fs-2 mb-0'>직원이 없습니다.</h6>"
+							                      +			"</th>"
+					                  			  +		"</tr>";
+											}else{
+												for(let i=0; i<map.vacList.length; i++){
+													filterTable +=	"<tr class='leaveReason'>"
+								                       +		"<th>"
+								                       +			"<h6 class='fs-2 mb-0'>"
+								                       +				"<input type='checkbox' class='selectMember' value='" + map.vacList[i].vacNo + "'>"
+								                       +			"</h6>"
+								                       +		"</th>"
+								                       +		"<th>"
+								                       +			"<h6 class='fs-2 mb-0'>" + map.vacList[i].memNo + "</h6>"
+								                       +		"</th>"
+								                       +		"<th>"
+								                       +			"<h6 class='fs-2 mb-0'>" + map.vacList.memName + "</h6>"${member.memName}
+								                      </th>
+								                      <th>
+								                        <h6 class="fs-2 mb-0">${member.majorNo}</h6>
+								                      </th>
+								                      <th>
+								                        <h6 class="fs-2 mb-0">${member.jobNo}</h6>
+								                      </th>
+								                      <th>
+								                        <h6 class="fs-2 mb-0">${v.startDate}</h6>
+								                      </th>
+								                      <th>
+								                        <h6 class="fs-2 mb-0">${v.endDate}</h6>
+								                      </th>
+								                      <th>
+								                        <h6 class="fs-2 mb-0">${v.vacUsed}일 사용</h6>
+								                      </th>
+								                      <th>
+								                        <h6 class="fs-2 mb-0">${v.status}</h6>
+								                      </th>
+								                    </tr>
+								                    <tr class="leaveReasonContent">
+								                      <td colspan="4">
+								                        <div class="card" style="width: 400px; height: 250px;">
+								                          <div class="card-body">
+								                            <p class="fs-5 fw-semibold">연차사유(${v.vacType})</p>
+								                            <hr>
+								                            <p>${v.vacReason}</p>
+								                          </div>
+								                        </div>
+								                      </td>
+								                    </tr>
+												}
+											}
+											
+										},
+										error:function(){
+											console.log("휴가신청인원 학과 및 직급조회 ajax 통신 실패");
+										}
+									})
+									
+								}
+								
+							  // 휴가신청현황 호버용 스크립트문
+							  document.addEventListener("DOMContentLoaded", function() {
+							    var leaveReasons = document.querySelectorAll('.leaveReason');
 							
-							   leaveReasons.forEach(function(leaveReason) {
-							     leaveReason.addEventListener('mouseenter', function(event) {
-							       if (!event.target.closest('.selectMember')) {
-							         var leaveReasonContent = leaveReason.nextElementSibling;
-							         if (leaveReasonContent && leaveReasonContent.classList.contains('leaveReasonContent')) {
-							           leaveReasonContent.style.display = 'table-row';
-							         }
-							       }
-							     });
+							    leaveReasons.forEach(function(leaveReason) {
+							      leaveReason.addEventListener('mouseenter', function(event) {
+							        if (!event.target.closest('.selectMember')) {
+							          var leaveReasonContent = leaveReason.nextElementSibling;
+							          if (leaveReasonContent && leaveReasonContent.classList.contains('leaveReasonContent')) {
+							            leaveReasonContent.style.display = 'table-row';
+							          }
+							        }
+							      });
 							
-							     leaveReason.addEventListener('mouseleave', function(event) {
-							       if (!event.target.closest('.selectMember')) {
-							         var leaveReasonContent = leaveReason.nextElementSibling;
-							         if (leaveReasonContent && leaveReasonContent.classList.contains('leaveReasonContent')) {
-							           leaveReasonContent.style.display = 'none';
-							         }
-							       }
-							     });
-							   });
-							 });
+							      leaveReason.addEventListener('mouseleave', function(event) {
+							        if (!event.target.closest('.selectMember')) {
+							          var leaveReasonContent = leaveReason.nextElementSibling;
+							          if (leaveReasonContent && leaveReasonContent.classList.contains('leaveReasonContent')) {
+							            leaveReasonContent.style.display = 'none';
+							          }
+							        }
+							      });
+							    });
+							  });				 
 							</script>
 
               <!-- 페이징바 & 검색창-->
               <div id="search">
                 <nav aria-label="Page navigation example">
                   <ul class="pagination">
-                    <li class="page-item">
-                      <a class="page-link link" href="#" aria-label="Previous">
-                        <span aria-hidden="true">
-                          <i class="ti ti-chevrons-left fs-4"></i>
-                        </span>
-                      </a>
-                    </li>
-                    <li class="page-item">
-                      <a class="page-link link" href="#">1</a>
-                    </li>
-                    <li class="page-item">
-                      <a class="page-link link" href="#">2</a>
-                    </li>
-                    <li class="page-item">
-                      <a class="page-link link" href="#">3</a>
-                    </li>
-                    <li class="page-item">
-                      <a class="page-link link" href="#" aria-label="Next">
-                        <span aria-hidden="true">
-                          <i class="ti ti-chevrons-right fs-4"></i>
-                        </span>
-                      </a>
-                    </li>
+                  	<c:if test="${pi.listCount > pi.boardLimit}">
+	                    <li class="page-item ${pi.currentPage==1 ? 'disabled' : ''}">
+	                      <a class="page-link link" href="${contextPath}/admin/requestMemberLeave.page?page=${pi.currentPage-1}" aria-label="Previous">
+	                        <span aria-hidden="true">
+	                          <i class="ti ti-chevrons-left fs-4"></i>
+	                        </span>
+	                      </a>
+	                    </li>
+	                    
+	                    <c:forEach var="p" begin="${pi.startPage}" end="${pi.endPage}">
+		                    <li class="page-item">
+		                      <a class="page-link link ${pi.currentPage == p ? 'disabled' : ''}" href="${contextPath}/admin/requestMemberLeave.page?page=${p}">
+		                      	${p}
+		                      </a>
+		                    </li>
+	                    </c:forEach>
+	                    
+	                    <li class="page-item ${pi.currentPage==pi.maxPage ? 'disabled' : ''}">
+	                      <a class="page-link link" href="${contextPath}/admin/requestMemberLeave.page?page=${pi.currentPage+1}" aria-label="Next">
+	                        <span aria-hidden="true">
+	                          <i class="ti ti-chevrons-right fs-4"></i>
+	                        </span>
+	                      </a>
+	                    </li>
+                    </c:if>
                   </ul>
                 </nav>
               </div>
