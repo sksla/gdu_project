@@ -157,7 +157,7 @@
 		              	<c:choose>
 		              		<c:when test="${empty list}">
 		              			<tr>
-		              				<th colspan="10">
+		              				<th colspan="8">
 		              					<h6 class="fs-2 mb-0">직원이 없습니다.</h6>
 		              				</th>
 		              			</tr>
