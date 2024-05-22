@@ -56,16 +56,22 @@
   </select>
   
   <!-- 부속기관 예약관련 -->
+
   <select id="selectAffiliatedOrgan" resultMap="affiliatedOrganResult">
-  	select
-  				 aff_no
-		  	 , aff_name
-		  	 , aff_location
-		  	 , major_name
-		     , aff_etc
-  		from affiliated_organ
-    	join major using (major_no)
-  	 where aff_no = #{affNo}
+     select
+               aff_no
+            , aff_name
+            , aff_location
+            , major_name
+           , aff_etc
+           , file_no
+           , file_path
+           , filesystem_name
+           , original_name
+        from affiliated_organ
+       join major using (major_no)
+       left join board_attach on (ref_type = 'A' and ref_no =  aff_no)
+      where aff_no = #{affNo}
   </select>
   
   <insert id="insertAffiliatedOrganRes">
@@ -98,6 +104,7 @@
 		  join affiliated_organ using (aff_no)
 		  join major using (major_no)
   </select>
+  
 
 	<!-- 부속기관 등록관련 -->
   <insert id="insertAffiliatedOrgan">

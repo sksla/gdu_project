@@ -93,8 +93,8 @@
 	                          <div class="carousel-inner ">
 	                          <c:set var="isFirst" value="true" />
 		                          <c:forEach var="at" items="${affiliatedOrgan.attachList}" varStatus="loop">
-		                            <div class="carousel-item ${ loop.first ? 'active' : '' }">
-		                              <img src="${ contextPath }${at.filePath}/${at.filesystemName}" class="d-block" />
+		                            <div class="carousel-item ${loop.first ? 'active' : ''}">
+		                              <img src="${contextPath}${at.filePath}/${at.filesystemName}" class="d-block" />
 		                            </div>
 		                          </c:forEach>  
 	                          </div>
