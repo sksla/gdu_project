@@ -227,36 +227,14 @@
 										type:"get",
 										data:"majorNo=" + majorNo + "&jobNo=" + jobNo + "&page=" + page,
 										success:function(map){
-											
-											/*
-												map
-												{
-												  vacList:[
-													  0:{
-														  no : 0
-														  name: ~~~
-														  membList:[
-															  0:{
-																  
-															  }
-															  1:member
-														  ]
-														
-													  }
-													  1:vacDto
-													  2:vacDto
-												  ]
-												
-												}
-											*/
-											
-											
-											
+
 											console.log("ajax 성공시 받은 map: ", map);
+											console.log("vacList 길이: ", map.vacList.length);
 											$(".tableBody").empty();
 											$(".pagination").empty();
 											
 											let filterTable = "";
+											
 											if(map.vacList.length == 0){
 												filterTable +=  "<tr class='leaveReason'>"
 							                      +			"<th colspan='9'>"
@@ -265,7 +243,6 @@
 					                  			  +		"</tr>";
 											}else{
 												for(let i=0; i<map.vacList.length; i++){
-													// for(let j=0; j<map.vacList[i].memList.length; j ++)
 													filterTable +=	"<tr class='leaveReason'>"
 								                       +		"<th>"
 								                       +			"<h6 class='fs-2 mb-0'>"
@@ -276,39 +253,90 @@
 								                       +			"<h6 class='fs-2 mb-0'>" + map.vacList[i].memNo + "</h6>"
 								                       +		"</th>"
 								                       +		"<th>"
-								                       +			"<h6 class='fs-2 mb-0'>" + map.vacList.memName + "</h6>"${member.memName}
+								                       +			"<h6 class='fs-2 mb-0'>" + map.vacList[i].memberList[i].memName + "</h6>"
 								                       +		"</th>"
 								                       +		"<th>"
-								                       +			"<h6 class='fs-2 mb-0'>${member.majorNo}</h6>"
+								                       +			"<h6 class='fs-2 mb-0'>" + map.vacList[i].memberList[i].majorNo + "</h6>"
 								                       +		"</th>"
 								                       +		"<th>"
-								                       +			"<h6 class='fs-2 mb-0'>${member.jobNo}</h6>"
+								                       +			"<h6 class='fs-2 mb-0'>" + map.vacList[i].memberList[i].jobNo + "</h6>"
 								                       +		"</th>"
 								                       +		"<th>"
-								                       +			"<h6 class='fs-2 mb-0'>${v.startDate}</h6>"
+								                       +			"<h6 class='fs-2 mb-0'>" + map.vacList[i].startDate + "</h6>"
 								                       +		"</th>"
 								                       +		"<th>"
-								                       +			"<h6 class='fs-2 mb-0'>${v.endDate}</h6>"
+								                       +			"<h6 class='fs-2 mb-0'>" + map.vacList[i].endDate + "</h6>"
 								                       +		"</th>"
 								                       +		"<th>"
-								                       +			"<h6 class='fs-2 mb-0'>${v.vacUsed}일 사용</h6>"
+								                       +			"<h6 class='fs-2 mb-0'>" + map.vacList[i].vacUsed + "일 사용" + "</h6>"
 								                       +		"</th>"
 								                       +		"<th>"
-								                       +			"<h6 class='fs-2 mb-0'>${v.status}</h6>"
+								                       +			"<h6 class='fs-2 mb-0'>" + map.vacList[i].status + "</h6>"
 								                       +		"</th>"
 								                    	 +	"</tr>"
 								                    	 +	"<tr class='leaveReasonContent'>"
 								                       +		"<td colspan='4'>"
 								                       +			"<div class='card' style='width: 400px; height: 250px;'>"
 								                       +				"<div class='card-body'>"
-								                       +					"<p class='fs-5 fw-semibold'>연차사유(${v.vacType})</p>"
+								                       +					"<p class='fs-5 fw-semibold'>연차사유(" + map.vacList[i].vacType + ")</p>"
 								                       +					"<hr>"
-								                       +					"<p>${v.vacReason}</p>"
+								                       +					"<p>" + map.vacList[i].vacReason + "</p>"
 								                       +				"</div>"
 								                       +			"</div>"
 								                       +		"</td>"
-								                    	 +	"</tr>"
+								                    	 +	"</tr>";
 												}
+											}
+											
+											$(".tableBody").append(filterTable);
+											console.log(filterTable);
+											
+											// 페이징처리
+											let filterPage = "";
+											if(map.pi.listCount > map.pi.boardLimit){
+												filterPage += "<li class='page-item " + (map.pi.currentPage == 1 ? 'disabled' : '') + "'>"
+																		+		"<a class='page-link link' onclick='memberFilter(" + (map.pi.currentPage-1) + ");' aria-label='Previous'>"
+																		+			"<span aria-hidden='true'>"
+																		+				"<i class='ti ti-chevrons-left fs-4'></i>"
+																		+			"</span>"
+																		+		"</a>"
+																		+	"</li>";
+												
+												for (let p=map.pi.startPage; p<=map.pi.endPage; p++) {
+													filterPage += "<li class='page-item " + (map.pi.currentPage == p ? 'disabled' : '') + "'>"
+								                      +    "<a class='page-link link' onclick='memberFilter(" + p + ");' >"
+								                      +    		p
+								                      +    "</a>"
+								                      + "</li>";
+												}
+												
+												filterPage += "<li class='page-item " + (map.pi.currentPage == map.pi.maxPage ? 'disabled' : '') + "'>"
+								                   +    "<a class='page-link link' onclick='memberFilter(" + (map.pi.currentPage+1) + ");' aria-label='Next'>"
+								                   +       "<span aria-hidden='true'>"
+								                   +          "<i class='ti ti-chevrons-right fs-4'></i>"
+								                   +        "</span>"
+								                   +    "</a>"
+								                   + 	"</li>";
+								        $(".pagination").append(filterPage);
+												/*
+	                    
+	                    <c:forEach var="p" begin="${pi.startPage}" end="${pi.endPage}">
+		                    <li class="page-item">
+		                      <a class="page-link link ${pi.currentPage == p ? 'disabled' : ''}" href="${contextPath}/admin/requestMemberLeave.page?page=${p}">
+		                      	${p}
+		                      </a>
+		                    </li>
+	                    </c:forEach>
+	                    
+	                    <li class="page-item ${pi.currentPage==pi.maxPage ? 'disabled' : ''}">
+	                      <a class="page-link link" href="${contextPath}/admin/requestMemberLeave.page?page=${pi.currentPage+1}" aria-label="Next">
+	                        <span aria-hidden="true">
+	                          <i class="ti ti-chevrons-right fs-4"></i>
+	                        </span>
+	                      </a>
+	                    </li>
+												*/
+												
 											}
 											
 										},
