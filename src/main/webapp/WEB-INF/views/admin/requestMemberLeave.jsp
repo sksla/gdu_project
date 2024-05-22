@@ -227,6 +227,32 @@
 										type:"get",
 										data:"majorNo=" + majorNo + "&jobNo=" + jobNo + "&page=" + page,
 										success:function(map){
+											
+											/*
+												map
+												{
+												  vacList:[
+													  0:{
+														  no : 0
+														  name: ~~~
+														  membList:[
+															  0:{
+																  
+															  }
+															  1:member
+														  ]
+														
+													  }
+													  1:vacDto
+													  2:vacDto
+												  ]
+												
+												}
+											*/
+											
+											
+											
+											console.log("ajax 성공시 받은 map: ", map);
 											$(".tableBody").empty();
 											$(".pagination").empty();
 											
@@ -239,6 +265,7 @@
 					                  			  +		"</tr>";
 											}else{
 												for(let i=0; i<map.vacList.length; i++){
+													// for(let j=0; j<map.vacList[i].memList.length; j ++)
 													filterTable +=	"<tr class='leaveReason'>"
 								                       +		"<th>"
 								                       +			"<h6 class='fs-2 mb-0'>"
