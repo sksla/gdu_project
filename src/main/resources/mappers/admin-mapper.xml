@@ -513,4 +513,57 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	     	  by vac_no desc
   </select>
   
+  <update id="requestLeaveYesMember">
+  	update
+  				 vacation
+  	   set status = '2'
+	  <where>
+		 	<foreach item="item" collection="array"
+		 			open="vac_no in (" separator="," close=")">
+		 		#{item}
+		 	</foreach>	  	
+	  </where>
+  </update>
+
+  <update id="requestLeaveNoMember">
+  	update
+  				 vacation
+  	   set status = '3'
+	  <where>
+		 	<foreach item="item" collection="array"
+		 			open="vac_no in (" separator="," close=")">
+		 		#{item}
+		 	</foreach>	  	
+	  </where>
+  </update>
+  
+  <select id="memberLeaveListCount" resultType="_int">
+  	select
+  				 count(*)
+  		from vacation
+  	 where status = '2'
+  </select>
+  
+  <select id="memberLeaveList" resultMap="vacationResult">
+    select
+	    	 	 vac_no,
+	         member.mem_no,
+	         mem_name,
+	         major_name,
+	         job_name,
+	         to_char(member.hire_date, 'YYYY-MM-DD') hire_date,	
+	         phone,
+	         vac_used,
+             member.leave_count,
+	         vacation.vac_type
+      from member
+      join vacation ON (member.mem_no = vacation.mem_no)
+      join major on (member.major_no = major.major_no)
+      join job on (member.job_no = job.job_no)
+     where vacation.status = '2'
+       and vac_option = '사용'
+     order 
+     	  by vac_no desc
+  </select>
+  
 </mapper>

@@ -339,8 +339,51 @@ public class AdminController {
 		map.put("m", m);
 		map.put("pi", pi);
 		List<VacationDto> vacList = adminService.ajaxFilterSelectRequestLeaveMemberList(map);
+		for(VacationDto v : vacList) {
+			v.setStatus(v.getStatus().equals("1") ? "대기" : v.getStatus().equals("2") ? "승인" : "반려");
+		}
 		map.put("vacList", vacList);
 		return map;
+	}
+	
+	// 연차 승인기능
+	@GetMapping("/requestLeaveYesMember.do")
+	public String requestLeaveYesMember(String[] vacNo, RedirectAttributes redirectAttributes) {
+		int result = adminService.requestLeaveYesMember(vacNo);
+		if(result == vacNo.length) {
+			redirectAttributes.addFlashAttribute("alertMsg", "선택하신 직원의 연차신청을 승인하셨습니다.");
+		}else {
+			redirectAttributes.addFlashAttribute("alertMsg", "연차신청 승인에 실패했습니다.");
+		}
+		return "redirect:/admin/requestMemberLeave.page";
+	}
+	
+	// 연차 거절기능
+	@GetMapping("/requestLeaveNoMember.do")
+	public String requestLeaveNoMember(String[] vacNo, RedirectAttributes redirectAttributes) {
+		int result = adminService.requestLeaveNoMember(vacNo);
+		if(result == vacNo.length) {
+			redirectAttributes.addFlashAttribute("alertMsg", "선택하신 직원의 연차신청을 거절하셨습니다.");
+		}else {
+			redirectAttributes.addFlashAttribute("alertMsg", "연차신청 거절에 실패했습니다.");
+		}
+		return "redirect:/admin/requestMemberLeave.page";
+	}
+	
+	// 직원 사용한 연차리스트 페이지
+	@GetMapping("/memberLeaveList.page")
+	public String memberLeaveList(Model model, @RequestParam(value="page", defaultValue="1") int currentPage) {
+		List<MajorDto> majorList = adminService.selectMajorList();
+		List<JobDto> jobList = adminService.selectJobList();
+		int listCount = adminService.memberLeaveListCount();
+		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 10);
+		List<VacationDto> vacList = adminService.memberLeaveList(pi);
+		log.debug("vacList의 값: {}", vacList);
+		model.addAttribute("vacList", vacList);
+		model.addAttribute("pi", pi);
+		model.addAttribute("majorList", majorList);
+		model.addAttribute("jobList", jobList);
+		return "admin/memberLeaveList";
 	}
 
 }

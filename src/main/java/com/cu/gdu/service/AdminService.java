@@ -82,9 +82,16 @@ public interface AdminService {
 	// 필터를 통해 근무/연차신청한 직원 페이지 직원수 조회 및 페이징바
 	int ajaxFilterSelectRequestLeaveMemberListCount(MemberDto m);
 	List<VacationDto> ajaxFilterSelectRequestLeaveMemberList(Map<String, Object> map);
-	/*
-	// 학과 및 직급필터링으로 ajax통신해 직원조회 및 페이징
-	int ajaxFilterMemberListCount(MemberDto m);
-	List<MemberDto> ajaxFilterMemberList(Map<String, Object> map);
-	*/
+	
+	// 직원 휴가승인 기능
+	int requestLeaveYesMember(String[] vacNo);
+	
+	// 직원 휴가거절 기능
+	int requestLeaveNoMember(String[] vacNo);
+	
+	// 직원 사용한 연차관리 페이지의 사용연차 현황
+	int memberLeaveListCount();
+	
+	// 직원 사용한 연차관리 페이지 직원리스트
+	List<VacationDto> memberLeaveList(PageInfoDto pi);
 }

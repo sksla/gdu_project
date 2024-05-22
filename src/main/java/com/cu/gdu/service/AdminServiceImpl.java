@@ -183,6 +183,30 @@ public class AdminServiceImpl implements AdminService {
 		return adminDao.ajaxFilterSelectRequestLeaveMemberList(map);
 	}
 
+	// 직원 휴가승인 기능
+	@Override
+	public int requestLeaveYesMember(String[] vacNo) {
+		return adminDao.requestLeaveYesMember(vacNo);
+	}
+
+	// 직원 휴가거절 기능
+	@Override
+	public int requestLeaveNoMember(String[] vacNo) {
+		return adminDao.requestLeaveNoMember(vacNo);
+	}
+
+	// 직원 사용한 연차관리 페이지의 사용연차 현황
+	@Override
+	public int memberLeaveListCount() {
+		return adminDao.memberLeaveListCount();
+	}
+
+	// 직원 사용한 연차관리 페이지 직원리스트
+	@Override
+	public List<VacationDto> memberLeaveList(PageInfoDto pi) {
+		return adminDao.memberLeaveList(pi);
+	}
+
 
 
 }

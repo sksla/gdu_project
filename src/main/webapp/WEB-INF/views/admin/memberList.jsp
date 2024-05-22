@@ -89,10 +89,7 @@
           <!-- 페이지 내용 -->
           <div class="card">
             <div class="card-body">
-		          
-		          <!-- <form id="searchForm" action="" method="Get" align="center">
-		            <button type="submit" class="searchBtn btn btn-secondary">검색</button>
-		          </form> -->
+
 		          <input id="searchName" type="text" class="form-control searchName" placeholder="이름으로 검색">
 		
 		          <div class="selectStatus">
