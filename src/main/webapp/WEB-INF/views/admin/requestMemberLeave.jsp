@@ -250,37 +250,37 @@
 								                       +		"</th>"
 								                       +		"<th>"
 								                       +			"<h6 class='fs-2 mb-0'>" + map.vacList.memName + "</h6>"${member.memName}
-								                      </th>
-								                      <th>
-								                        <h6 class="fs-2 mb-0">${member.majorNo}</h6>
-								                      </th>
-								                      <th>
-								                        <h6 class="fs-2 mb-0">${member.jobNo}</h6>
-								                      </th>
-								                      <th>
-								                        <h6 class="fs-2 mb-0">${v.startDate}</h6>
-								                      </th>
-								                      <th>
-								                        <h6 class="fs-2 mb-0">${v.endDate}</h6>
-								                      </th>
-								                      <th>
-								                        <h6 class="fs-2 mb-0">${v.vacUsed}일 사용</h6>
-								                      </th>
-								                      <th>
-								                        <h6 class="fs-2 mb-0">${v.status}</h6>
-								                      </th>
-								                    </tr>
-								                    <tr class="leaveReasonContent">
-								                      <td colspan="4">
-								                        <div class="card" style="width: 400px; height: 250px;">
-								                          <div class="card-body">
-								                            <p class="fs-5 fw-semibold">연차사유(${v.vacType})</p>
-								                            <hr>
-								                            <p>${v.vacReason}</p>
-								                          </div>
-								                        </div>
-								                      </td>
-								                    </tr>
+								                       +		"</th>"
+								                       +		"<th>"
+								                       +			"<h6 class='fs-2 mb-0'>${member.majorNo}</h6>"
+								                       +		"</th>"
+								                       +		"<th>"
+								                       +			"<h6 class='fs-2 mb-0'>${member.jobNo}</h6>"
+								                       +		"</th>"
+								                       +		"<th>"
+								                       +			"<h6 class='fs-2 mb-0'>${v.startDate}</h6>"
+								                       +		"</th>"
+								                       +		"<th>"
+								                       +			"<h6 class='fs-2 mb-0'>${v.endDate}</h6>"
+								                       +		"</th>"
+								                       +		"<th>"
+								                       +			"<h6 class='fs-2 mb-0'>${v.vacUsed}일 사용</h6>"
+								                       +		"</th>"
+								                       +		"<th>"
+								                       +			"<h6 class='fs-2 mb-0'>${v.status}</h6>"
+								                       +		"</th>"
+								                    	 +	"</tr>"
+								                    	 +	"<tr class='leaveReasonContent'>"
+								                       +		"<td colspan='4'>"
+								                       +			"<div class='card' style='width: 400px; height: 250px;'>"
+								                       +				"<div class='card-body'>"
+								                       +					"<p class='fs-5 fw-semibold'>연차사유(${v.vacType})</p>"
+								                       +					"<hr>"
+								                       +					"<p>${v.vacReason}</p>"
+								                       +				"</div>"
+								                       +			"</div>"
+								                       +		"</td>"
+								                    	 +	"</tr>"
 												}
 											}
 											
