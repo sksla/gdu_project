@@ -32,7 +32,7 @@ public interface MemberService {
 	// 휴가 목록 조회
 	   int selectVacationListCount(int memNo);
 	   List<VacationDto> selectVacationList(PageInfoDto pi, int memNo);
-	   int selectPlusVacCount(); // 보상휴가일수 조회
+	   int selectPlusVacCount(int memNo); // 보상휴가일수 조회
 	   int selectUsedPlusVacCount(int memNo); // 보상휴가 사용일수 조회
 	  
 	// 휴가 신청 서비스, 멤버 연차 차감

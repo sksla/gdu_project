@@ -185,6 +185,7 @@
 		select nvl(sum(vac_used), 0)
       from vacation
      where vac_option = '보상'
+     	 and mem_no = #{memNo}
 	</select>
 	
 	<select id="selectUsedPlusVacCount" resultType="_int">
