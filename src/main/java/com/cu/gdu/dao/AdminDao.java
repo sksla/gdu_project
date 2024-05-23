@@ -13,6 +13,7 @@ import com.cu.gdu.dto.MajorDto;
 import com.cu.gdu.dto.MemberDto;
 import com.cu.gdu.dto.PageInfoDto;
 import com.cu.gdu.dto.VacationDto;
+import com.cu.gdu.dto.VacationTypeDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -188,6 +189,35 @@ public class AdminDao {
 		int offset = (pi.getCurrentPage()-1) * limit;
 		RowBounds rowBounds = new RowBounds(offset, limit);
 		return sqlSessionTemplate.selectList("adminMapper.memberLeaveList", pi, rowBounds);
+	}
+	
+	// 직원 사용한 연차리스트 필터 및 검색시 ajax로 직원수 조회
+	public int ajaxFilterMemberLeaveListCount(MemberDto m) {
+		return sqlSessionTemplate.selectOne("adminMapper.ajaxFilterMemberLeaveListCount", m);
+	}
+	
+	// 직원 사용한 연차리스트 필터 및 검색시 ajax로 직원리스트 조회
+	public List<VacationDto> ajaxFilterMemberLeaveList(Map<String, Object> map){
+		PageInfoDto pi = (PageInfoDto)map.get("pi");
+		int limit = pi.getBoardLimit();
+		int offset = (pi.getCurrentPage()-1) * limit;
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return sqlSessionTemplate.selectList("adminMapper.ajaxFilterMemberLeaveList", map, rowBounds);
+	}
+	
+	// 직원 연차 상세페이지에 띄울 직원정보 조회
+	public VacationDto memberLeaveDetail(String memNo) {
+		return sqlSessionTemplate.selectOne("adminMapper.memberLeaveDetail", memNo);
+	}
+	
+	// 직원 연차 상세페이지에 해당직원의 연차정보들 조회
+	public List<VacationDto> memberLeaveDetailList(String memNo){
+		return sqlSessionTemplate.selectList("adminMapper.memberLeaveDetailList", memNo);
+	}
+	
+	// 직원 연차 상세페이지에서 연차 추가시 타입 조회
+	public List<VacationTypeDto> selectMemberLeaveType() {
+		return sqlSessionTemplate.selectList("adminMapper.selectMemberLeaveType");
 	}
 
 }

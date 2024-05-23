@@ -62,6 +62,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   	<collection resultMap="memberResult" property="memberList" />
   	<collection resultMap="majorResult" property="majorList" />
   </resultMap>
+  
+  <resultMap type="VacationTypeDto" id="vacationTypeResult">
+  	<id column="vac_type_no" property="vacTypeNo" />
+  	<result column="vac_type" property="vacType" />
+  	<result column="vac_type_date" property="vacTypeDate" />
+  </resultMap>
 
   <select id="selectCollegeList" resultMap="collegeResult">
   	select
@@ -546,24 +552,120 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   
   <select id="memberLeaveList" resultMap="vacationResult">
     select
-	    	 	 vac_no,
-	         member.mem_no,
+           vac_no,
+	         vacation.mem_no,
 	         mem_name,
 	         major_name,
 	         job_name,
 	         to_char(member.hire_date, 'YYYY-MM-DD') hire_date,	
 	         phone,
 	         vac_used,
-             member.leave_count,
+           member.leave_count,
 	         vacation.vac_type
-      from member
-      join vacation ON (member.mem_no = vacation.mem_no)
+      from vacation
+      join member ON (vacation.mem_no = member.mem_no)
       join major on (member.major_no = major.major_no)
       join job on (member.job_no = job.job_no)
      where vacation.status = '2'
        and vac_option = '사용'
      order 
      	  by vac_no desc
+  </select>
+  
+  <select id="ajaxFilterMemberLeaveListCount" resultType="_int">
+  	select
+  				 count(*)
+  		from vacation
+  		join member on (vacation.mem_no = member.mem_no)
+  	 where vac_option = '사용'
+	  	 and vacation.status = '2'
+	  	<if test="memName != ''">
+	  	  and mem_name LIKE '%' || #{memName} || '%'
+	  	</if>      
+	  	<if test="majorNo != 0">
+		   	and major_no = #{majorNo}
+		  </if>
+	  	<if test="jobNo != 0">
+	  		and job_no = #{jobNo}
+	  	</if>
+  </select>
+  
+  <select id="ajaxFilterMemberLeaveList" resultMap="vacationResult"> 	
+    select
+           vac_no,
+	         vacation.mem_no,
+	         mem_name,
+	         major_name,
+	         job_name,
+	         to_char(member.hire_date, 'YYYY-MM-DD') hire_date,	
+	         phone,
+	         vac_used,
+           member.leave_count,
+	         vacation.vac_type
+      from vacation
+      join member ON (vacation.mem_no = member.mem_no)
+      join major on (member.major_no = major.major_no)
+      join job on (member.job_no = job.job_no)
+     where vacation.status = '2'
+       and vac_option = '사용'
+       <if test="m.memName != ''">       
+       	 and member.mem_name LIKE '%' || #{m.memName} || '%'
+       </if>
+			 <if test="m.majorNo != 0">
+			 	 and member.major_no = #{m.majorNo}
+			 </if>
+			 <if test="m.jobNo != 0">
+			   and member.job_no = #{m.jobNo}
+			 </if>    
+     order 
+     	  by vac_no desc
+  </select>
+  
+  <select id="memberLeaveDetail" resultMap="vacationResult">
+		select
+					 vac_no
+				 , vacation.mem_no
+				 , mem_name
+				 , major_name
+				 , job_name
+				 , leave_count
+				 , (
+				 		select sum(vac_used)
+				 			from vacation
+				 		 where vac_option = '사용'
+				 		   and mem_no = #{memNo}
+				 		) vac_used
+		 from vacation
+		 join member on (vacation.mem_no = member.mem_no)
+		 join major on (major.major_no = member.major_no)
+		 join job on (job.job_no = member.job_no)
+		where vac_option = '사용'
+		  and vacation.mem_no = #{memNo}
+		  and rownum = 1
+  </select>
+  
+  <select id="memberLeaveDetailList" resultMap="vacationResult">
+    select
+           vac_no
+         , to_char(vacation.start_date, 'YY-MM-DD') start_date
+         , to_char(vacation.end_date, 'YY-MM-DD') end_date
+         , vac_used
+         , vac_type
+         , vac_reason
+      from vacation
+     where vac_option = '사용'
+       and mem_no = #{memNo}
+     order
+        by vac_no desc
+  </select>
+  
+  <select id="selectMemberLeaveType" resultMap="vacationTypeResult">
+		select 
+		       vac_type_no
+		     , vac_type
+		     , vac_type_date
+		  from vacation_type
+		 where vac_type_no in (1,2,3,4,5)
   </select>
   
 </mapper>

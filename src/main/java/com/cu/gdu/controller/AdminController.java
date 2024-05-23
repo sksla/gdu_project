@@ -22,6 +22,7 @@ import com.cu.gdu.dto.MajorDto;
 import com.cu.gdu.dto.MemberDto;
 import com.cu.gdu.dto.PageInfoDto;
 import com.cu.gdu.dto.VacationDto;
+import com.cu.gdu.dto.VacationTypeDto;
 import com.cu.gdu.service.AdminService;
 import com.cu.gdu.util.PagingUtil;
 
@@ -378,12 +379,39 @@ public class AdminController {
 		int listCount = adminService.memberLeaveListCount();
 		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 10);
 		List<VacationDto> vacList = adminService.memberLeaveList(pi);
-		log.debug("vacList의 값: {}", vacList);
+		//log.debug("vacList의 값: {}", vacList);
 		model.addAttribute("vacList", vacList);
 		model.addAttribute("pi", pi);
 		model.addAttribute("majorList", majorList);
 		model.addAttribute("jobList", jobList);
 		return "admin/memberLeaveList";
+	}
+	
+	// 직원 사용한 연차리스트 필터 및 검색시 ajax로 직원조회
+	@ResponseBody
+	@GetMapping(value="/filterMemberLeaveList.do", produces="application/json; charset=utf-8")
+	public Map<String, Object> ajaxFilterMemberLeaveList(MemberDto m, @RequestParam(value="page", defaultValue="1") int currentPage){
+		Map<String, Object> map = new HashMap<>(); // 맵 생성
+		int listCount = adminService.ajaxFilterMemberLeaveListCount(m); // 조건에 맞는 직원수 조회
+		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 10); // 받아온 리스트카운트 통해 pi 생성
+		map.put("m", m); // map에 담고
+ 		map.put("pi", pi); // map에 담고
+		List<VacationDto> vacList = adminService.ajaxFilterMemberLeaveList(map);
+		map.put("vacList", vacList);
+		log.debug("걸러져서 담겨있는 map: {}", map);
+		return map;
+	}
+	
+	// 직원 연차관리페이지에서 클릭시 직원연차 상세페이지로 이동
+	@GetMapping("/memberLeaveDetail.page")
+	public String memberLeaveDetail(String memNo, Model model) {
+		VacationDto memberVac = adminService.memberLeaveDetail(memNo);
+		List<VacationDto> vacList = adminService.memberLeaveDetailList(memNo);
+		List<VacationTypeDto> vacTypeList = adminService.selectMemberLeaveType();
+		model.addAttribute("vacType", vacTypeList);
+		model.addAttribute("vacList", vacList);
+		model.addAttribute("memberVac", memberVac);
+		return "admin/memberLeaveDetail";
 	}
 
 }

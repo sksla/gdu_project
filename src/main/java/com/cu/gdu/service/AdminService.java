@@ -9,6 +9,7 @@ import com.cu.gdu.dto.MajorDto;
 import com.cu.gdu.dto.MemberDto;
 import com.cu.gdu.dto.PageInfoDto;
 import com.cu.gdu.dto.VacationDto;
+import com.cu.gdu.dto.VacationTypeDto;
 
 public interface AdminService {
 	
@@ -94,4 +95,19 @@ public interface AdminService {
 	
 	// 직원 사용한 연차관리 페이지 직원리스트
 	List<VacationDto> memberLeaveList(PageInfoDto pi);
+	
+	// 직원 사용한 연차리스트 필터 및 검색시 ajax로 직원수 조회
+	int ajaxFilterMemberLeaveListCount(MemberDto m);
+	
+	// 직원 사용한 연차리스트 필터 및 검색시 ajax로 직원리스트 조회
+	List<VacationDto> ajaxFilterMemberLeaveList(Map<String, Object> map);
+	
+	// 직원 연차 상세페이지에 띄울 직원정보 조회
+	VacationDto memberLeaveDetail(String memNo);
+	
+	// 직원 연차 상세페이지에 해당직원의 연차정보들 조회
+	List<VacationDto> memberLeaveDetailList(String memNo);
+	
+	// 직원 연차 상세페이지에서 연차 추가시 타입 조회
+	List<VacationTypeDto> selectMemberLeaveType();
 }

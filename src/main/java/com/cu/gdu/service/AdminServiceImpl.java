@@ -12,6 +12,7 @@ import com.cu.gdu.dto.MajorDto;
 import com.cu.gdu.dto.MemberDto;
 import com.cu.gdu.dto.PageInfoDto;
 import com.cu.gdu.dto.VacationDto;
+import com.cu.gdu.dto.VacationTypeDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -205,6 +206,36 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public List<VacationDto> memberLeaveList(PageInfoDto pi) {
 		return adminDao.memberLeaveList(pi);
+	}
+
+	// 직원 사용한 연차리스트 필터 및 검색시 ajax로 직원수 조회
+	@Override
+	public int ajaxFilterMemberLeaveListCount(MemberDto m) {
+		return adminDao.ajaxFilterMemberLeaveListCount(m);
+	}
+
+	// 직원 사용한 연차리스트 필터 및 검색시 ajax로 직원리스트 조회
+	@Override
+	public List<VacationDto> ajaxFilterMemberLeaveList(Map<String, Object> map) {
+		return adminDao.ajaxFilterMemberLeaveList(map);
+	}
+
+	// 직원 연차 상세페이지에 띄울 직원정보 조회
+	@Override
+	public VacationDto memberLeaveDetail(String memNo) {
+		return adminDao.memberLeaveDetail(memNo);
+	}
+
+	// 직원 연차 상세페이지에 해당직원의 연차정보들 조회
+	@Override
+	public List<VacationDto> memberLeaveDetailList(String memNo) {
+		return adminDao.memberLeaveDetailList(memNo);
+	}
+
+	// 직원 연차 상세페이지에서 연차 추가시 타입 조회
+	@Override
+	public List<VacationTypeDto> selectMemberLeaveType() {
+		return adminDao.selectMemberLeaveType();
 	}
 
 
