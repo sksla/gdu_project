@@ -238,6 +238,18 @@ public class AdminServiceImpl implements AdminService {
 		return adminDao.selectMemberLeaveType();
 	}
 
+	// 직원 지급 및 보상연차 조회
+	@Override
+	public int selectPlusVacCount(int memNo) {
+		return adminDao.selectPlusVacCount(memNo);
+	}
+
+	// 직원 지급 및 보상연차 조회
+	@Override
+	public int selectUsedPlusVacCount(int memNo) {
+		return adminDao.selectUsedPlusVacCount(memNo);
+	}
+
 
 
 }

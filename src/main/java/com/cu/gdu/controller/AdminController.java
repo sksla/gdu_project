@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.cu.gdu.dao.MemberDao;
 import com.cu.gdu.dto.CollegeDto;
 import com.cu.gdu.dto.JobDto;
 import com.cu.gdu.dto.MajorDto;
@@ -24,6 +25,7 @@ import com.cu.gdu.dto.PageInfoDto;
 import com.cu.gdu.dto.VacationDto;
 import com.cu.gdu.dto.VacationTypeDto;
 import com.cu.gdu.service.AdminService;
+import com.cu.gdu.service.MemberService;
 import com.cu.gdu.util.PagingUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -36,6 +38,7 @@ import lombok.extern.slf4j.Slf4j;
 public class AdminController {
 
 	private final AdminService adminService;
+	private final MemberDao memberDao;
 	private final PagingUtil pagingUtil;
 	private final BCryptPasswordEncoder bcryptPwdEncoder;
 	
@@ -379,7 +382,7 @@ public class AdminController {
 		int listCount = adminService.memberLeaveListCount();
 		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 10);
 		List<VacationDto> vacList = adminService.memberLeaveList(pi);
-		//log.debug("vacList의 값: {}", vacList);
+		
 		model.addAttribute("vacList", vacList);
 		model.addAttribute("pi", pi);
 		model.addAttribute("majorList", majorList);
@@ -408,6 +411,12 @@ public class AdminController {
 		VacationDto memberVac = adminService.memberLeaveDetail(memNo);
 		List<VacationDto> vacList = adminService.memberLeaveDetailList(memNo);
 		List<VacationTypeDto> vacTypeList = adminService.selectMemberLeaveType();
+		int plusVacCount = adminService.selectPlusVacCount(Integer.parseInt(memNo));
+		int usedPlusCount = adminService.selectUsedPlusVacCount(Integer.parseInt(memNo));
+		log.debug("plusVacCount: {}", plusVacCount);
+		log.debug("usedPlusCount: {}", usedPlusCount);
+		model.addAttribute("plusVacCount", plusVacCount);
+		model.addAttribute("usedPlusCount", usedPlusCount);
 		model.addAttribute("vacType", vacTypeList);
 		model.addAttribute("vacList", vacList);
 		model.addAttribute("memberVac", memberVac);

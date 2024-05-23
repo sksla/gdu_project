@@ -145,9 +145,6 @@
                       <h6 class="fs-3 fw-semibold mb-0">사용연차</h6>
                     </th>
                     <th>
-                      <h6 class="fs-3 fw-semibold mb-0">잔여연차</h6>
-                    </th>
-                    <th>
                       <h6 class="fs-3 fw-semibold mb-0">종류</h6>
                     </th>
                   </tr>
@@ -185,9 +182,6 @@
 				                    </th>
 				                    <th>
 				                      <h6 class="fs-2 mb-0">${v.vacUsed}일</h6>
-				                    </th>
-				                    <th>
-				                      <h6 class="fs-2 mb-0">${member.leaveCount}일</h6>
 				                    </th>
 				                    <th>
 				                      <h6 class="fs-2 mb-0">${v.vacType}</h6>
@@ -300,9 +294,6 @@
               													+			"</th>"
               													+			"<th>"
               													+				"<h6 class='fs-2 mb-0'>" + map.vacList[i].vacUsed + "일</h6>"
-              													+			"</th>"
-              													+			"<th>"
-              													+				"<h6 class='fs-2 mb-0'>" + map.vacList[i].memberList[j].leaveCount + "일</h6>"
               													+			"</th>"
               													+			"<th>"
               													+				"<h6 class='fs-2 mb-0'>" + map.vacList[i].vacType + "</h6>"

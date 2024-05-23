@@ -668,4 +668,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 where vac_type_no in (1,2,3,4,5)
   </select>
   
+	<select id="selectPlusVacCount" resultType="_int" >
+		select nvl(sum(vac_used), 0)
+      from vacation
+     where vac_option = '보상'
+     	 and mem_no = #{memNo}
+	</select>
+	
+	<select id="selectUsedPlusVacCount" resultType="_int">
+		select nvl(sum(vac_used), 0)
+	    from vacation
+	   where vac_option = '사용'
+	     and vac_type = '포상'
+	     and mem_no = #{memNo}
+	</select>
+  
 </mapper>

@@ -78,21 +78,26 @@
                     </div>
                   </div>
                 </div>
-
+								<c:set var="totalVac" value="${(memberVac.memberList[0].leaveCount+plusVacCount) - usedPlusCount}" /> 
                 <div class="col-lg-6">
+	                <div class="mb-4 row align-items-center">
+	                  <label for="exampleInputText18" class="form-label fw-semibold col-sm-3 col-form-label">총 연차(보상 포함)</label>
+	                  <div class="col-sm-9">
+	                    <input type="text" class="form-control" value="${12 + plusVacCount}일" disabled>
+	                  </div>
+	                </div>
                   <div class="mb-4 row align-items-center">
                     <label for="exampleInputText18" class="form-label fw-semibold col-sm-3 col-form-label">사용연차</label>
                     <div class="col-sm-9">
-                      <input type="text" class="form-control" value="${memberVac.vacUsed}일" disabled>
+                      <input type="text" class="form-control" value="${12-memberVac.memberList[0].leaveCount - usedPlusCount}일" disabled>
                     </div>
                   </div>
                   <div class="mb-4 row align-items-center">
                     <label for="exampleInputText18" class="form-label fw-semibold col-sm-3 col-form-label">잔여연차</label>
                     <div class="col-sm-9">
-                      <input type="text" class="form-control" value="${memberVac.memberList[0].leaveCount}일" disabled>
+                      <input type="text" class="form-control" value="${(12 + plusVacCount) - (12-memberVac.memberList[0].leaveCount - usedPlusCount)}일" disabled>
                     </div>
                   </div>
-
                 </div>
               </div>
               <br><br>

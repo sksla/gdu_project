@@ -219,5 +219,15 @@ public class AdminDao {
 	public List<VacationTypeDto> selectMemberLeaveType() {
 		return sqlSessionTemplate.selectList("adminMapper.selectMemberLeaveType");
 	}
+	
+	// 직원 지급 및 보상연차 조회
+	public int selectPlusVacCount(int memNo) {
+		return sqlSessionTemplate.selectOne("adminMapper.selectPlusVacCount", memNo);
+	}
+
+	// 직원 지급 및 보상연차 조회
+	public int selectUsedPlusVacCount(int memNo) {
+		return sqlSessionTemplate.selectOne("adminMapper.selectUsedPlusVacCount", memNo);
+	}
 
 }
