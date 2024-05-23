@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.cu.gdu.dao.LectureDao;
+import com.cu.gdu.dto.LecStuDto;
+import com.cu.gdu.dto.LectureDto;
 import com.cu.gdu.dto.PageInfoDto;
 import com.cu.gdu.dto.StuAttendDto;
 
@@ -21,10 +23,19 @@ public class LectureServiceImpl implements LectureService {
 	public int selectStuAttendListCount() {
 		return lectureDao.selectStuAttendListCount();
 	}
-
 	@Override
-	public List<StuAttendDto> selectStuAttendList(PageInfoDto pi) {
-		return lectureDao.selectStuAttendList(pi);
+	public List<LectureDto> selectLectureList(int memNo) {
+		return lectureDao.selectLectureList(memNo);
 	}
+	@Override
+	public List<LecStuDto> selectStuAttendList() {
+		return lectureDao.selectStuAttendList();
+	}
+	@Override
+	public List<LecStuDto> selectStuListForLec(int lecNo) {
+		return lectureDao.selectStuListForLec(lecNo);
+	}
+	
+	
 
 }

@@ -13,16 +13,11 @@ import lombok.ToString;
 @Getter
 @ToString
 @Builder
-public class StuAttendDto {
-	
-	private String attendNo;
-	private String stuNo;
-	private String stuName;
-	private String attendance;
-	private String lectureNo;
-	private String lectureDate;
+public class LectureDto {
+
+	private String lecNo;
+	private String memNo;
 	private String majorNo;
-	private String majotName;
 	private String lecName;
 
 }

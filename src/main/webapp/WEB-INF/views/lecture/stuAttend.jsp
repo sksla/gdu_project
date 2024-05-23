@@ -56,7 +56,9 @@
       display:flex;
       /*border: 1px solid lightgray;*/
     }
-  
+  	
+  	#myTable td{padding: 8px}
+  	
   </style>
 </head>
 <body>
@@ -106,8 +108,23 @@
         <div class="card-body">
           <div class="attend_wrap">
             <div class="attend_content1">
-              <div class="attend_title1">XXXXX</div>
-              <div class="attend_title2">과목명/교수명</div>
+              <div class="attend_title1">X</div>
+              <div class="attend_title2">
+								 <c:choose>
+	              	<c:when test="${empty leclist}">
+	              		없음
+	              	</c:when>
+	              	<c:otherwise>
+	              		<div class="form-group" style="width: 100px;">
+								      <select class="form-select w-auto" id="lectureSelect" onchange="handleChange()" onclick="handleClick()">
+								      	<c:forEach var="lec" items="${leclist}">
+									    		<option value="${lec.lecNo}">${lec.lecName}</option>
+									    	</c:forEach>
+								      </select>
+						        </div>
+	              	</c:otherwise>
+	              </c:choose>
+							</div>
               <div class="attend_rate">출석율</div>
             </div> 
             <div class="attend_content3">
@@ -160,372 +177,93 @@
                           </th>
                         </tr>
                       </thead>
-                      <tbody>
-                        <tr>
-                          <td>
-                            <input type="checkbox" name="" id="">
-                          </td>
-                          <td>
-                            <p class="mb-0 fw-normal fs-4">1</p>
-                          </td>
-                          <td>
-                            <div class="d-flex align-items-center">
-                              <img src="../assets/images/profile/user-2.jpg" class="rounded-circle" width="40" height="40" />
-                            </div>
-                          </td>
-                          <td>
-                            <p class="mb-0 fw-normal fs-4">경영학과</p>
-                          </td>
-                          <td>
-                            <p class="mb-0 fw-normal fs-4">202411111</p>
-                          </td>
-                          <td>
-                            <p class="mb-0 fw-normal fs-4">이름</p>
-                          </td>
-                          <td>
-                            <div class="form-group" style="width: 100px;">
-                              <select class="form-select w-auto">
-                                <option value="1">출석</option>
-                                <option value="2">결석</option>
-                                <option value="3">지각</option>
-                                <option value="4">조퇴</option>
-                                <option value="5">공결</option>
-                              </select>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <input type="checkbox" name="" id="">
-                          </td>
-                          <td>
-                            <p class="mb-0 fw-normal fs-4">1</p>
-                          </td>
-                          <td>
-                            <div class="d-flex align-items-center">
-                              <img src="../assets/images/profile/user-2.jpg" class="rounded-circle" width="40" height="40" />
-                            </div>
-                          </td>
-                          <td>
-                            <p class="mb-0 fw-normal fs-4">경영학과</p>
-                          </td>
-                          <td>
-                            <p class="mb-0 fw-normal fs-4">202411111</p>
-                          </td>
-                          <td>
-                            <p class="mb-0 fw-normal fs-4">이름</p>
-                          </td>
-                          <td>
-                            <div class="form-group" style="width: 100px;">
-                              <select class="form-select w-auto">
-                                <option value="1">출석</option>
-                                <option value="2">결석</option>
-                                <option value="3">지각</option>
-                                <option value="4">조퇴</option>
-                                <option value="5">공결</option>
-                              </select>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <input type="checkbox" name="" id="">
-                          </td>
-                          <td>
-                            <p class="mb-0 fw-normal fs-4">1</p>
-                          </td>
-                          <td>
-                            <div class="d-flex align-items-center">
-                              <img src="../assets/images/profile/user-2.jpg" class="rounded-circle" width="40" height="40" />
-                            </div>
-                          </td>
-                          <td>
-                            <p class="mb-0 fw-normal fs-4">경영학과</p>
-                          </td>
-                          <td>
-                            <p class="mb-0 fw-normal fs-4">202411111</p>
-                          </td>
-                          <td>
-                            <p class="mb-0 fw-normal fs-4">이름</p>
-                          </td>
-                          <td>
-                            <div class="form-group" style="width: 100px;">
-                              <select class="form-select w-auto">
-                                <option value="1">출석</option>
-                                <option value="2">결석</option>
-                                <option value="3">지각</option>
-                                <option value="4">조퇴</option>
-                                <option value="5">공결</option>
-                              </select>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <input type="checkbox" name="" id="">
-                          </td>
-                          <td>
-                            <p class="mb-0 fw-normal fs-4">1</p>
-                          </td>
-                          <td>
-                            <div class="d-flex align-items-center">
-                              <img src="../assets/images/profile/user-2.jpg" class="rounded-circle" width="40" height="40" />
-                            </div>
-                          </td>
-                          <td>
-                            <p class="mb-0 fw-normal fs-4">경영학과</p>
-                          </td>
-                          <td>
-                            <p class="mb-0 fw-normal fs-4">202411111</p>
-                          </td>
-                          <td>
-                            <p class="mb-0 fw-normal fs-4">이름</p>
-                          </td>
-                          <td>
-                            <div class="form-group" style="width: 100px;">
-                              <select class="form-select w-auto">
-                                <option value="1">출석</option>
-                                <option value="2">결석</option>
-                                <option value="3">지각</option>
-                                <option value="4">조퇴</option>
-                                <option value="5">공결</option>
-                              </select>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <input type="checkbox" name="" id="">
-                          </td>
-                          <td>
-                            <p class="mb-0 fw-normal fs-4">1</p>
-                          </td>
-                          <td>
-                            <div class="d-flex align-items-center">
-                              <img src="../assets/images/profile/user-2.jpg" class="rounded-circle" width="40" height="40" />
-                            </div>
-                          </td>
-                          <td>
-                            <p class="mb-0 fw-normal fs-4">경영학과</p>
-                          </td>
-                          <td>
-                            <p class="mb-0 fw-normal fs-4">202411111</p>
-                          </td>
-                          <td>
-                            <p class="mb-0 fw-normal fs-4">이름</p>
-                          </td>
-                          <td>
-                            <div class="form-group" style="width: 100px;">
-                              <select class="form-select w-auto">
-                                <option value="1">출석</option>
-                                <option value="2">결석</option>
-                                <option value="3">지각</option>
-                                <option value="4">조퇴</option>
-                                <option value="5">공결</option>
-                              </select>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <input type="checkbox" name="" id="">
-                          </td>
-                          <td>
-                            <p class="mb-0 fw-normal fs-4">1</p>
-                          </td>
-                          <td>
-                            <div class="d-flex align-items-center">
-                              <img src="../assets/images/profile/user-2.jpg" class="rounded-circle" width="40" height="40" />
-                            </div>
-                          </td>
-                          <td>
-                            <p class="mb-0 fw-normal fs-4">경영학과</p>
-                          </td>
-                          <td>
-                            <p class="mb-0 fw-normal fs-4">202411111</p>
-                          </td>
-                          <td>
-                            <p class="mb-0 fw-normal fs-4">이름</p>
-                          </td>
-                          <td>
-                            <div class="form-group" style="width: 100px;">
-                              <select class="form-select w-auto">
-                                <option value="1">출석</option>
-                                <option value="2">결석</option>
-                                <option value="3">지각</option>
-                                <option value="4">조퇴</option>
-                                <option value="5">공결</option>
-                              </select>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <input type="checkbox" name="" id="">
-                          </td>
-                          <td>
-                            <p class="mb-0 fw-normal fs-4">1</p>
-                          </td>
-                          <td>
-                            <div class="d-flex align-items-center">
-                              <img src="../assets/images/profile/user-2.jpg" class="rounded-circle" width="40" height="40" />
-                            </div>
-                          </td>
-                          <td>
-                            <p class="mb-0 fw-normal fs-4">경영학과</p>
-                          </td>
-                          <td>
-                            <p class="mb-0 fw-normal fs-4">202411111</p>
-                          </td>
-                          <td>
-                            <p class="mb-0 fw-normal fs-4">이름</p>
-                          </td>
-                          <td>
-                            <div class="form-group" style="width: 100px;">
-                              <select class="form-select w-auto">
-                                <option value="1">출석</option>
-                                <option value="2">결석</option>
-                                <option value="3">지각</option>
-                                <option value="4">조퇴</option>
-                                <option value="5">공결</option>
-                              </select>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <input type="checkbox" name="" id="">
-                          </td>
-                          <td>
-                            <p class="mb-0 fw-normal fs-4">1</p>
-                          </td>
-                          <td>
-                            <div class="d-flex align-items-center">
-                              <img src="../assets/images/profile/user-2.jpg" class="rounded-circle" width="40" height="40" />
-                            </div>
-                          </td>
-                          <td>
-                            <p class="mb-0 fw-normal fs-4">경영학과</p>
-                          </td>
-                          <td>
-                            <p class="mb-0 fw-normal fs-4">202411111</p>
-                          </td>
-                          <td>
-                            <p class="mb-0 fw-normal fs-4">이름</p>
-                          </td>
-                          <td>
-                            <div class="form-group" style="width: 100px;">
-                              <select class="form-select w-auto">
-                                <option value="1">출석</option>
-                                <option value="2">결석</option>
-                                <option value="3">지각</option>
-                                <option value="4">조퇴</option>
-                                <option value="5">공결</option>
-                              </select>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <input type="checkbox" name="" id="">
-                          </td>
-                          <td>
-                            <p class="mb-0 fw-normal fs-4">1</p>
-                          </td>
-                          <td>
-                            <div class="d-flex align-items-center">
-                              <img src="../assets/images/profile/user-2.jpg" class="rounded-circle" width="40" height="40" />
-                            </div>
-                          </td>
-                          <td>
-                            <p class="mb-0 fw-normal fs-4">경영학과</p>
-                          </td>
-                          <td>
-                            <p class="mb-0 fw-normal fs-4">202411111</p>
-                          </td>
-                          <td>
-                            <p class="mb-0 fw-normal fs-4">이름</p>
-                          </td>
-                          <td>
-                            <div class="form-group" style="width: 100px;">
-                              <select class="form-select w-auto">
-                                <option value="1">출석</option>
-                                <option value="2">결석</option>
-                                <option value="3">지각</option>
-                                <option value="4">조퇴</option>
-                                <option value="5">공결</option>
-                              </select>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <input type="checkbox" name="" id="">
-                          </td>
-                          <td>
-                            <p class="mb-0 fw-normal fs-4">1</p>
-                          </td>
-                          <td>
-                            <div class="d-flex align-items-center">
-                              <img src="../assets/images/profile/user-2.jpg" class="rounded-circle" width="40" height="40" />
-                            </div>
-                          </td>
-                          <td>
-                            <p class="mb-0 fw-normal fs-4">경영학과</p>
-                          </td>
-                          <td>
-                            <p class="mb-0 fw-normal fs-4">202411111</p>
-                          </td>
-                          <td>
-                            <p class="mb-0 fw-normal fs-4">이름</p>
-                          </td>
-                          <td>
-                            <div class="form-group" style="width: 100px;">
-                              <select class="form-select w-auto">
-                                <option value="1">출석</option>
-                                <option value="2">결석</option>
-                                <option value="3">지각</option>
-                                <option value="4">조퇴</option>
-                                <option value="5">공결</option>
-                              </select>
-                            </div>
-                          </td>
-                        </tr>
-                        
+                      <tbody id="myTable">
+                        <c:choose>
+	                        <c:when test="${ empty stulist }">
+		                        <tr>
+		                        	<td colspan="7"> 수강신청한 학생이 없습니다.</td>
+		                        </tr>
+	                        </c:when>
+	                        <c:otherwise>
+		                        <c:forEach var="a" items="${stulist}">
+			                        <tr>
+				                        <td height="50px"><input type="checkbox" name="" id=""></td>
+				                        <td><p class="mb-0 fw-normal fs-4">${a.lecstuNo}</p></td>
+				                        <td><p class="mb-0 fw-normal fs-4">사진</p></td>
+				                        <td><p class="mb-0 fw-normal fs-4">${a.majorName}</p></td>
+				                        <td><p class="mb-0 fw-normal fs-4">${a.stuNo}</p></td>
+				                        <td><p class="mb-0 fw-normal fs-4">${a.stuName}</p></td>
+				                        <td>
+					                        <div class="form-group" style="width: 100px;">
+						                        <select class="form-select w-auto">
+							                        <option value="Y">출석</option>
+							                        <option value="N">결석</option>
+							                        <option value="E">조퇴</option>
+							                        <option value="A">공결</option>
+						                        </select>
+					                        </div>
+				                        </td>
+			                        </tr>
+		                        </c:forEach>
+	                        </c:otherwise>
+                        </c:choose>
                       </tbody>
                     </table>
                   </div>
-                  <!-- 1번 양식 -->
-
-                  <div>
-                    <!-- 페이징바 -->
-                    <ul class="pagination justify-content-center">
-                      <li class="page-item">
-                        <a class="page-link link" href="#" aria-label="Previous">
-                          <span aria-hidden="true">
-                            <i class="ti ti-chevrons-left fs-4"></i>
-                          </span>
-                        </a>
-                      </li>
-                      <li class="page-item">
-                        <a class="page-link link active" href="#">1</a>
-                      </li>
-                      <li class="page-item">
-                        <a class="page-link link" href="#">2</a>
-                      </li>
-                      <li class="page-item">
-                        <a class="page-link link" href="#">3</a>
-                      </li>
-                      <li class="page-item">
-                        <a class="page-link link" href="#" aria-label="Next">
-                          <span aria-hidden="true">
-                            <i class="ti ti-chevrons-right fs-4"></i>
-                          </span>
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-
+                  <script>
+               		// 강의 선택이 변경될 때 실행되는 함수
+							    $('#lectureSelect').change(function() {
+										var lecNo = $(this).val(); // 선택된 강의의 번호
+										// AJAX 호출
+										$.ajax({
+											url: '${contextPath}/lec/stuListForLec.do', // 서버 URL
+											method: 'GET',
+											data: {lecNo:lecNo}, // 선택된 강의 번호를 전달
+											success: function(result) {
+																let table = "<table border='1'>";
+																console.log(result);
+																for(let i=0; i<result.length; i++){
+																	
+																	
+																	table  += "<tr>"
+																					+ 	"<td height='50px'>" + "<input type='checkbox' name='' id=''>" + "</td>"
+																					+ 	"<td><p class='mb-0 fw-normal fs-4'>" + result[i].lecstuNo + "</p></td>"
+																					+ 	"<td><p class='mb-0 fw-normal fs-4'>" + result[i].사진 + "</p></td>"
+																					+ 	"<td><p class='mb-0 fw-normal fs-4'>" + result[i].majorName + "</p></td>"
+																					+ 	"<td><p class='mb-0 fw-normal fs-4'>" + result[i].stuNo + "</p></td>"
+																					+ 	"<td><p class='mb-0 fw-normal fs-4'>" + result[i].stuName + "</p></td>"
+															                        
+																					+ 	"<td>"  
+																          +   	"<div class='form-group' style='width: 100px;'>" 
+																          +				"<select class='form-select w-auto'>" 
+																          +					"<option value='Y'>출석</option>" +
+																          +					"<option value='N'>결석</option>" +
+																          +					"<option value='E'>조퇴</option>" +
+																          +					"<option value='A'>공결</option>" +
+																          +				"</select>" 
+																          +			"</div>"
+																          + 	"</td>"
+												                  + "</tr>";							
+																					
+																}
+													
+																		table += "</table>";
+													
+																		$("#result").html(table);
+									            },
+										error: function(xhr, status, error) {
+														console.error(xhr, status, error); // 에러 처리
+							              console.log("ajax 통신실패");
+							            }
+							        });
+							    });
+							
+							    // 서버에서 받은 출석 리스트를 화면에 표시하는 함수
+							    function displayStuAttendList(data) {
+							        // 받은 데이터를 화면에 표시하는 코드 작성
+							        $('#StuAttendList').html(data);
+							    }
+									</script>
                 </div>
               </div>
             </div>
