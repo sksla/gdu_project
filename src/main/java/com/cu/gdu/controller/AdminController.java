@@ -413,14 +413,42 @@ public class AdminController {
 		List<VacationTypeDto> vacTypeList = adminService.selectMemberLeaveType();
 		int plusVacCount = adminService.selectPlusVacCount(Integer.parseInt(memNo));
 		int usedPlusCount = adminService.selectUsedPlusVacCount(Integer.parseInt(memNo));
-		log.debug("plusVacCount: {}", plusVacCount);
-		log.debug("usedPlusCount: {}", usedPlusCount);
+		//log.debug("vacList: {}", vacList);
 		model.addAttribute("plusVacCount", plusVacCount);
 		model.addAttribute("usedPlusCount", usedPlusCount);
 		model.addAttribute("vacType", vacTypeList);
 		model.addAttribute("vacList", vacList);
 		model.addAttribute("memberVac", memberVac);
 		return "admin/memberLeaveDetail";
+	}
+	
+	// 직원 연차관리 상세페이지에서 보상연차 추가
+	@GetMapping("/memberLeavePlus.do")
+	public String memberLeavePlus(VacationDto vac, RedirectAttributes redirectAttributes) {
+		if(vac.getVacUsed() == 0) {
+			// 사유에 따라 일수 및 타입지정
+			vac.setVacUsed(vac.getVacReason().equals("포상") ? 3 : 
+			               vac.getVacReason().equals("결혼") ? 5 : 
+			               vac.getVacReason().equals("출산") ? 30 : 
+			               vac.getVacReason().equals("경조사") ? 5 : 
+			               3);
+			vac.setVacTypeNo(vac.getVacReason().equals("포상") ? 1 : 
+							 vac.getVacReason().equals("결혼") ? 2 : 
+							 vac.getVacReason().equals("출산") ? 3 : 
+							 vac.getVacReason().equals("경조사") ? 4 : 
+							 5);
+		}else {
+			// 체크박스 체크 후 직접입력
+			vac.setVacReason("기타(" + vac.getVacReason() + ")");
+			vac.setVacTypeNo(6);
+		}
+		int result = adminService.insertMemberPlusLeave(vac);
+		if(result == 1) {
+			redirectAttributes.addFlashAttribute("alertMsg", "연차를 추가했습니다.");
+		}else {
+			redirectAttributes.addFlashAttribute("alertMsg", "연차추가에 실패했습니다.");
+		}
+		return "redirect:/admin/memberLeaveDetail.page?memNo=" + vac.getMemNo();
 	}
 
 }

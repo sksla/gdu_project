@@ -229,5 +229,10 @@ public class AdminDao {
 	public int selectUsedPlusVacCount(int memNo) {
 		return sqlSessionTemplate.selectOne("adminMapper.selectUsedPlusVacCount", memNo);
 	}
+	
+	// 직원 연차 상세페이지에서 연차추가(보상연차)
+	public int insertMemberPlusLeave(VacationDto vac) {
+		return sqlSessionTemplate.insert("adminMapper.insertMemberPlusLeave", vac);
+	}
 
 }

@@ -250,6 +250,12 @@ public class AdminServiceImpl implements AdminService {
 		return adminDao.selectUsedPlusVacCount(memNo);
 	}
 
+	// 직원 연차 상세페이지에서 연차추가(보상연차)
+	@Override
+	public int insertMemberPlusLeave(VacationDto vac) {
+		return adminDao.insertMemberPlusLeave(vac);
+	}
+
 
 
 }

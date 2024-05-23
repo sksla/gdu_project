@@ -652,6 +652,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          , vac_used
          , vac_type
          , vac_reason
+         , mem_no
       from vacation
      where vac_option = '사용'
        and mem_no = #{memNo}
@@ -682,5 +683,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	     and vac_type = '포상'
 	     and mem_no = #{memNo}
 	</select>
+	
+	<insert id="insertMemberPlusLeave">
+		insert
+		  into vacation
+		  (
+		  	vac_no
+		  , mem_no
+		  , vac_used
+		  , vac_option
+			, vac_reason
+			, vac_type_no
+			, status
+		  )
+		  values
+		  (
+		  	seq_vac_no.nextval
+		  , #{memNo}
+		  , #{vacUsed}
+		  , '보상'
+		  , #{vacReason}
+		  , #{vacTypeNo}
+		  , 2
+		  )
+	</insert>
   
 </mapper>

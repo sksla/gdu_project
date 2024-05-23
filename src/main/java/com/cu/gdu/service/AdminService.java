@@ -111,7 +111,11 @@ public interface AdminService {
 	// 직원 연차 상세페이지에서 연차 추가시 타입 조회
 	List<VacationTypeDto> selectMemberLeaveType();
 	
-	// 직원 지급 및 보상연차 조회
+	// 직원 보상연차 조회
 	int selectPlusVacCount(int memNo);
 	int selectUsedPlusVacCount(int memNo);
+	
+	// 직원 연차 상세페이지에서 연차추가(보상연차)
+	int insertMemberPlusLeave(VacationDto vac);
+	
 }

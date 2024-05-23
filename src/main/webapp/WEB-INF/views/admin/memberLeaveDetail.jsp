@@ -181,7 +181,8 @@
 
 
               <!-- 연차보상 추가 모달-->
-              <form action="" method="">
+              <form action="${contextPath}/admin/memberLeavePlus.do" method="get">
+              	<input type="hidden" name="memNo" value="${vacList[0].memNo}">
                 <div class="modal fade" id="addLeaveModal" tabindex="-1" aria-labelledby="vertical-center-modal" style="display: none;" aria-hidden="true">
                   <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
@@ -191,13 +192,12 @@
                         </h4>
                       </div>
                       <hr>
-                      <!-- 직접입력 체크박스 체크 유무에 따라 disabled 지정 이거 좀 수정해야됨 -->
                       <div class="modal-body myModalBody">
                         <div class="modalText">
                           종류 : 
-                          <select class="form-select mb-n2 addSelectLeave" name="" style="width: 180px;">
+                          <select class="form-select mb-n2 addSelectLeave" name="vacReason" style="width: 180px;">
                           	<c:forEach var="v" items="${vacType}">
-                            	<option value="${v.vacTypeDate}">${v.vacType}(${v.vacTypeDate}일)</option>
+                            	<option value="${v.vacType}">${v.vacType}(${v.vacTypeDate}일)</option>
                             </c:forEach>
                           </select>
                         </div>
@@ -205,11 +205,11 @@
                         <div class="modalCheck">
                           <input type="checkbox" class="addSelfLeave"> 직접입력 <br>
                           <div style="display: flex;">
-                            추가일수 : <input type="number" class="form-control addLeaveDate" name="" placeholder="추가 일수를 입력해주세요. (숫자만)" style="width: 280px;"> <br>
+                            추가일수 : <input type="number" class="form-control addLeaveDate" name="vacUsed" placeholder="추가 일수를 입력해주세요. (숫자만)" style="width: 280px;"> <br>
                           </div>
                           <br>
                           <div style="display: flex;">
-                            추가사유 : <textarea class="form-control addLeaveReason" rows="3" placeholder="추가 사유를 입력해주세요" style="width: 280px; resize: none;"></textarea>
+                            추가사유 : <textarea class="form-control addLeaveReason" name="vacReason" rows="3" placeholder="추가 사유를 입력해주세요" style="width: 280px; resize: none;"></textarea>
                           </div>
                         </div>
                       </div>
@@ -235,19 +235,21 @@
                       $('.addLeaveReason').attr('disabled', false);
                       $('.addLeaveDate').attr('disabled', false);
                       $('.addSelectLeave').attr('disabled', true);
+                      $('.addSelectLeave').removeAttr('name');           
+                      $('.addLeaveDate').attr('name', 'vacUsed');
+                      $('.addLeaveReason').attr('name', 'vacTypeReason');
                     } else {
                       $('.addLeaveReason').attr('disabled', true);
                       $('.addLeaveDate').attr('disabled', true);
                       $('.addSelectLeave').attr('disabled', false);
+                      $('.addLeaveDate').removeAttr('name');
+                      $('.addLeaveReason').removeAttr('name');    
+                      $('.addSelectLeave').attr('name', 'vacTypeReason');
                     }
                   });                    
                   
                 });
                 
-                // 조회버튼 클릭시 실행되는 함수
-                function vacReasonDetail(){
-                	
-                }
               </script>
 
             </div>
