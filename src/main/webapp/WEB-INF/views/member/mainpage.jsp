@@ -120,10 +120,7 @@
                 <a class="nav-link" href="./main/app-email.html">예약</a>
               </li>
               <li class="nav-item dropdown-hover d-none d-lg-block">
-                <a class="nav-link" href="${ contextPath }/board/noticeList.do">공지</a>
-              </li>
-              <li class="nav-item dropdown-hover d-none d-lg-block">
-                <a class="nav-link" href="./main/app-email.html">게시판</a>
+                <a class="nav-link" href="${ contextPath }/board/noticeList.do">게시판</a>
               </li>
               <li class="nav-item dropdown-hover d-none d-lg-block">
                 <a class="nav-link" href="./main/app-email.html">학생&수업</a>
