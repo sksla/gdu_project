@@ -13,10 +13,12 @@ import lombok.ToString;
 @Getter
 @ToString
 @Builder
-public class VacationTypeDto {
+public class InsertDateDto {
 
-	private int vacTypeNo;
-	private String vacType;
-	private String vacTypeDate;
+	private int insertNo;
+	private String startDate;
+	private String endDate;
+	private String insertType;
+	
 	
 }

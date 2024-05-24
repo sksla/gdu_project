@@ -29,6 +29,7 @@
 		<typeAlias type="com.cu.gdu.dto.VacationTypeDto" alias="VacationTypeDto" />
 		<typeAlias type="com.cu.gdu.dto.LectureDto" alias="LectureDto" />
 		<typeAlias type="com.cu.gdu.dto.LecStuDto" alias="LecStuDto" />
+		<typeAlias type="com.cu.gdu.dto.InsertDateDto" alias="InsertDateDto" />
 	</typeAliases>
 	
 	<mappers>
