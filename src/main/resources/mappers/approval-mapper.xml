@@ -13,14 +13,43 @@
 	
 	<resultMap type="ApprovalDocDto" id="appDocResult">
 		<id column="doc_no" property="docNo"/>
+		<result column="doc_content" property="docContent"/>
+		<result column="doc_status" property="status"/>
 		<result column="status_name" property="status"/>
 		<result column="draft_date" property="draftDate"/>
 		<result column="modify_date" property="modifyDate"/>
-		<result column="doc_content" property="docContent"/>
-		<result column="drafter" property="drafter"/>
 		<result column="pre_period" property="prePeriod"/>
-		<result column="app_category" property="appNo"/>
+		<result column="app_form_name" property="appNo"/>
+		<result column="app_category" property="appCategory"/>
 		<result column="doc_title" property="docTitle"/>
+		<result column="history_count" property="historyCount"/>
+		<result column="now_approver" property="nowApprover"/>
+		<association resultMap="memberResult" property="drafter"/>
+		<collection resultMap="attachResult" property="attachList"/>
+	</resultMap>
+	
+	<resultMap type="AttachDto" id="attachResult">
+		<id column="file_no" property="fileNo"/>
+		<result column="file_path" property="filePath"/>
+		<result column="original_name" property="originalName"/>
+		<result column="filesystem_name" property="filesystemName"/>
+	</resultMap>
+	
+	<resultMap type="ApproverDto" id="approverResult">
+		<id column="approver_no" property="approverNo"/>
+		<result column="appType" property="appType"/>
+		<result column="status_name" property="appType"/>
+		<result column="app_date" property="appDate"/>
+		<result column="is_approved" property="isApproved"/>
+		<association resultMap="memberResult" property="approver"/>
+	</resultMap>
+	
+	<resultMap type="ApprovalHistoryDto" id="appHistoryResult">
+		<id column="app_history_no" property="appHistoryNo"/>
+		<result column="app_yn" property="appYn"/>
+		<result column="app_date" property="appDate"/>
+		<result column="comment" property="comment"/>
+		<association resultMap="memberResult" property="approver"/>
 	</resultMap>
 
 	<resultMap type="MajorDto" id="majorResult">
@@ -40,21 +69,8 @@
   	<result column="major_name" property="majorNo"/>
   	<result column="job_name" property="jobNo"/>
   	<result column="mem_name" property="memName"/>
-  	<result column="mem_id" property="memId"/>
-  	<result column="mem_pwd" property="memPwd"/>
-  	<result column="phone" property="phone"/>
-  	<result column="email" property="email"/>
-  	<result column="address" property="address"/>
-  	<result column="resident" property="resident"/>
-  	<result column="hire_date" property="hireDate"/>
-  	<result column="end_date" property="endDate"/>
-  	<result column="status" property="status"/>
-  	<result column="salary" property="salary"/>
   	<result column="sign_url" property="signUrl"/>
   	<result column="profile_url" property="profileUrl"/>
-  	<result column="leave_count" property="leaveCount"/>
-  	<result column="birth" property="birth"/>
-  	<result column="gender" property="gender"/>
   </resultMap>
   
   
@@ -128,6 +144,7 @@
 		  join job on (member.job_no = job.job_no)
   	 where member.status = 'N'
   	 	 and member.major_no = #{majorNo}
+  	 	 and member.mem_no = #{loginUserNo}
 	</select>
 	
 	<insert id="insertAppDoc">
@@ -170,10 +187,52 @@
 		       )
 	</insert>
 	
+	<insert id="insertAppAttach">
+		insert
+		  into app_attach
+		       (
+		       file_no
+		     , doc_no
+		     , file_path
+		     , original_name
+		     , filesystem_name
+		       )
+		values (
+		       seq_app_file_no.nextval
+		     , seq_doc_no.currval
+		     , #{filePath}
+		     , #{originalName}
+		     , #{filesystemName}
+		       )
+	</insert>
+	
+	<!-- 전자결재 문서함 ************************************************* -->
 	<select id="selectCountOngoingBoardList" resultType="_int">
 		select count(*)
 		  from app_doc
-		 where status not in (0, 40)
+		  join app_form on (app_doc.app_no = app_form.app_no)
+		 where drafter = #{loginUserNo}
+		   and to_char(draft_date, 'YYYY-MM-DD') between #{startDate} and #{endDate}
+		<choose>
+			<when test="docStatus == ''">
+		    and status not in (0, 40)
+			</when>
+			<otherwise>
+				and status = #{docStatus}
+			</otherwise>
+		</choose>
+		<if test='category != "all"'>
+			 and app_category = #{category}
+		</if>
+		<if test='status != "all"'>
+		   and app_doc.status = #{status}
+		</if>
+		<if test="searchType == 'title'">
+			 and doc_title like '%' || #{search} || '%'
+		</if>
+		<if test="searchType == 'no'">
+			 and doc_no like '%' || #{search} || '%'
+		</if>
 	</select>
 	
 	<select id="selectOngoingDocList" resultMap="appDocResult">
@@ -185,9 +244,186 @@
 		  from app_doc
 		  join app_status on (status = status_no)
 		  join app_form on (app_doc.app_no = app_form.app_no)
-		 where app_doc.status not in (0, 40)
+		 where drafter = #{loginUserNo}
+		   and to_char(draft_date, 'YYYY-MM-DD') between #{startDate} and #{endDate}
+		<choose>
+			<when test="docStatus == ''">
+		    and status not in (0, 40)
+			</when>
+			<otherwise>
+				and status = #{docStatus}
+			</otherwise>
+		</choose>
+		<if test="category != 'all'">
+			 and app_category = #{category}
+		</if>
+		<if test='status != "all"'>
+		   and app_doc.status = #{status}
+		</if>
+		<if test="search != ''">
+			 and doc_title like '%' || #{search} || '%'
+		</if>
+		<if test="searchType == 'no'">
+			 and doc_no like '%' || #{search} || '%'
+		</if>
+		order
+		   by draft_date
+	</select>
+	
+	<select id="selectCountReceiveBoardList" resultType="_int">
+		select count(*)
+		  from app_doc
+		  join app_form on (app_doc.app_no = app_form.app_no)
+		  join member on ( app_doc.drafter = member.mem_no )
+     where (
+			       select a.approver
+			         from (
+			               select approver
+			                   , doc_no
+			                   , ROW_NUMBER() OVER (PARTITION BY approver.doc_no ORDER BY app_type, approver) AS rnum
+			                 from approver
+			                where app_yn = 'N'
+			              ) a
+			        where rnum = 1
+			          and doc_no = app_doc.doc_no
+			   	 ) = #{loginUserNo}
+		   and to_char(draft_date, 'YYYY-MM-DD') between #{startDate} and #{endDate}
+		   and app_doc.status not in (0, 40)
+		<if test='category != "all"'>
+			 and app_category = #{category}
+		</if>
+		<if test='status != "all"'>
+		   and app_doc.status = #{status}
+		</if>
+		<if test="searchType == 'title'">
+			 and doc_title like '%' || #{search} || '%'
+		</if>
+		<if test="searchType == 'drafter'">
+			 and mem_name like '%' || #{search} || '%'
+		</if>
+	</select>
+	
+	<select id="selectReceiveBoardList" resultMap="appDocResult">
+		select doc_no
+		     , doc_title
+		     , to_char(draft_date, 'YYYY-MM-DD') draft_date
+		     , app_category
+		     , status_name
+         , mem_name
+		  from app_doc
+		  join app_status on (status = status_no)
+		  join app_form on (app_doc.app_no = app_form.app_no)
+      join member on (drafter = mem_no)
+     where (
+            select a.approver
+              from (
+                    select approver
+                        , doc_no
+                        , ROW_NUMBER() OVER (PARTITION BY approver.doc_no ORDER BY app_type, approver) AS rnum
+                      from approver
+                     where app_yn = 'N'
+                   ) a
+             where rnum = 1
+               and doc_no = app_doc.doc_no
+        	 ) = #{loginUserNo}
+		   and to_char(draft_date, 'YYYY-MM-DD') between #{startDate} and #{endDate}
+		   and app_doc.status not in (0, 40)
+		<if test='category != "all"'>
+			 and app_category = #{category}
+		</if>
+		<if test='status != "all"'>
+		   and app_doc.status = #{status}
+		</if>
+		<if test="searchType == 'title'">
+			 and doc_title like '%' || #{search} || '%'
+		</if>
+		<if test="searchType == 'drafter'">
+			 and mem_name like '%' || #{search} || '%'
+		</if>
+	</select>
+	
+	<!-- 전자결재 상세 페이지 -->
+	<select id="selectAppDoc" resultMap="appDocResult">
+		select 
+		       doc_no
+		     , doc_content
+				 , app_category
+		     , app_form_name
+		     , drafter
+		     , to_char(draft_Date, 'YYYY-MM-DD') draft_date
+		     , doc_title
+		     , pre_period
+		     , app_doc.status doc_status
+		     , mem_no
+		     , mem_name
+		     , major_name
+		     , sign_url
+		     , job_name
+		     , file_no
+		     , file_path
+		     , original_name
+		     , filesystem_name
+         , (select count(*)
+              from app_history
+              join approver using (approver_no)
+             where approver.doc_no = 34
+             ) history_count
+         , (
+            select a.approver
+              from (
+                    select approver
+                        , doc_no
+                        , ROW_NUMBER() OVER (PARTITION BY approver.doc_no ORDER BY app_type, approver) AS rnum
+                      from approver
+                     where app_yn = 'N'
+                   ) a
+             where rnum = 1
+               and doc_no = 7
+            ) now_approver
+		  from app_doc
+		  join app_form using (app_no)
+		  join member on (drafter = mem_no)
+		  join major using (major_no)
+		  join job using (job_no)
+		  left join app_attach using (doc_no)
+		 where doc_no = #{no}
+	</select>
+	
+	<select id="selectApproverByDocNo" resultMap="approverResult">
+		select
+		       status_name
+		     , mem_name
+		     , mem_no
+		     , mem_name
+		     , major_name
+		     , sign_url
+		     , job_name
+		     , NVL2(
+		            (
+		             select app_yn
+		               from app_history
+		              where app_yn = 'A'
+		              )
+		            , 'Y'
+		            , 'N'
+		            ) is_approved
+         , (
+         		select to_char(app_date, 'YYYY-MM-DD')
+              from app_history
+             where app_yn = 'A'
+            ) app_date
+		  from approver
+		  join member on (mem_no = approver)
+		  join major using (major_no)
+		  join job using (job_no)
+		  join app_status on (app_type = status_no)
+		 where doc_no = #{no}
 		 order
-		    by draft_date
+		    by app_type, approver_no
+	</select>
+	
+	<select id="" resultMap="appHistoryResult">
+		
 	</select>
 	
 </mapper>

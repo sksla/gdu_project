@@ -21,11 +21,16 @@ public class ApprovalDocDto {
 	private String draftDate;
 	private String modifyDate;
 	private String docContent;
-	private String drafter;
 	private String prePeriod;
 	private String appNo;
+	private String appCategory;
 	private int docNo;
 	private String docTitle;
+	private int historyCount;
+	private String nowApprover;
+	
+	private MemberDto drafter;
+	private List<AttachDto> attachList;
 	
 	private List<ApproverDto> collaborators;
 	private ApproverDto approver;

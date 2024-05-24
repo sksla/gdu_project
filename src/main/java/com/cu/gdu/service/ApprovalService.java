@@ -1,9 +1,11 @@
 package com.cu.gdu.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.cu.gdu.dto.ApprovalDocDto;
 import com.cu.gdu.dto.ApprovalFormDto;
+import com.cu.gdu.dto.ApproverDto;
 import com.cu.gdu.dto.CollegeDto;
 import com.cu.gdu.dto.MemberDto;
 import com.cu.gdu.dto.PageInfoDto;
@@ -27,7 +29,7 @@ public interface ApprovalService {
 	List<MemberDto> selectMemberByKeword(String Keyword);
 	
 	// 학과별 직원 목록 조회
-	List<MemberDto> selectMemberByMajor(int majorNo);
+	List<MemberDto> selectMemberByMajor(MemberDto member);
 	
 	// 결재문서 등록
 	int insertApp(ApprovalDocDto appDoc, int approverNo, int receiverNo, String[] collaboratorNo);
@@ -38,10 +40,22 @@ public interface ApprovalService {
 	// 양식 내용 불러오기
 	String selectAppFormContent(int appNo);
 	
+	// 결재문서 리스트 조회
 	// 진행중인 결재문서 목록 개수 조회
-	int selectCountOngoingBoardList();
-	
+	int selectCountOngoingBoardList(Map<String, String> map);
 	// 진행중인 결재문서 목록 조회
-	List<ApprovalDocDto> selectOngoingDocList(PageInfoDto pi);
+	List<ApprovalDocDto> selectOngoingDocList(PageInfoDto pi, Map<String, String> map);
+	// 결재할 문서 리스트 개수 조회
+	int selectCountReceiveBoardList(Map<String, String> map);
+	// 결재할 문서 리스트 조회
+	List<ApprovalDocDto> selectReceiveBoardList(PageInfoDto pi, Map<String, String> map);
+	
+	// 전자결재 상세 조회
+	// 문서정보 조회
+	ApprovalDocDto selectAppDoc(int no);
+	// 문서 관련 결재자 조회
+	List<ApproverDto> selectApproverByDocNo(int no);
+	// 결재 코멘트 조회
+	
 	
 }

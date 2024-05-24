@@ -35,14 +35,14 @@
       
       <!-- 로고 -->
       <div class="brand-logo d-flex align-items-center justify-content-between">
-        <a href="${ contextPath }" class="text-nowrap logo-img">
-          <img src="${ contextPath }/assets/images/logos/dark-logo.svg" class="dark-logo" alt="Logo-Dark" />
-          <img src="${ contextPath }/assets/images/logos/light-logo.svg" class="light-logo" alt="Logo-light" />
-        </a>
-        <a href="javascript:void(0)" class="sidebartoggler ms-auto text-decoration-none fs-5 d-block d-xl-none">
-          <i class="ti ti-x"></i>
-        </a>
-      </div>
+         <a href="${ contextPath }" class="text-nowrap logo-img">
+           <img src="../assets/images/logos/longlogo.png" class="dark-logo pt-3 pb-3" width="" height="72" />
+           <img src="${ contextPath }/assets/images/logos/light-logo.svg" class="light-logo" alt="Logo-light" />
+         </a>
+         <a href="javascript:void(0)" class="sidebartoggler ms-auto text-decoration-none fs-5 d-block d-xl-none">
+           <i class="ti ti-x"></i>
+         </a>
+       </div>
 
 
       <nav class="sidebar-nav scroll-sidebar" data-simplebar>
@@ -68,7 +68,7 @@
             </a>
             <ul aria-expanded="false" class="collapse first-level">
               <li class="sidebar-item">
-                <a href="${contextPath}/approval/ongoingBoard.page" class="sidebar-link">
+                <a href="${contextPath}/approval/ongoingBoard.do" class="sidebar-link">
                   <div class="round-16 d-flex align-items-center justify-content-center">
                     <i class="ti ti-circle"></i>
                   </div>
@@ -76,7 +76,7 @@
                 </a>
               </li>
               <li class="sidebar-item">
-                <a href="${contextPath}/approval/completeBoard.page" class="sidebar-link">
+                <a href="${contextPath}/approval/ongoingBoard.do?docStatus=40" class="sidebar-link">
                   <div class="round-16 d-flex align-items-center justify-content-center">
                     <i class="ti ti-circle"></i>
                   </div>
@@ -84,7 +84,7 @@
                 </a>
               </li>
               <li class="sidebar-item">
-                <a href="${contextPath}/approval/rejectBoard.page" class="sidebar-link">
+                <a href="${contextPath}/approval/ongoingBoard.do?docStatus=2" class="sidebar-link">
                   <div class="round-16 d-flex align-items-center justify-content-center">
                     <i class="ti ti-circle"></i>
                   </div>
@@ -92,7 +92,7 @@
                 </a>
               </li>
               <li class="sidebar-item">
-                <a href="${contextPath}/approval/collectBoard.page" class="sidebar-link">
+                <a href="${contextPath}/approval/ongoingBoard.do?docStatus=1" class="sidebar-link">
                   <div class="round-16 d-flex align-items-center justify-content-center">
                     <i class="ti ti-circle"></i>
                   </div>
@@ -100,29 +100,29 @@
                 </a>
               </li>
               <li class="sidebar-item">
-                <a href="" class="sidebar-link">
+                <a href="${contextPath}/approval/ongoingBoard.do?docStatus=0" class="sidebar-link">
                   <div class="round-16 d-flex align-items-center justify-content-center">
                     <i class="ti ti-circle"></i>
                   </div>
-                  <span class="hide-menu">참조문서</span>
-                </a>
-              </li>
-              <li class="sidebar-item">
-                <a href="${contextPath}/approval/receiveBoard.page" class="sidebar-link">
-                  <div class="round-16 d-flex align-items-center justify-content-center">
-                    <i class="ti ti-circle"></i>
-                  </div>
-                  <span class="hide-menu">수신문서</span>
+                  <span class="hide-menu">임시보관 문서</span>
                 </a>
               </li>
             </ul>
           </li>
+         <li class="sidebar-item">
+           <a class="sidebar-link" href="${contextPath}/approval/receiveBoard.do" aria-expanded="false">
+             <span>
+               <i class="ti ti-clipboard"></i>
+             </span>
+             <span class="hide-menu">수신문서</span>
+           </a>
+         </li>
 				 <li class="sidebar-item">
             <a class="sidebar-link" href="" aria-expanded="false">
               <span>
                 <i class="ti ti-clipboard"></i>
               </span>
-              <span class="hide-menu">공람문서</span>
+              <span class="hide-menu">참조문서</span>
             </a>
           </li>						
           <li class="sidebar-item">
@@ -130,7 +130,7 @@
               <span>
                 <i class="ti ti-clipboard"></i>
               </span>
-              <span class="hide-menu">임시보관함</span>
+              <span class="hide-menu">공람문서</span>
             </a>
           </li>
           <li class="sidebar-item">

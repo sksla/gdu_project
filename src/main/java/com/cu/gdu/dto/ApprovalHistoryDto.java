@@ -18,7 +18,7 @@ public class ApprovalHistoryDto {
 	private String appYN;
 	private String appDate;
 	private int appHistoryNo;
-	private String approverNo;
+	private MemberDto approver;
 	private String comment;
 
 }

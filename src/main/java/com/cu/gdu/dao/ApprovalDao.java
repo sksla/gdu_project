@@ -10,6 +10,8 @@ import org.springframework.stereotype.Repository;
 
 import com.cu.gdu.dto.ApprovalDocDto;
 import com.cu.gdu.dto.ApprovalFormDto;
+import com.cu.gdu.dto.ApproverDto;
+import com.cu.gdu.dto.AttachDto;
 import com.cu.gdu.dto.CollegeDto;
 import com.cu.gdu.dto.MemberDto;
 import com.cu.gdu.dto.PageInfoDto;
@@ -48,8 +50,8 @@ public class ApprovalDao {
 		return sqlSessionTemplate.selectOne("approvalMapper.selectAppFormContent", appNo);
 	}
 
-	public List<MemberDto> selectMemberByMajor(int majorNo) {
-		return sqlSessionTemplate.selectList("approvalMapper.selectMemberByMajor", majorNo);
+	public List<MemberDto> selectMemberByMajor(MemberDto member) {
+		return sqlSessionTemplate.selectList("approvalMapper.selectMemberByMajor", member);
 	}
 
 	public int insertAppDoc(ApprovalDocDto appDoc) {
@@ -63,13 +65,34 @@ public class ApprovalDao {
 		return sqlSessionTemplate.insert("approvalMapper.insertApprover", map);
 	}
 
-	public int selectCountOngoingBoardList() {
-		return sqlSessionTemplate.selectOne("approvalMapper.selectCountOngoingBoardList");
+	public int insertAppAttach(AttachDto att) {
+		return sqlSessionTemplate.insert("approvalMapper.insertAppAttach", att);
 	}
 
-	public List<ApprovalDocDto> selectOngoingDocList(PageInfoDto pi) {
+	public int selectCountOngoingBoardList(Map<String, String> map) {
+		return sqlSessionTemplate.selectOne("approvalMapper.selectCountOngoingBoardList", map);
+	}
+
+	public List<ApprovalDocDto> selectOngoingDocList(PageInfoDto pi, Map<String, String> map) {
 		RowBounds rowBounds = new RowBounds((pi.getCurrentPage() - 1) * pi.getBoardLimit(), pi.getBoardLimit());
-		return sqlSessionTemplate.selectList("approvalMapper.selectOngoingDocList", null, rowBounds);
+		return sqlSessionTemplate.selectList("approvalMapper.selectOngoingDocList", map, rowBounds);
+	}
+
+	public ApprovalDocDto selectAppDoc(int no) {
+		return sqlSessionTemplate.selectOne("approvalMapper.selectAppDoc", no);
+	}
+
+	public List<ApproverDto> selectApproverByDocNo(int no) {
+		return sqlSessionTemplate.selectList("approvalMapper.selectApproverByDocNo", no);
+	}
+
+	public int selectCountReceiveBoardList(Map<String, String> map) {
+		return sqlSessionTemplate.selectOne("approvalMapper.selectCountReceiveBoardList", map);
+	}
+
+	public List<ApprovalDocDto> selectReceiveBoardList(PageInfoDto pi, Map<String, String> map) {
+		RowBounds rowBounds = new RowBounds((pi.getCurrentPage() - 1) * pi.getBoardLimit(), pi.getBoardLimit());
+		return sqlSessionTemplate.selectList("approvalMapper.selectReceiveBoardList", map, rowBounds);
 	}
 	
 }

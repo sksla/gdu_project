@@ -1,12 +1,15 @@
 package com.cu.gdu.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
 import com.cu.gdu.dao.ApprovalDao;
 import com.cu.gdu.dto.ApprovalDocDto;
 import com.cu.gdu.dto.ApprovalFormDto;
+import com.cu.gdu.dto.ApproverDto;
+import com.cu.gdu.dto.AttachDto;
 import com.cu.gdu.dto.CollegeDto;
 import com.cu.gdu.dto.MemberDto;
 import com.cu.gdu.dto.PageInfoDto;
@@ -45,14 +48,15 @@ public class ApprovalServiceImpl implements ApprovalService {
 	}
 
 	@Override
-	public List<MemberDto> selectMemberByMajor(int majorNo) {
-		return approvalDao.selectMemberByMajor(majorNo);
+	public List<MemberDto> selectMemberByMajor(MemberDto member) {
+		return approvalDao.selectMemberByMajor(member);
 	}
 
 	@Override
 	public int insertApp(ApprovalDocDto appDoc, int approverNo, int receiverNo, String[] collaboratorNo) {
 		
 		int result1 = approvalDao.insertAppDoc(appDoc);
+		
 		int result2 = 1;
 		if(Integer.parseInt(appDoc.getStatus()) != 0) {
 			result2 = 0;
@@ -65,7 +69,14 @@ public class ApprovalServiceImpl implements ApprovalService {
 			result2 += approvalDao.insertApprover(receiverNo, 30);
 		}
 		
-		return result1 * result2;
+		int result3 = 0;
+		if(!appDoc.getAttachList().isEmpty()) {
+			for(AttachDto att : appDoc.getAttachList()) {
+				result3 += approvalDao.insertAppAttach(att);
+			}
+		}
+		
+		return result1 * (result2 + result3);
 	}
 
 	@Override
@@ -79,13 +90,33 @@ public class ApprovalServiceImpl implements ApprovalService {
 	}
 	
 	@Override
-	public int selectCountOngoingBoardList() {
-		return approvalDao.selectCountOngoingBoardList();
+	public int selectCountOngoingBoardList(Map<String, String> map) {
+		return approvalDao.selectCountOngoingBoardList(map);
 	}
 
 	@Override
-	public List<ApprovalDocDto> selectOngoingDocList(PageInfoDto pi) {
-		return approvalDao.selectOngoingDocList(pi);
+	public List<ApprovalDocDto> selectOngoingDocList(PageInfoDto pi, Map<String, String> map) {
+		return approvalDao.selectOngoingDocList(pi, map);
+	}
+
+	@Override
+	public int selectCountReceiveBoardList(Map<String, String> map) {
+		return approvalDao.selectCountReceiveBoardList(map);
+	}
+
+	@Override
+	public List<ApprovalDocDto> selectReceiveBoardList(PageInfoDto pi, Map<String, String> map) {
+		return approvalDao.selectReceiveBoardList(pi, map);
+	}
+
+	@Override
+	public ApprovalDocDto selectAppDoc(int no) {
+		return approvalDao.selectAppDoc(no);
+	}
+
+	@Override
+	public List<ApproverDto> selectApproverByDocNo(int no) {
+		return approvalDao.selectApproverByDocNo(no);
 	}
 
 	

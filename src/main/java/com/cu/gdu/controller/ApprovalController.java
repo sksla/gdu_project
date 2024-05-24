@@ -1,6 +1,13 @@
 package com.cu.gdu.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,14 +16,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cu.gdu.dto.ApprovalDocDto;
 import com.cu.gdu.dto.ApprovalFormDto;
+import com.cu.gdu.dto.ApproverDto;
+import com.cu.gdu.dto.AttachDto;
 import com.cu.gdu.dto.CollegeDto;
 import com.cu.gdu.dto.MemberDto;
 import com.cu.gdu.dto.PageInfoDto;
 import com.cu.gdu.service.ApprovalService;
+import com.cu.gdu.util.FileUtil;
 import com.cu.gdu.util.PagingUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -30,6 +41,7 @@ public class ApprovalController {
 	
 	private final ApprovalService approvalService;
 	private final PagingUtil pagingUtil;
+	private final FileUtil fileUtil;
 	
 	// 전자결재 메인페이지
 	@GetMapping("/main.do")
@@ -102,8 +114,9 @@ public class ApprovalController {
 	// 학과별 직원 조회
 	@GetMapping(value="/memberList.do", produces="application/json; charset=utf-8;")
 	@ResponseBody
-	public List<MemberDto> ajaxMemberList(int majorNo){
-		return approvalService.selectMemberByMajor(majorNo);
+	public List<MemberDto> ajaxMemberList(MemberDto member, HttpSession session){
+		member.setMemNo( ( (MemberDto)session.getAttribute("loginUser") ).getMemNo() );
+		return approvalService.selectMemberByMajor(member);
 	}
 	
 	// 결재문서 등록
@@ -112,9 +125,27 @@ public class ApprovalController {
 								 int approverNo, 
 								 int receiverNo,
 								 String[] collaboratorNo,
+								 List<MultipartFile> uploadFiles,
+								 HttpSession session,
 								 RedirectAttributes redirectAttributes) {
+		
+		List<AttachDto> attachList = new ArrayList<>();
+		if(!uploadFiles.isEmpty()) {
+			for(MultipartFile uploadFile : uploadFiles) {
+				if(uploadFile != null && !uploadFile.isEmpty()) {
+					Map<String, String> map = fileUtil.fileUpload(uploadFile, session, "approval");	
+					attachList.add(AttachDto.builder().filePath(map.get("filePath"))
+							  .filesystemName(map.get("filesystemName"))
+							  .originalName(map.get("originalName"))
+							  .build()
+							  );
+				}
+			}
+		}
+		appDoc.setAttachList(attachList);
+		
 		int result = approvalService.insertApp(appDoc, approverNo, receiverNo, collaboratorNo);
-		int success = (collaboratorNo != null ? collaboratorNo.length : 0) + 2;
+		int success = (collaboratorNo != null ? collaboratorNo.length : 0) + 2 + appDoc.getAttachList().size();
 		if(result == success) {
 			redirectAttributes.addFlashAttribute("alertMsg", "결재문서를 기안했습니다.");
 		} else {
@@ -125,16 +156,123 @@ public class ApprovalController {
 	}
 	
 	// **************************** 결재 보관함 ****************************
-	// 진행중인 결재문서 조회
-	@GetMapping("/ongoingBoard.page")
-	public String ongoinBoardPage(@RequestParam(value="page", defaultValue="1")int currenrPage, Model model) {
+	// 검색 조건별 진행중인 결재문서 조회
+	@GetMapping("/ongoingBoard.do")
+	public String ongoinBoardPage(@RequestParam(value="page", defaultValue="1")int currenrPage
+								, @RequestParam(value="category", defaultValue="all")String category
+								, @RequestParam(value="status", defaultValue="all")String status
+								, String docStatus
+								, String search
+								, String startDate
+								, String endDate
+								, HttpSession session
+								, Model model) {
 		model.addAttribute("appCategories", approvalService.selectAppCategory());
-		int listCount = approvalService.selectCountOngoingBoardList();
-		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currenrPage, 5, 8);
-		log.debug("{}", approvalService.selectOngoingDocList(pi));
-		model.addAttribute("appDocList", approvalService.selectOngoingDocList(pi));
+		
+		Map<String, String> map = new HashMap<>();
+		map.put("loginUserNo", String.valueOf(((MemberDto)session.getAttribute("loginUser")).getMemNo()) );
+		map.put("category", category);
+		map.put("docStatus", docStatus == null ? "" : docStatus);
+		map.put("status", status);
+		map.put("search", search == null ? "" : search);
+		map.put("startDate", startDate == null ? "2024-01-01" : startDate);
+		map.put("endDate", endDate == null ? new SimpleDateFormat("yyyy-MM-dd").format(new Date()) : endDate);
+		PageInfoDto pi = pagingUtil.getPageInfoDto(approvalService.selectCountOngoingBoardList(map)
+												 , currenrPage
+												 , 5
+												 , 8);
+		
+		String keywordString = "category=" + map.get("category") + 
+							   "&status=" + map.get("status") + 
+							   "&search=" + map.get("search") + 
+							   "&startDate=" + map.get("startDate") + 
+							   "&docStstus=" + map.get("socStatus") + 
+							   "&endDate=" + map.get("endDate");
+		
+		model.addAttribute("appDocList", approvalService.selectOngoingDocList(pi, map));
 		model.addAttribute("pi", pi);
+		model.addAttribute("optionMap", map);
+		model.addAttribute("keywordString", keywordString);
+		
 		return "approval/ongoingBoard";
+	}
+	
+	// 검색 조건별 결재할 문서 조회
+	@GetMapping("/receiveBoard.do")
+	public String receiveBoardPage(@RequestParam(value="page", defaultValue="1")int currenrPage
+								, @RequestParam(value="category", defaultValue="all")String category
+								, @RequestParam(value="status", defaultValue="all")String status
+								, String search
+								, String searchType
+								, String startDate
+								, String endDate
+								, HttpSession session
+								, Model model) {
+		model.addAttribute("appCategories", approvalService.selectAppCategory());
+		
+		Map<String, String> map = new HashMap<>();
+		map.put("loginUserNo", String.valueOf(((MemberDto)session.getAttribute("loginUser")).getMemNo()) );
+		map.put("category", category);
+		map.put("status", status);
+		map.put("search", search == null ? "" : search);
+		map.put("searchType", searchType == null ? "" : searchType);
+		map.put("startDate", startDate == null ? "2024-01-01" : startDate);
+		map.put("endDate", endDate == null ? new SimpleDateFormat("yyyy-MM-dd").format(new Date()) : endDate);
+		PageInfoDto pi = pagingUtil.getPageInfoDto(approvalService.selectCountReceiveBoardList(map)
+												 , currenrPage
+												 , 5
+												 , 8);
+		
+		String keywordString = "category=" + map.get("category") + 
+							   "&status=" + map.get("status") + 
+							   "&search=" + map.get("search") + 
+							   "&searchType=" + map.get("searchType") + 
+							   "&startDate=" + map.get("startDate") + 
+							   "&endDate=" + map.get("endDate");
+		
+		model.addAttribute("appDocList", approvalService.selectReceiveBoardList(pi, map));
+		model.addAttribute("pi", pi);
+		model.addAttribute("optionMap", map);
+		model.addAttribute("keywordString", keywordString);
+		
+		return "approval/receiveBoard";
+	}
+	
+	// 전자결재 상세페이지
+	@PostMapping("/detail.do")
+	public String appDetail(int no, Model model) {
+		
+		model.addAttribute("docInfo", approvalService.selectAppDoc(no));
+		
+		List<ApproverDto> collaboratorList = approvalService.selectApproverByDocNo(no);
+		ApproverDto approver = null;
+		ApproverDto receiver = null;
+		for(ApproverDto ap : collaboratorList) {
+			if(ap.getAppType().equals("결재")) {
+				approver = ap;
+			}if (ap.getAppType().equals("수신")) {
+				receiver = ap;
+			}
+		}
+		collaboratorList.remove(approver);
+		collaboratorList.remove(receiver);
+		
+		model.addAttribute("collaboratorList", collaboratorList);
+		model.addAttribute("approver", approver);
+		model.addAttribute("receiver", receiver);
+		
+		return "approval/appDetail";
+	}
+	
+	@GetMapping("/detail.do")
+	public String appDetailGet(RedirectAttributes redirectAttributes) {
+		redirectAttributes.addFlashAttribute("alertMsg", "부적절한 접근입니다.");
+		return "redirect:/approval/ongoingBoard.do";
+	}
+	
+	@GetMapping("/approve.do")
+	public String approve() {
+		return "redirect:/approval/receiveBoard.do";
 	}
 	
 }

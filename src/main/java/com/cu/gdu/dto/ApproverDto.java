@@ -16,8 +16,11 @@ import lombok.ToString;
 public class ApproverDto {
 	
 	private int approverNo;
-	private String approver;
 	private int docNo;
-	private int appType;
+	private String appType;
+	private String isApproved;
+	private String appDate;
+	
+	private MemberDto approver;
 	
 }
