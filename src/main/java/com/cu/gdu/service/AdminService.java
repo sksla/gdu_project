@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.cu.gdu.dto.AttendDto;
 import com.cu.gdu.dto.CollegeDto;
+import com.cu.gdu.dto.InsertDateDto;
 import com.cu.gdu.dto.JobDto;
 import com.cu.gdu.dto.MajorDto;
 import com.cu.gdu.dto.MemberDto;
@@ -134,6 +135,19 @@ public interface AdminService {
 	// 직원 근태페이지 오늘날짜만 조회시 직원수
 	int ajaxTodayMemberAttendListCount(Map<String, Object> map);
 	
-	//
+	// 직원 근태페이지 오늘날짜만 조회시 직원리스트
 	List<AttendDto> ajaxTodayMemberAttendList(Map<String, Object> map);
+	
+	// 강의등록기간 조회
+	InsertDateDto selectLecInsertDate();
+	
+	// 학생등록기간 조회
+	InsertDateDto selectStuInsertDate();
+	
+	// 강의등록기간 수정
+	int updateLecDate(InsertDateDto inDate);
+	
+	// 학생등록기간 수정
+	int updateStuDate(InsertDateDto inDate);
+	
 }

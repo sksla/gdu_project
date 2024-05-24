@@ -411,7 +411,8 @@
               </script>
 
               <div class="setDate">
-                <form action="" method="">
+                <form action="${contextPath}/admin/updateLecDate.do" method="get">
+                	<input type="hidden" name="insertType" value="1">
                   <div class="setRecture">
                     <span style="font-size: 30px; font-weight: bold; color: black;">강의등록기간</span>
                     <input type="checkbox" style="zoom: 2.0;" class="setRectureCheck"> <br><br>
@@ -421,7 +422,7 @@
                           <label for="startDate3" class="form-label fw-semibold col-sm-3 col-form-label">기존 강의등록기간</label>
                           <div class="col-sm-9">
                             <div class="input-group">
-                              <input class="form-control" type="text" value="YY-MM-DD~YY-MM-DD" id="example-search-input" disabled/>
+                              <input class="form-control" type="text" value="${lecDate.startDate} ~ ${lecDate.endDate}" id="example-search-input" disabled/>
                             </div>
                           </div>
                         </div>
@@ -429,14 +430,14 @@
                           <label for="startDate3" class="form-label fw-semibold col-sm-3 col-form-label">신규 강의등록시작일</label>
                           <div class="col-sm-9">
                             <div class="input-group">
-                              <input class="form-control startRectureDate" type="date" name="" id="example-search-input" />
+                              <input class="form-control startRectureDate" type="date" name="startDate" id="example-search-input" />
                             </div>
                           </div>
                           <br><br>
                           <label for="startDate3" class="form-label fw-semibold col-sm-3 col-form-label">신규 강의등록종료일</label>
                           <div class="col-sm-9">
                             <div class="input-group">
-                              <input class="form-control endRectureDate" type="date" name="" id="example-search-input" />
+                              <input class="form-control endRectureDate" type="date" name="endDate" id="example-search-input" />
                             </div>
                           </div>
                         </div>
@@ -450,7 +451,8 @@
                 
                 <br><br>
                 <hr>
-                <form action="" method="">
+                <form action="${contextPath}/admin/updateStuDate.do" method="get">
+                	<input type="hidden" name="insertType" value="2">
                   <div class="setStudent">
                     <span style="font-size: 30px; font-weight: bold; color: black;">학생등록기간</span>
                     <input type="checkbox" style="zoom: 2.0;" class="setStudentCheck"> <br><br>
@@ -460,7 +462,7 @@
                           <label for="startDate3" class="form-label fw-semibold col-sm-3 col-form-label">기존 학생등록기간</label>
                           <div class="col-sm-9">
                             <div class="input-group">
-                              <input class="form-control" type="text" value="YY-MM-DD~YY-MM-DD" id="example-search-input" disabled/>
+                              <input class="form-control" type="text" value="${stuDate.startDate} ~ ${stuDate.endDate}" id="example-search-input" disabled/>
                             </div>
                           </div>
                         </div>
@@ -468,14 +470,14 @@
                           <label for="startDate3" class="form-label fw-semibold col-sm-3 col-form-label">신규 학생등록시작일</label>
                           <div class="col-sm-9">
                             <div class="input-group">
-                              <input class="form-control startStuDate" type="date" name="" id="example-search-input" />
+                              <input class="form-control startStuDate" type="date" name="startDate" id="example-search-input" />
                             </div>
                           </div>
                           <br><br>
                           <label for="startDate3" class="form-label fw-semibold col-sm-3 col-form-label">신규 학생등록종료일</label>
                           <div class="col-sm-9">
                             <div class="input-group">
-                              <input class="form-control endStuDate" type="date" name="" id="example-search-input" />
+                              <input class="form-control endStuDate" type="date" name="endDate" id="example-search-input" />
                             </div>
                           </div>
                         </div>

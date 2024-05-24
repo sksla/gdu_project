@@ -82,6 +82,7 @@
 	  color: blue;
 	  text-decoration: none;
 	}
+	.leaveGo{cursor: pointer;}
 	/* 그래프 스타일 */
 	#content2{
 		width: 1100px;
@@ -196,7 +197,7 @@
 	                
 	                <div id="leaveAndRegister"><!--신청받은연차&강의학생등록기간-->
 	                  <div id="leave"> <!--신청받은연차-->
-	                    <p class="fs-7 fw-semibold">신청받은연차 +</p>
+	                    <p class="fs-7 fw-semibold leaveGo" onclick="location.href='${contextPath}/admin/requestMemberLeave.page'">신청받은연차 +</p>
 	                    <div class="table-responsive mb-4">
 	                      <table class="table border text-nowrap mb-0 align-middle">
 	                        <thead class="text-dark fs-4" align="center">
@@ -272,7 +273,7 @@
 	                              <p class="mb-0 fw-normal fs-4">강의등록</p>
 	                            </td>
 	                            <td>
-	                              <p class="mb-0 fw-normal fs-4">YYYY/MM/DD~YYYY/MM/DD</p>
+	                              <p class="mb-0 fw-normal fs-4">${lecDate.startDate} ~ ${lecDate.endDate}</p>
 	                            </td>
 	                          </tr>
 	                          <tr>
@@ -280,7 +281,7 @@
 	                              <p class="mb-0 fw-normal fs-4">학생등록</p>
 	                            </td>
 	                            <td>
-	                              <p class="mb-0 fw-normal fs-4">YYYY/MM/DD~YYYY/MM/DD</p>
+	                              <p class="mb-0 fw-normal fs-4">${stuDate.startDate} ~ ${stuDate.endDate}</p>
 	                            </td>
 	                          </tr>
 	                        </tbody>

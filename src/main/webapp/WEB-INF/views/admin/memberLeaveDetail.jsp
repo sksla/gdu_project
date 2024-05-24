@@ -176,7 +176,7 @@
 
               <div align="center">
                 <button type="button" class="btn btn-secondary"  data-bs-toggle="modal" data-bs-target="#addLeaveModal">연차(보상)추가</button>
-                <button type="button" class="btn btn-secondary">뒤로가기</button>
+                <button type="button" class="btn btn-secondary" onclick="history.back();">뒤로가기</button>
               </div>
 
 

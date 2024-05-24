@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.cu.gdu.dao.AdminDao;
 import com.cu.gdu.dto.AttendDto;
 import com.cu.gdu.dto.CollegeDto;
+import com.cu.gdu.dto.InsertDateDto;
 import com.cu.gdu.dto.JobDto;
 import com.cu.gdu.dto.MajorDto;
 import com.cu.gdu.dto.MemberDto;
@@ -291,6 +292,30 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public List<AttendDto> ajaxTodayMemberAttendList(Map<String, Object> map) {
 		return adminDao.ajaxTodayMemberAttendList(map);
+	}
+
+	// 강의등록기간 조회
+	@Override
+	public InsertDateDto selectLecInsertDate() {
+		return adminDao.selectLecInsertDate();
+	}
+
+	// 학생등록기간 조회
+	@Override
+	public InsertDateDto selectStuInsertDate() {
+		return adminDao.selectStuInsertDate();
+	}
+
+	// 강의등록기간 수정
+	@Override
+	public int updateLecDate(InsertDateDto inDate) {
+		return adminDao.updateLecDate(inDate);
+	}
+
+	// 학생등록기간 수정
+	@Override
+	public int updateStuDate(InsertDateDto inDate) {
+		return adminDao.updateStuDate(inDate);
 	}
 
 

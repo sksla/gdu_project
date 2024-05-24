@@ -22,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.cu.gdu.dao.MemberDao;
 import com.cu.gdu.dto.AttendDto;
 import com.cu.gdu.dto.CollegeDto;
+import com.cu.gdu.dto.InsertDateDto;
 import com.cu.gdu.dto.JobDto;
 import com.cu.gdu.dto.MajorDto;
 import com.cu.gdu.dto.MemberDto;
@@ -228,6 +229,10 @@ public class AdminController {
 	@GetMapping("/adminDashboard.do")
 	public String adminDashboard(Model model) {
 		List<VacationDto> vacList = adminService.selectDashboardVacation();
+		InsertDateDto lecDate = adminService.selectLecInsertDate();
+		InsertDateDto stuDate = adminService.selectStuInsertDate();
+		model.addAttribute("lecDate", lecDate);
+		model.addAttribute("stuDate", stuDate);
 		model.addAttribute("vacList", vacList);
 		//log.debug("vacList: {}", vacList);
 		for(VacationDto v : vacList) {
@@ -259,6 +264,10 @@ public class AdminController {
 		List<MajorDto> majorList = adminService.selectAdminSetMajorList();
 		List<JobDto> jobList = adminService.selectJobList();
 		List<JobDto> jobListAll = adminService.selectAdminSetJobList();
+		InsertDateDto lecDate = adminService.selectLecInsertDate();
+		InsertDateDto stuDate = adminService.selectStuInsertDate();
+		model.addAttribute("lecDate", lecDate);
+		model.addAttribute("stuDate", stuDate);
 		model.addAttribute("jobListAll", jobListAll);
 		model.addAttribute("jobList", jobList);
 		model.addAttribute("colList", colList);
@@ -313,6 +322,28 @@ public class AdminController {
 			redirectAttributes.addFlashAttribute("alertMsg", "직급을 수정했습니다.");
 		}else {
 			redirectAttributes.addFlashAttribute("alertMsg", "직급수정에 실패했습니다.");
+		}
+		return "redirect:/admin/setting.do";
+	}
+	
+	@GetMapping("/updateLecDate.do")
+	public String updateLecDate(InsertDateDto inDate, RedirectAttributes redirectAttributes) {
+		int result = adminService.updateLecDate(inDate);
+		if(result == 1) {
+			redirectAttributes.addFlashAttribute("alertMsg", "강의등록기간을 수정했습니다.");
+		}else {
+			redirectAttributes.addFlashAttribute("alertMsg", "강의등록기간수정에 실패했습니다.");
+		}
+		return "redirect:/admin/setting.do";
+	}
+	
+	@GetMapping("/updateStuDate.do")
+	public String updateStuDate(InsertDateDto inDate, RedirectAttributes redirectAttributes) {
+		int result = adminService.updateStuDate(inDate); 
+		if(result == 1) {
+			redirectAttributes.addFlashAttribute("alertMsg", "학생등록기간을 수정했습니다.");
+		}else {
+			redirectAttributes.addFlashAttribute("alertMsg", "학생등록기간수정에 실패했습니다.");
 		}
 		return "redirect:/admin/setting.do";
 	}

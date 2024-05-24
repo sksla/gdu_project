@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.cu.gdu.dto.AttendDto;
 import com.cu.gdu.dto.CollegeDto;
+import com.cu.gdu.dto.InsertDateDto;
 import com.cu.gdu.dto.JobDto;
 import com.cu.gdu.dto.MajorDto;
 import com.cu.gdu.dto.MemberDto;
@@ -275,6 +276,26 @@ public class AdminDao {
 		int offset = (pi.getCurrentPage()-1) * limit;
 		RowBounds rowBounds = new RowBounds(offset, limit);
 		return sqlSessionTemplate.selectList("adminMapper.ajaxTodayMemberAttendList", map, rowBounds);
+	}
+	
+	// 강의등록기간 조회
+	public InsertDateDto selectLecInsertDate() {
+		return sqlSessionTemplate.selectOne("adminMapper.selectLecInsertDate");
+	}
+	
+	// 학생등록기간 조회
+	public InsertDateDto selectStuInsertDate() {
+		return sqlSessionTemplate.selectOne("adminMapper.selectStuInsertDate");
+	}
+	
+	// 강의등록기간 수정
+	public int updateLecDate(InsertDateDto inDate) {
+		return sqlSessionTemplate.update("adminMapper.updateLecDate", inDate);
+	}
+	
+	// 학생등록기간 수정
+	public int updateStuDate(InsertDateDto inDate) {
+		return sqlSessionTemplate.update("adminMapper.updateStuDate", inDate);
 	}
 	
 }

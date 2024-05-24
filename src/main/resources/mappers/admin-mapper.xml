@@ -80,6 +80,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   	<result column="vac_type" property="vacType" />
   	<result column="vac_type_date" property="vacTypeDate" />
   </resultMap>
+  
+  <resultMap type="InsertDateDto" id="insertDateResult">
+  	<id column="insert_No" property="insertNo" />
+  	<result column="start_Date" property="startDate" />
+  	<result column="end_Date" property="endDate" />
+  	<result column="insert_Type" property="insertType" />
+  </resultMap>
 
   <select id="selectCollegeList" resultMap="collegeResult">
   	select
@@ -834,5 +841,39 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 where member.status != 'Y'
 			 and to_char(regist_date, 'YYYY-MM-DD') = #{startDate}
 	</select>
+	
+	<select id="selectLecInsertDate" resultMap="insertDateResult">
+		select
+				   insert_no
+				 , to_char(start_date, 'YYYY-MM-DD') start_date
+				 , to_char(end_date, 'YYYY-MM-DD') end_date
+				 , insert_type
+			from insert_date
+		 where insert_type = '1'
+	</select>
+	
+	<select id="selectStuInsertDate" resultMap="insertDateResult">
+		select
+				   insert_no
+				 , to_char(start_date, 'YYYY-MM-DD') start_date
+				 , to_char(end_date, 'YYYY-MM-DD') end_date
+				 , insert_type
+			from insert_date
+		 where insert_type = '2'
+	</select>
+	
+	<update id="updateLecDate">
+		update insert_date
+		   set start_date = #{startDate}
+		     , end_date = #{endDate}
+		 where insert_type = #{insertType}
+	</update>
+	
+	<update id="updateStuDate">
+		update insert_date
+		   set start_date = #{startDate}
+		     , end_date = #{endDate}
+		 where insert_type = #{insertType}
+	</update>
 	
 </mapper>
