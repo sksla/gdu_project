@@ -32,8 +32,8 @@ public class LectureDao {
 	public List<LecStuDto> selectStuAttendList() {
 		return sqlSessionTemplate.selectList("lectureMapper.selectStuAttendList");
 	}
-	public List<LecStuDto> selectStuListForLec(int lecNo) {
-		return sqlSessionTemplate.selectList("lectureMapper.selectStuListForLec");
+	public List<LecStuDto> selectStuListForLec(String lecNo) {
+		return sqlSessionTemplate.selectList("lectureMapper.selectStuListForLec",lecNo);
 	}
 
 

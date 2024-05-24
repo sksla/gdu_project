@@ -32,7 +32,7 @@ public class LectureServiceImpl implements LectureService {
 		return lectureDao.selectStuAttendList();
 	}
 	@Override
-	public List<LecStuDto> selectStuListForLec(int lecNo) {
+	public List<LecStuDto> selectStuListForLec(String lecNo) {
 		return lectureDao.selectStuListForLec(lecNo);
 	}
 	

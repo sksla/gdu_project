@@ -116,7 +116,7 @@
 	              	</c:when>
 	              	<c:otherwise>
 	              		<div class="form-group" style="width: 100px;">
-								      <select class="form-select w-auto" id="lectureSelect" onchange="handleChange()" onclick="handleClick()">
+								      <select class="form-select w-auto" id="lectureSelect" name="lectureSelect" onchange="handleChange();">
 								      	<c:forEach var="lec" items="${leclist}">
 									    		<option value="${lec.lecNo}">${lec.lecName}</option>
 									    	</c:forEach>
@@ -126,10 +126,15 @@
 	              </c:choose>
 							</div>
               <div class="attend_rate">출석율</div>
-            </div> 
+            </div>
+            
+            
+             
             <div class="attend_content3">
               <div class="list">
                 <div class="card-body p-4">
+                
+                <!-- 날짜 / 버튼 영역 -->
                   <div class="d-flex flex-row justify-content-between">
                     <!-- 날짜 -->
                     <!-- start Input Type Date Time -->
@@ -149,69 +154,140 @@
                     </div>
                   </div> 
 
-                  <!-- 1번 양식 -->
-                  <div class="table-responsive mb-4">
-                    <table class="table border text-nowrap mb-0 align-middle app_doc_table overflow-hidden">
-                      <thead class="text-dark fs-4">
-                        <tr>
-                          <th>
-                            <input type="checkbox" name="" id="checkAll">
-                          </th>
-                          <th width="100px">
-                            <h6 class="fs-4 fw-semibold mb-0">번호</h6>
-                          </th>
-                          <th width="200px">
-                            <h6 class="fs-4 fw-semibold mb-0">사진</h6>
-                          </th>
-                          <th width="200px">
-                            <h6 class="fs-4 fw-semibold mb-0">학과</h6>
-                          </th>
-                          <th width="200px">
-                            <h6 class="fs-4 fw-semibold mb-0">학번</h6>
-                          </th>
-                          <th width="200px">
-                            <h6 class="fs-4 fw-semibold mb-0">이름</h6>
-                          </th>
-                          <th width="100px">
-                            <h6 class="fs-4 fw-semibold mb-0">출석</h6>
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody id="myTable">
-                        <c:choose>
-	                        <c:when test="${ empty stulist }">
-		                        <tr>
-		                        	<td colspan="7"> 수강신청한 학생이 없습니다.</td>
-		                        </tr>
-	                        </c:when>
-	                        <c:otherwise>
-		                        <c:forEach var="a" items="${stulist}">
+                  <!-- 학생리스트 -->
+                  <div class="result">
+	                  <div class="table-responsive mb-4">
+	                    <table class="table border text-nowrap mb-0 align-middle app_doc_table overflow-hidden">
+	                      <thead class="text-dark fs-4">
+	                        <tr>
+	                          <th>
+	                            <input type="checkbox" name="" id="checkAll">
+	                          </th>
+	                          <th width="100px">
+	                            <h6 class="fs-4 fw-semibold mb-0">번호</h6>
+	                          </th>
+	                          <th width="200px">
+	                            <h6 class="fs-4 fw-semibold mb-0">사진</h6>
+	                          </th>
+	                          <th width="200px">
+	                            <h6 class="fs-4 fw-semibold mb-0">학과</h6>
+	                          </th>
+	                          <th width="200px">
+	                            <h6 class="fs-4 fw-semibold mb-0">학번</h6>
+	                          </th>
+	                          <th width="200px">
+	                            <h6 class="fs-4 fw-semibold mb-0">이름</h6>
+	                          </th>
+	                          <th width="100px">
+	                            <h6 class="fs-4 fw-semibold mb-0">출석</h6>
+	                          </th>
+	                        </tr>
+	                      </thead>
+	                      <tbody id="myTable">
+	                        <c:choose>
+		                        <c:when test="${ empty stulist }">
 			                        <tr>
-				                        <td height="50px"><input type="checkbox" name="" id=""></td>
-				                        <td><p class="mb-0 fw-normal fs-4">${a.lecstuNo}</p></td>
-				                        <td><p class="mb-0 fw-normal fs-4">사진</p></td>
-				                        <td><p class="mb-0 fw-normal fs-4">${a.majorName}</p></td>
-				                        <td><p class="mb-0 fw-normal fs-4">${a.stuNo}</p></td>
-				                        <td><p class="mb-0 fw-normal fs-4">${a.stuName}</p></td>
-				                        <td>
-					                        <div class="form-group" style="width: 100px;">
-						                        <select class="form-select w-auto">
-							                        <option value="Y">출석</option>
-							                        <option value="N">결석</option>
-							                        <option value="E">조퇴</option>
-							                        <option value="A">공결</option>
-						                        </select>
-					                        </div>
-				                        </td>
+			                        	<td colspan="7"> 수강신청한 학생이 없습니다.</td>
 			                        </tr>
-		                        </c:forEach>
-	                        </c:otherwise>
-                        </c:choose>
-                      </tbody>
-                    </table>
-                  </div>
+		                        </c:when>
+		                        <c:otherwise>
+			                        <c:forEach var="a" items="${stulist}">
+				                        <tr>
+					                        <td height="50px"><input type="checkbox" name="" id=""></td>
+					                        <td><p class="mb-0 fw-normal fs-4">${a.lecstuNo}</p></td>
+					                        <td><p class="mb-0 fw-normal fs-4">사진</p></td>
+					                        <td><p class="mb-0 fw-normal fs-4">${a.majorName}</p></td>
+					                        <td><p class="mb-0 fw-normal fs-4">${a.stuNo}</p></td>
+					                        <td><p class="mb-0 fw-normal fs-4">${a.stuName}</p></td>
+					                        <td>
+						                        <div class="form-group" style="width: 100px;">
+							                        <select class="form-select w-auto">
+								                        <option value="Y">출석</option>
+								                        <option value="N">결석</option>
+								                        <option value="E">조퇴</option>
+								                        <option value="A">공결</option>
+							                        </select>
+						                        </div>
+					                        </td>
+				                        </tr>
+			                        </c:forEach>
+		                        </c:otherwise>
+	                        </c:choose>
+	                      </tbody>
+	                    </table>
+	                  </div>
                   <script>
-               		// 강의 선택이 변경될 때 실행되는 함수
+               		// handleChange 함수 정의
+                  // handleChange 함수 정의
+function handleChange() {
+  var selectElement = document.getElementById('lectureSelect');
+  var lecNo = selectElement.value; // 선택된 강의의 번호
+
+//빈 문자열이거나 숫자가 아닌 경우 처리
+  if (!lecNo || isNaN(parseInt(lecNo))) {
+    console.error('Invalid Lecture Number:', lecNo);
+    return; // 올바르지 않은 경우 처리 중단
+  }else{
+	// AJAX 호출
+		$.ajax({
+			url: '${contextPath}/lec/stuListForLec.do', // 서버 URL
+			method: 'GET',
+			data: {lecNo:lecNo}, // 선택된 강의 번호를 전달
+			success: function(result) {
+								let tbody = "";
+								console.log(result);
+								
+								if(result.length > 0){
+									
+									for(let i=0; i<result.length; i++){
+										
+										
+										tbody  += "<tr>"
+														+ 	"<td height='50px'>" + "<input type='checkbox' name='' id=''>" + "</td>"
+														+ 	"<td><p class='mb-0 fw-normal fs-4'>" + (i + 1) + "</p></td>"
+														+ 	"<td><p class='mb-0 fw-normal fs-4'>" + result[i].사진 + "</p></td>"
+														+ 	"<td><p class='mb-0 fw-normal fs-4'>" + result[i].majorName + "</p></td>"
+														+ 	"<td><p class='mb-0 fw-normal fs-4'>" + result[i].stuNo + "</p></td>"
+														+ 	"<td><p class='mb-0 fw-normal fs-4'>" + result[i].stuName + "</p></td>"
+								                        
+														+ 	"<td>"  
+									          +   	"<div class='form-group' style='width: 100px;'>" 
+									          +				"<select class='form-select w-auto'>" 
+									          +					"<option value='Y'>출석</option>" +
+									          +					"<option value='N'>결석</option>" +
+									          +					"<option value='E'>조퇴</option>" +
+									          +					"<option value='A'>공결</option>" +
+									          +				"</select>" 
+									          +			"</div>"
+									          + 	"</td>"
+					                  + "</tr>";							
+														
+									}
+									
+								}else{
+									tbody += "<tr><td colspan='7'>수강신청한 학생이 없습니다.</td></tr>";
+								}
+								
+					
+								$("#myTable").html(tbody);
+	            },
+		error: function(xhr, status, error) {
+						console.error(xhr, status, error); // 에러 처리
+        console.log("ajax 통신실패");
+      }
+  });
+  }
+  
+  console.log("handleChange selectElement :",selectElement);
+  console.log("handleChange lecno :", lecNo);
+}  
+  
+  
+  
+  
+  // AJAX 호출
+  // 강의 선택이 변경될 때 실행되는 함수
+  /*
 							    $('#lectureSelect').change(function() {
 										var lecNo = $(this).val(); // 선택된 강의의 번호
 										// AJAX 호출
@@ -257,13 +333,26 @@
 							            }
 							        });
 							    });
-							
+							*/
 							    // 서버에서 받은 출석 리스트를 화면에 표시하는 함수
 							    function displayStuAttendList(data) {
 							        // 받은 데이터를 화면에 표시하는 코드 작성
 							        $('#StuAttendList').html(data);
 							    }
+
 									</script>
+									
+									
+									</div>
+									
+									
+									
+									
+									
+									
+									</div>
+									
+									
                 </div>
               </div>
             </div>

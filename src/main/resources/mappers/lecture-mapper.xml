@@ -52,7 +52,8 @@
 	<!-- 교수 강의목록 -->
 	<select id="selectLectureList" resultMap="lectureResult">
 		select
-		lec_name
+		lec_no
+		,lec_name
 		from lecture
 		where mem_no=#{memNo}
 	</select>
@@ -60,7 +61,8 @@
 	<!-- 학생 출석목록 -->
 	<select id="selectStuAttendList" resultMap="lecStuResult">
 		select
-		lec_no
+		lecstu_no
+		,lec_no
 		, file_no
     , file_path
     , filesystem_name

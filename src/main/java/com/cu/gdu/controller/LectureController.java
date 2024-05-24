@@ -65,7 +65,7 @@ public class LectureController {
 	
 	@ResponseBody
 	@GetMapping(value="/stuListForLec.do", produces="application/json; charset=UTF-8")
-	public List<LecStuDto> ajaxstuListForLec(int lecNo){
+	public List<LecStuDto> ajaxstuListForLec(String lecNo){
 		List<LecStuDto> lecList = lectureService.selectStuListForLec(lecNo);
 		log.debug("목록들: {}", lecList);
 		return lecList;

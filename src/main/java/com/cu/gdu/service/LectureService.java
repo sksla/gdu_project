@@ -13,7 +13,7 @@ public interface LectureService {
 	int selectStuAttendListCount();
 	List<LectureDto> selectLectureList(int memNo);
 	List<LecStuDto> selectStuAttendList();
-	List<LecStuDto> selectStuListForLec(int lecNo);
+	List<LecStuDto> selectStuListForLec(String lecNo);
 	
 
 	
