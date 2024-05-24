@@ -148,8 +148,8 @@
                       <!-- end Input Type Date Time -->
                     <!-- 출석관련 버튼 -->
                     <div class="buttons">
-                      <button type="button" class="btn btn-info">일괄출석</button>
-                      <button type="button" class="btn btn-info">저장</button>
+                      <button type="button" class="btn btn-info" id="bulkAttendSubmit">일괄출석</button>
+                      <button type="button" class="btn btn-info" id="stuAttendSubmit" onclick="">저장</button>
                       <button type="button" class="btn btn-light">엑셀로저장</button>
                     </div>
                   </div> 
@@ -161,7 +161,7 @@
 	                      <thead class="text-dark fs-4">
 	                        <tr>
 	                          <th>
-	                            <input type="checkbox" name="" id="checkAll">
+	                            <input type="checkbox" class="checkAll" name="checkAll" id="checkAllBox" value="checkAllBox" onclick="selectAll(this)">
 	                          </th>
 	                          <th width="100px">
 	                            <h6 class="fs-4 fw-semibold mb-0">번호</h6>
@@ -193,7 +193,7 @@
 		                        <c:otherwise>
 			                        <c:forEach var="a" items="${stulist}">
 				                        <tr>
-					                        <td height="50px"><input type="checkbox" name="" id=""></td>
+					                        <td height="50px"><input type="checkbox" class="checkOne" name="checkOne" id="CheckOnebox" value="CheckOnebox"></td>
 					                        <td><p class="mb-0 fw-normal fs-4">${a.lecstuNo}</p></td>
 					                        <td><p class="mb-0 fw-normal fs-4">사진</p></td>
 					                        <td><p class="mb-0 fw-normal fs-4">${a.majorName}</p></td>
@@ -217,8 +217,36 @@
 	                    </table>
 	                  </div>
                   <script>
+                  
+               // selectAll 함수 정의
+                  function selectAll(checkbox) {
+                      var isChecked = $(checkbox).prop("checked");
+                      $(".checkOne").prop("checked", isChecked);
+                  }
+
+                  // 체크박스 관련
+                  $(document).ready(function(){
+    // th에 있는 체크박스 클릭 시, td에 있는 체크박스들 선택 
+    $("#checkAllBox").click(function(){
+        var checkAll = $(this).prop("checked");
+        $(".checkOne").prop("checked", checkAll);
+    });
+
+    // 모든 체크박스를 클릭하면 일괄출석 버튼 활성화
+    $('.checkOne').click(function(){
+        var totalCheckboxes = $(".checkOne").length;
+        var checkedCheckboxes = $(".checkOne:checked").length;
+
+        // 모든 자식 체크박스가 선택되었는지 확인
+        var allChecked = totalCheckboxes === checkedCheckboxes;
+
+        // 모든 자식 체크박스가 선택되었으면 상위 체크박스도 선택되도록 설정
+        $("#checkAllBox").prop("checked", allChecked);
+    });
+});
+                  
                		// handleChange 함수 정의
-                  // handleChange 함수 정의
+                
 function handleChange() {
   var selectElement = document.getElementById('lectureSelect');
   var lecNo = selectElement.value; // 선택된 강의의 번호
@@ -243,7 +271,7 @@ function handleChange() {
 										
 										
 										tbody  += "<tr>"
-														+ 	"<td height='50px'>" + "<input type='checkbox' name='' id=''>" + "</td>"
+														+ 	"<td height='50px'>" + "<input type='checkbox' class='checkOne' name='checkOne' id='CheckOnebox' value='CheckOnebox'>" + "</td>"
 														+ 	"<td><p class='mb-0 fw-normal fs-4'>" + (i + 1) + "</p></td>"
 														+ 	"<td><p class='mb-0 fw-normal fs-4'>" + result[i].사진 + "</p></td>"
 														+ 	"<td><p class='mb-0 fw-normal fs-4'>" + result[i].majorName + "</p></td>"
