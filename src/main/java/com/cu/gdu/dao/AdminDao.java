@@ -7,6 +7,7 @@ import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.cu.gdu.dto.AttendDto;
 import com.cu.gdu.dto.CollegeDto;
 import com.cu.gdu.dto.JobDto;
 import com.cu.gdu.dto.MajorDto;
@@ -234,5 +235,46 @@ public class AdminDao {
 	public int insertMemberPlusLeave(VacationDto vac) {
 		return sqlSessionTemplate.insert("adminMapper.insertMemberPlusLeave", vac);
 	}
+	
+	// 직원 근태페이지 직원수 조회
+	public int memberAttendListCount() {
+		return sqlSessionTemplate.selectOne("adminMapper.memberAttendListCount");
+	}
 
+	// 직원 근테페이지 직원들 조회
+	public List<AttendDto> memberAttendList(PageInfoDto pi) {
+		int limit = pi.getBoardLimit();
+		int offset = (pi.getCurrentPage()-1) * limit;
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return sqlSessionTemplate.selectList("adminMapper.memberAttendList", pi, rowBounds);
+	}
+	
+	// 직원 근태 페이지 필터별 직원수조회
+	public int ajaxFilterMemberAttendListCount(Map<String, Object> map) {
+		return sqlSessionTemplate.selectOne("adminMapper.ajaxFilterMemberAttendListCount", map);
+	}
+	
+	// 직원 근태 페이지 필터별 직원조회
+	public List<AttendDto> ajaxFilterMemberAttendList(Map<String, Object> map){
+		PageInfoDto pi = (PageInfoDto)map.get("pi");
+		int limit = pi.getBoardLimit();
+		int offset = (pi.getCurrentPage()-1) * limit;
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return sqlSessionTemplate.selectList("adminMapper.ajaxFilterMemberAttendList", map, rowBounds);
+	}
+	
+	// 직원 근태페이지 오늘날짜만 조회시 직원수
+	public int ajaxTodayMemberAttendListCount(Map<String, Object> map) {
+		return sqlSessionTemplate.selectOne("adminMapper.ajaxTodayMemberAttendListCount", map);
+	}
+	
+	// 직원 근태페이지 오늘날짜만 조회시 직원리스트
+	public List<AttendDto> ajaxTodayMemberAttendList(Map<String, Object> map){
+		PageInfoDto pi = (PageInfoDto)map.get("pi");
+		int limit = pi.getBoardLimit();
+		int offset = (pi.getCurrentPage()-1) * limit;
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return sqlSessionTemplate.selectList("adminMapper.ajaxTodayMemberAttendList", map, rowBounds);
+	}
+	
 }

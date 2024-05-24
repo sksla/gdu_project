@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import com.cu.gdu.dao.AdminDao;
+import com.cu.gdu.dto.AttendDto;
 import com.cu.gdu.dto.CollegeDto;
 import com.cu.gdu.dto.JobDto;
 import com.cu.gdu.dto.MajorDto;
@@ -254,6 +255,42 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public int insertMemberPlusLeave(VacationDto vac) {
 		return adminDao.insertMemberPlusLeave(vac);
+	}
+
+	// 직원 근태페이지 직원수 조회
+	@Override
+	public int memberAttendListCount() {
+		return adminDao.memberAttendListCount();
+	}
+
+	// 직원 근테페이지 직원들 조회
+	@Override
+	public List<AttendDto> memberAttendList(PageInfoDto pi) {
+		return adminDao.memberAttendList(pi);
+	}
+
+	// 직원 근태 페이지 필터별 직원수조회
+	@Override
+	public int ajaxFilterMemberAttendListCount(Map<String, Object> map) {
+		return adminDao.ajaxFilterMemberAttendListCount(map);
+	}
+
+	// 직원 근태 페이지 필터별 직원조회
+	@Override
+	public List<AttendDto> ajaxFilterMemberAttendList(Map<String, Object> map) {
+		return adminDao.ajaxFilterMemberAttendList(map);
+	}
+
+	// 직원 근태페이지 오늘날짜만 조회시 직원수
+	@Override
+	public int ajaxTodayMemberAttendListCount(Map<String, Object> map) {
+		return adminDao.ajaxTodayMemberAttendListCount(map);
+	}
+
+	// 직원 근태페이지 오늘날짜만 조회시 직원리스트
+	@Override
+	public List<AttendDto> ajaxTodayMemberAttendList(Map<String, Object> map) {
+		return adminDao.ajaxTodayMemberAttendList(map);
 	}
 
 

@@ -1,6 +1,9 @@
 package com.cu.gdu.controller;
 
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cu.gdu.dao.MemberDao;
+import com.cu.gdu.dto.AttendDto;
 import com.cu.gdu.dto.CollegeDto;
 import com.cu.gdu.dto.JobDto;
 import com.cu.gdu.dto.MajorDto;
@@ -25,7 +29,6 @@ import com.cu.gdu.dto.PageInfoDto;
 import com.cu.gdu.dto.VacationDto;
 import com.cu.gdu.dto.VacationTypeDto;
 import com.cu.gdu.service.AdminService;
-import com.cu.gdu.service.MemberService;
 import com.cu.gdu.util.PagingUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -449,6 +452,57 @@ public class AdminController {
 			redirectAttributes.addFlashAttribute("alertMsg", "연차추가에 실패했습니다.");
 		}
 		return "redirect:/admin/memberLeaveDetail.page?memNo=" + vac.getMemNo();
+	}
+	
+	@GetMapping("/memberAttend.do")
+	public String memberAttendList(@RequestParam(value="page", defaultValue="1") int currentPage, Model model) {
+		List<MajorDto> majorList = adminService.selectMajorList();
+		List<JobDto> jobList = adminService.selectJobList();
+		int listCount = adminService.memberAttendListCount();
+		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 10);
+		List<AttendDto> attendList = adminService.memberAttendList(pi);
+		model.addAttribute("pi", pi);
+		model.addAttribute("attendList", attendList);
+		model.addAttribute("majorList", majorList);
+		model.addAttribute("jobList", jobList);
+		return "admin/memberAttendList";
+	}
+	
+	@ResponseBody
+	@GetMapping(value="/filterMemberAttend.do", produces="application/json; charset=utf-8")
+	public Map<String, Object> ajaxFilterMemberAttendList(MemberDto m, String startDate, String endDate, @RequestParam(value="page", defaultValue="1") int currentPage){
+		String newEndDate = "";
+		if(!endDate.equals("")) {
+			LocalDate nextDay = LocalDate.parse(endDate).plusDays(1);
+			newEndDate = String.valueOf(nextDay);
+		}
+		Map<String, Object> map = new HashMap<>(); // 맵 생성
+		map.put("startDate", startDate);
+		map.put("newEndDate", newEndDate);
+		map.put("m", m);
+		int listCount = adminService.ajaxFilterMemberAttendListCount(map);
+		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 10); // 받아온 리스트카운트 통해 pi 생성
+		map.put("pi", pi);
+		List<AttendDto> attendList = adminService.ajaxFilterMemberAttendList(map);
+		map.put("attendList", attendList);
+		return map;
+	}
+	
+	@ResponseBody
+	@GetMapping(value="/todayMemberAttend.do", produces="application/json; charset=utf-8")
+	public Map<String, Object> ajaxTodayMemberAttendList(@RequestParam(value="page", defaultValue="1") int currentPage){
+		Date today = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd");
+        String startDate = sdf.format(today);
+        log.debug("오늘날짜는: {}", startDate);
+        Map<String, Object> map = new HashMap<>();
+        map.put("startDate", startDate);
+        int listCount = adminService.ajaxTodayMemberAttendListCount(map);
+        PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 10); // 받아온 리스트카운트 통해 pi 생성
+        map.put("pi", pi);
+        List<AttendDto> attendList = adminService.ajaxTodayMemberAttendList(map);
+        map.put("attendList", attendList);     
+		return map;
 	}
 
 }

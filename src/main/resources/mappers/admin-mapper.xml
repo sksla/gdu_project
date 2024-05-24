@@ -63,6 +63,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   	<collection resultMap="majorResult" property="majorList" />
   </resultMap>
   
+  <resultMap type="AttendDto" id="attendResult">
+  	<id column="atd_no" property="atdNo" />
+  	<result column="mem_No" property="memNo" />
+  	<result column="start_Time" property="startTime" />
+  	<result column="end_Time" property="endTime" />
+  	<result column="regist_Date" property="registDate" />
+  	<result column="modify_Date" property="modifyDate" />
+  	<result column="mod_No" property="modNo" />
+  	<result column="status" property="status" />
+  	<collection resultMap="memberResult" property="memberList" />
+  </resultMap>
+  
   <resultMap type="VacationTypeDto" id="vacationTypeResult">
   	<id column="vac_type_no" property="vacTypeNo" />
   	<result column="vac_type" property="vacType" />
@@ -707,5 +719,120 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		  , 2
 		  )
 	</insert>
+	
+	<select id="memberAttendListCount" resultType="_int">
+		select
+				   count(*)
+			from attend
+	</select>
+	
+	<select id="memberAttendList" resultMap="attendResult">
+		select 
+				   atd_no
+				 , attend.mem_no
+				 , mem_name
+				 , major_name
+				 , job_name
+				 , to_char(start_time, 'HH:MM:SS') start_time
+				 , to_char(end_time, 'HH:MM:SS') end_time
+				 , attend.status
+				 , to_char(regist_date, 'YYYY-MM-DD') regist_date
+			from attend
+			join member on (member.mem_no = attend.mem_no)
+			join major on (major.major_no = member.major_no)
+			join job on (job.job_no = member.job_no)
+	</select>
+	
+	<select id="ajaxFilterMemberAttendListCount" resultType="_int">
+		select
+					 count(*)
+			from attend
+			join member on (member.mem_no = attend.mem_no)
+		  where member.status != 'Y'
+		 	 <if test="m.memName != ''">
+		 		and member.mem_name LIKE '%' || #{m.memName} || '%'
+		 	 </if>
+			 <if test="m.majorNo != 0">
+			 	 and member.major_no = #{m.majorNo}
+			 </if>
+			 <if test="m.jobNo != 0">
+			   and member.job_no = #{m.jobNo}
+			 </if>
+			 <if test="startDate != ''">
+			 	<choose>
+			 	 <when test="startDate == endDate">
+			 	 	 and to_char(regist_date, 'YYYY-MM-DD') = #{startDate}
+			 	 </when>
+			 	 <otherwise>
+			 	   and regist_date between #{startDate} AND #{newEndDate}
+			 	 </otherwise>
+			 	</choose>
+			 </if>
+	</select>
+	
+	<select id="ajaxFilterMemberAttendList" resultMap="attendResult">
+		select 
+				   atd_no
+				 , attend.mem_no
+				 , mem_name
+				 , major_name
+				 , job_name
+				 , to_char(start_time, 'HH:MM:SS') start_time
+				 , to_char(end_time, 'HH:MM:SS') end_time
+				 , attend.status
+				 , to_char(regist_date, 'YYYY-MM-DD') regist_date
+			from attend
+			join member on (member.mem_no = attend.mem_no)
+			join major on (major.major_no = member.major_no)
+			join job on (job.job_no = member.job_no)
+		 where member.status != 'Y'
+		 	 <if test="m.memName != ''">
+		 		and member.mem_name LIKE '%' || #{m.memName} || '%'
+		 	 </if>
+			 <if test="m.majorNo != 0">
+			 	 and member.major_no = #{m.majorNo}
+			 </if>
+			 <if test="m.jobNo != 0">
+			   and member.job_no = #{m.jobNo}
+			 </if>
+			 <if test="startDate != ''">
+			 	<choose>
+			 	 <when test="startDate == endDate">
+			 	 	 and to_char(regist_date, 'YYYY-MM-DD') = #{startDate}
+			 	 </when>
+			 	 <otherwise>
+			 	   and regist_date between #{startDate} and #{newEndDate}
+			 	 </otherwise>
+			 	</choose>
+			 </if>
+	</select>
+	
+	<select id="ajaxTodayMemberAttendListCount" resultType="_int">
+		select
+					 count(*)
+			from attend
+			join member on (member.mem_no = attend.mem_no)
+		  where member.status != 'Y'
+			  and to_char(regist_date, 'YYYY-MM-DD') = #{startDate}
+	</select>
   
+	<select id="ajaxTodayMemberAttendList" resultMap="attendResult">
+		select 
+				   atd_no
+				 , attend.mem_no
+				 , mem_name
+				 , major_name
+				 , job_name
+				 , to_char(start_time, 'HH:MM:SS') start_time
+				 , to_char(end_time, 'HH:MM:SS') end_time
+				 , attend.status
+				 , to_char(regist_date, 'YYYY-MM-DD') regist_date
+			from attend
+			join member on (member.mem_no = attend.mem_no)
+			join major on (major.major_no = member.major_no)
+			join job on (job.job_no = member.job_no)
+		 where member.status != 'Y'
+			 and to_char(regist_date, 'YYYY-MM-DD') = #{startDate}
+	</select>
+	
 </mapper>
