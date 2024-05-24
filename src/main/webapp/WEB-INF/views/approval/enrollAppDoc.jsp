@@ -17,9 +17,14 @@
     text-align: center;
     vertical-align: middle;
     font-size: 15px;
+    border: 1px solid lightgrey;
   }
-  .app_title:hover{cursor: pointer;
+  .app_title:hover{cursor: pointer;}
+  .sign_area{
+  	height: 70%;
+  	width: 100%;
   }
+  .sign_area>img{width: 100%;}
   /* 결재선 모달 스타일 */
   .list_box_wrap{
  		width: 30%;
@@ -122,7 +127,7 @@
           </div>
 
           <!-- 페이지 내용 -->
-          <form id="appForm" method="post" action="${contextPath}/approval/enroll.do">
+          <form id="appForm" method="post" action="${contextPath}/approval/enroll.do" enctype="multipart/form-data">
           	<input type="hidden" id="status" name="status" value="20">
           	<input type="hidden" name="drafter" value="${loginUser.memNo}">
             <div class="mb-4" style="display: flex; justify-content: space-between;">
@@ -215,15 +220,15 @@
                       <th style="background-color: rgb(255, 246, 235); border: 1px solid lightgrey;">수신</th>
                     </tr>
                     <!-- 서명 이미지 -->
-                    <tr class="sign_area">
+                    <tr class="sign_area_wrap">
                       <td class="drafter" width="12.5%" height="140px">
-                        <div style="height: 70%;">
+                        <div class="sign_area">
                           <img src="${contextPath}${loginUser.signUrl}" style="height: 100%;" alt="서명이미지">
                         </div>
                         <label></label>
                       </td>
                       <td class="collaborator1" width="12.5%">
-                        미결
+                        -
                       </td>
                       <td class="collaborator2" width="12.5%">
                         -
@@ -238,10 +243,10 @@
                         -
                       </td>
                       <td class="approver" width="12.5%">
-                        미결
+                        -
                       </td>
                       <td class="receiver" width="12.5%">
-                        미결
+                        -
                       </td>
                     </tr>
                     <tr class="major_area">
@@ -333,11 +338,15 @@
               <h5 class="card-title fw-semibold" style="display: inline;">첨부파일</h5><br><br>
               <div class="card">
                 <div class="card-body">
+                	<!-- dropzone
                   <div action="#" class="dropzone">
                     <div class="fallback">
-                      <input name="" type="file" multiple />
+                      <input name="uploadFiles" type="file" multiple />
                     </div>
                   </div>
+                   -->
+                  <input class="form-control" id="upfiles" type="file" name="uploadFiles" multiple>
+                  <div class="p-4" id="fileList"></div>
                 </div>
               </div>
             </div>
@@ -536,16 +545,49 @@
         })
         
         // 기안 결재선에 현재날짜 표시
-				$(".sign_area>.drafter>label").text(getCurrentDate());
+				$(".sign_area_wrap>.drafter>label").text(getCurrentDate());
     		
-    		// 결재선 선택 모달용 javascript **************************************
+    		// 결재선 선택 모달용 javascript *************************************
     		// 부서목록 리스트 조회
     		createMajorList();
+    		// **************************************************************
     		
-	    	// 부서 선택 시 직원 목록 조회
+    		// 업로드 파일 목록 표시
+	    	let totalSize = 0;
+											
+				$("#upfiles").change(function(evt){
+					
+					console.log($("#upfiles").val());
+					
+					// input:file 요소에 change이벤트 발생됨
+					// 현재이벤트가발생된요소 =>evt.target	// <input type='file'>
+					// 현재선택된파일들 evt.target.files	// FileList {0:File, 1:File, 2:File, ...}
+					
+					let fileNames = "";
+					const files= evt.target.files;	// FileList {0:File, 1:File, 2:File, ..., length:x}
+					
+					for(let i=0; i<files.length; i++){
+						if(files[i].size > 10*1024*1024){	// 첨부파일 한개의 크기가 10MB를 초과했을 경우
+							alert("첨부파일의 최대 크기는 10MB까지 입니다.");
+							evt.target.value="";
+							return false;
+						}
+						totalSize += files[i].size;
+						if(totalSize > 100*1024*1024){// 누적된 첨부파일의 전체 크기가 100MB를 초과했을 경우
+							alert("전체 첨부파일의 최대 크기는 100MB까지 입니다.");
+							evt.target.value="";
+							return false;
+						}
+						fileNames += "<li>" + files[i].name + "</li>";
+					}
+					
+					$("#fileList").html(fileNames);
+					
+				})
  				
 	    	
     	})
+    	
     	
     	function getCurrentDate() {
           var today = new Date();
