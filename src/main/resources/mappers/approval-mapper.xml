@@ -43,7 +43,7 @@
 		<result column="is_approved" property="isApproved"/>
 		<association resultMap="memberResult" property="approver"/>
 	</resultMap>
-	
+	  
 	<resultMap type="ApprovalCommentDto" id="commentResult">
 		<id column="comment_no" property="commentNo"/>
 		<result column="app_type" property="appType"/>
@@ -61,7 +61,7 @@
 		<result column="app_date" property="appDate"/>
 		<result column="comment" property="comment"/>
 	</resultMap>
-
+	
 	<resultMap type="MajorDto" id="majorResult">
 		<id column="major_no" property="majorNo"/>
 		<result column="major_name" property="majorName"/>
