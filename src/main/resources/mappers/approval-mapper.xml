@@ -415,11 +415,7 @@
 		     , sign_url
 		     , job_name
 		     , app_yn
-         , (
-         		select to_char(app_date, 'YYYY-MM-DD')
-              from app_history
-             where app_yn = 'A'
-            ) app_date
+         , app_date
 		  from approver
 		  join member on (mem_no = approver)
 		  join major using (major_no)
@@ -440,7 +436,7 @@
 	
 	<insert id="insertAppComment">
 		insert
-		  into app_history
+		  into app_comment
 		       (
 		       comment_no
 		     , commenter
@@ -456,7 +452,28 @@
 		     , #{appYn}
 		     , #{commentContent}
          , #{docNo}
-		       );
+		       )
 	</insert>
+	
+	<update id="updateApproverY">
+		update 
+					 approver
+			 set app_yn = 'Y'
+			   , app_date = sysdate
+		 where doc_no = #{docNo}
+		   and approver = #{memNo}
+	</update>
+	
+	<select id="selectNextAppLine" resultType="String">
+		select app_type
+		 from (
+		       select app_type
+                    , ROW_NUMBER() OVER (PARTITION BY doc_no ORDER BY app_type, approver) AS rnum
+		         from approver
+		        where app_yn = 'N'
+		          and doc_no = #{docNo}
+		      )
+		where rnum = 2
+	</select>
 	
 </mapper>

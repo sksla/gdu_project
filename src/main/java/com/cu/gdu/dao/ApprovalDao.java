@@ -8,6 +8,7 @@ import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.cu.gdu.dto.ApprovalCommentDto;
 import com.cu.gdu.dto.ApprovalDocDto;
 import com.cu.gdu.dto.ApprovalFormDto;
 import com.cu.gdu.dto.ApproverDto;
@@ -101,6 +102,22 @@ public class ApprovalDao {
 
 	public ApproverDto selectApproverByDocNo(Map<String, Integer> map) {
 		return sqlSessionTemplate.selectOne("approvalMapper.selectApproverByDocNo", map);
+	}
+
+	public int updateAppDocStatus(Map<String, String> map) {
+		return sqlSessionTemplate.update("approvalMapper.updateAppDocStatus", map);
+	}
+
+	public int updateApproverY(Map<String, String> map) {
+		return sqlSessionTemplate.update("approvalMapper.updateApproverY", map);
+	}
+
+	public int insertAppComment(ApprovalCommentDto appComment) {
+		return sqlSessionTemplate.update("approvalMapper.insertAppComment", appComment);
+	}
+
+	public String selectNextAppLine(String docNo) {
+		return sqlSessionTemplate.selectOne("approvalMapper.selectNextAppLine", docNo);
 	}
 	
 }

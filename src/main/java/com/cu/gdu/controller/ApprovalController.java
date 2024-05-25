@@ -274,11 +274,26 @@ public class ApprovalController {
 	}
 	
 	@PostMapping("/approve.do")
-	public String approve(ApprovalCommentDto appComment) {
-		if(appComment.getAppYn().equals("A")) {
-			log.debug("승인 : {}", appComment);
-		} else if(appComment.getAppYn().equals("R")) {
-			log.debug("반려 : {}", appComment);
+	public String approve(ApprovalCommentDto appComment
+						, RedirectAttributes redirectAttributes) {
+		
+		if(!appComment.getCommentContent().trim().equals("")) {
+			approvalService.insertAppComment(appComment);		
+		}
+		
+		Map<String, String> map = new HashMap<>();
+		map.put("docNo", appComment.getDocNo());
+		map.put("memNo", appComment.getCommenterNo());
+		map.put("appYn", appComment.getAppYn());
+		
+		int result = approvalService.updateAppLine(map);
+		
+		String appTypeStr =  appComment.getAppYn().equals("A") ? "승인" : "반려";
+		if(result > 0) {
+			redirectAttributes.addFlashAttribute("alertMsg", appTypeStr + " 되었습니다.");
+		} else {
+			redirectAttributes.addFlashAttribute("alertMsg", appTypeStr + " 요청 실패.");
+			redirectAttributes.addFlashAttribute("historyBackYN", "Y");
 		}
 		return "redirect:/approval/receiveBoard.do";
 	}

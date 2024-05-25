@@ -20,8 +20,8 @@ public class ApprovalCommentDto {
 	private String appYn;
 	private String commentDate;
 	private String commentContent;
-	private int docNo;
-	private int commenterNo;
+	private String docNo;
+	private String commenterNo;
 
 	private MemberDto commenter;
 	

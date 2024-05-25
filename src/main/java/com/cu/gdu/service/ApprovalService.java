@@ -3,6 +3,7 @@ package com.cu.gdu.service;
 import java.util.List;
 import java.util.Map;
 
+import com.cu.gdu.dto.ApprovalCommentDto;
 import com.cu.gdu.dto.ApprovalDocDto;
 import com.cu.gdu.dto.ApprovalFormDto;
 import com.cu.gdu.dto.ApproverDto;
@@ -60,6 +61,12 @@ public interface ApprovalService {
 	
 	// 결재문서 상태 변경
 	int updateAppDocStatus(ApprovalDocDto appDoc);
+	
+	// 결재 코멘트 삽입
+	int insertAppComment(ApprovalCommentDto appComment);
+	
+	// 결재 승인시 결재문서 상태 변경
+	int updateAppLine(Map<String, String> map);
 	
 	
 }

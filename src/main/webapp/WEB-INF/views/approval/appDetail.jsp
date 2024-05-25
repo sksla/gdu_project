@@ -424,17 +424,15 @@
 	          </div>
 	          <div class="modal-body mx-4 my-2">
 	            <div class="d-flex flex-row">
-	              <textarea class="form-control" name="commentContent" style="height: 200px; resize: none;"></textarea>
+	              <textarea class="form-control comment_content" name="commentContent" style="height: 200px; resize: none;"></textarea>
 	            </div>
 	          </div>
 	          <div class="modal-footer justify-content-center">
 	            <!-- 버튼 클릭시 확인 알람창 띄우기 -->
-	            <button type="submit" class="btn btn-primary waves-effect text-start"
-	              data-bs-dismiss="modal">
+	            <button type="submit" class="btn btn-primary waves-effect text-start">
 	              결재하기
 	            </button>
-	            <button type="submit" onclick="rejectApproval();" class="btn btn-danger waves-effect text-start"
-	              data-bs-dismiss="modal">
+	            <button type="submit" onclick="return rejectApproval();" class="btn btn-danger waves-effect text-start">
 	              반려하기
 	            </button>
 	          </div>
@@ -464,7 +462,12 @@
     	})
     	
     	function rejectApproval(){
-    		$("input[name='appYn']").val('R');
+    		if($(".comment_content").val().trim() == ""){
+    			alert("반려 사유를 입력하세요.");
+    			return false;
+    		}else{
+        	$("input[name='appYn']").val('R');
+    		}
     	}
     	
     </script>
