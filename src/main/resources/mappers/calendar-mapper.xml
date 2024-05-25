@@ -40,6 +40,8 @@
 		<result column="share_mem_no" property="shareMemNo"/>
 		<result column="share_mem_name" property="shareMemName"/>
 		<result column="right_level" property="rightLevel"/>
+		<result column="major_name" property="majorName"/>
+		<result column="job_name" property="jobName"/>
 	</resultMap>
 	
 	
@@ -49,7 +51,7 @@
 		select 
 		       c.ctg_no
 		     , ctg_type
-		     , cm.mem_name cal_writer
+		     , cm.mem_name
 		     , ctg_name
 		     , color
 		     , is_show
@@ -57,21 +59,29 @@
          , s.mem_no share_mem_no
          , sm.mem_name share_mem_name
          , right_level
+         , job_name
+         , major_name
          , (
              select count(*)
                from share_mem sc
-               where sc.ctg_no = ctg_no
+               where sc.ctg_no = c.ctg_no
             ) count
 		  from cal_ctg c
       join member cm on (ctg_writer = mem_no)
       left join share_mem s on (s.ctg_no = c.ctg_no)
       left join member sm on (s.mem_no = sm.mem_no)
+      left join job sj on (sm.job_no = sj.job_no)
+      left join major sma on (sm.major_no = sma.major_no) 
      where c.status = 'Y'
        and ctg_type in ('1', '2')
        and ctg_writer = #{memNo}
-       or s.mem_no = #{memNo}
+       	or c.ctg_no in (
+       									 select ctg_no
+                           from share_mem
+                          where mem_no = #{memNo}
+                        )
      order
-        by c.ctg_no asc 
+        by c.ctg_no asc, right_level
 		       
 	</select>
 	
@@ -138,6 +148,40 @@
 		  )
 		  
 	</insert>
+	
+	<!-- 공유멤버 인원 수 -->
+	<select id="selectShareMemListCount" resultType="_int">
+		select 
+					 count(*)
+		  from share_mem
+		 where ctg_no = #{ctgNo} 			 
+	</select>
+	
+	<!-- 공유멤버 수정 -->
+	<update id="updateShareMem">
+		update
+		      share_mem
+		   set
+		       right_level = #{rightLevel}
+		 where mem_no = #{shareMemNo}        
+	</update>
+	
+	<!-- 공유멤버 삭제 -->
+	<delete id="deleteShareMem">
+		delete
+		  from share_mem
+		 <where>
+			ctg_no = #{ctgNo}
+			<if test='type == 2 and memNoArr != null'>
+					and mem_no in
+			 	  <foreach item="item" collection="memNoArr"
+							open="(" separator="," close=")">
+					 #{item}
+				  </foreach>
+			</if>
+		 </where>
+		 
+	</delete>
 	
 	<!-- 일정 조회 -->
 	<select id="selectCalendarList" resultMap="calendarResult">

@@ -19,8 +19,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.cu.gdu.dto.ApprovalCommentDto;
 import com.cu.gdu.dto.ApprovalDocDto;
 import com.cu.gdu.dto.ApprovalFormDto;
+import com.cu.gdu.dto.ApprovalHistoryDto;
 import com.cu.gdu.dto.ApproverDto;
 import com.cu.gdu.dto.AttachDto;
 import com.cu.gdu.dto.CollegeDto;
@@ -244,34 +246,55 @@ public class ApprovalController {
 		
 		model.addAttribute("docInfo", approvalService.selectAppDoc(no));
 		
-		List<ApproverDto> collaboratorList = approvalService.selectApproverByDocNo(no);
-		ApproverDto approver = null;
-		ApproverDto receiver = null;
-		for(ApproverDto ap : collaboratorList) {
-			if(ap.getAppType().equals("결재")) {
-				approver = ap;
-			}if (ap.getAppType().equals("수신")) {
-				receiver = ap;
-			}
-		}
-		collaboratorList.remove(approver);
-		collaboratorList.remove(receiver);
+		Map<String, Integer> map = new HashMap<>();
 		
-		model.addAttribute("collaboratorList", collaboratorList);
-		model.addAttribute("approver", approver);
-		model.addAttribute("receiver", receiver);
+		map.put("no", no);
+		map.put("appType", 10);
+		model.addAttribute("collaboratorList", approvalService.selectCollaboratorsByDocNo(map));
+		
+		map.put("appType", 20);
+		model.addAttribute("approver", approvalService.selectApproverByDocNo(map));
+		
+		map.put("appType", 30);
+		model.addAttribute("receiver", approvalService.selectApproverByDocNo(map));
 		
 		return "approval/appDetail";
 	}
 	
-	@GetMapping("/detail.do")
-	public String appDetailGet(RedirectAttributes redirectAttributes) {
-		redirectAttributes.addFlashAttribute("alertMsg", "부적절한 접근입니다.");
-		return "redirect:/approval/ongoingBoard.do";
+	@PostMapping("/recall.do")
+	public String recall(ApprovalDocDto appDoc, RedirectAttributes redirectAttributes) {
+		appDoc.setStatus("1");
+		if(approvalService.updateAppDocStatus(appDoc) > 0) {
+			redirectAttributes.addFlashAttribute("alertMsg", "문서를 회수했습니다.");
+		} else {
+			redirectAttributes.addFlashAttribute("alertMsg", "회수 실패");
+			redirectAttributes.addFlashAttribute("historyBackYN", "Y");
+		}
+		return "redirect:/approval/ongoingBoard.do?docStatus=1";
 	}
 	
-	@GetMapping("/approve.do")
-	public String approve() {
+	@PostMapping("/approve.do")
+	public String approve(ApprovalCommentDto appComment
+						, RedirectAttributes redirectAttributes) {
+		
+		if(!appComment.getCommentContent().trim().equals("")) {
+			approvalService.insertAppComment(appComment);		
+		}
+		
+		Map<String, String> map = new HashMap<>();
+		map.put("docNo", appComment.getDocNo());
+		map.put("memNo", appComment.getCommenterNo());
+		map.put("appYn", appComment.getAppYn());
+		
+		int result = approvalService.updateAppLine(map);
+		
+		String appTypeStr =  appComment.getAppYn().equals("A") ? "승인" : "반려";
+		if(result > 0) {
+			redirectAttributes.addFlashAttribute("alertMsg", appTypeStr + " 되었습니다.");
+		} else {
+			redirectAttributes.addFlashAttribute("alertMsg", appTypeStr + " 요청 실패.");
+			redirectAttributes.addFlashAttribute("historyBackYN", "Y");
+		}
 		return "redirect:/approval/receiveBoard.do";
 	}
 	

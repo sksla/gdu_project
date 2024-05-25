@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import com.cu.gdu.dao.ApprovalDao;
+import com.cu.gdu.dto.ApprovalCommentDto;
 import com.cu.gdu.dto.ApprovalDocDto;
 import com.cu.gdu.dto.ApprovalFormDto;
 import com.cu.gdu.dto.ApproverDto;
@@ -115,8 +116,43 @@ public class ApprovalServiceImpl implements ApprovalService {
 	}
 
 	@Override
-	public List<ApproverDto> selectApproverByDocNo(int no) {
-		return approvalDao.selectApproverByDocNo(no);
+	public List<ApproverDto> selectCollaboratorsByDocNo(Map<String, Integer> map) {
+		return approvalDao.selectCollaboratorsByDocNo(map);
+	}
+
+	@Override
+	public ApproverDto selectApproverByDocNo(Map<String, Integer> map) {
+		return approvalDao.selectApproverByDocNo(map);
+	}
+
+	@Override
+	public int updateAppDocStatus(ApprovalDocDto appDoc) {
+		return approvalDao.updateAppDocStatus(appDoc);
+	}
+
+	@Override
+	public int insertAppComment(ApprovalCommentDto appComment) {
+		return approvalDao.insertAppComment(appComment);
+	}
+
+	@Override
+	public int updateAppLine(Map<String, String> map) {
+		int result1 = 1;
+		int result2 = 0;
+		if(map.get("appYn").equals("A")) {
+			result1 = 0;
+			// 다음 결재 단계 조회
+			String nextAppLine = approvalDao.selectNextAppLine(map.get("docNo"));
+			map.put("status", nextAppLine == null ? "40" : nextAppLine);
+			// 결재유무 A로 변경
+			result1 = approvalDao.updateApproverY(map);
+			result2 = approvalDao.updateAppDocStatus(map);
+		} else if(map.get("appYn").equals("R")) {
+			map.put("status", "2");
+			result2 = approvalDao.updateAppDocStatus(map);
+		}
+		
+		return result1 * result2;
 	}
 
 	

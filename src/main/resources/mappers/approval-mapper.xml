@@ -23,9 +23,8 @@
 		<result column="app_category" property="appCategory"/>
 		<result column="doc_title" property="docTitle"/>
 		<result column="history_count" property="historyCount"/>
-		<result column="now_approver" property="nowApprover"/>
+		<association resultMap="nowApproverResult" property="nowApprover"/>
 		<association resultMap="memberResult" property="drafter"/>
-		<collection resultMap="attachResult" property="attachList"/>
 	</resultMap>
 	
 	<resultMap type="AttachDto" id="attachResult">
@@ -37,19 +36,30 @@
 	
 	<resultMap type="ApproverDto" id="approverResult">
 		<id column="approver_no" property="approverNo"/>
-		<result column="appType" property="appType"/>
+		<result column="app_type" property="appType"/>
+		<result column="app_yn" property="appYn"/>
 		<result column="status_name" property="appType"/>
 		<result column="app_date" property="appDate"/>
 		<result column="is_approved" property="isApproved"/>
 		<association resultMap="memberResult" property="approver"/>
 	</resultMap>
 	
-	<resultMap type="ApprovalHistoryDto" id="appHistoryResult">
+	<resultMap type="ApprovalCommentDto" id="commentResult">
+		<id column="comment_no" property="commentNo"/>
+		<result column="app_type" property="appType"/>
+		<result column="app_yn" property="appYn"/>
+		<result column="comment_date" property="commentDate"/>
+		<result column="comment_content" property="commentContent"/>
+		<association resultMap="memberResult" property="commneter"/>
+	</resultMap>
+	
+	<resultMap type="ApprovalHistoryDto" id="nowApproverResult">
 		<id column="app_history_no" property="appHistoryNo"/>
+		<result column="approver_no" property="approverNo"/>
+		<result column="now_approver" property="nowApprover"/>
 		<result column="app_yn" property="appYn"/>
 		<result column="app_date" property="appDate"/>
 		<result column="comment" property="comment"/>
-		<association resultMap="memberResult" property="approver"/>
 	</resultMap>
 
 	<resultMap type="MajorDto" id="majorResult">
@@ -144,7 +154,7 @@
 		  join job on (member.job_no = job.job_no)
   	 where member.status = 'N'
   	 	 and member.major_no = #{majorNo}
-  	 	 and member.mem_no = #{loginUserNo}
+  	 	 and member.mem_no != #{memNo}
 	</select>
 	
 	<insert id="insertAppDoc">
@@ -215,7 +225,7 @@
 		   and to_char(draft_date, 'YYYY-MM-DD') between #{startDate} and #{endDate}
 		<choose>
 			<when test="docStatus == ''">
-		    and status not in (0, 40)
+		    and app_doc.status not in (0, 1, 2, 40)
 			</when>
 			<otherwise>
 				and status = #{docStatus}
@@ -248,7 +258,7 @@
 		   and to_char(draft_date, 'YYYY-MM-DD') between #{startDate} and #{endDate}
 		<choose>
 			<when test="docStatus == ''">
-		    and status not in (0, 40)
+		    and app_doc.status not in (0, 1, 2, 40)
 			</when>
 			<otherwise>
 				and status = #{docStatus}
@@ -288,7 +298,7 @@
 			          and doc_no = app_doc.doc_no
 			   	 ) = #{loginUserNo}
 		   and to_char(draft_date, 'YYYY-MM-DD') between #{startDate} and #{endDate}
-		   and app_doc.status not in (0, 40)
+		   and app_doc.status not in (0, 1, 2, 40)
 		<if test='category != "all"'>
 			 and app_category = #{category}
 		</if>
@@ -327,7 +337,7 @@
                and doc_no = app_doc.doc_no
         	 ) = #{loginUserNo}
 		   and to_char(draft_date, 'YYYY-MM-DD') between #{startDate} and #{endDate}
-		   and app_doc.status not in (0, 40)
+		   and app_doc.status not in (0, 1, 2, 40)
 		<if test='category != "all"'>
 			 and app_category = #{category}
 		</if>
@@ -359,15 +369,11 @@
 		     , major_name
 		     , sign_url
 		     , job_name
-		     , file_no
-		     , file_path
-		     , original_name
-		     , filesystem_name
          , (select count(*)
-              from app_history
-              join approver using (approver_no)
-             where approver.doc_no = 34
-             ) history_count
+					   from approver
+					  where app_yn = 'Y'
+					    and doc_no = #{no}
+           ) history_count
          , (
             select a.approver
               from (
@@ -378,8 +384,20 @@
                      where app_yn = 'N'
                    ) a
              where rnum = 1
-               and doc_no = 7
+               and doc_no = #{no}
             ) now_approver
+         , (
+            select a.approver_no
+              from (
+                    select approver_no
+                        , doc_no
+                        , ROW_NUMBER() OVER (PARTITION BY approver.doc_no ORDER BY app_type, approver) AS rnum
+                      from approver
+                     where app_yn = 'N'
+                   ) a
+             where rnum = 1
+               and doc_no = #{no}
+            ) approver_no
 		  from app_doc
 		  join app_form using (app_no)
 		  join member on (drafter = mem_no)
@@ -391,39 +409,71 @@
 	
 	<select id="selectApproverByDocNo" resultMap="approverResult">
 		select
-		       status_name
-		     , mem_name
+		       mem_name
 		     , mem_no
-		     , mem_name
 		     , major_name
 		     , sign_url
 		     , job_name
-		     , NVL2(
-		            (
-		             select app_yn
-		               from app_history
-		              where app_yn = 'A'
-		              )
-		            , 'Y'
-		            , 'N'
-		            ) is_approved
-         , (
-         		select to_char(app_date, 'YYYY-MM-DD')
-              from app_history
-             where app_yn = 'A'
-            ) app_date
+		     , app_yn
+         , app_date
 		  from approver
 		  join member on (mem_no = approver)
 		  join major using (major_no)
 		  join job using (job_no)
 		  join app_status on (app_type = status_no)
 		 where doc_no = #{no}
+           and app_type = #{appType}
 		 order
 		    by app_type, approver_no
 	</select>
 	
-	<select id="" resultMap="appHistoryResult">
-		
+	<update id="updateAppDocStatus">
+		update 
+					 app_doc
+			 set status = #{status}
+		 where doc_no = #{docNo}
+	</update>
+	
+	<insert id="insertAppComment">
+		insert
+		  into app_comment
+		       (
+		       comment_no
+		     , commenter
+         , app_type
+         , app_yn
+         , comment_content
+		     , doc_no
+		       )
+		values (
+		       seq_comment_no.nextval
+		     , #{commenterNo}
+		     , #{appType}
+		     , #{appYn}
+		     , #{commentContent}
+         , #{docNo}
+		       )
+	</insert>
+	
+	<update id="updateApproverY">
+		update 
+					 approver
+			 set app_yn = 'Y'
+			   , app_date = sysdate
+		 where doc_no = #{docNo}
+		   and approver = #{memNo}
+	</update>
+	
+	<select id="selectNextAppLine" resultType="String">
+		select app_type
+		 from (
+		       select app_type
+                    , ROW_NUMBER() OVER (PARTITION BY doc_no ORDER BY app_type, approver) AS rnum
+		         from approver
+		        where app_yn = 'N'
+		          and doc_no = #{docNo}
+		      )
+		where rnum = 2
 	</select>
 	
 </mapper>
