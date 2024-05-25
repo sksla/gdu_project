@@ -15,6 +15,10 @@ public interface LectureService {
 	List<LecStuDto> selectStuAttendList();
 	List<LecStuDto> selectStuListForLec(String lecNo);
 	
+	// 학생 출석 목록 스케줄러 이용해서 등록
+	int insertStuList();
+
+	
 
 	
 

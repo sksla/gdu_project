@@ -35,6 +35,11 @@ public class LectureServiceImpl implements LectureService {
 	public List<LecStuDto> selectStuListForLec(String lecNo) {
 		return lectureDao.selectStuListForLec(lecNo);
 	}
+	// 학생 출석 목록 스케줄러 이용해서 등록
+	@Override
+	public int insertStuList() {
+		return lectureDao.insertStuList();
+	}
 	
 	
 

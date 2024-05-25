@@ -35,6 +35,10 @@ public class LectureDao {
 	public List<LecStuDto> selectStuListForLec(String lecNo) {
 		return sqlSessionTemplate.selectList("lectureMapper.selectStuListForLec",lecNo);
 	}
+	// 학생 출석 목록 스케줄러 이용해서 등록
+	public int insertStuList() {
+		return sqlSessionTemplate.insert("lectureMapper.insertStuList");
+	}
 
 
 }

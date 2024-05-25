@@ -68,6 +68,7 @@
     , filesystem_name
     , original_name
 		, major_name
+		, major_no
 		, stu_no
 		, stu_name
 			from lec_stu
@@ -84,5 +85,13 @@
 		from lec_stu
 		where lec_no=#{lecNo}
 	</select>
+	
+	<!-- 학생 출석 목록 스케줄러 이용해서 등록 -->
+	<insert id="insertStuList">
+		insert 
+			into stu_attend (atten_no, stu_no, lec_no, major_no, stu_name, major_name, lec_name)
+		select seq_stu_attend_no.nextval, stu_no, lec_no, major_no, stu_name, major_name, lec_name
+			from lec_stu
+	</insert>
 	
 </mapper>

@@ -7,20 +7,13 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-
-import com.cu.gdu.dto.AffiliatedOrganDto;
 import com.cu.gdu.dto.LecStuDto;
 import com.cu.gdu.dto.LectureDto;
 import com.cu.gdu.dto.MemberDto;
-import com.cu.gdu.dto.PageInfoDto;
-import com.cu.gdu.dto.StuAttendDto;
 import com.cu.gdu.service.LectureService;
 import com.cu.gdu.util.FileUtil;
-import com.cu.gdu.util.PagingUtil;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -70,6 +63,5 @@ public class LectureController {
 		log.debug("목록들: {}", lecList);
 		return lecList;
 	}
-	
 	// * ------------------- 출석 끝-------------------
 }
