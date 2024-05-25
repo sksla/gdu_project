@@ -485,10 +485,11 @@
                   <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
 								
-               	<form id="myCtgForm" action="${ contextPath }/calendar/insertCtg.do?ctgType=1" method="POST">
+               	<form id="myCtgForm" action="${ contextPath }/calendar/insertCtg.do" method="POST">
 	                <!-- Modal body -->
 	                <div class="modal-body">
 	                	<input type="hidden" name="ctgNo" value="0">	
+	                	<input type="hidden" name="ctgType" value="1">
 	                  <table class="table">
 	                    <tbody>
 	                      <tr>
@@ -529,7 +530,7 @@
 	                <!-- Modal footer -->
 	                <div class="modal-footer justify-content-center">
 	                	<div class="editBtn">
-		                	<button type="button" class="btn btn-outline-secondary" onclick="ajaxUpdateCalCtg()" data-bs-dismiss="modal">수정</button> 
+		                	<button type="button" class="btn btn-outline-secondary" onclick="ajaxUpdateCalCtg(1);" data-bs-dismiss="modal">수정</button> 
 	                		<button type="button" class="btn btn-outline-danger" onclick="ajaxDeleteCtg(1, 'insert_my');" data-bs-dismiss="modal">삭제</button>
 	                	</div>
 	                	<div class="insertBtn">
@@ -561,9 +562,9 @@
 
                 <!-- Modal body -->
                 <div class="modal-body">
-                 	<input type="hidden" name="ctgNo" value="0">
-                	<form id="shareCtgForm" action="${contextPath }/calendar/insertCtg.do?ctgType=2" method="post">
-                   
+                	<form id="shareCtgForm" action="${contextPath }/calendar/insertCtg.do" method="post">
+	                 	<input type="hidden" name="ctgNo" value="0">
+                   	<input type="hidden" name="ctgType" value="2">
 	                  <table class="table">
 	                    <tbody>
 	                      <tr>
@@ -704,7 +705,7 @@
 	                <!-- Modal footer -->
 	                <div class="modal-footer justify-content-center">
 	                  <div class="editBtn">
-		                	<button type="button" class="btn btn-outline-secondary" onclick="updateShareCal();" data-bs-dismiss="modal">수정</button> 
+		                	<button type="button" class="btn btn-outline-secondary" onclick="ajaxUpdateCalCtg(2);" data-bs-dismiss="modal">수정</button> 
 		               		<button type="button" class="btn btn-outline-danger" onclick="ajaxDeleteCtg(2, 'insert_share');" data-bs-dismiss="modal">삭제</button>
 		               	</div>
 		               	<div class="insertBtn">
@@ -1083,13 +1084,15 @@
 	        				
 	        				$lvOneEl.append("<span class='hide'>" + om.shareMemNo + "</span>");
 													
-	        				$("#insert_share .app_levelOne>.mem_list").after("<input type='hidden' name='origin' value='" + om.shareMemNo + "'>");
+	        				$("#insert_share .app_levelOne>.mem_list").after("<input type='hidden' name='originMemNo' value='" + om.shareMemNo + "'>"
+	        																											 + "<input type='hidden' name='originRightLv' value='" + om.rightLevel + "'>");
 	        				$("#insert_share .app_levelOne>.mem_list").append($lvOneEl);
 	        			}else{
 	        				let $lvTwoEl = $("<div class='selected_levelTwo'></div>").text(om.shareMemName + " (" + om.majorName + ", " + om.jobName + ")");
 	        				$lvTwoEl.append("<span class='hide'>" + om.shareMemNo + "</span>");
 	        				
-	        				$("#insert_share .app_levelTwo>.mem_list").after("<input type='hidden' name='origin' value='" + om.shareMemNo + "'>");
+	        				$("#insert_share .app_levelTwo>.mem_list").after("<input type='hidden' name='originMemNo' value='" + om.shareMemNo + "'>"
+	        																											 + "<input type='hidden' name='originRightLv' value='" + om.rightLevel + "'>");
 	        				$("#insert_share .app_levelTwo>.mem_list").append($lvTwoEl);
 	        			}
 	        		}
@@ -1337,14 +1340,21 @@
          		        			let sh = shList[k];
          		        			if(sh.rightLevel == "2"){
          		        				let $lvOneEl = $("<div class='selected_levelOne'></div>").text(sh.shareMemName + " (" + sh.majorName + ", " + sh.jobName + ")");
-         		        				$lvOneEl.append("<span class='hide'>" + sh.shareMemNo + "</span>");
+         		        				$lvOneEl.append("<span class='hide'>" + sh.shareMemNo + "</span>")
+         		        								.append("<input type='hidden' name='shareMemNo' value='" + sh.shareMemNo + "'>")
+																		.append("<input type='hidden' name='rightLevel' value='" + sh.rightLevel + "'>");
          		        				
-         		        				$("#insert_share .app_levelOne>.mem_list").after("<input type='hidden' name='origin' value='" + sh.shareMemNo + "'>");
+         		        				$("#insert_share .app_levelOne>.mem_list").after("<input type='hidden' name='originMemNo' value='" + sh.shareMemNo + "'>"
+         		        																											 + "<input type='hidden' name='originRightLv' value='" + sh.rightLevel + "'>");
          		        				$("#insert_share .app_levelOne>.mem_list").append($lvOneEl);
          		        			}else if(sh.rightLevel == "3"){
          		        				let $lvTwoEl = $("<div class='selected_levelTwo origin'></div>").text(sh.shareMemName + " (" + sh.majorName + ", " + sh.jobName + ")");
-         		        				$lvTwoEl.append("<span class='hide'>" + sh.shareMemNo + "</span>");
-         		        				$("#insert_share .app_levelTwo>.mem_list").after("<input type='hidden' name='origin' value='" + sh.shareMemNo + "'>");
+         		        				$lvTwoEl.append("<span class='hide'>" + sh.shareMemNo + "</span>")
+         		        								.append("<input type='hidden' name='shareMemNo' value='" + sh.shareMemNo + "'>")
+																		.append("<input type='hidden' name='rightLevel' value='" + sh.rightLevel + "'>");
+         		        				
+         		        				$("#insert_share .app_levelTwo>.mem_list").after("<input type='hidden' name='originMemNo' value='" + sh.shareMemNo + "'>"
+         		        																											 + "<input type='hidden' name='originRightLv' value='" + sh.rightLevel + "'>");
          		        				$("#insert_share .app_levelTwo>.mem_list").append($lvTwoEl);
          		        			}
          		        		}
@@ -1528,8 +1538,60 @@
 
             
             // 카테고리 수정 ajax
-            function ajaxUpdateCalCtg(){
+            function ajaxUpdateCalCtg(type){
             	
+            	let modalId = ( type == 1 ? "#insert_my" : "#insert_share" );
+            	let formId = ( type == 1 ? "#myCtgForm" : "#shareCtgForm" );
+            	
+							if( (type == 1 ? colorChkValidate(type) : insertShareCtgVali()) ){
+            	
+           			
+	          		if(type == 2){
+	          			
+	          			$("#insert_share .selected_app_mem .mem_list input[name='shareMemNo']").each(function(index, el){
+	          				$(el).attr("name", "shList[" + index + "].shareMemNo");
+	          			});
+	          			
+	          			$("#insert_share .selected_app_mem .mem_list input[name='rightLevel']").each(function(index, el){
+	          				$(el).attr("name", "shList[" + index + "].rightLevel");
+	          			});
+	          			
+	          			$("#insert_share .selected_app_mem input[type='hidden'][name='originMemNo']").each(function(index, el){
+	          				$(el).attr("name", "originList[" + index + "].shareMemNo");
+	          			});
+	          			
+	          			$("#insert_share .selected_app_mem input[type='hidden'][name='originRightLv']").each(function(index, el){
+	          				$(el).attr("name", "originList[" + index + "].rightLevel");
+	          			});
+	          			
+	          		}
+            		
+	          		$.ajax({
+            			url:"${contextPath}/calendar/updateCtg.do",
+            			type:"post",
+               		async:false,
+               		data:$(formId).serialize(),
+               		success:function(result){
+               			if(result = "SUCCESS"){
+               				alert("성공적으로 수정되었습니다.");
+               			}else{
+               				alert("수정에 실패했습니다. 잠시후 다시 시도해주세요");
+               			}
+	               		
+               			ajaxSelectListCalCtg();
+               			ajaxSelectCalList();
+               			
+               			
+               		},
+               		error:function(result){
+               			console.log("카테고리 수정용 ajax통신 실패")
+               		}
+               		
+            		
+            		})
+            	
+            	}
+            	/*
             	let $ctgNameVal = $("#insert_my input[name='ctgName']").val();
             	let $ctgNoVal = $("#insert_my input[name='ctgNo']").val();
             	let $color = "";
@@ -1572,7 +1634,9 @@
                		
             		
             		})
+            		
             	}
+            	*/
             }// 카테고리 수정 끝
             
             

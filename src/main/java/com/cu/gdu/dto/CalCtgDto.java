@@ -29,6 +29,8 @@ public class CalCtgDto {
 	private String status;
 	private int shareCount;
 	private List<ShareMemDto> shList;
-	private List<String> originMem;
-	
+	private List<ShareMemDto> originList; // originMember
+	private List<ShareMemDto> addList;
+	private List<ShareMemDto> updateList;
+	private List<ShareMemDto> deleteList;
 }

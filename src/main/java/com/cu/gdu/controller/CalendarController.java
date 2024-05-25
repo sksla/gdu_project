@@ -118,26 +118,10 @@ public class CalendarController {
 	 */
 	@ResponseBody
 	@PostMapping("/updateCtg.do")
-	public int updateCtg(CalCtgDto ctg, int updateType
-					   , String[] origin
-					   , String[] levelOne, String[] levelTwo) {
+	public String updateCtg(CalCtgDto ctg) {
 		// type == 1 => 개인캘린더 수정(ctg update만...)
 		// type == 2 => 공유캘린더 수정(ctg, orgArr, newArr(levelOne, leveTwo)
 		/*
-		 * 
-		 * for(int i=0; i<new.size(); i++){
-		 * 	for(int j=0; j<org.length; i++{
-		 * 		String memNo = String.valueOf(new[i].getShareMemNo()); 
-		 * 		if(memNo.equals(org[j])){
-		 * 			
-		 * 			upt.add(new[i]); 					
-		 * 
-		 * 		}else{
-		 * 			String delStr += j == org.length ? org[j] : org[j] + ","; => split(",")
-		 * 			Inslist.add(new[i]);
-		 * 
-		 * 		}
-		 *  }
 		 *  
 		 *  delStr.length > 0 => split(",") => 공유멤버 삭제 돌리러 가기(해당 서비스 호출)
 		 *  !inrlist.isEmpty ? 등록 결과값 == inslist.size() : 1 ;
@@ -146,15 +130,84 @@ public class CalendarController {
 		 * 	
 		 * }
 		 */
-		int reuslt1 = calendarService.updateCalCtg(ctg);
 		
-		List<ShareMemDto> newList = new ArrayList<>();
+		String ctgType = ctg.getCtgType();
+		
+		List<ShareMemDto> newShareList = ctg.getShList();
+		
+		List<ShareMemDto> originMemList = ctg.getOriginList();
+		
 		List<ShareMemDto> updateList = new ArrayList<>();
+		List<ShareMemDto> addList = new ArrayList<>();
+		List<ShareMemDto> deleteList = new ArrayList<>();
+		
+		if(ctgType.equals("2")) {
+			
+			//newMap, originMap =>  memNo=rightLevel
+			Map<String, String> originMap = new HashMap<>();
+			Map<String, String> newMap = new HashMap<>(); 
+
+			for(ShareMemDto s : newShareList) {
+				newMap.put(s.getShareMemNo(), s.getRightLevel());
+			}
+		
+			for(ShareMemDto s : originMemList) {
+				originMap.put(s.getShareMemNo(), s.getRightLevel());
+			}
+		
+			// 기존리스트에 o, 수정리스트 x => delete 
+			// 기존리스트에 o, 수정리스트 o , 권한 변경 o => update 
+			for(ShareMemDto s : originMemList) {
+				
+				if(!newMap.containsKey(s.getShareMemNo())) {
+					deleteList.add(s);
+				}else {
+					String newRight = newMap.get(s.getShareMemNo());
+					
+					if( !newRight.equals(originMap.get(s.getShareMemNo())) ){
+						s.setRightLevel(newRight);
+						updateList.add(s);
+					}
+				}
+			}
+			
+			// 수정리스트 o, 기존리스트x => insert(add)
+			for(ShareMemDto s : newShareList) {
+				
+				if(!originMap.containsKey(s.getShareMemNo())) {
+					addList.add(s);
+				}
+			}
+			
+			if(!addList.isEmpty()) {
+				for(ShareMemDto s : addList) {
+					s.setInsertType("U");
+				}
+			}
+			ctg.setAddList(addList);
+			ctg.setUpdateList(updateList);
+			ctg.setDeleteList(deleteList);
+		
+		}
+		
+		 
+				
+		
+		log.debug("ctg : {}", ctg);
+		log.debug("shList : {}", ctg.getShList());
+		log.debug("originMem : {}" , ctg.getOriginList());
+		log.debug("addList : {}", ctg.getAddList());
+		log.debug("updateList : {}", ctg.getUpdateList());
+		log.debug("deleteList : {}", ctg.getDeleteList());
+		
+		//int reuslt = calendarService.updateCalCtg(ctg);
+		
+		
 		
 	
 		
 		
-		return calendarService.updateCalCtg(ctg);
+		return "SUCCESS";
 	}
 	
 	
