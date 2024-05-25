@@ -150,4 +150,7 @@ public interface AdminService {
 	// 학생등록기간 수정
 	int updateStuDate(InsertDateDto inDate);
 	
+	// 직원일괄등록 기능
+	int insertManyMember(List<MemberDto> m);
+	
 }

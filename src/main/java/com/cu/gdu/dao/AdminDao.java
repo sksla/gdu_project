@@ -1,5 +1,6 @@
 package com.cu.gdu.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -296,6 +297,13 @@ public class AdminDao {
 	// 학생등록기간 수정
 	public int updateStuDate(InsertDateDto inDate) {
 		return sqlSessionTemplate.update("adminMapper.updateStuDate", inDate);
+	}
+	
+	// 직원일괄등록 기능
+	public int insertManyMember(List<MemberDto> m) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("m", m);
+		return sqlSessionTemplate.insert("adminMapper.insertManyMember", map);
 	}
 	
 }

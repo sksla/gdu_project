@@ -66,9 +66,9 @@
             <div class="card-body">
 
               <div class="memberLeave">
-                <h2 class="one">직원개별등록</h2>
+                <h2 class="one" onclick="location.href='${contextPath}/admin/insertOneMemberEnrollForm.do'">직원개별등록</h2>
                 <h2 class="split">|</h2>
-                <h2 class="two">직원일괄등록</h2>
+                <h2 class="two" onclick="location.href='${contextPath}/admin/insertManyMember.page'">직원일괄등록</h2>
               </div>
 
               <br><br><br>

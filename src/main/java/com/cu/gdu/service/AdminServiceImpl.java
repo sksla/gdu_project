@@ -318,6 +318,12 @@ public class AdminServiceImpl implements AdminService {
 		return adminDao.updateStuDate(inDate);
 	}
 
+	// 직원일괄등록 기능
+	@Override
+	public int insertManyMember(List<MemberDto> m) {
+		return adminDao.insertManyMember(m);
+	}
+
 
 
 }

@@ -87,6 +87,13 @@
 			<version>${org.aspectj-version}</version>
 			<scope>runtime</scope>
 		</dependency>
+		
+		<!-- 아파치 포이 라이브러리(엑셀 관련) -->
+   	<dependency>
+      <groupId>org.apache.poi</groupId>
+      <artifactId>poi-ooxml</artifactId>
+      <version>4.1.2</version>
+    </dependency>
 
 
 		<!-- DB 관련 라이브러리(오라클, 마이바티스) -->

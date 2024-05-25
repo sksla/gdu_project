@@ -876,4 +876,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 where insert_type = #{insertType}
 	</update>
 	
+	<insert id="insertManyMember" parameterType="java.util.HashMap">
+    insert into member
+    (mem_no, major_no, job_no, mem_name, mem_id, mem_pwd, phone, email, address, resident, salary, leave_count, birth, gender, hire_date)
+    select seq_mem_no.nextval, a.*
+    from(
+    <foreach collection="m" item="item" separator="UNION ALL ">
+        select #{item.majorNo} majorNo,
+        #{item.jobNo} jobNo,
+        #{item.memName} memName,
+        #{item.memId} memId,
+        #{item.memPwd} memPwd,
+        #{item.phone} phone,
+        #{item.email} email,
+        #{item.address} address,
+        #{item.resident} resident,
+        #{item.salary} salary,
+        #{item.leaveCount} leaveCount,
+        #{item.birth} birth,
+        #{item.gender} gender,
+        #{item.hireDate} hireDate from dual
+    </foreach>
+        ) a
+	</insert> 
+
 </mapper>
