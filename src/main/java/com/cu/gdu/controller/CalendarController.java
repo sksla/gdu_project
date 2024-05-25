@@ -1,7 +1,9 @@
 package com.cu.gdu.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -76,51 +78,36 @@ public class CalendarController {
 	 */
 	@PostMapping("/insertCtg.do")
 	public String insertCtg(CalCtgDto ctg
-						   , String[] levelOne, String[] levelTwo
 						   , HttpSession session
 						   , RedirectAttributes redirectAttributes) {
 		
+		// ctgType:1=> shList = null | ctgType:2 => shList  = 공유멤버 리스트 담겨있음
 		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
 		ctg.setCtgWriter(String.valueOf(loginUser.getMemNo()));
 		
-		List<ShareMemDto> sList = new ArrayList<>();
+		log.debug("ctg: {}", ctg);
 		
-		// 조회, 등록 권한
-		if(levelOne != null) {
-			for(int i=0; i<levelOne.length; i++) {
-				sList.add( ShareMemDto.builder()
-									   .shareMemNo(levelOne[i])
-									   .rightLevel("1")
-									   .insertType("N")
-									   .build()
-						   );
-			}
-		}
-		// 조회 권한
-		if(levelTwo != null) {
-			for(int i=0; i<levelTwo.length; i++) {
-				sList.add( ShareMemDto.builder()
-									   .shareMemNo(levelTwo[i])
-									   .rightLevel("2")
-									   .insertType("N")
-									   .build()
-						   );
-			}
-		}
+		List<ShareMemDto> shList = ctg.getShList();
 		
-		ctg.setShList(sList);
+		if(shList != null && !shList.isEmpty()) {
+			for(ShareMemDto s : shList) {
+				s.setInsertType("N");
+			}
+			
+		}
+		log.debug("shList : {}", ctg.getShList());
 		
 		int result = calendarService.insertCalCtg(ctg);
 		
-		String type = ctg.getCtgType().equals("1") ? "개인" : "공유";
-		if(sList.isEmpty() && result == 1 || !sList.isEmpty() && result == sList.size()) {
-			redirectAttributes.addFlashAttribute("alertMsg", type + "캘린더를 성공적으로 등록하였습니다.");
+		String ctgType = ctg.getCtgType(); 
+		String ctgTypeStr = ctgType.equals("1") ? "개인" : "공유";
+		if(ctgType.equals("1") && result == 1 || ctgType.equals("2") && result == shList.size()) {
+			redirectAttributes.addFlashAttribute("alertMsg", ctgTypeStr + "캘린더를 성공적으로 등록하였습니다.");
 		}else {
-			redirectAttributes.addFlashAttribute("alertMsg", type + "캘린더 등록에 실패하였습니다.");
+			redirectAttributes.addFlashAttribute("alertMsg", ctgTypeStr + "캘린더 등록에 실패하였습니다.");
 		}
-		
-		return "redirect:/calendar/calendar.page";
 				
+		return "redirect:/calendar/calendar.page";
 	}
 	
 	/**
@@ -131,30 +118,113 @@ public class CalendarController {
 	 */
 	@ResponseBody
 	@PostMapping("/updateCtg.do")
-	public int updateCtg(CalCtgDto ctg) {
+	public int updateCtg(CalCtgDto ctg, int updateType
+					   , String[] origin
+					   , String[] levelOne, String[] levelTwo) {
+		// type == 1 => 개인캘린더 수정(ctg update만...)
+		// type == 2 => 공유캘린더 수정(ctg, orgArr, newArr(levelOne, leveTwo)
+		/*
+		 * 
+		 * for(int i=0; i<new.size(); i++){
+		 * 	for(int j=0; j<org.length; i++{
+		 * 		String memNo = String.valueOf(new[i].getShareMemNo()); 
+		 * 		if(memNo.equals(org[j])){
+		 * 			
+		 * 			upt.add(new[i]); 					
+		 * 
+		 * 		}else{
+		 * 			String delStr += j == org.length ? org[j] : org[j] + ","; => split(",")
+		 * 			Inslist.add(new[i]);
+		 * 
+		 * 		}
+		 *  }
+		 *  
+		 *  delStr.length > 0 => split(",") => 공유멤버 삭제 돌리러 가기(해당 서비스 호출)
+		 *  !inrlist.isEmpty ? 등록 결과값 == inslist.size() : 1 ;
+		 *  !up.isEmpty ? 수정결과값 == up.size() : 1; 
+		 *  
+		 * 	
+		 * }
+		 */
+		int reuslt1 = calendarService.updateCalCtg(ctg);
+		
+		List<ShareMemDto> newList = new ArrayList<>();
+		List<ShareMemDto> updateList = new ArrayList<>();
+		
+	
+		
 		
 		return calendarService.updateCalCtg(ctg);
 	}
 	
 	
+	/*
+	 * 캘린더 삭제
+	 * 
+	 */
 	@ResponseBody
 	@PostMapping("/deleteCtg.do")
-	public int deleteCtg(int ctgNo) {
-		int count = calendarService.selectCalListCount(ctgNo);
+	public String deleteCtg(int ctgNo, int delType, HttpSession session) {
 		
-		int totalResult = 0;
+		// delType == 1 개인  
+		// delType == 2 공유캘 소유자가 삭제 => 해당 일정 지우고, 공유멤버도 싹 지우고 카테고리도 지움 (결과 
+		// delType == 3 공유캘 공유받은 사람이 삭제 => 공유멤버만 지우기 (결과 1)
 		
-		if(count > 0) {
-			int result1 = calendarService.deleteCalendar(2, ctgNo);
-			if(result1 == count) {
-				totalResult = calendarService.deleteCalCtg(ctgNo);
-			}
-		}else {
-			totalResult = calendarService.deleteCalCtg(ctgNo);
+		int memNo = ( (MemberDto)session.getAttribute("loginUser") ).getMemNo();
+		int calCount = calendarService.selectCalListCount(ctgNo);
+		int comparisonResult = calCount > 0 ? calCount : 1;
+		
+		int shareMemCount = delType == 2 ?  calendarService.selectShareMemListCount(ctgNo) : 0;
+		
+		int delCalCount =  1;
+		
+		if(delType != 3 && calCount > 0) {
+			// 공유받은 캘린더 X,  소속된 일정이 있다 => 일정 삭제
+			Map<String, Integer> delInfo = new HashMap<>();
+			delInfo.put("type", 2);
+			delInfo.put("delNo", ctgNo);
+			
+			delCalCount = calendarService.deleteCalendar(delInfo);
 		}
 		
-		return totalResult;
+		Map<String, Object> delInfo = new HashMap<>();
+		
+		if(delType == 2) {
+			
+			delInfo.put("type", 1);
+			delInfo.put("ctgNo", ctgNo );
+			
+		}else if(delType == 3) {
+			String[] shareMemNoArr = { String.valueOf(memNo) };
+			delInfo.put("type", 2);
+			delInfo.put("ctgNo", ctgNo );
+			delInfo.put("memNoArr", shareMemNoArr );
+		}
+		
+		// 예상 결과값 type=1 => result = 1 | type=2 => result=shareCount | type=3 => result=1
+		int result = calendarService.deleteCalCtg(ctgNo, delType, delInfo);
+		
+		if( (delType == 1 && result * delCalCount == comparisonResult) 
+				|| (delType == 2 && result == shareMemCount && comparisonResult == delCalCount)
+				|| (delType == 3 && result == 1) ) {
+			log.debug("result: {}", result);
+			return "SUCCESS";
+		}else {
+			log.debug("result: {}", result);
+			return "FAIL";
+		}
+		
 	}
+	
+	@ResponseBody
+	@PostMapping("/deleteSharedCtg.do")
+	public String deleSharedCtg(HttpSession session) {
+		// 캘린더 공유받은 직원이 해당 캘린더(카테고리) 삭제 => 공유멤버 테이블에서 삭제
+		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
+		
+		return "SUCCESS";
+	}
+	
 	
 	
 	// 캘린더(카테고리) 끝 --------------------------------------------------------------
@@ -217,16 +287,21 @@ public class CalendarController {
 	
 	/**
 	 * 일정 삭제 ajax
-	 * @param delType
-	 * @param delNo
+	 * @param delType : 1(그냥 일정 삭제) | 2(카테고리에 포함된 일정들 삭제)
+	 * @param delNo : delType = 1 => 일정번호 | delType =2 => 카테고리번호 
 	 * @return
 	 */
 	@ResponseBody
 	@PostMapping("/deleteEvt.do")
 	public int deleteEvt(@RequestParam(value="type", defaultValue="1") int delType
 			           , int delNo) {
+		//delType=1 => 일정 삭제 | delType=2 => 카테고리안 일정 삭제
 		
-		return calendarService.deleteCalendar(delType, delNo);
+		Map<String, Integer> delInfo = new HashMap<>();
+		delInfo.put("type", delType);
+		delInfo.put("delNo", delNo);
+		
+		return calendarService.deleteCalendar(delInfo);
 	}
 	
 	// 일정 관련 끝----------------------------------------------------------------------

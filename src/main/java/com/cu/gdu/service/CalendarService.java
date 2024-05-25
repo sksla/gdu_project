@@ -18,7 +18,7 @@ public interface CalendarService {
 	int updateCalCtg(CalCtgDto ctg);
 	
 	// 캘린더(카테고리) 삭제
-	int deleteCalCtg(int ctgNo);
+	int deleteCalCtg(int ctgNo, int delType, Map<String, Object> delInfo);
 	
 	// 일정 개수 조회
 	int selectCalListCount(int ctgNo);
@@ -33,7 +33,13 @@ public interface CalendarService {
 	int updateCalendar(CalendarDto cal);
 	
 	// 일정 삭제
-	int deleteCalendar(int delType, int delNo);
+	int deleteCalendar(Map<String, Integer> delInfo);
+	
+	// 공유멤버 수 조회
+	int selectShareMemListCount(int ctgNo);
+	
+	// 공유멤버 삭제
+	int deleteShareMem(String shareMemNo);
 	
 	// 학사 일정 조회
 	List<CalendarDto> selectUnivCalList();

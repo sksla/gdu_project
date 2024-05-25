@@ -120,6 +120,7 @@ public class CalendarDao {
 	
 	/**
 	 * 공유 멤버 등록
+	 * @author 김영주
 	 * @param sm
 	 * @return insert문 처리한 행 수 (int)
 	 */
@@ -127,5 +128,33 @@ public class CalendarDao {
 		return sqlSessionTemplate.insert("calendarMapper.insertShareMem", sh);
 	}
 	
+	/**
+	 * 공유멤버 수정
+	 * @author 김영주
+	 * @param sh
+	 * @return 
+	 */
+	public int updateShareMem(ShareMemDto sh) {
+		return sqlSessionTemplate.update("calendarMapper.updateShareMem", sh);
+	}
 	
+	/**
+	 * 공유멤버 삭제
+	 * @author 김영주
+	 * @param shareMemNo
+	 * @return
+	 */
+	public int deleteShareMem(Map<String, Object> delInfo) {
+		return sqlSessionTemplate.delete("calendarMapper.deleteShareMem", delInfo);
+	}
+	
+	/**
+	 * 공유 멤버 수
+	 * @author 김영주
+	 * @param ctgNo
+	 * @return
+	 */
+	public int selectShareMemListCount(int ctgNo) {
+		return sqlSessionTemplate.selectOne("calendarMapper.selectShareMemListCount", ctgNo);
+	}
 }
