@@ -18,6 +18,7 @@ public class ApproverDto {
 	private int approverNo;
 	private int docNo;
 	private String appType;
+	private String appYn;
 	private String isApproved;
 	private String appDate;
 	

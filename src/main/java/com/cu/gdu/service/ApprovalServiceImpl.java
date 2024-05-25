@@ -115,8 +115,18 @@ public class ApprovalServiceImpl implements ApprovalService {
 	}
 
 	@Override
-	public List<ApproverDto> selectApproverByDocNo(int no) {
-		return approvalDao.selectApproverByDocNo(no);
+	public List<ApproverDto> selectCollaboratorsByDocNo(Map<String, Integer> map) {
+		return approvalDao.selectCollaboratorsByDocNo(map);
+	}
+
+	@Override
+	public ApproverDto selectApproverByDocNo(Map<String, Integer> map) {
+		return approvalDao.selectApproverByDocNo(map);
+	}
+
+	@Override
+	public int updateAppDocStatus(ApprovalDocDto appDoc) {
+		return approvalDao.updateAppDocStatus(appDoc);
 	}
 
 	

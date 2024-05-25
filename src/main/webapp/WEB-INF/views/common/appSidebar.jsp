@@ -141,6 +141,40 @@
               <span class="hide-menu">자주쓰는 결재선 관리</span>
             </a>
           </li>	
+          <li class="sidebar-item">
+            <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
+              <span class="d-flex">
+                <i class="ti ti-clipboard"></i>
+              </span>
+              <span class="hide-menu">결재양식</span>
+            </a>
+            <ul aria-expanded="false" class="collapse first-level">
+              <li class="sidebar-item">
+                <a href="${contextPath}/approval/enrollCategory.page" class="sidebar-link">
+                  <div class="round-16 d-flex align-items-center justify-content-center">
+                    <i class="ti ti-circle"></i>
+                  </div>
+                  <span class="hide-menu">결재양식 등록</span>
+                </a>
+              </li>
+              <li class="sidebar-item">
+                <a href="" class="sidebar-link">
+                  <div class="round-16 d-flex align-items-center justify-content-center">
+                    <i class="ti ti-circle"></i>
+                  </div>
+                  <span class="hide-menu">결재양식 보관함</span>
+                </a>
+              </li>
+              <li class="sidebar-item">
+                <a href="" class="sidebar-link">
+                  <div class="round-16 d-flex align-items-center justify-content-center">
+                    <i class="ti ti-circle"></i>
+                  </div>
+                  <span class="hide-menu">임시보관함</span>
+                </a>
+              </li>
+            </ul>
+          </li>
         </ul>
       </nav>
 

@@ -251,13 +251,13 @@ public class ApprovalController {
 		map.put("no", no);
 		map.put("appType", 10);
 		model.addAttribute("collaboratorList", approvalService.selectCollaboratorsByDocNo(map));
-		log.debug("col : {}", approvalService.selectCollaboratorsByDocNo(map).size());
+		
 		map.put("appType", 20);
 		model.addAttribute("approver", approvalService.selectApproverByDocNo(map));
-		log.debug("app : {}", approvalService.selectApproverByDocNo(map));
+		
 		map.put("appType", 30);
 		model.addAttribute("receiver", approvalService.selectApproverByDocNo(map));
-		log.debug("rec : {}", approvalService.selectApproverByDocNo(map));
+		
 		return "approval/appDetail";
 	}
 	

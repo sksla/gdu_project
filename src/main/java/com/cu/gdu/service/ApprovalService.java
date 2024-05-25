@@ -54,8 +54,12 @@ public interface ApprovalService {
 	// 문서정보 조회
 	ApprovalDocDto selectAppDoc(int no);
 	// 문서 관련 결재자 조회
-	List<ApproverDto> selectApproverByDocNo(int no);
+	List<ApproverDto> selectCollaboratorsByDocNo(Map<String, Integer> map);
+	ApproverDto selectApproverByDocNo(Map<String, Integer> map);
 	// 결재 코멘트 조회
+	
+	// 결재문서 상태 변경
+	int updateAppDocStatus(ApprovalDocDto appDoc);
 	
 	
 }

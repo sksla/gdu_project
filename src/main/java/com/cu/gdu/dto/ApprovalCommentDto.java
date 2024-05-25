@@ -13,14 +13,16 @@ import lombok.ToString;
 @Setter
 @Builder
 @ToString
-public class ApprovalHistoryDto {
+public class ApprovalCommentDto {
 	
+	private int commentNo;
+	private String appType;
 	private String appYn;
-	private String appDate;
-	private int appHistoryNo;
-	private MemberDto approver;
-	private String approverNo;
-	private String nowApprover;
-	private String comment;
+	private String commentDate;
+	private String commentContent;
+	private int docNo;
+	private int commenterNo;
 
+	private MemberDto commenter;
+	
 }
