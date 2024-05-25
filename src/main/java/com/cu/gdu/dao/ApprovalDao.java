@@ -82,10 +82,6 @@ public class ApprovalDao {
 		return sqlSessionTemplate.selectOne("approvalMapper.selectAppDoc", no);
 	}
 
-	public List<ApproverDto> selectApproverByDocNo(int no) {
-		return sqlSessionTemplate.selectList("approvalMapper.selectApproverByDocNo", no);
-	}
-
 	public int selectCountReceiveBoardList(Map<String, String> map) {
 		return sqlSessionTemplate.selectOne("approvalMapper.selectCountReceiveBoardList", map);
 	}
@@ -93,6 +89,18 @@ public class ApprovalDao {
 	public List<ApprovalDocDto> selectReceiveBoardList(PageInfoDto pi, Map<String, String> map) {
 		RowBounds rowBounds = new RowBounds((pi.getCurrentPage() - 1) * pi.getBoardLimit(), pi.getBoardLimit());
 		return sqlSessionTemplate.selectList("approvalMapper.selectReceiveBoardList", map, rowBounds);
+	}
+
+	public int updateAppDocStatus(ApprovalDocDto appDoc) {
+		return sqlSessionTemplate.update("approvalMapper.updateAppDocStatus", appDoc);
+	}
+
+	public List<ApproverDto> selectCollaboratorsByDocNo(Map<String, Integer> map) {
+		return sqlSessionTemplate.selectList("approvalMapper.selectApproverByDocNo", map);
+	}
+
+	public ApproverDto selectApproverByDocNo(Map<String, Integer> map) {
+		return sqlSessionTemplate.selectOne("approvalMapper.selectApproverByDocNo", map);
 	}
 	
 }
