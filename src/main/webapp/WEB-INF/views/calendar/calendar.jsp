@@ -42,6 +42,9 @@
 </script>
 
 <style>
+	.off{display:none;}
+	.my_calendar_toggle, .share_calendar_toggle{cursor:pointer;}
+	
 	/*사이드바 스타일*/
   .schedule-sidebar{
     background-color: aliceblue;
@@ -59,7 +62,7 @@
   }
   
   /* 캘린더(일정 카테고리) 제목 스타일*/
-  .my_calender_title, .share_calendar_title{
+  .my_calendar_title, .share_calendar_title{
     display: flex;
     justify-content: space-between;
   }
@@ -268,9 +271,15 @@
                     <button type="button" id="addEventBtn" class="btn btn-lg btn-primary" onclick="clickEvtBtn();">일정등록</button>
                   </div>
 									<form id="ctgList_form">
-	                  <div class="my_calender p-2">
-	                    <div class="my_calender_title">
-	                      <span><h4>내 캘린더</h4></span>
+	                  <div class="my_calendar p-2">
+	                    <div class="my_calendar_title">
+	                    	<div class="my_calendar_toggle d-flex align-items-baseline" onclick="toggleIcons(1);">
+		                    	<span>
+			                    		<i class="icon_up ti ti-chevron-up" style="font-size:30px;"></i>
+			                    		<i class="off icon_down ti ti-chevron-down " style="font-size:30px;"></i>
+	                    		</span>
+		                      <span><h4>내 캘린더</h4></span>
+	                    	</div>
 	                      <button type="button" class="btn" onclick="openInsertMyModal();" data-bs-toggle="modal" data-bs-target="#insert_my"><i class="ti ti-plus"></i></button>
 	                    </div>
 	                    <div class="my_calendar_list">
@@ -282,7 +291,13 @@
 	
 	                  <div class="share_calendar p-2">
 	                    <div class="share_calendar_title">
-	                      <span><h4>공유 캘린더</h4></span>
+	                    	<div class="share_calendar_toggle d-flex align-items-baseline" onclick="toggleIcons(2);">
+	                      	<span>
+		                    		<i class="icon_up ti ti-chevron-up" style="font-size:30px;"></i>
+		                    		<i class="off icon_down ti ti-chevron-down " style="font-size:30px;"></i>
+	                    		</span>
+	                      	<span><h4>공유 캘린더</h4></span>
+	                      </div>
 	                      <button type="button" class="btn" data-bs-toggle="modal" onclick="openInsertShareModal();" data-bs-target="#insert_share">
 	                        <i class="ti ti-plus"></i>
 	                      </button>
@@ -330,7 +345,10 @@
                             <span id="ctgColor" style="background-color: red;"></span>
                           </button> &nbsp;
                           <span id="ctgName"></span>
-                          <button id="shareListBtn" class="btn btn-sm">4(공유하는 사람 수)</button>
+                          <button id="shareListBtn" class="btn btn-sm rounded-circle btn-light">
+                          	<i class="ti ti-user"></i>
+                          	<span class="shareMemCount"></span>
+                         	</button>
                         </td> 
                       </tr>
                       <tr>
@@ -341,20 +359,17 @@
                         <th>일정 시간</th>
                         <td id="detail_date">yyyy-mm-dd hh:mm ~ yyyy-mm-dd hh:mm</td>
                       </tr>
-                      <!-- * 공유 캘린더 일정일 경우 -->
-                      <!--
-                      <tr>
-                        <th>최초 등록</th>
-                        <td>김사람(yyyy-dd-mm hh:mm)</td>
-                      </tr>
-                      <tr>
-                        <th>최근 수정</th>
-                        <td>김사람(yyyy-dd-mm hh:mm)</td>
-                      </tr>
-                      -->
                       <tr>
                         <th>일정 내용</th>
                         <td id="detail_content">일정 내용내용</td>
+                      </tr>
+                      <tr class="calWriter_name">
+                        <th>최초 등록</th>
+                        <td>김사람(yyyy-dd-mm hh:mm)</td>
+                      </tr>
+                      <tr class="modifier_name">
+                        <th>최근 수정</th>
+                        <td>김사람(yyyy-dd-mm hh:mm)</td>
                       </tr>
                     </tbody>
                   </table>
@@ -544,10 +559,6 @@
             </div>
           </div>
 
-
-					<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detail_share">
-					  Open modal
-					</button>
 
           <!-- 공유 캘린더(일정카테고리) 등록 모달창 -->
           <div class="modal" id="insert_share">
@@ -871,6 +882,23 @@
             	
               
             })
+            
+            function toggleIcons(type){
+            	let titleName = type == 1 ? ".my_calendar" : ".share_calendar";
+            	
+            	let $iconUp =$("#ctgList_form " + titleName + " .icon_up");
+            	let $iconDown = $("#ctgList_form " + titleName + " .icon_down");
+            	
+            	if($iconUp.hasClass("off")){
+            		$iconUp.removeClass("off");
+			          $iconDown.addClass("off"); 		
+            		$(titleName + "_list").removeClass("off");
+            	}else{
+            		$iconUp.addClass("off");
+            		$iconDown.removeClass("off");
+            		$(titleName + "_list").addClass("off");
+            	}
+            }
             
             
             
@@ -1404,7 +1432,7 @@
          			console.log(ctgList);
          			console.log(ctg);
          		
-         			$("detail_share .btn-outline-danger").css("display", (openType == 1 ? "inline" : "none"));
+         			$("#detail_share .btn-outline-danger").css("display", (openType == 1 ? "inline" : "none"));
          			
          			// 공유캘린더명
          			$("#detail_share .ctgName").text(ctg.ctgName);
@@ -1843,27 +1871,45 @@
 											// 공유 개인 일정에 따라 공유멤버 볼 수 있는 버튼 보이기 여부 결정
 											if(ctgType == "1"){ // 개인
 												$("#shareListBtn").css("display", "none");
+												$("#detailForm .calWriter_name").css("display", "none");
+											  $("#detailForm .modifier_name").css("display", "none");
 												// 수정삭제버튼 보이고 확인버튼 안보임
 												$("#detailForm .editBtnForm").css("display", "block");
-												$("#detailForm .onlyConfirmBtn").css("display", "hidden");
+												$("#detailForm .onlyConfirmBtn").css("display", "none");
 											
 												
 											}else{ // 공유
 												$("#shareListBtn").css("display", "inline");
-											  $("#shareListBtn").html(ctgList[i].shareCount);
+											  $("#shareListBtn .shareMemCount").text(ctgList[i].shareCount);
+											  $("#detailForm .calWriter_name td").text(calWriter + " " + registDate);
+											  $("#detailForm .calWriter_name").css("display", "table-row");
+											  $("#detailForm .modifier_name td").text(modifier != null ? modifier + " " + modifyDate : "--");
+											  $("#detailForm .modifier_name").css("display", "table-row");
+											  
+											  $("#shareListBtn").on("click", function(){
+												  openDetailShareModal(ctgList[i], 2);
+											  });
+											  
 											  
 											  let sList = ctgList[i].shList;
 											  console.log(ctgList[i].shList);
 											  for(let j=0; j<sList.length; j++){
-												  if(sList[j].shareMemNo == "${loginUser.memNo}" || sList[j].rightLevel == "1"){
-													  // 로그인한 회원의 권한이 조회/등록일 경우 => 수정삭제버튼 보임
-													  $("#detailForm .editBtnForm").css("display", "block");
-														$("#detailForm .onlyConfirmBtn").css("display", "hidden");
-												  }else{
-													  // 로그인한 회원의 권한이 조회만일 경우 => 확인버튼 보임
-													  $("#detailForm .editBtnForm").css("display", "hidden");
-														$("#detailForm .onlyConfirmBtn").css("display", "block");
-												  }
+												  if(sList[j].shareMemNo == memNo){
+													  
+													  if(sList[j].rightLevel != "3"){
+														  
+														  console.log("버튼 css 실행");
+														  // 로그인한 회원의 권한이 조회/등록일 경우 => 수정삭제버튼 보임
+														  $("#detailForm .editBtnForm").css("display", "block");
+															$("#detailForm .onlyConfirmBtn").css("display", "none");
+														  
+													  }else{
+														  // 로그인한 회원의 권한이 조회만일 경우 => 확인버튼 보임
+														  $("#detailForm .editBtnForm").css("display", "none");
+															$("#detailForm .onlyConfirmBtn").css("display", "block");
+													  }
+														  
+												  } 
 											  }
 											}
 											
@@ -1943,22 +1989,6 @@
 								
 		       	
 		       			}
-		       			
-		       			/*
-		       			dayCellContent: function(e) {
-	
-			       			// 날짜 셀의 내용을 수정하는 로직을 작성합니다.
-	
-			       			// e.date는 현재 날짜를 나타냅니다.
-	
-			       			// e.dayNumberText는 현재 날짜의 숫자를 나타냅니다.
-	
-			       			// 이를 활용하여 일을 제거하거나 다른 형식으로 변경할 수 있습니다.
-	
-			       			return e.dayNumberText.replace('일', '');
-	
-		       			}
-								*/
 		   		    
 		   		    });
 		   		    
