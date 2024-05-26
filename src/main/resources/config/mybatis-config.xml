@@ -31,6 +31,8 @@
 		<typeAlias type="com.cu.gdu.dto.LectureDto" alias="LectureDto" />
 		<typeAlias type="com.cu.gdu.dto.LecStuDto" alias="LecStuDto" />
 		<typeAlias type="com.cu.gdu.dto.InsertDateDto" alias="InsertDateDto" />
+		<typeAlias type="com.cu.gdu.dto.ReservationDto" alias="ReservationDto"/>
+		<typeAlias type="com.cu.gdu.dto.ResourceDto" alias="ResourceDto"/>
 	</typeAliases>
 	
 	<mappers>
@@ -41,6 +43,7 @@
 		<mapper resource="mappers/affiliatedOrgan-mapper.xml"/>
 		<mapper resource="mappers/board-mapper.xml"/>
 		<mapper resource="mappers/lecture-mapper.xml"/>
+		<mapper resource="mappers/reservation-mapper.xml"/>
 	</mappers>
 	
 </configuration>

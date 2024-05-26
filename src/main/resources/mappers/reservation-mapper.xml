@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="reservationMapper">
+	
+	<resultMap type="ReservationDto" id="reservationResult">
+		<id column="rev_no" property="revNo"/>
+		<result column="rev_reason" property="revReason"/>
+		<result column="rev_date" property="revDate"/>
+		<result column="start_time" property="startTime"/>
+		<result column="end_time" property="endTime"/>
+		<result column="regist_date" property="registDate"/>
+		<result column="status" property="status"/>
+		<result column="mem_name" property="memNo"/>
+		<result column="res_name" property="resNo"/>
+		<result column="res_type" property="resType"/>
+		<result column="rev_count" property="revCount"/>
+	</resultMap>
+	
+	<resultMap type="ResourceDto" id="resourceResult">
+		<id column="res_no" property="resNo"/>
+		<result column="res_Type" property="resType"/>
+		<result column="res_name" property="resName"/>
+		<result column="res_detail" property="resDetail"/>
+		<result column="use_status" property="useStatus"/>
+		<result column="res_gps" property="resGps"/>
+		<result column="regist_date" property="registDate"/>
+		<result column="mod_date" property="modifyDate"/>
+		<result column="stock" property="stock"/>
+		<result column="status" property="status"/>
+		<result column="del_content" property="delContent"/>
+	</resultMap>
+
+	<!-- 김영주 -->
+
+	<!-- 나의 예약 목록 -->
+	<select id="searchReservationList" resultMap="reservationResult">
+		select
+		       rev_no
+		     , res_name
+		     , res_type
+		     , mem_name
+		     , rev_reason
+		     , rev_date
+		     , start_time
+		     , end_time
+		     , rev_count
+		     , to_char(rev.regist_date, 'YYYY-MM-DD') regist_date
+		     , rev.status
+		  from reservation rev
+		  join member m on (m.mem_no = rev.mem_no)
+		  join resource res on (rev.res_no = res.res_no)
+		  <where>
+		   status in ('1', '2')
+		   and mem_no = #{mem_no}
+		   <if test='keyword != null or keyword eq "" '>
+		   	and res_name like '%' || #{keyword} || '%'
+		   </if>
+		   <if test='condition ne 0'>
+		   	and res_type = #{condition}
+		   </if>
+		  </where>
+		  order 
+		     by rev_no       
+	</select>
+	
+	<!-- 미반납 목록 -->
+	<select id="selectUnreturnedList" resultMap="rervationResult">
+		select
+		       rev_no
+		     , res_name
+		     , mem_name
+		     , rev_reason
+		     , rev_date
+		     , rev_count
+		     , to_char(rev.regist_date, 'YYYY-MM-DD') regist_date
+		     , rev.status
+		  from reservation rev
+		  join member m on (m.mem_no = rev.mem_no)
+		  join resource res on (rev.res_no = res.res_no)
+		 where status = '1'
+		   and res_type = '4'
+		   and mem_no = #{memNo}
+	</select>
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<!-- 김영주 -->
+
+
+
+
+
+
+
+
+
+</mapper>
