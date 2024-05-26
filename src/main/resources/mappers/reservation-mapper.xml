@@ -52,7 +52,7 @@
 		  <where>
 		   status in ('1', '2')
 		   and mem_no = #{mem_no}
-		   <if test='keyword != null or keyword eq "" '>
+		   <if test='keyword != null or keyword ne "" '>
 		   	and res_name like '%' || #{keyword} || '%'
 		   </if>
 		   <if test='condition ne 0'>
@@ -64,7 +64,7 @@
 	</select>
 	
 	<!-- 미반납 목록 -->
-	<select id="selectUnreturnedList" resultMap="rervationResult">
+	<select id="selectUnreturnedList" resultMap="reservationResult">
 		select
 		       rev_no
 		     , res_name
@@ -81,6 +81,105 @@
 		   and res_type = '4'
 		   and mem_no = #{memNo}
 	</select>
+	
+	<!-- 시설 예약 -->
+	<insert id="insertReservation">
+		insert
+		  into reservation
+		  (
+		  	rev_no
+		  , rev_reason
+		  , rev_date
+		  , start_time
+		  , end_time
+		  , mem_no
+		  , res_no
+		  )
+		  values
+		  (
+		  	seq_rev_no.nextval
+		  ,	#{revReason}
+		  , #{revDate}
+		  , #{startTime}
+		  , #{endTime}
+		  , #{memNo}
+		  , #{resNo}
+		  )
+	</insert>
+	
+	<!-- 예약 수정 -->
+	<update id="updateReservation">
+		update
+		       reservation
+		   set rev_reason = #{rev_reason}
+		     , rev_date = #{revDate}
+		     , start_time = #{startTime}
+		     , end_time = #{endTime}
+		 where rev_no = #{revNo}    
+		         
+	</update>
+	
+	<!-- 예약 취소 -->
+	<update id="deleteReservation">
+		update 
+		       reservation
+		   set status = '3'
+		 where rev_no = #{revNo}       
+	</update>
+	
+	<!-- 시설 목록 조회 -->
+	<select id="searchFacilityList" resultMap="resourceResult">
+		select 
+		       res_no
+		     , res_type
+		     , res_name
+		     , res_detail
+		     , res_gps
+		  from resource
+		  <where>
+		  	use_status = 'Y'
+		  	<if test='keyword != null or keyword ne "" '>
+			   	and res_name like '%' || #{keyword} || '%'
+		   	</if>
+		   	<if test='condition ne 0'>
+		   		and res_type = #{condition}
+		   	</if>
+		  </where> 
+		  order
+		     by res_no    
+	</select>
+	
+	<!-- 비품 목록 조회 -->
+	<select id="searchEquipmentList" resultMap="resourceResult">
+		select 
+		       res_no
+		     , res_type
+		     , res_name
+		     , res_detail
+		     , res_gps
+		     , stock
+		  from resource
+		  <where>
+		  	use_status = 'Y'
+		  	and res_type = '4'
+		  	<if test='keyword != null or keyword ne "" '>
+			   	and res_name like '%' || #{keyword} || '%'
+		   	</if>
+		 	</where>
+	</select>
+	
+	<!-- 시설 조회 -->
+	<select id="selectResource" resultMap="resourceResult">
+		select
+		       res_no
+		     , res_type
+		     , res_name
+		     , res_detail
+		     , res_gps
+		  from resource
+		 where res_no = #{resNo} 
+	</select>
+	
 	
 	
 
