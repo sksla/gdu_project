@@ -120,26 +120,18 @@ public class CalendarController {
 	@PostMapping("/updateCtg.do")
 	public String updateCtg(CalCtgDto ctg) {
 		// type == 1 => 개인캘린더 수정(ctg update만...)
-		// type == 2 => 공유캘린더 수정(ctg, orgArr, newArr(levelOne, leveTwo)
-		/*
-		 *  
-		 *  delStr.length > 0 => split(",") => 공유멤버 삭제 돌리러 가기(해당 서비스 호출)
-		 *  !inrlist.isEmpty ? 등록 결과값 == inslist.size() : 1 ;
-		 *  !up.isEmpty ? 수정결과값 == up.size() : 1; 
-		 *  
-		 * 	
-		 * }
-		 */
+		// type == 2 => 공유캘린더 수정
 		
 		String ctgType = ctg.getCtgType();
-		
 		List<ShareMemDto> newShareList = ctg.getShList();
-		
 		List<ShareMemDto> originMemList = ctg.getOriginList();
-		
 		List<ShareMemDto> updateList = new ArrayList<>();
 		List<ShareMemDto> addList = new ArrayList<>();
 		List<ShareMemDto> deleteList = new ArrayList<>();
+		
+		boolean isAddSuccess = false;
+		boolean isDelSuccess = false;
+		boolean isUpdateSuccess = false;
 		
 		if(ctgType.equals("2")) {
 			
@@ -165,6 +157,7 @@ public class CalendarController {
 					String newRight = newMap.get(s.getShareMemNo());
 					
 					if( !newRight.equals(originMap.get(s.getShareMemNo())) ){
+						s.setShareCtgNo(String.valueOf(ctg.getCtgNo()));
 						s.setRightLevel(newRight);
 						updateList.add(s);
 					}
@@ -175,39 +168,58 @@ public class CalendarController {
 			for(ShareMemDto s : newShareList) {
 				
 				if(!originMap.containsKey(s.getShareMemNo())) {
+					s.setShareCtgNo(String.valueOf(ctg.getCtgNo()));
+					s.setInsertType("U");
 					addList.add(s);
 				}
 			}
-			
-			if(!addList.isEmpty()) {
-				for(ShareMemDto s : addList) {
-					s.setInsertType("U");
-				}
-			}
-			ctg.setAddList(addList);
-			ctg.setUpdateList(updateList);
-			ctg.setDeleteList(deleteList);
 		
-		}
-		
-		 
+			int delResult = deleteList.isEmpty() ? 1 : 0; 
+			if(!deleteList.isEmpty()) {
+				String delMemStr = "";
 				
-		
+				for(int i=0; i<deleteList.size(); i++) {
+					String delMemNo = deleteList.get(i).getShareMemNo(); 
+					delMemStr += ( i == deleteList.size() -1 ? delMemNo : delMemNo + ",");
+				}
+				
+				Map<String, Object> delInfo = new HashMap<>();
+				delInfo.put("type", 2);
+				delInfo.put("ctgNo", ctg.getCtgNo());
+				delInfo.put("memNoArr", delMemStr.split(","));
+				
+				delResult = calendarService.deleteShareMem(delInfo);
+				
+			}
+			
+			isDelSuccess = deleteList.isEmpty() && delResult == 1 || !deleteList.isEmpty() && delResult == deleteList.size();
+			
+			int addResult = addList.isEmpty() ? 1 : calendarService.insertShareMem(addList);
+			
+			isAddSuccess = addList.isEmpty() && addResult == 1 || !addList.isEmpty() && addResult ==  addList.size(); 
+			
+			int updateResult = updateList.isEmpty() ? 1 : calendarService.updateShareMem(updateList);
+			
+			isUpdateSuccess = updateList.isEmpty() && updateResult == 1 || !updateList.isEmpty() && updateResult == updateList.size();
+		}
 		log.debug("ctg : {}", ctg);
 		log.debug("shList : {}", ctg.getShList());
 		log.debug("originMem : {}" , ctg.getOriginList());
-		log.debug("addList : {}", ctg.getAddList());
-		log.debug("updateList : {}", ctg.getUpdateList());
-		log.debug("deleteList : {}", ctg.getDeleteList());
-		
-		//int reuslt = calendarService.updateCalCtg(ctg);
-		
+		log.debug("addList : {}", addList.toString());
+		log.debug("updateList : {}", updateList.toString());
+		log.debug("deleteList : {}", deleteList.toString());
 		
 		
 	
+		int result = calendarService.updateCalCtg(ctg);
 		
-		
-		return "SUCCESS";
+		if(ctgType.equals("1") && result == 1 
+				|| ctgType.equals("2") && result == 1 && isAddSuccess && isUpdateSuccess && isDelSuccess) {
+			return  "SUCCESS";
+		}else {
+			return "FAIL";
+		}
+
 	}
 	
 	

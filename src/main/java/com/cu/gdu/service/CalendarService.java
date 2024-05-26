@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.cu.gdu.dto.CalCtgDto;
 import com.cu.gdu.dto.CalendarDto;
+import com.cu.gdu.dto.ShareMemDto;
 
 public interface CalendarService {
 
@@ -39,7 +40,13 @@ public interface CalendarService {
 	int selectShareMemListCount(int ctgNo);
 	
 	// 공유멤버 삭제
-	int deleteShareMem(String shareMemNo);
+	int deleteShareMem(Map<String, Object> delInfo);
+	
+	// 공유멤버 등록
+	int insertShareMem(List<ShareMemDto> shList);
+	
+	// 공유멤버 수정
+	int updateShareMem(List<ShareMemDto> shList);
 	
 	// 학사 일정 조회
 	List<CalendarDto> selectUnivCalList();

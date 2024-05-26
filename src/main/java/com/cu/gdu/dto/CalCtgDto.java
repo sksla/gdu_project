@@ -30,7 +30,6 @@ public class CalCtgDto {
 	private int shareCount;
 	private List<ShareMemDto> shList;
 	private List<ShareMemDto> originList; // originMember
-	private List<ShareMemDto> addList;
-	private List<ShareMemDto> updateList;
-	private List<ShareMemDto> deleteList;
+	
+	
 }

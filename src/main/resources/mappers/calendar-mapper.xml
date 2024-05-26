@@ -163,7 +163,8 @@
 		      share_mem
 		   set
 		       right_level = #{rightLevel}
-		 where mem_no = #{shareMemNo}        
+		 where mem_no = #{shareMemNo} 
+		   and ctg_no = #{shareCtgNo}       
 	</update>
 	
 	<!-- 공유멤버 삭제 -->

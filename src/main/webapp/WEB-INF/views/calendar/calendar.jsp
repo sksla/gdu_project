@@ -1076,20 +1076,29 @@
 	        			if(om.rightLevel == "1"){
 	        				
 									let $ownerEl = $("<div class='calOwner'></div>").text(om.shareMemName + " (" + om.majorName + ", " + om.jobName + ")");
-									$ownerEl.append("<input class='calOwner' type='hidden' name='calOwner' value='" + om.shareMemNo + "'>");
+									$ownerEl.append("<span class='hide'>" + om.shareMemNo + "</span>")
+													.append("<input type='hidden' name='shareMemNo' value='" + om.shareMemNo + "'>")
+													.append("<input type='hidden' name='rightLevel' value='" + om.rightLevel + "'>");
+									
+									$("#insert_share .app_levelOne>.mem_list").after("<input type='hidden' name='originMemNo' value='" + om.shareMemNo + "'>"
+																																 + "<input type='hidden' name='originRightLv' value='" + om.rightLevel + "'>");
 									$("#insert_share .app_levelOne>.mem_list").append($ownerEl);
 									
 	        			}else if(om.rightLevel == "2"){
 	        				let $lvOneEl = $("<div class='selected_levelOne'></div>").text(om.shareMemName + " (" + om.majorName + ", " + om.jobName + ")");
 	        				
-	        				$lvOneEl.append("<span class='hide'>" + om.shareMemNo + "</span>");
+	        				$lvOneEl.append("<span class='hide'>" + om.shareMemNo + "</span>")
+	        								.append("<input type='hidden' name='shareMemNo' value='" + om.shareMemNo + "'>")
+													.append("<input type='hidden' name='rightLevel' value='" + om.rightLevel + "'>");
 													
 	        				$("#insert_share .app_levelOne>.mem_list").after("<input type='hidden' name='originMemNo' value='" + om.shareMemNo + "'>"
 	        																											 + "<input type='hidden' name='originRightLv' value='" + om.rightLevel + "'>");
 	        				$("#insert_share .app_levelOne>.mem_list").append($lvOneEl);
 	        			}else{
 	        				let $lvTwoEl = $("<div class='selected_levelTwo'></div>").text(om.shareMemName + " (" + om.majorName + ", " + om.jobName + ")");
-	        				$lvTwoEl.append("<span class='hide'>" + om.shareMemNo + "</span>");
+	        				$lvTwoEl.append("<span class='hide'>" + om.shareMemNo + "</span>")
+	        								.append("<input type='hidden' name='shareMemNo' value='" + om.shareMemNo + "'>")
+													.append("<input type='hidden' name='rightLevel' value='" + om.rightLevel + "'>");;
 	        				
 	        				$("#insert_share .app_levelTwo>.mem_list").after("<input type='hidden' name='originMemNo' value='" + om.shareMemNo + "'>"
 	        																											 + "<input type='hidden' name='originRightLv' value='" + om.rightLevel + "'>");
@@ -1309,7 +1318,6 @@
          							console.log("level: ", level);
          							if(level == "1"){
          								// 공유캘린더 소유자일 경우 => 공유캘린더 수정 모달
-         								resetEnrollLineModal();
          								$("#insert_share #customRadio1").prop("checked", true);
          			     			$("#insert_share #customRadio2").prop("checked", false);
          			     			
@@ -1334,11 +1342,22 @@
          			 	       	});
          			 	       	
          			 	       	$("#insert_share .list_box_wrap input[type='hidden']").remove();
+         								resetEnrollLineModal();
          			 	       	
          		        		for(let k=0; k< shList.length; k++){
          		        			
          		        			let sh = shList[k];
-         		        			if(sh.rightLevel == "2"){
+         		        			
+         		        			if(sh.rightLevel == "1"){
+         		        				//let $ownerEl = $("<div class='calOwner'></div>").text(sh.shareMemName + " (" + sh.majorName + ", " + sh.jobName + ")");
+			    									//$ownerEl.append("<span class='hide'>" + sh.shareMemNo + "</span>")
+			    									//				.append("<input type='hidden' name='shareMemNo' value='" + sh.shareMemNo + "'>")
+			    									//				.append("<input type='hidden' name='rightLevel' value='" + sh.rightLevel + "'>");
+			    									$("#insert_share .app_levelOne>.mem_list").after("<input type='hidden' name='originMemNo' value='" + sh.shareMemNo + "'>"
+																																					 + "<input type='hidden' name='originRightLv' value='" + sh.rightLevel + "'>");
+			    									
+			    									//$("#insert_share .app_levelOne>.mem_list").append($ownerEl);
+         		        			}else if(sh.rightLevel == "2"){
          		        				let $lvOneEl = $("<div class='selected_levelOne'></div>").text(sh.shareMemName + " (" + sh.majorName + ", " + sh.jobName + ")");
          		        				$lvOneEl.append("<span class='hide'>" + sh.shareMemNo + "</span>")
          		        								.append("<input type='hidden' name='shareMemNo' value='" + sh.shareMemNo + "'>")
@@ -1410,7 +1429,7 @@
 		 	       		
 		 	       		let sh = shList[i];
 		 	       		
-		 	       		if(sh.rightLevel == "1"){
+		 	       		if(sh.rightLevel != "3"){
 				 	       	$("#detail_share .calOwner").text(sh.shareMemName + " (" + sh.majorName + " ,"  + sh.jobName  + ")");
 				 	       	
 				 	       	let $liEl1 = $("<li></li>").text(sh.shareMemName + " (" + sh.majorName + ", " + sh.jobName + ")");
@@ -1572,6 +1591,7 @@
                		async:false,
                		data:$(formId).serialize(),
                		success:function(result){
+               			
                			if(result = "SUCCESS"){
                				alert("성공적으로 수정되었습니다.");
                			}else{
@@ -1591,52 +1611,7 @@
             		})
             	
             	}
-            	/*
-            	let $ctgNameVal = $("#insert_my input[name='ctgName']").val();
-            	let $ctgNoVal = $("#insert_my input[name='ctgNo']").val();
-            	let $color = "";
             	
-            	if( $ctgNameVal == null || $ctgNameVal.trim() == ""){
-            		alert("캘린더 이름을 입력해주세요!");
-            	}else if(colorChkValidate(1)){
-            		
-            		$("#insert_my input[type='checkbox']").each(function(){
-                  if($(this).prop("checked")){
-      	            $color = $(this).val();
-    	           	}
-                   
-                })
-            		
-            		$.ajax({
-            			url:"${contextPath}/calendar/updateCtg.do",
-            			type:"post",
-               		async:false,
-               		data:{
-               			ctgNo:$ctgNoVal,
-               			ctgName:$ctgNameVal,
-               			color:$color
-               		},
-               		success:function(result){
-               			if(result > 0){
-               				alert("성공적으로 수정되었습니다.");
-               			}else{
-               				alert("수정에 실패했습니다. 잠시후 다시 시도해주세요");
-               			}
-	               		
-               			ajaxSelectListCalCtg();
-               			ajaxSelectCalList();
-               			
-               			
-               		},
-               		error:function(result){
-               			console.log("카테고리 수정용 ajax통신 실패")
-               		}
-               		
-            		
-            		})
-            		
-            	}
-            	*/
             }// 카테고리 수정 끝
             
             

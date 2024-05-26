@@ -158,8 +158,8 @@ public class CalendarServiceImpl implements CalendarService {
 	 * @author 김영주
 	 */
 	@Override
-	public int deleteShareMem(String shareMemNo) {
-		return 0;
+	public int deleteShareMem(Map<String, Object> delInfo) {
+		return calendarDao.deleteShareMem(delInfo);
 	}
 	
 	/**
@@ -172,6 +172,36 @@ public class CalendarServiceImpl implements CalendarService {
 	}
 
 	/**
+	 * 공유멤버 등록
+	 * @author 김영주
+	 */
+	@Override
+	public int insertShareMem(List<ShareMemDto> shList) {
+		
+		int result = 0;
+
+		for(ShareMemDto s : shList) {
+			result += calendarDao.insertShareMem(s);
+		}
+		return result;
+	}
+
+	/**
+	 * 공유 멤버 수정
+	 * @author 김영주
+	 */
+	@Override
+	public int updateShareMem(List<ShareMemDto> shList) {
+		int result = 0;
+		
+		for(ShareMemDto s : shList) {
+			result += calendarDao.updateShareMem(s);
+		}
+		
+		return result;
+	}
+
+	/**
 	 * 학사 일정 조회
 	 * author 김영주
 	 */
@@ -179,6 +209,8 @@ public class CalendarServiceImpl implements CalendarService {
 	public List<CalendarDto> selectUnivCalList() {
 		return calendarDao.selectUnivCalList();
 	}
+
+
 
 
 
