@@ -9,6 +9,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.cu.gdu.dto.AttendDto;
+import com.cu.gdu.dto.CalendarDto;
 import com.cu.gdu.dto.CollegeDto;
 import com.cu.gdu.dto.InsertDateDto;
 import com.cu.gdu.dto.JobDto;
@@ -304,6 +305,28 @@ public class AdminDao {
 		Map<String, Object> map = new HashMap<>();
 		map.put("m", m);
 		return sqlSessionTemplate.insert("adminMapper.insertManyMember", map);
+	}
+	
+	// 학사일정 개별등록
+	public int univCalendarInsertOne(CalendarDto cal) {
+		return sqlSessionTemplate.insert("adminMapper.univCalendarInsertOne", cal);
+	}
+	
+	// 학사일정 수정기능
+	public int updateUnivCal(CalendarDto cal) {
+		return sqlSessionTemplate.update("adminMapper.updateUnivCal", cal);
+	}
+	
+	// 학사일정 삭제기능
+	public int deleteUnivCal(String calNo) {
+		return sqlSessionTemplate.update("adminMapper.deleteUnivCal", calNo);
+	}
+	
+	// 학사일정 일괄등록
+	public int univCalendarInsertMany(List<CalendarDto> calList) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("calList", calList);
+		return sqlSessionTemplate.insert("adminMapper.univCalendarInsertMany", map);
 	}
 	
 }

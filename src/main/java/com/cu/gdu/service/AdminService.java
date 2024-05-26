@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.cu.gdu.dto.AttendDto;
+import com.cu.gdu.dto.CalendarDto;
 import com.cu.gdu.dto.CollegeDto;
 import com.cu.gdu.dto.InsertDateDto;
 import com.cu.gdu.dto.JobDto;
@@ -152,5 +153,17 @@ public interface AdminService {
 	
 	// 직원일괄등록 기능
 	int insertManyMember(List<MemberDto> m);
+	
+	// 학사일정 개별등록
+	int univCalendarInsertOne(CalendarDto cal);
+	
+	// 학사일정 수정기능
+	int updateUnivCal(CalendarDto cal);
+	
+	// 학사일정 삭제기능
+	int deleteUnivCal(String calNo);
+	
+	// 학사일정 일괄등록
+	int univCalendarInsertMany(List<CalendarDto> calList);
 	
 }

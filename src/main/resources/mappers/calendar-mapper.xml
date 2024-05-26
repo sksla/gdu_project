@@ -297,6 +297,7 @@
 		     , color
 		  from calendar c
       join cal_ctg ctg on (ctg_type = 3 and c.ctg_no = ctg.ctg_no)  
+		 where c.status = 'Y'
 	</select>
 	
 	

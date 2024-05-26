@@ -83,6 +83,7 @@
 	  text-decoration: none;
 	}
 	.leaveGo{cursor: pointer;}
+	.univGo{cursor: pointer;}
 	/* 그래프 스타일 */
 	#content2{
 		width: 1100px;
@@ -186,7 +187,7 @@
 	                <!--이달의 학사일정-->
 	                <div id="majorSchedule">
 	                  <div>
-	                    <p class="fs-7 fw-semibold">학사일정 +</p>
+	                    <p class="fs-7 fw-semibold univGo" onclick="location.href='${contextPath}/calendar/univCalendar.page'">학사일정 +</p>
 	                    <div style="width: 650px; height: 600px;" class="calendar-sidebar app-calendar">
 												<div id="calendar">
 												
@@ -571,6 +572,238 @@
 	                </div>
                 </div>
               </div>
+              
+					<script>
+						$(document).ready(function(){
+							 ajaxSelectUnivCalList();
+							 
+/* 							// 종일 버튼 클릭시 시간input 선택 가능 여부 결정
+              $("#isAllday").on("click", function(){
+                if($("#isAllday").prop("checked")){
+                  $("#startTime").prop("disabled", true);
+                  $("#endTime").prop("disabled", true);
+                }else{
+                  $("#startTime").prop("disabled", false);
+                  $("#endTime").prop("disabled", false);
+                }
+              }) */
+						})
+						
+						let calList = new Array();
+						
+						// 학사일정 조회용 ajax
+						function ajaxSelectUnivCalList(){
+							
+							calList.length = 0;
+							
+							$.ajax({
+         				url:"${contextPath}/calendar/univCalList.do",
+         				type:"post",
+         				async:false,
+         				data:{},
+         				success:function(rep){
+         					
+         					console.log(rep);
+         					
+         					if(rep.length > 0){
+         						for(let i=0; i<rep.length; i++){
+         							
+         							let isAllday = rep[i].isAllday;
+         							let startTimeStr = isAllday == 'N' ? rep[i].startDate.split(" ")[1] : '';
+         							let endTimeStr = isAllday == 'N' ? rep[i].endDate.split(" ")[1] : '';
+         							
+         							
+         							calList.push({
+         								id:rep[i].calNo,
+         								ctgNo:rep[i].ctg.ctgNo,
+         								title:rep[i].calTitle,
+         								start:new Date(rep[i].startDate),
+         								end:new Date(rep[i].endDate),
+         								startStr:rep[i].startDate, // 일정 상세조회용
+         								endStr:rep[i].endDate, // 일정 상세조회용
+         								stTime:startTimeStr, // 일정 수정용
+         								edTime:endTimeStr,	// 일정 수정용
+         								allDay:(rep[i].isAllday == 'Y' ? true : false),
+         								content:rep[i].calContent,
+         								color:rep[i].ctg.color,
+       		
+         							})
+         						}
+         						
+         						console.log("calList",calList);
+				         			
+         					}
+         					
+         				},
+         				error:function(){
+         					console.log("일정 조회용 ajax 통신 실패");
+         				}
+         				  				
+         			})
+         			
+         			var calendarEl = document.getElementById('calendar');
+		   		    var calendar = new FullCalendar.Calendar(calendarEl, {
+		   		      initialView: 'dayGridMonth',
+		   		      headerToolbar: {
+		   		        left: 'prev,next today',
+		   		        center: 'title',
+		   		        right: 'dayGridMonth,timeGridWeek,timeGridDay,list',
+		   		      },
+		   		      nowIndicator: true, // 현재 시간 마크
+		   		      timeZone:'local', // 우리나라 시간
+		   		    	locale: 'ko', // 한국어 설정
+		   		      buttonText:{ //버튼 텍스트 변환
+		   		        today:'오늘',
+		   		        day:'일간',
+		   		        week:'주간',
+		   		        month:'월간',
+		   		        list:'목록'
+		   		      },
+		   		   		dayHeaderFormat: { weekday: 'short' },
+		   		   		dayMaxEventRows: 3, 
+		   		   		eventMaxStack: 3,
+		   		      selectable: true,
+		   		      selectMirror: true,
+	   		      	events:calList,
+		       		  eventDataTransform: function(event) {                                                                                                                                
+		       				if(event.allDay && event.start !== event.end) {                                                                                                                                               
+			       				// 이벤트 데이터에서 end 날짜 값을 가져옴
+			       			 	let end = new Date(event.end);
+	
+			       			  // 하루를 더함
+			       			  end.setDate(end.getDate() + 1);
+	
+			       			  event.end = end; 
+	
+				       			return event;  
+		       			                                                                                                                  
+		       				}
+		       			}, 
+		       			eventClick: function(info) {
+		       			    let event = info.event;
+		       			    
+		       			    let id = event.id;
+		       			    let ctgNo = event.extendedProps.ctgNo;
+		       			    let title = event.title;
+		       			    let start = event.start;
+		       			    let end = event.end;
+		       			    let startStr = event.extendedProps.startStr;
+		       			    let endStr = event.extendedProps.endStr;
+		       			    let stTime = event.extendedProps.stTime;
+		       			    let edTime = event.extendedProps.edTime;
+		       			    let allDay = event.allDay;
+		       			    let isAllday = ( event.allDay ? 'Y' : 'N' );
+		       			    let content = event.extendedProps.content;
+		       			    let color = event.color;
+		       			    
+		       			    if(event.allDay && start !== end){
+		       			        // 이벤트 데이터에서 end 날짜 값을 가져옴
+		       			        let fixedEnd = new Date(end);
+		       			        // 하루를 다시 빼기
+		       			        fixedEnd.setDate(end.getDate() - 1);
+		       			        end = fixedEnd;
+		       			    }
+		       			    
+		       			    // 일정 번호
+		       			    $("#detailForm input[name='calNo']").val(id);
+		       			    
+		       			    // 일정제목
+		       			    $("#detailForm #detail_calTitle").text(title);
+		       			    
+		       			    // 일정 시간(기간)
+		       			    if(allDay && startStr == endStr){
+		       			        // 종일 일정이고 시작날짜와 끝날짜가 같을 때
+		       			        $("#detailForm #detail_date").text(startStr);
+		       			    } else {
+		       			        $("#detailForm #detail_date").text(startStr + " ~ " + endStr);
+		       			    }
+		       			    
+		       			    // 일정 내용
+		       			    if(content == "" || content == null){
+		       			        $("#detail_content").text("내용 없음");
+		       			    } else {
+		       			        $("#detailForm #detail_content").text(content);
+		       			    }
+
+		       			    // 수정 버튼 클릭시 모달창
+		       			    $("#detailForm .editModalBtn").on("click", function() {
+		       			        $("#editForm .modal-title").html("학사 일정 수정");
+		       			        
+		       			        // 모달창 초기화
+		       			        resetEditModal();
+		       			        
+		       			        // 일정 정보 채우기
+		       			        $("#editForm #calNo").val(id); // 일정번호
+		       			        $("#editForm #calTitle").val(title);
+		       			        $("#editForm #startDate").val(startStr.slice(0, 10));
+		       			        $("#editForm #endDate").val(endStr.slice(0, 10));
+		       			        $("#editForm #calContent").val(content);
+		       			        
+		       			        if(allDay){
+		       			            $("#isAllday").prop("checked", true);
+		       			            $("#startTime").prop("disabled", true);
+		       			            $("#endTime").prop("disabled", true);
+		       			        } else {
+		       			            $("#isAllday").prop("checked", false);
+		       			            $("#startTime").val(stTime);
+		       			            $("#endTime").val(edTime);
+		       			            $("#startTime").prop("disabled", false);
+		       			            $("#endTime").prop("disabled", false);
+		       			        }
+		       			        
+		       			        // 수정 버튼 보이게
+		       			        //$("#editForm .updateEvtBtn").css("display", "inline");
+		       			        // 등록 버튼 안보이게
+		       			        //$("#editForm .insertEvtBtn").css("display", "none");
+		       			        
+		       			        $("#editForm").modal("show");
+		       			    });
+
+		       			    $("#detailForm").modal("show");
+		       			}
+		       			
+		       			/*
+		       			dayCellContent: function(e) {
+	
+			       			// 날짜 셀의 내용을 수정하는 로직을 작성합니다.
+	
+			       			// e.date는 현재 날짜를 나타냅니다.
+	
+			       			// e.dayNumberText는 현재 날짜의 숫자를 나타냅니다.
+	
+			       			// 이를 활용하여 일을 제거하거나 다른 형식으로 변경할 수 있습니다.
+	
+			       			return e.dayNumberText.replace('일', '');
+	
+		       			}
+								*/
+		   		    
+		   		    });
+		   		    
+		 		 			calendar.render();
+						}
+						
+						// 일정 수정, 등록용 모달창 초기화
+						function resetEditModal(){
+						    // 등록, 수정 모달창 안의 입력창 값 초기화
+						    let today = new Date();
+						    
+						    if($("#isAllday").prop("checked")){
+						        $("#startTime").prop("disabled", false);
+						        $("#endTime").prop("disabled", false);
+						    }
+						    
+						    $("#editForm #calNo").val("");
+						    $("#calTitle").val("");
+						    $("#startDate").val(today.toISOString().slice(0, 10));
+						    $("#endDate").val(today.toISOString().slice(0, 10));
+						    $("#startTime").val("09:00");
+						    $("#endTime").val("09:30");
+						    $("#isAllday").prop("checked", false);
+						    $("#calContent").val("");
+						}
+						
+					</script>
 
             </div>
           </div>

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.cu.gdu.dao.AdminDao;
 import com.cu.gdu.dto.AttendDto;
+import com.cu.gdu.dto.CalendarDto;
 import com.cu.gdu.dto.CollegeDto;
 import com.cu.gdu.dto.InsertDateDto;
 import com.cu.gdu.dto.JobDto;
@@ -322,6 +323,30 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public int insertManyMember(List<MemberDto> m) {
 		return adminDao.insertManyMember(m);
+	}
+
+	// 학사일정 개별등록
+	@Override
+	public int univCalendarInsertOne(CalendarDto cal) {
+		return adminDao.univCalendarInsertOne(cal);
+	}
+
+	// 학사일정 수정기능
+	@Override
+	public int updateUnivCal(CalendarDto cal) {
+		return adminDao.updateUnivCal(cal);
+	}
+
+	// 학사일정 삭제기능
+	@Override
+	public int deleteUnivCal(String calNo) {
+		return adminDao.deleteUnivCal(calNo);
+	}
+
+	// 학사일정 일괄등록
+	@Override
+	public int univCalendarInsertMany(List<CalendarDto> calList) {
+		return adminDao.univCalendarInsertMany(calList);
 	}
 
 

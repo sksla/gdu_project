@@ -1,7 +1,7 @@
 package com.cu.gdu.controller;
 
-import java.io.IOException;
 import java.io.InputStream;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -31,6 +31,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cu.gdu.dao.MemberDao;
 import com.cu.gdu.dto.AttendDto;
+import com.cu.gdu.dto.CalendarDto;
 import com.cu.gdu.dto.CollegeDto;
 import com.cu.gdu.dto.InsertDateDto;
 import com.cu.gdu.dto.JobDto;
@@ -628,9 +629,9 @@ public class AdminController {
 	    }
 	    workbook.close();
 	    inputStream.close();
-	    for(MemberDto mem : m) {
-	    	log.debug("멤버에 반복문으로 접근시 : {}", mem);
-	    }
+//	    for(MemberDto mem : m) {
+//	    	log.debug("멤버에 반복문으로 접근시 : {}", mem);
+//	    }
 	    
 	    int result = adminService.insertManyMember(m);
 	    
@@ -680,6 +681,153 @@ public class AdminController {
 	        case "부교수": return 13;
 	        default: return 0; // 기본값 설정
 	    }
+	}
+	
+	// 학사일정 개별등록 페이지
+	@GetMapping("/univCalendarInsertOne.page")
+	public String univCalendarInsertOnePage() {
+		return "admin/univCalendarOneInsert";
+	}
+	
+	// 학사일정 일괄등록 페이지
+	@GetMapping("/univCalendarInsertMany.page")
+	public String univCalendarInsertManyPage() {
+		return "admin/univCalendarManyInsert";
+	}
+	
+	// 학사일정 개별등록 기능
+	@PostMapping("/univCalendarInsertOne.do")
+	public String univCalendarInsertOne(CalendarDto cal, RedirectAttributes redirectAttributes) {
+		int result = adminService.univCalendarInsertOne(cal);
+		if (result == 1) {
+			redirectAttributes.addFlashAttribute("alertMsg", "학사일정을 등록했습니다.");
+		} else {
+			redirectAttributes.addFlashAttribute("alertMsg", "학사일정 등록에 실패했습니다.");
+		}
+		return "redirect:/calendar/univCalendar.page";
+	}
+	
+	// 학사일정 수정기능
+	@ResponseBody
+	@PostMapping(value = "/updateUnivCal.do", produces = "application/json; charset=utf-8")
+	public int updateUnivCal(CalendarDto cal) {
+		return adminService.updateUnivCal(cal);
+	}
+	
+	// 학사일정 삭제기능
+	@ResponseBody
+	@PostMapping(value = "/deleteUnivCal.do", produces = "application/json; charset=utf-8")
+	public int deleteUnivCal(String calNo) {
+		return adminService.deleteUnivCal(calNo);
+	}
+	
+	// 학사일정 일괄등록 기능
+	@PostMapping("/univCalendarInsertMany.do")
+	public String univCalendarInsertMany(RedirectAttributes redirectAttributes
+									   , @RequestParam("file") MultipartFile file) throws Exception {
+		InputStream inputStream = file.getInputStream();
+		Workbook workbook = WorkbookFactory.create(inputStream);
+		// 첫 번째 시트를 가져옴
+		Sheet sheet = workbook.getSheetAt(0);
+		// 첫번째 행은 헤더니까 건너뛰기
+	    Iterator<Row> rowIterator = sheet.iterator();
+	    if (rowIterator.hasNext()) {
+	        rowIterator.next();
+	    }
+	    List<CalendarDto> calList = new ArrayList<>();
+		
+	    // 나머지 행들을 처리
+	    while (rowIterator.hasNext()) {
+	        Row row = rowIterator.next();
+	        // 첫 번째 셀이 비어있는지 확인하여 데이터가 있는 행만 처리
+	        if (row.getCell(0) == null || row.getCell(0).getCellType() == CellType.BLANK) {
+	            continue; // 데이터가 없으면 다음 행으로 건너뜀
+	        }
+	        // 각 열에서 데이터 추출
+	        String calTitle = String.valueOf(row.getCell(0)); // 일정 제목
+	        String calContent = String.valueOf(row.getCell(1)); // 일정 내용      
+	        
+	        // startDate(시작일) 날짜 형식 변환
+	        Cell startDateCell = row.getCell(2);
+	        Date startDate = null;
+	        String formattedStartDate = ""; // 초기화 - 시작일을 담을 필드
+	        if (startDateCell != null) {
+	            if (startDateCell.getCellType() == CellType.NUMERIC) {
+	                startDate = startDateCell.getDateCellValue();
+	                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	                formattedStartDate = dateFormat.format(startDate);
+	            } else if (startDateCell.getCellType() == CellType.STRING) {
+	                // 문자열 형식의 날짜인 경우에 대한 처리
+	                String dateString = startDateCell.getStringCellValue();
+	                // 예시: "2024-05-26"
+	                SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	                try {
+	                    startDate = inputDateFormat.parse(dateString);
+	                    SimpleDateFormat outputDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	                    formattedStartDate = outputDateFormat.format(startDate);
+	                } catch (ParseException e) {
+	                    // 날짜 형식이 올바르지 않은 경우 예외 처리
+	                    e.printStackTrace();
+	                    // 혹은 로그를 남기고 다음 행으로 넘어가도록 처리할 수 있습니다.
+	                    continue;
+	                }
+	            }
+	        }
+	        
+	        // endDate(종료일) 날짜 형식 변환
+	        Cell endDateCell = row.getCell(3);
+	        Date endDate = null;
+	        String formattedEndDate = ""; // 초기화 - 종료일을 담을 필드
+	        if (endDateCell != null) {
+	            if (endDateCell.getCellType() == CellType.NUMERIC) {
+	                endDate = endDateCell.getDateCellValue();
+	                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	                formattedEndDate = dateFormat.format(endDate);
+	            } else if (endDateCell.getCellType() == CellType.STRING) {
+	                // 문자열 형식의 날짜인 경우에 대한 처리
+	                String dateString = endDateCell.getStringCellValue();
+	                // 예시: "2024-05-26"
+	                SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	                try {
+	                    endDate = inputDateFormat.parse(dateString);
+	                    SimpleDateFormat outputDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	                    formattedEndDate = outputDateFormat.format(endDate);
+	                } catch (ParseException e) {
+	                    // 날짜 형식이 올바르지 않은 경우 예외 처리
+	                    e.printStackTrace();
+	                    // 혹은 로그를 남기고 다음 행으로 넘어가도록 처리할 수 있습니다.
+	                    continue;
+	                }
+	            }
+	        }
+	        
+	        CalendarDto cal = new CalendarDto();
+	        
+	        cal.setCalTitle(calTitle);
+	        cal.setCalContent(calContent);
+	        cal.setStartDate(formattedStartDate);
+	        cal.setEndDate(formattedEndDate);
+	        cal.setCtgNo(7);
+	        cal.setIsAllday("Y");
+	        cal.setCalWriter("1");
+	        calList.add(cal);
+	    }
+	    
+	    workbook.close();
+	    inputStream.close();
+	    
+	    for(CalendarDto c : calList) {
+	    	log.debug("캘린더에 반복문으로 접근시 : {}", c);
+	    }
+	    
+	    int result = adminService.univCalendarInsertMany(calList);
+	    if(result == calList.size()) {
+	    	redirectAttributes.addFlashAttribute("alertMsg", "학사일정들을 등록했습니다.");
+	    }else {
+	    	redirectAttributes.addFlashAttribute("alertMsg", "학사일정 등록에 실패했습니다.");
+	    }  
+		return "redirect:/calendar/univCalendar.page";
+
 	}
 
 }

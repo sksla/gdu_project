@@ -88,6 +88,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   	<result column="insert_Type" property="insertType" />
   </resultMap>
 
+	<resultMap type="CalendarDto" id="calendarResult">
+		<id column="cal_no" property="calNo" />
+		<result column="ctg_no" property="ctgNo" />
+		<result column="ctg_type" property="ctgType"/>
+		<result column="color" property="color" />
+		<result column="cal_title" property="calTitle" />
+		<result column="cal_content" property="calContent" />
+		<result column="start_date" property="startDate" />
+		<result column="end_date" property="endDate" />
+		<result column="is_allday" property="isAllday" />
+		<result column="regist_date" property="registDate" />
+		<result column="cal_writer" property="calWriter" />
+		<result column="modify_date" property="modifyDate" />
+		<result column="modifier_name" property="modifier" />
+		<result column="status" property="status" />
+	</resultMap>
+
   <select id="selectCollegeList" resultMap="collegeResult">
   	select
   				 col_no
@@ -898,6 +915,71 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         #{item.hireDate} hireDate from dual
     </foreach>
         ) a
-	</insert> 
+	</insert>
+	
+	<insert id="univCalendarInsertOne">
+		insert
+		  into calendar
+		  (
+		    cal_no
+		  , ctg_no
+		  , cal_title
+		  , cal_content
+		  , start_date
+		  , end_date
+		  , is_allday
+		  , is_repeat
+		  , is_alert
+		  , cal_writer
+		  )
+		  values
+		  (
+		    seq_cal_no.nextval
+		  , '7'
+		  , #{calTitle}
+		  , #{calContent}
+		  , #{startDate}
+		  , #{endDate}
+		  , 'Y'
+		  , 'N'
+		  , 'N'
+		  , '1'
+		  )
+	</insert>
+	
+	<update id="updateUnivCal">
+		update
+					 calendar
+			 set cal_title = #{calTitle}
+			   , cal_content = #{calContent}
+			   , start_date = #{startDate}
+			   , end_date = #{endDate}
+			   , modify_date = sysdate
+		 where cal_no = #{calNo} 
+	</update>
+	
+	<update id="deleteUnivCal">
+		update
+					 calendar
+			 set status = 'N'
+		 where cal_no = #{calNo}
+	</update>
+	
+	<insert id="univCalendarInsertMany" parameterType="java.util.HashMap">
+		insert into calendar
+		(cal_no, ctg_no, cal_title, cal_content, start_date, end_date, is_allday, cal_writer)
+		select seq_cal_no.nextval, a.*
+		from(
+		<foreach collection="calList" item="item" separator="UNION ALL ">
+			select #{item.ctgNo} ctgNo,
+						 #{item.calTitle} calTitle,
+						 #{item.calContent} calContent,
+						 #{item.startDate} startDate,
+						 #{item.endDate} endDate,
+						 #{item.isAllday} isAllday,
+						 #{item.calWriter} calWriter from dual
+		</foreach>
+				) a
+	</insert>
 
 </mapper>
