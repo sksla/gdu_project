@@ -63,6 +63,24 @@
 		     by rev_no       
 	</select>
 	
+	<select id="searchReservationListCount" resultType="_int">
+		select
+		       count(*)
+		  from reservation rev
+		  join member m on (m.mem_no = rev.mem_no)
+		  join resource res on (rev.res_no = res.res_no)  
+		  <where>
+		   status in ('1', '2')
+		   and mem_no = #{mem_no}
+		   <if test='keyword != null or keyword ne "" '>
+		   	and res_name like '%' || #{keyword} || '%'
+		   </if>
+		   <if test='condition ne 0'>
+		   	and res_type = #{condition}
+		   </if>
+		  </where>
+	</select>
+	
 	<!-- 미반납 목록 -->
 	<select id="selectUnreturnedList" resultMap="reservationResult">
 		select

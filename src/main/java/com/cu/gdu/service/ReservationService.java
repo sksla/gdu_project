@@ -13,7 +13,7 @@ public interface ReservationService {
 	
 	// 예약 목록 조회(전체, 검색 포함)
 	List<ReservationDto> searchReservationList(Map<String, String> search, PageInfoDto pi);
-	
+	int searchReservationListCount(Map<String, String> search);
 	// 미반납 목록 조회
 	List<ReservationDto> selectUnreturnedList(int memNo);
 	

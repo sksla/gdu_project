@@ -22,7 +22,12 @@ public class ReservationServiceImpl implements ReservationService {
 	
 	@Override
 	public List<ReservationDto> searchReservationList(Map<String, String> search, PageInfoDto pi) {
-		return null;
+		return reservationDao.searchReservationList(search, pi);
+	}
+
+	@Override
+	public int searchReservationListCount(Map<String, String> search) {
+		return reservationDao.searchReservationListCount(search);
 	}
 	
 	@Override
@@ -59,6 +64,7 @@ public class ReservationServiceImpl implements ReservationService {
 	public ResourceDto selectResource(int resNo) {
 		return null;
 	}
+
 	
 	
 	

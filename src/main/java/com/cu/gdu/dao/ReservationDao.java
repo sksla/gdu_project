@@ -3,6 +3,7 @@ package com.cu.gdu.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -20,7 +21,15 @@ public class ReservationDao {
 	// 김영주 ----------------------------------------------------------------------------
 	
 	public List<ReservationDto> searchReservationList(Map<String, String> search, PageInfoDto pi) {
-		return null;
+		int limit = pi.getBoardLimit();
+		int offset = (pi.getCurrentPage() - 1) * limit;
+		
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return sqlSessionTemplate.selectList("reservationMapper.searchReservationList", search, rowBounds);
+	}
+	
+	public int searchReservationListCount(Map<String, String> search) {
+		return sqlSessionTemplate.selectOne("reservationMapper.searchReservationListCount", search);
 	}
 	
 	public List<ReservationDto> selectUnreturnedList(int memNo) {
