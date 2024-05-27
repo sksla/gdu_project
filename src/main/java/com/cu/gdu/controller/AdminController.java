@@ -940,5 +940,55 @@ public class AdminController {
 		log.debug("예약목록: {}", reserList);
 		return "admin/resourceDetail";
 	}
+	
+	// 일정/예약리스트 페이지
+	@GetMapping("/resourceReservation.page")
+	public String resourceReservationList(@RequestParam(value = "page", defaultValue = "1") int currentPage, Model model) {
+		int listCount = adminService.resourceReservationListCount();
+		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 10);
+		List<ReservationDto> reserList = adminService.resourceReservationList(pi);
+		for(ReservationDto r : reserList) {
+			r.setResType(r.getResType().equals("1") ? "회의실" : r.getResType().equals("2") ? "강의실" : r.getResType().equals("3") ? "기타" : "비품");
+			if(r.getStatus().equals("1") && r.getResType().equals("비품")) {
+				r.setStatus("미반납");
+			}else if(r.getStatus().equals("1") && !r.getResType().equals("비품")) {
+				r.setStatus("승인");
+			}else {
+				r.setStatus("반납");
+			}
+		}
+		model.addAttribute("pi", pi);
+		model.addAttribute("reserList", reserList);
+		return "admin/resourceReservationList";
+	}
+	
+	// 일정/예약리스트 검색 및 필터로 ajax 호출
+	@ResponseBody
+	@PostMapping(value="/ajaxFilterResourceReservationList.do", produces="application/json; charset=utf-8")
+	public Map<String, Object> ajaxFilterResourceReservationList(ResourceDto r, @RequestParam(value = "page", defaultValue = "1") int currentPage){
+		Map<String, Object> map = new HashMap<>();
+		int listCount = adminService.ajaxFilterResourceReservationListCount(r);
+		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 10);
+		map.put("r", r);
+		map.put("pi", pi);
+		List<ReservationDto> reserList = adminService.ajaxFilterResourceReservationList(map);
+		for(ReservationDto re : reserList) {
+			re.setResType(re.getResType().equals("1") ? "회의실" : re.getResType().equals("2") ? "강의실" : re.getResType().equals("3") ? "기타" : "비품");
+			if(re.getStatus().equals("1") && re.getResType().equals("비품")) {
+				re.setStatus("미반납");
+			}else if(re.getStatus().equals("1") && !re.getResType().equals("비품")) {
+				re.setStatus("승인");
+			}else {
+				re.setStatus("반납");
+			}
+		}
+		map.put("reserList", reserList);
+		return map;
+	}
+	
+	@GetMapping("/resourceReservationDetail.do")
+	public String resourceReservationDetail(String revNo, Model model) {
+		return "admin/resourceReservationDetail";
+	}
 
 }

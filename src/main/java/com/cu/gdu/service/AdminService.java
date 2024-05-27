@@ -194,4 +194,12 @@ public interface AdminService {
 	// 자원관리 상세페이지 자원사용내역 조회
 	List<ReservationDto> selectReservationList(String resNo);
 	
+	// 일정/예약페이지 자원예약 리스트 및 갯수 조회
+	int resourceReservationListCount();
+	List<ReservationDto> resourceReservationList(PageInfoDto pi);
+	
+	// 일정/예약페이지 자원예약 필터조회 리스트 및 갯수 조회
+	int ajaxFilterResourceReservationListCount(ResourceDto r);
+	List<ReservationDto> ajaxFilterResourceReservationList(Map<String, Object> map);
+	
 }

@@ -410,5 +410,29 @@ public class AdminServiceImpl implements AdminService {
 	public List<ReservationDto> selectReservationList(String resNo) {
 		return adminDao.selectReservationList(resNo);
 	}
+
+	// 일정/예약페이지 자원예약 리스트 카운트 조회
+	@Override
+	public int resourceReservationListCount() {
+		return adminDao.resourceReservationListCount();
+	}
+
+	// 일정/예약페이지 자원예약 리스트 조회
+	@Override
+	public List<ReservationDto> resourceReservationList(PageInfoDto pi) {
+		return adminDao.resourceReservationList(pi);
+	}
+
+	// 일정/예약페이지 ajax로 필터별 자원예약리스트 갯수 조회
+	@Override
+	public int ajaxFilterResourceReservationListCount(ResourceDto r) {
+		return adminDao.ajaxFilterResourceReservationListCount(r);
+	}
+
+	// 일정/예약페이지 ajax로 필터별 자원예약 리스트 조회
+	@Override
+	public List<ReservationDto> ajaxFilterResourceReservationList(Map<String, Object> map) {
+		return adminDao.ajaxFilterResourceReservationList(map);
+	}
 	
 }

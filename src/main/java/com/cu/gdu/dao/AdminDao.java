@@ -387,5 +387,32 @@ public class AdminDao {
 	public List<ReservationDto> selectReservationList(String resNo){
 		return sqlSessionTemplate.selectList("adminMapper.selectReservationList", resNo);
 	}
+	
+	// 일정/예약페이지 자원예약 리스트 카운트 조회
+	public int resourceReservationListCount() {
+		return sqlSessionTemplate.selectOne("adminMapper.resourceReservationListCount");
+	}
+
+	// 일정/예약페이지 자원예약 리스트 조회
+	public List<ReservationDto> resourceReservationList(PageInfoDto pi) {
+		int limit = pi.getBoardLimit();
+		int offset = (pi.getCurrentPage()-1) * limit;
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return sqlSessionTemplate.selectList("adminMapper.resourceReservationList", pi, rowBounds);
+	}
+	
+	// 일정/예약페이지 ajax로 필터별 자원예약리스트 갯수 조회
+	public int ajaxFilterResourceReservationListCount(ResourceDto r) {
+		return sqlSessionTemplate.selectOne("adminMapper.ajaxFilterResourceReservationListCount", r);
+	}
+	
+	// 일정/예약페이지 ajax로 필터별 자원예약 리스트 조회
+	public List<ReservationDto> ajaxFilterResourceReservationList(Map<String, Object> map) {
+		PageInfoDto pi = (PageInfoDto)map.get("pi");
+		int limit = pi.getBoardLimit();
+		int offset = (pi.getCurrentPage()-1) * limit;
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return sqlSessionTemplate.selectList("adminMapper.ajaxFilterResourceReservationList", map, rowBounds);
+	}
 
 }

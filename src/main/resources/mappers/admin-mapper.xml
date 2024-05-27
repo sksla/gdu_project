@@ -1165,5 +1165,88 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		  order
          by rev_date desc
 	</select>
+	
+	<select id="resourceReservationListCount" resultType="_int">
+		select
+					 count(*)
+			from reservation
+		 where status != '3'
+	</select>
+	
+	<select id="resourceReservationList" resultMap="reservationResult">
+		select
+					 rev_no
+				 , rev_reason
+				 , to_char(to_date(rev_date, 'YY-MM-DD'), 'YY-MM-DD') rev_date
+				 , to_char(to_date(start_time, 'HH24:MI'), 'HH24:MI') start_time
+				 , to_char(to_date(end_time, 'HH24:MI'), 'HH24:MI') end_time
+				 , reservation.status
+				 , member.mem_name
+				 , resources.res_name
+				 , resources.res_type
+				 , major_name
+		  from reservation
+		  left join member on (reservation.mem_no = member.mem_no)
+		  left join resources on (resources.res_no = reservation.res_no)
+		  left join major on (member.major_no = major.major_no)
+		 where reservation.status in (1, 2)
+		 order
+		    by rev_no desc
+	</select>
+	
+	<select id="ajaxFilterResourceReservationListCount" resultType="_int">
+		select
+					 count(*)
+			from reservation
+			left join resources on (reservation.res_no = resources.res_no)
+		 where reservation.status != '3'
+	 	<choose>
+		 	<when test="resType == 5">
+		 		and resources.res_type = '4' and reservation.status = '1'
+		 	</when>
+		 	<otherwise>
+		 		<if test="resType != 0">
+		 			and resources.res_type = #{resType}
+		 		</if>
+		 	</otherwise>
+	 	</choose>
+		<if test="resName != ''">
+		 	and res_name LIKE '%' || #{resName} || '%'
+		</if>
+	</select>
+	
+	<select id="ajaxFilterResourceReservationList" resultMap="reservationResult">
+		select
+					 rev_no
+				 , rev_reason
+				 , to_char(to_date(rev_date, 'YY-MM-DD'), 'YY-MM-DD') rev_date
+				 , to_char(to_date(start_time, 'HH24:MI'), 'HH24:MI') start_time
+				 , to_char(to_date(end_time, 'HH24:MI'), 'HH24:MI') end_time
+				 , reservation.status
+				 , member.mem_name
+				 , resources.res_name
+				 , resources.res_type
+				 , major_name
+		  from reservation
+		  left join member on (reservation.mem_no = member.mem_no)
+		  left join resources on (resources.res_no = reservation.res_no)
+		  left join major on (member.major_no = major.major_no)
+		 where reservation.status in (1, 2)
+	 	<choose>
+		 	<when test="r.resType == 5">
+		 		and resources.res_type = '4' and reservation.status = '1'
+		 	</when>
+		 	<otherwise>
+		 		<if test="r.resType != 0">
+		 			and resources.res_type = #{r.resType}
+		 		</if>
+		 	</otherwise>
+	 	</choose>
+		<if test="r.resName != ''">
+		 	and res_name LIKE '%' || #{r.resName} || '%'
+		</if>
+		 order
+		    by rev_no desc
+	</select>
 
 </mapper>
