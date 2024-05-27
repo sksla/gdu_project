@@ -133,15 +133,15 @@
                   <div class="d-flex align-items-center justify-content-between mb-3">
                     <div class="d-flex align-items-center">
                       <div class="position-relative">
-                        <img src="../assets/images/profile/user-1.jpg" alt="user1" width="54" height="54"
-                          class="rounded-circle" />
+                          <img src="${ contextPath }<c:out value='${loginUser.profileUrl}' default='/assets/images/profile/user-1.jpg'/>" class="rounded-circle" width="54" height="54"
+	                      alt="" />
                         <span class="position-absolute bottom-0 end-0 p-1 badge rounded-pill bg-success">
                           <span class="visually-hidden">New alerts</span>
                         </span>
                       </div>
                       <div class="ms-3">
-                        <h6 class="fw-semibold mb-2">Mathew Anderson</h6>
-                        <p class="mb-0 fs-2">Designer</p>
+                        <h6 class="fw-semibold mb-2">${loginUser.memName }</h6>
+                        <p class="mb-0 fs-2">${loginUser.jobNo }</p>
                       </div>
                     </div>
                     <div class="dropdown">
@@ -225,140 +225,11 @@
                       </a>
                     </li>
                     <!-- 목록 한개 부분 -->
-                    <li>
-                      <a href="javascript:void(0)"
-                        class="px-4 py-3 bg-hover-light-black d-flex align-items-start justify-content-between chat-user"
-                        id="chat_user_2" data-user-id="2">
-                        <div class="d-flex align-items-center">
-                          <span class="position-relative">
-                            <img src="../assets/images/profile/user-3.jpg" alt="user-2" width="48" height="48"
-                              class="rounded-circle" />
-                            <span class="position-absolute bottom-0 end-0 p-1 badge rounded-pill bg-danger">
-                              <span class="visually-hidden">New alerts</span>
-                            </span>
-                          </span>
-                          <div class="ms-3 d-inline-block w-75">
-                            <h6 class="mb-1 fw-semibold chat-title" data-username="James Anderson">
-                              Bianca Anderson
-                            </h6>
-                            <span class="fs-3 text-truncate text-dark fw-semibold d-block">Nice looking dress
-                              you...</span>
-                          </div>
-                        </div>
-                        <p class="fs-2 mb-0 text-muted">30 mins</p>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="javascript:void(0)"
-                        class="px-4 py-3 bg-hover-light-black d-flex align-items-start justify-content-between chat-user"
-                        id="chat_user_3" data-user-id="3">
-                        <div class="d-flex align-items-center">
-                          <span class="position-relative">
-                            <img src="../assets/images/profile/user-4.jpg" alt="user-8" width="48" height="48"
-                              class="rounded-circle" />
-                            <span class="position-absolute bottom-0 end-0 p-1 badge rounded-pill bg-warning">
-                              <span class="visually-hidden">New alerts</span>
-                            </span>
-                          </span>
-                          <div class="ms-3 d-inline-block w-75">
-                            <h6 class="mb-1 fw-semibold chat-title" data-username="James Anderson">
-                              Andrew Johnson
-                            </h6>
-                            <span class="fs-3 text-truncate text-body-color d-block">Sent a photo</span>
-                          </div>
-                        </div>
-                        <p class="fs-2 mb-0 text-muted">2 hours</p>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="javascript:void(0)"
-                        class="px-4 py-3 bg-hover-light-black d-flex align-items-start justify-content-between chat-user"
-                        id="chat_user_4" data-user-id="4">
-                        <div class="d-flex align-items-center">
-                          <span class="position-relative">
-                            <img src="../assets/images/profile/user-5.jpg" alt="user-4" width="48" height="48"
-                              class="rounded-circle" />
-                            <span class="position-absolute bottom-0 end-0 p-1 badge rounded-pill bg-success">
-                              <span class="visually-hidden">New alerts</span>
-                            </span>
-                          </span>
-                          <div class="ms-3 d-inline-block w-75">
-                            <h6 class="mb-1 fw-semibold chat-title" data-username="James Anderson">
-                              Mark Strokes
-                            </h6>
-                            <span class="fs-3 text-truncate text-body-color d-block">Lorem ispusm text sud...</span>
-                          </div>
-                        </div>
-                        <p class="fs-2 mb-0 text-muted">5 days</p>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="javascript:void(0)"
-                        class="px-4 py-3 bg-hover-light-black d-flex align-items-start justify-content-between chat-user"
-                        id="chat_user_5" data-user-id="5">
-                        <div class="d-flex align-items-center">
-                          <span class="position-relative">
-                            <img src="../assets/images/profile/user-6.jpg" alt="user1" width="48" height="48"
-                              class="rounded-circle" />
-                            <span class="position-absolute bottom-0 end-0 p-1 badge rounded-pill bg-success">
-                              <span class="visually-hidden">New alerts</span>
-                            </span>
-                          </span>
-                          <div class="ms-3 d-inline-block w-75">
-                            <h6 class="mb-1 fw-semibold chat-title" data-username="James Anderson">
-                              Mark, Stoinus & Rishvi..
-                            </h6>
-                            <span class="fs-3 text-truncate text-dark fw-semibold d-block">Lorem ispusm text ...</span>
-                          </div>
-                        </div>
-                        <p class="fs-2 mb-0 text-muted">5 days</p>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="javascript:void(0)"
-                        class="px-4 py-3 bg-hover-light-black d-flex align-items-start justify-content-between chat-user"
-                        id="chat_user_2" data-user-id="2">
-                        <div class="d-flex align-items-center">
-                          <span class="position-relative">
-                            <img src="../assets/images/profile/user-7.jpg" alt="user-2" width="48" height="48"
-                              class="rounded-circle" />
-                            <span class="position-absolute bottom-0 end-0 p-1 badge rounded-pill bg-danger">
-                              <span class="visually-hidden">New alerts</span>
-                            </span>
-                          </span>
-                          <div class="ms-3 d-inline-block w-75">
-                            <h6 class="mb-1 fw-semibold chat-title" data-username="James Anderson">
-                              Bianca Anderson
-                            </h6>
-                            <span class="fs-3 text-truncate text-dark fw-semibold d-block">Nice looking dress
-                              you...</span>
-                          </div>
-                        </div>
-                        <p class="fs-2 mb-0 text-muted">30 mins</p>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="javascript:void(0)"
-                        class="px-4 py-3 bg-hover-light-black d-flex align-items-start justify-content-between chat-user"
-                        id="chat_user_3" data-user-id="3">
-                        <div class="d-flex align-items-center">
-                          <span class="position-relative">
-                            <img src="../assets/images/profile/user-8.jpg" alt="user-8" width="48" height="48"
-                              class="rounded-circle" />
-                            <span class="position-absolute bottom-0 end-0 p-1 badge rounded-pill bg-warning">
-                              <span class="visually-hidden">New alerts</span>
-                            </span>
-                          </span>
-                          <div class="ms-3 d-inline-block w-75">
-                            <h6 class="mb-1 fw-semibold chat-title" data-username="James Anderson">
-                              Andrew Johnson
-                            </h6>
-                            <span class="fs-3 text-truncate text-body-color d-block">Sent a photo</span>
-                          </div>
-                        </div>
-                        <p class="fs-2 mb-0 text-muted">2 hours</p>
-                      </a>
-                    </li>
+                    
+                    
+                    
+                   
+                    
                   </ul>
                 </div>
               </div>
@@ -366,7 +237,7 @@
               
               <!-- 기본 채팅부분 -->
                <div id="createChatBtn">
-						        <button onclick="createChat()">Create New Chat</button>
+						        
 						        <button type="button" class="btn me-1 mb-1 sm-subtle text-info px-2 fs-4 " data-bs-toggle="modal"
 			                data-bs-target="#app_line_modal">
 			                <b>채팅 만들기</b>
@@ -390,7 +261,7 @@
                   <div class="chatting-box d-block">
                     <div class="p-9 border-bottom chat-meta-user d-flex align-items-center justify-content-between">
                       <div class="hstack gap-3 current-chat-user-name">
-                        <div class="position-relative">
+                        <div class="position-relative" id="profileurl">
                           <img src="../assets/images/profile/user-2.jpg" alt="user1" width="48" height="48"
                             class="rounded-circle" />
                           <span class="position-absolute bottom-0 end-0 p-1 badge rounded-pill bg-success">
@@ -398,8 +269,8 @@
                           </span>
                         </div>
                         <div>
-                          <h6 class="mb-1 name fw-semibold"></h6>
-                          <p class="mb-0">Away</p>
+                          <h6 class="mb-1 name fw-semibold" id="chatMem"></h6>
+                          <p class="mb-0" id="chatMemjob">Away</p>
                         </div>
                       </div>
                       <ul class="list-unstyled mb-0 d-flex align-items-center">
@@ -627,6 +498,9 @@
               
               <script src="https://cdn.jsdelivr.net/sockjs/1/sockjs.min.js"></script> 
               <script>
+              
+              	
+              	
 					   
 					   		const sock = new SockJS("${contextPath}/chat"); // * 웹소켓서버와 연결됨 (=> ChatEchoHandler에 재정의해둔 afterConnectionEstablished의 메소드가 실행됨)
 					   		sock.onmessage = onMessage;
@@ -637,8 +511,14 @@
 					      
 					      // 전송하기 버튼 클릭시 실행되는 function
 					      function sendMessage(){ // 사용자가 입력한 채팅메세지를 웹소켓으로 전송
-					    	  sock.send( $("#messageInput").val() ); // * websocket으로 메세지 전달(=> ChatEchoHandler의 handleMessage 메소드 실행)
-					      	$("#messageInput").val("");
+					    	  let message = $("#messageInput").val(); // * websocket으로 메세지 전달(=> ChatEchoHandler의 handleMessage 메소드 실행)
+					    	  let chatRoomNumber = window.chatRoomNumber; // 전역 변수에 저장된 채팅방 번호
+					    	  
+					    	  let chatData = chatRoomNumber + "|" + message;
+					    	  sock.send(chatData);
+					    	  
+					    	  $("#messageInput").val("");
+					    	  ajaxChatRoomList();
 					      }
 					      
 					      // 나에게 메세지가 왔을 때 실행되는 function
@@ -688,7 +568,8 @@
 					      	}
 					      	
 					      	$chatArea.append($chatDiv);
-					      	$chatArea.scrollTop($chatArea[0].scrollHeight); // 스크롤항상 하단으로 유지시켜주는 내용
+					      	$chatArea.scrollTop = $chatArea.scrollHeight;
+					      	//$chatArea.scrollTop($chatArea[0].scrollHeight); // 스크롤항상 하단으로 유지시켜주는 내용
 					      	
 					      }
 					      
@@ -698,19 +579,20 @@
 					      }
 					      
 					      
-					      // 메세지 입력후 엔터치면 전송되는 function
-					      document.getElementById('messageInput').addEventListener('keyup', function(event) {
-					          if (event.key === 'Enter') {
-					            sendMessage();
-					          }
-					        });
+				      	// 메세지 입력후 엔터치면 전송되는 function
+				      	document.getElementById('messageInput').addEventListener('keyup', function(event) {
+				          if (event.key === 'Enter') {
+				            sendMessage();
+				          }
+				        });
 					      
 					      
 					      
-					// 채팅방 보이기 
-					      
-					      function openChat(event, chatId) {
+								// 채팅방 보이기 
+					      function openChat(event, chatId, chroNo, chatMem, profileUrl, jobName) {
 					            event.preventDefault();
+					            console.log(chroNo);
+					            $chatArea.empty();
 					            
 					            // 모든 채팅 상세보기 숨기기
 					            var chats = document.getElementsByClassName('chat-container');
@@ -722,23 +604,179 @@
 					            var chat = document.getElementById(chatId);
 					            chat.classList.add('active');
 					            
-					            
+											// 채팅 상대방프로필 이름 가져오기
+											var profileImageUrl = profileUrl ? profileUrl : '/assets/images/profile/user-1.jpg';
+											document.querySelector('#profileurl img').src = "${contextPath}" + profileImageUrl;
+											
+											//document.querySelector('#profileurl img').src = "${contextPath}" +  (profileUrl ? profileUrl : '/assets/images/profile/user-1.jpg');
+											document.getElementById('chatMem').textContent = chatMem;
+											document.getElementById('chatMemjob').textContent = jobName;
+									
+											
 					            // 채팅 만들기 div 숨기기
 					            document.getElementById('createChatBtn').style.display = 'none';
+					            
+					            // 채팅 내용 조회해오기
+					            $.ajax({
+			        		        url: "${contextPath}/chat/selectChat.do",
+			        		        type: "get",
+			        		        data: {chroNo:chroNo},
+			        		        success: function(response) {
+			        		            // 새로운 채팅방이 성공적으로 생성되면 실행될 작업
+			        		            // 예를 들어, 채팅창으로 이동하는 코드를 이곳에 작성합니다.
+			        		            console.log("채팅방번호:", response);
+			        		            
+												      	
+			        		          for(let i = 0; i<response.length; i++){  
+			        		            let $chatDiv = $("<div>"); // 채팅창에 append시킬 div요소 (각 조건에 따라 다르게 제작)
+			        		            if('${loginUser.memNo}' == response[i].memNo){ // 내 메세지일경우
+												      		
+																	$chatDiv.addClass("hstack gap-3 align-items-start mb-7")
+																					.addClass("justify-content-end") ;
+																
+															            $chatDiv.append(
+															              $("<div>").addClass("text-end")
+															                .append($("<h6>").addClass("fs-2 text-muted").text(response[i].chDate))
+															                .append($("<div>").addClass("p-2 bg-info-subtle text-dark rounded-1 d-inline-block fs-3").text(response[i].chContent))
+															            );
+															            $chatArea.append($chatDiv);
+												      		
+												      	}else { // 다른사람 메세지일경우
+												      		$chatDiv.addClass("hstack gap-3 align-items-start mb-7")
+																					.addClass("justify-content-start") ;
+																      		 $chatDiv.append(
+																		              $("<img>").attr("src", "${contextPath}/"+ response[i].profileUrl).attr("alt", "user8").attr("width", "40").attr("height", "40").addClass("rounded-circle"),
+																		              $("<div>")
+																		                .append($("<h6>").addClass("fs-2 text-muted").text(response[i].memName + ", " + response[i].chDate ))
+																		                .append($("<div>").addClass("p-2 text-bg-light rounded-1 d-inline-block text-dark fs-3").text(response[i].chContent))
+																		            );
+																      		$chatArea.append($chatDiv);
+												      	}
+			        		            
+			        		          } // for문 끝
+			        		          //$chatArea.append($chatDiv);
+			        		          window.chatRoomNumber = chroNo;
+			        		        },
+			        		        error: function(xhr, status, error) {
+			        		            // AJAX 요청이 실패한 경우 실행될 작업
+			        		        }
+			        		    });
 					        }
 
-					        function createChat() {
-					            // 새로운 채팅을 만들기 위한 로직 추가
-					            alert('Create new chat clicked');
-					        }
 					        
+					        // 새 채팅방 만들기
 					        function newChat(){
 					        		document.getElementById('chat1').classList.add('active');
 					        		document.getElementById('createChatBtn').style.display = 'none';
 					        		resetEnrollLineModal();
 					        		$("#app_line_modal").modal("hide");
+					        		
+					        		$.ajax({
+					        		        url: "${contextPath}/chat/createChatRoom.do",
+					        		        type: "post",
+					        		        data: $("#appForm").serialize(),
+					        		        success: function(response) {
+					        		            // 새로운 채팅방이 성공적으로 생성되면 실행될 작업
+					        		            // 예를 들어, 채팅창으로 이동하는 코드를 이곳에 작성합니다.
+					        		            console.log("채팅방번호:", response);
+					        		            window.chatRoomNumber = response;
+					        		            ajaxChatRoomList();
+					        		        },
+					        		        error: function(xhr, status, error) {
+					        		            // AJAX 요청이 실패한 경우 실행될 작업
+					        		        }
+					        		    });
+					        		
 					        }
 					      
+					        
+					      $(document).ready(function(){
+					    	  ajaxChatRoomList();
+					    	  
+					      })
+					      
+					      // 채팅방 목록 조회용
+					      function ajaxChatRoomList() {
+								
+					    	  $.ajax({
+					    		  url:"${contextPath}/chat/chatRoomList.do",
+					    		  type:"get",
+					    		  data:"memNo=${loginUser.memNo}",
+					    		  success:function(result){
+					    			  console.log(result); // [{}, {}, {}]
+					    			  
+					    			  // 채팅방 목록을 표시할 요소 선택
+					    	            var chatList = document.querySelector(".chat-users");
+					    	            chatList.innerHTML = ""; // 목록 초기화
+
+					    	            // 각 채팅방에 대한 정보를 반복하여 처리
+					    	            result.forEach(function(room) {
+					    	            	console.log(room.chatMem);
+					    	                // 각 채팅방에 대한 HTML 생성
+					    	            	 var listItem = document.createElement("li");
+					    	            	    var anchor = document.createElement("a");
+					    	            	    anchor.href = "#";
+					    	            	    anchor.setAttribute("onclick", "openChat(event, 'chat1', " + room.chroNo + ",'"+ room.chatMem + "','" + room.profileUrl + "','"+ room.jobName +"')");
+					    	            	    anchor.className = "px-4 py-3 bg-hover-light-black d-flex align-items-start justify-content-between chat-user bg-light-subtle";
+					    	            	    anchor.setAttribute("data-user-id", room.chroNo);
+
+					    	            	    var innerDiv = document.createElement("div");
+					    	            	    innerDiv.className = "d-flex align-items-center";
+
+					    	            	    var positionSpan = document.createElement("span");
+					    	            	    positionSpan.className = "position-relative";
+
+					    	            	    var img = document.createElement("img");
+					    	            	    img.src = "${contextPath}" +  (room.profileUrl ? room.profileUrl : '/assets/images/profile/user-1.jpg');
+					    	            	    img.alt = "user1";
+					    	            	    img.width = "48";
+					    	            	    img.height = "48";
+					    	            	    img.className = "rounded-circle";
+
+					    	            	    var badgeSpan = document.createElement("span");
+					    	            	    badgeSpan.className = "position-absolute bottom-0 end-0 p-1 badge rounded-pill bg-success";
+
+					    	            	    var visuallyHiddenSpan = document.createElement("span");
+					    	            	    visuallyHiddenSpan.className = "visually-hidden";
+					    	            	    visuallyHiddenSpan.textContent = "New alerts";
+
+					    	            	    var msDiv = document.createElement("div");
+					    	            	    msDiv.className = "ms-3 d-inline-block w-75";
+
+					    	            	    var h6 = document.createElement("h6");
+					    	            	    h6.className = "mb-1 fw-semibold chat-title";
+					    	            	    h6.setAttribute("data-username", room.chatMem);
+					    	            	    h6.textContent = room.chatMem +" "+ room.jobName;
+
+					    	            	    var messageSpan = document.createElement("span");
+					    	            	    messageSpan.className = "fs-3 text-truncate text-body-color d-block";
+					    	            	    messageSpan.textContent = room.lastMsg;
+
+					    	            	    var timeP = document.createElement("p");
+					    	            	    timeP.className = "fs-2 mb-0 text-muted";
+					    	            	    timeP.textContent = room.msgDate;
+
+					    	            	    badgeSpan.appendChild(visuallyHiddenSpan);
+					    	            	    positionSpan.appendChild(img);
+					    	            	    positionSpan.appendChild(badgeSpan);
+					    	            	    innerDiv.appendChild(positionSpan);
+					    	            	    innerDiv.appendChild(msDiv);
+					    	            	    msDiv.appendChild(h6);  // h6을 msDiv에 추가
+					    	            	    msDiv.appendChild(messageSpan);  
+					    	            	    anchor.appendChild(innerDiv);
+					    	            	    anchor.appendChild(timeP);
+					    	            	    listItem.appendChild(anchor);
+
+					    	            	    // 채팅방 목록에 추가
+					    	            	    chatList.appendChild(listItem);
+					    	            	});
+					    	        },
+					    		  error:function(){
+											console.log("채팅방조회용 ajax 통신 실패");
+										}
+					    	  })
+					    	
+								}
 					      
 					      
 					      
@@ -877,14 +915,16 @@
             </div>
           </div>
           <div class="modal-footer justify-content-center pb-4 pt-7">
+          <form id="appForm" method="post" >
             <button type="button" class="btn btn-primary waves-effect text-start"
-              onclick="newChat();">
+              onclick="confirmAppLine();">
               확인
             </button>
             <button type="button" class="btn bg-danger-subtle text-danger  waves-effect text-start"
               data-bs-dismiss="modal">
               닫기
             </button>
+          </form>
           </div>
         </div>
         <!-- /.modal-content -->
@@ -1072,10 +1112,8 @@
     	
     	// 선택한 결재선 적용
     	function confirmAppLine(){
-    		if( $(".app_receiver>.mem_list").html().trim() == ""){
-    			alert("수신자를 지정해주세요.")
-    			return false;
-    		}
+    		 console.log("confirmAppLine 함수 시작");
+    		 
     		$("#status").val(20);
     		// 협조자
     		$("#appForm>input[name='collaboratorNo']").each(function(index, el){
@@ -1122,6 +1160,8 @@
     				$(".receiver").eq(i).text( $selectedReceiverProp.eq(i).text() );    				
     			}
     			$("#appForm").append('<input type="hidden" name="receiverNo" value="' + $selectedReceiverProp.eq(0).text() + '">');
+    			 console.log("Receiver No added to form:", $selectedReceiverProp.eq(0).text());
+    	   newChat();
     		}else{
     			for(let i=0; i<$(".receiver").length; i++){
     				$(".receiver").eq(i).text("-");

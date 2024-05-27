@@ -33,6 +33,9 @@
 		<typeAlias type="com.cu.gdu.dto.InsertDateDto" alias="InsertDateDto" />
 		<typeAlias type="com.cu.gdu.dto.ReservationDto" alias="ReservationDto"/>
 		<typeAlias type="com.cu.gdu.dto.ResourceDto" alias="ResourceDto"/>
+		<typeAlias type="com.cu.gdu.dto.ChatDto" alias="ChatDto" />
+		<typeAlias type="com.cu.gdu.dto.ChatRoomDto" alias="ChatRoomDto" />
+		
 	</typeAliases>
 	
 	<mappers>
@@ -44,6 +47,7 @@
 		<mapper resource="mappers/board-mapper.xml"/>
 		<mapper resource="mappers/lecture-mapper.xml"/>
 		<mapper resource="mappers/reservation-mapper.xml"/>
+		<mapper resource="mappers/chat-mapper.xml"/>
 	</mappers>
 	
 </configuration>
