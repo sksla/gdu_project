@@ -11,6 +11,8 @@ import com.cu.gdu.dto.JobDto;
 import com.cu.gdu.dto.MajorDto;
 import com.cu.gdu.dto.MemberDto;
 import com.cu.gdu.dto.PageInfoDto;
+import com.cu.gdu.dto.ReservationDto;
+import com.cu.gdu.dto.ResourceDto;
 import com.cu.gdu.dto.VacationDto;
 import com.cu.gdu.dto.VacationTypeDto;
 
@@ -165,5 +167,31 @@ public interface AdminService {
 	
 	// 학사일정 일괄등록
 	int univCalendarInsertMany(List<CalendarDto> calList);
+	
+	// 자원관리 페이지 자원갯수 및 자원조회
+	int adminResourceListCount();
+	List<ResourceDto> adminResourceList(PageInfoDto pi);
+	
+	// 자원관리 페이지 자원별 갯수 조회
+	List<ResourceDto> resourceTypeCount();
+	
+	// ajax 통신으로 필터별 자원관리 페이지 자원갯수 및 자원조회
+	int ajaxFilterResourceListCount(ResourceDto r);
+	List<ResourceDto> ajaxFilterResourceList(Map<String, Object> map);
+	
+	// 자원관리 페이지 자원삭제기능
+	int deleteResource(Map<String, Object> map);
+	
+	// 자원관리 페이지 자원수정기능
+	int updateResource(Map<String, Object> map);
+	
+	// 자원관리 페이지 자원등록기능
+	int insertResource(ResourceDto r);
+	
+	// 자원관리 상세페이지로 이동
+	ResourceDto resourceDetail(String resNo);
+	
+	// 자원관리 상세페이지 자원사용내역 조회
+	List<ReservationDto> selectReservationList(String resNo);
 	
 }

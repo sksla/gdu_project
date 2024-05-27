@@ -148,7 +148,7 @@
             </li>
             <!------------------------자원------------------------>
             <li class="sidebar-item">
-              <a class="sidebar-link" href="http://www.naver.com" aria-expanded="false">
+              <a class="sidebar-link" href="${contextPath}/admin/adminResourceList.page" aria-expanded="false">
                 <span>
                   <i class="ti ti-aperture"></i>
                 </span>
