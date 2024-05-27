@@ -49,11 +49,11 @@ public class ReservationDao {
 	}
 
 	public List<ResourceDto> searchFacilityList(Map<String, String> search) {
-		return null;
+		return sqlSessionTemplate.selectList("reservationMapper.searchFacilityList", search);
 	}
 
 	public List<ResourceDto> searchEquipmentList(String keyword) {
-		return null;
+		return sqlSessionTemplate.selectList("reservationMapper.searchEquipmentList", keyword);
 	}
 
 	public ResourceDto selectResource(int resNo) {

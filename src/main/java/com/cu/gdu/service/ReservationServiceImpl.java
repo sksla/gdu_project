@@ -52,12 +52,12 @@ public class ReservationServiceImpl implements ReservationService {
 
 	@Override
 	public List<ResourceDto> searchFacilityList(Map<String, String> search) {
-		return null;
+		return reservationDao.searchFacilityList(search);
 	}
 
 	@Override
 	public List<ResourceDto> searchEquipmentList(String keyword) {
-		return null;
+		return reservationDao.searchEquipmentList(keyword);
 	}
 
 	@Override
