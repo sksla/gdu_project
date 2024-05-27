@@ -93,9 +93,9 @@
 			                     // 검색후 페이지일 경우 페이징바의 페이지 클릭시
 			                     $("#pagingArea a").on("click", function(){
 			                        
-			                        if($(this).hasClass("ti-chevrons-left")){
+			                        if($(this).hasClass("leftbt")){
 			                           $("#searchForm input[name=page]").val(${pi.currentPage-1});                    
-			                        }else if($(this).hasClass("ti-chevrons-right")){
+			                        }else if($(this).hasClass("rightbt")){
 			                           $("#searchForm input[name=page]").val(${pi.currentPage+1});
 			                        }else {
 			                           $("#searchForm input[name=page]").val($(this).text());
@@ -200,7 +200,7 @@
               <div id="pagingArea">
               <ul class="pagination justify-content-center">
                 <li class="page-item ${ pi.currentPage == 1 ? 'disabled' : '' }">
-                  <a class="page-link link" href="${ contextPath }/board/proposalList.do?page=${pi.currentPage-1}" aria-label="Previous">
+                  <a class="page-link link leftbt" href="${ contextPath }/board/proposalList.do?page=${pi.currentPage-1}" aria-label="Previous">
                     <span aria-hidden="true">
                       <i class="ti ti-chevrons-left fs-4"></i>
                     </span>
@@ -213,7 +213,7 @@
                 </c:forEach>
                 
                 <li class="page-item ${ pi.currentPage == pi.maxPage ? 'disabled' : '' }">
-                  <a class="page-link link" href="${ contextPath }/board/proposalList.do?page=${pi.currentPage + 1}" aria-label="Next">
+                  <a class="page-link link rightbt" href="${ contextPath }/board/proposalList.do?page=${pi.currentPage + 1}" aria-label="Next">
                     <span aria-hidden="true">
                       <i class="ti ti-chevrons-right fs-4"></i>
                     </span>
