@@ -1,5 +1,6 @@
 package com.cu.gdu.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.cu.gdu.dto.LecStuDto;
@@ -17,9 +18,9 @@ public interface LectureService {
 	
 	// 학생 출석 목록 스케줄러 이용해서 등록
 	int insertStuList();
-
 	
+	//출석 등록
+	int updateStuAttend(ArrayList<StuAttendDto> stuAttendList);
 
-	
 
 }

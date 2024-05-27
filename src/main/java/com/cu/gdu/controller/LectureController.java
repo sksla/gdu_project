@@ -1,17 +1,22 @@
 package com.cu.gdu.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import com.cu.gdu.dto.LecStuDto;
 import com.cu.gdu.dto.LectureDto;
 import com.cu.gdu.dto.MemberDto;
+import com.cu.gdu.dto.StuAttendDto;
 import com.cu.gdu.service.LectureService;
 import com.cu.gdu.util.FileUtil;
 import lombok.RequiredArgsConstructor;
@@ -62,6 +67,24 @@ public class LectureController {
 		List<LecStuDto> lecList = lectureService.selectStuListForLec(lecNo);
 		log.debug("목록들: {}", lecList);
 		return lecList;
+	}
+	
+	// 출석등록
+	@PostMapping("/updateStuAttned.do")
+	public String updateStuAttend(StuAttendDto sa, RedirectAttributes redirectAttributes) {
+	
+		int result = lectureService.updateStuAttend(sa.getStuAttendList());
+		
+		if(result == 0 && (sa.getStuAttendList()).isEmpty() || !(sa.getStuAttendList()).isEmpty() && result == (sa.getStuAttendList()).size()) { // 성공
+			redirectAttributes.addFlashAttribute("alertMsg", "성공적으로 저장되었습니다.");
+		}else {
+			redirectAttributes.addFlashAttribute("alertMsg", "저장에 실패했습니다.");
+		}
+		
+		log.debug("출석목록들: {}", sa.getStuAttendList());
+		
+		return "redirect:/lec/stuAttendList.do";
+
 	}
 	// * ------------------- 출석 끝-------------------
 }

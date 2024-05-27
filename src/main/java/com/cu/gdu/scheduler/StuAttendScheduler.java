@@ -17,10 +17,10 @@ public class StuAttendScheduler {
 	
 	private final LectureService lectureService;
 	
-	@Scheduled(cron="0 22 3 * * *")	
+	@Scheduled(cron="0 00 0 * * *")	
 	public void execute1() {
 		int result = lectureService.insertStuList();
-		log.debug("3시22분에 학생 등록 실행 확인용 : {}", result);
+		log.debug("오전 12시 학생 등록 실행 확인용 : {}", result);
 	}
 
 }

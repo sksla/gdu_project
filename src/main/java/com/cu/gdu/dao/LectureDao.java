@@ -39,6 +39,10 @@ public class LectureDao {
 	public int insertStuList() {
 		return sqlSessionTemplate.insert("lectureMapper.insertStuList");
 	}
-
+	// 출석 등록	
+	public int updateStuAttend(StuAttendDto sa) {
+		return sqlSessionTemplate.update("lectureMapper.updateStuAttend", sa);
+	}
+	
 
 }

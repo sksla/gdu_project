@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>페이지 작성 틀</title>
+<title>출석</title>
   <style>
     /* div 스타일 (나중에 색 지울것) */
     .attend_wrap{
@@ -117,8 +117,10 @@
 	              	<c:otherwise>
 	              		<div class="form-group" style="width: 100px;">
 								      <select class="form-select w-auto" id="lectureSelect" name="lectureSelect" onchange="handleChange();">
+								      	<option value="0">강의선택</option>
 								      	<c:forEach var="lec" items="${leclist}">
-									    		<option value="${lec.lecNo}">${lec.lecName}</option>
+									    		<option value="${lec.lecNo}">${lec.lecName}
+									    		</option>		
 									    	</c:forEach>
 								      </select>
 						        </div>
@@ -127,36 +129,28 @@
 							</div>
               <div class="attend_rate">출석율</div>
             </div>
-            
-            
-             
+            <!-- 리스트 시작 -->
             <div class="attend_content3">
               <div class="list">
                 <div class="card-body p-4">
-                
-                <!-- 날짜 / 버튼 영역 -->
-                  <div class="d-flex flex-row justify-content-between">
-                    <!-- 날짜 -->
-                    <!-- start Input Type Date Time -->
-                      <div class="date" style="width: 400px; height: 100px;">
-                        <form class="mt-4">
-                          <div class="form-group">
-                            <input type="datetime-local" class="form-control" value="2008-05-13T22:33:00" />
-                          </div>
-                        </form>
-                      </div>
-                      <!-- end Input Type Date Time -->
-                    <!-- 출석관련 버튼 -->
-                    <div class="buttons">
-                      <button type="button" class="btn btn-info" id="bulkAttendSubmit">일괄출석</button>
-                      <button type="button" class="btn btn-info" id="stuAttendSubmit" onclick="">저장</button>
-                      <button type="button" class="btn btn-light">엑셀로저장</button>
-                    </div>
-                  </div> 
-
                   <!-- 학생리스트 -->
                   <div class="result">
 	                  <div class="table-responsive mb-4">
+	                  <form id="stuListForm" method="post" action="updateStuAttned.do">
+		                  <!-- 날짜 / 버튼 영역 -->
+		                  <div class="d-flex flex-row justify-content-between" style="height:50px;">
+			                  <!-- 날짜 -->
+		                    <!-- start Input Type Date Time -->
+		                    <div class="date" style="width: 400px; height: 100px;">
+		                      <div class="form-group"><input type="date" class="form-control" /></div>                  
+		                    </div>
+		                    <!-- end Input Type Date Time -->
+			                  <!-- 출석관련 버튼 -->
+			                  <div class="buttons">
+				                  <button type="button" class="btn btn-info" id="bulkAttendSubmit">일괄출석</button>
+			                    <button type="submit" class="btn btn-info" id="stuAttendSubmit">저장</button>
+		                    </div>
+	                    </div> 
 	                    <table class="table border text-nowrap mb-0 align-middle app_doc_table overflow-hidden">
 	                      <thead class="text-dark fs-4">
 	                        <tr>
@@ -191,23 +185,36 @@
 			                        </tr>
 		                        </c:when>
 		                        <c:otherwise>
-			                        <c:forEach var="a" items="${stulist}">
+			                        <c:forEach var="a" items="${stulist}" varStatus="status">
 				                        <tr>
 					                        <td height="50px"><input type="checkbox" class="checkOne" name="checkOne" id="CheckOnebox" value="CheckOnebox"></td>
-					                        <td><p class="mb-0 fw-normal fs-4">${a.lecstuNo}</p></td>
-					                        <td><p class="mb-0 fw-normal fs-4">사진</p></td>
-					                        <td><p class="mb-0 fw-normal fs-4">${a.majorName}</p></td>
-					                        <td><p class="mb-0 fw-normal fs-4">${a.stuNo}</p></td>
-					                        <td><p class="mb-0 fw-normal fs-4">${a.stuName}</p></td>
 					                        <td>
-						                        <div class="form-group" style="width: 100px;">
-							                        <select class="form-select w-auto">
-								                        <option value="Y">출석</option>
-								                        <option value="N">결석</option>
-								                        <option value="E">조퇴</option>
-								                        <option value="A">공결</option>
-							                        </select>
-						                        </div>
+						                        <input type="hidden" name="stuAttendList[${status.index}].lecNo" value="${a.lecNo}">
+						                        <p class="mb-0 fw-normal fs-4">{$a.lecstuNo}</p>
+					                        </td>
+					                        <td>
+					                        	<p class="mb-0 fw-normal fs-4">사진</p>
+					                        </td>
+					                        <td>
+						                        <p class="mb-0 fw-normal fs-4">${a.majorName}</p>
+						                        <input type="hidden" name="stuAttendList[${status.index}].majorNo" value="${a.majorNo}">
+					                        </td>
+					                        <td>
+						                        <p class="mb-0 fw-normal fs-4" >${a.stuNo}</p>
+						                        <input type="hidden" name="stuAttendList[${status.index}].stuNo" value="${a.stuNo}">
+					                        </td>
+					                        <td>
+					                        	<p class="mb-0 fw-normal fs-4">${a.stuName}</p>
+					                        </td>
+					                        <td>
+						                      	<div class="form-group" style="width: 100px;">
+								                  		<select class="form-select w-auto" name="stuAttendList[${status.index}].attendance">
+									                			<option value="Y">출석</option>
+									                  		<option value="N">결석</option>
+									                			<option value="E">조퇴</option>
+									               				<option value="A">공결</option>
+								                  		</select>
+							                    	</div>        
 					                        </td>
 				                        </tr>
 			                        </c:forEach>
@@ -215,177 +222,13 @@
 	                        </c:choose>
 	                      </tbody>
 	                    </table>
+	                    </form>
 	                  </div>
-                  <script>
-                  
-               // selectAll 함수 정의
-                  function selectAll(checkbox) {
-                      var isChecked = $(checkbox).prop("checked");
-                      $(".checkOne").prop("checked", isChecked);
-                  }
-
-                  // 체크박스 관련
-                  $(document).ready(function(){
-    // th에 있는 체크박스 클릭 시, td에 있는 체크박스들 선택 
-    $("#checkAllBox").click(function(){
-        var checkAll = $(this).prop("checked");
-        $(".checkOne").prop("checked", checkAll);
-    });
-
-    // 모든 체크박스를 클릭하면 일괄출석 버튼 활성화
-    $('.checkOne').click(function(){
-        var totalCheckboxes = $(".checkOne").length;
-        var checkedCheckboxes = $(".checkOne:checked").length;
-
-        // 모든 자식 체크박스가 선택되었는지 확인
-        var allChecked = totalCheckboxes === checkedCheckboxes;
-
-        // 모든 자식 체크박스가 선택되었으면 상위 체크박스도 선택되도록 설정
-        $("#checkAllBox").prop("checked", allChecked);
-    });
-});
-                  
-               		// handleChange 함수 정의
-                
-function handleChange() {
-  var selectElement = document.getElementById('lectureSelect');
-  var lecNo = selectElement.value; // 선택된 강의의 번호
-
-//빈 문자열이거나 숫자가 아닌 경우 처리
-  if (!lecNo || isNaN(parseInt(lecNo))) {
-    console.error('Invalid Lecture Number:', lecNo);
-    return; // 올바르지 않은 경우 처리 중단
-  }else{
-	// AJAX 호출
-		$.ajax({
-			url: '${contextPath}/lec/stuListForLec.do', // 서버 URL
-			method: 'GET',
-			data: {lecNo:lecNo}, // 선택된 강의 번호를 전달
-			success: function(result) {
-								let tbody = "";
-								console.log(result);
-								
-								if(result.length > 0){
-									
-									for(let i=0; i<result.length; i++){
-										
-										
-										tbody  += "<tr>"
-														+ 	"<td height='50px'>" + "<input type='checkbox' class='checkOne' name='checkOne' id='CheckOnebox' value='CheckOnebox'>" + "</td>"
-														+ 	"<td><p class='mb-0 fw-normal fs-4'>" + (i + 1) + "</p></td>"
-														+ 	"<td><p class='mb-0 fw-normal fs-4'>" + result[i].사진 + "</p></td>"
-														+ 	"<td><p class='mb-0 fw-normal fs-4'>" + result[i].majorName + "</p></td>"
-														+ 	"<td><p class='mb-0 fw-normal fs-4'>" + result[i].stuNo + "</p></td>"
-														+ 	"<td><p class='mb-0 fw-normal fs-4'>" + result[i].stuName + "</p></td>"
-								                        
-														+ 	"<td>"  
-									          +   	"<div class='form-group' style='width: 100px;'>" 
-									          +				"<select class='form-select w-auto'>" 
-									          +					"<option value='Y'>출석</option>" +
-									          +					"<option value='N'>결석</option>" +
-									          +					"<option value='E'>조퇴</option>" +
-									          +					"<option value='A'>공결</option>" +
-									          +				"</select>" 
-									          +			"</div>"
-									          + 	"</td>"
-					                  + "</tr>";							
-														
-									}
-									
-								}else{
-									tbody += "<tr><td colspan='7'>수강신청한 학생이 없습니다.</td></tr>";
-								}
-								
-					
-								$("#myTable").html(tbody);
-	            },
-		error: function(xhr, status, error) {
-						console.error(xhr, status, error); // 에러 처리
-        console.log("ajax 통신실패");
-      }
-  });
-  }
-  
-  console.log("handleChange selectElement :",selectElement);
-  console.log("handleChange lecno :", lecNo);
-}  
-  
-  
-  
-  
-  // AJAX 호출
-  // 강의 선택이 변경될 때 실행되는 함수
-  /*
-							    $('#lectureSelect').change(function() {
-										var lecNo = $(this).val(); // 선택된 강의의 번호
-										// AJAX 호출
-										$.ajax({
-											url: '${contextPath}/lec/stuListForLec.do', // 서버 URL
-											method: 'GET',
-											data: {lecNo:lecNo}, // 선택된 강의 번호를 전달
-											success: function(result) {
-																let table = "<table border='1'>";
-																console.log(result);
-																for(let i=0; i<result.length; i++){
-																	
-																	
-																	table  += "<tr>"
-																					+ 	"<td height='50px'>" + "<input type='checkbox' name='' id=''>" + "</td>"
-																					+ 	"<td><p class='mb-0 fw-normal fs-4'>" + result[i].lecstuNo + "</p></td>"
-																					+ 	"<td><p class='mb-0 fw-normal fs-4'>" + result[i].사진 + "</p></td>"
-																					+ 	"<td><p class='mb-0 fw-normal fs-4'>" + result[i].majorName + "</p></td>"
-																					+ 	"<td><p class='mb-0 fw-normal fs-4'>" + result[i].stuNo + "</p></td>"
-																					+ 	"<td><p class='mb-0 fw-normal fs-4'>" + result[i].stuName + "</p></td>"
-															                        
-																					+ 	"<td>"  
-																          +   	"<div class='form-group' style='width: 100px;'>" 
-																          +				"<select class='form-select w-auto'>" 
-																          +					"<option value='Y'>출석</option>" +
-																          +					"<option value='N'>결석</option>" +
-																          +					"<option value='E'>조퇴</option>" +
-																          +					"<option value='A'>공결</option>" +
-																          +				"</select>" 
-																          +			"</div>"
-																          + 	"</td>"
-												                  + "</tr>";							
-																					
-																}
-													
-																		table += "</table>";
-													
-																		$("#result").html(table);
-									            },
-										error: function(xhr, status, error) {
-														console.error(xhr, status, error); // 에러 처리
-							              console.log("ajax 통신실패");
-							            }
-							        });
-							    });
-							*/
-							    // 서버에서 받은 출석 리스트를 화면에 표시하는 함수
-							    function displayStuAttendList(data) {
-							        // 받은 데이터를 화면에 표시하는 코드 작성
-							        $('#StuAttendList').html(data);
-							    }
-
-									</script>
-									
-									
 									</div>
-									
-									
-									
-									
-									
-									
 									</div>
-									
-									
                 </div>
               </div>
-            </div>
-            
-
+            </div>					
             <script>
               function changeActive(id){
                 var id = $('#'+id);
@@ -411,6 +254,78 @@ function handleChange() {
 	
 	<!-- footer-->
   <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
-	
+	<!-- 스크립트 -->
+<script>
+
+// handleChange 함수
+function handleChange() {
+  var selectElement = document.getElementById('lectureSelect');
+  var lecNo = selectElement.value; // 선택된 강의의 번호
+
+//빈 문자열이거나 숫자가 아닌 경우 처리
+  if (!lecNo || isNaN(parseInt(lecNo))) {
+    console.error('Invalid Lecture Number:', lecNo);
+    return; // 올바르지 않은 경우 처리 중단
+  }else{
+	// AJAX 호출
+		$.ajax({
+			url: '${contextPath}/lec/stuListForLec.do', // 서버 URL
+			method: 'GET',
+			data: {lecNo:lecNo}, // 선택된 강의 번호를 전달
+			success: function(result) {
+								let tbody = "";
+								console.log(result);
+								
+								if(result.length > 0){
+									
+									for(let i=0; i<result.length; i++){
+										
+										
+										tbody  += "<tr>"
+														+ 	"<td height='50px'>" + "<input type='checkbox' class='checkOne' name='checkOne' id='CheckOnebox' value='CheckOnebox'>" + "</td>"
+														+ 	"<td><input type='hidden' name='stuAttendList[" + i + "].lecNo' value='" + result[i].lecNo + "'><p class='mb-0 fw-normal fs-4'>" + (i + 1) + "</p></td>"
+														+ 	"<td><p class='mb-0 fw-normal fs-4'>" + result[i].사진 + "</p></td>"
+														+ 	"<td><input type='hidden' name='stuAttendList[" + i + "].majorNo' value='" + result[i].majorNo +"'><p class='mb-0 fw-normal fs-4'>" + result[i].majorName + "</p></td>" 
+														+ 	"<td><input type='hidden' name='stuAttendList[" + i + "].stuNo' value='" + result[i].stuNo+"'><p class='mb-0 fw-normal fs-4'>" + result[i].stuNo + "</p></td>"													
+														+ 	"<td><p class='mb-0 fw-normal fs-4'>" + result[i].stuName + "</p></td>"             
+														+ 	"<td>"  
+									          +   	"<div class='form-group' style='width: 100px;'>" 
+									          +				"<select class='form-select w-auto' name='stuAttendList[" + i + "].attendance'>" 
+									          +					"<option value='Y'>출석</option>" 
+									          +					"<option value='N'>결석</option>"
+									          +					"<option value='E'>조퇴</option>" 
+									          +					"<option value='A'>공결</option>" 
+									          +				"</select>" 
+									          +			"</div>"
+									          + 	"</td>"
+					                  + "</tr>";							
+														
+									}
+									
+								}else{
+									tbody += "<tr><td colspan='7'>수강신청한 학생이 없습니다.</td></tr>";
+								}
+								
+					
+								$("#myTable").html(tbody);
+	            },
+		error: function(xhr, status, error) {
+						console.error(xhr, status, error); // 에러 처리
+        console.log("ajax 통신실패");
+      }
+  });
+  }
+  
+  console.log("handleChange selectElement :",selectElement);
+  console.log("handleChange lecno :", lecNo);
+}  
+ 
+							    // 서버에서 받은 출석 리스트를 화면에 표시하는 함수
+							    function displayStuAttendList(data) {
+							        // 받은 데이터를 화면에 표시하는 코드 작성
+							        $('#StuAttendList').html(data);
+							    }
+
+</script>
 </body>
 </html>

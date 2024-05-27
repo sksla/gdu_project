@@ -1,5 +1,6 @@
 package com.cu.gdu.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -40,7 +41,18 @@ public class LectureServiceImpl implements LectureService {
 	public int insertStuList() {
 		return lectureDao.insertStuList();
 	}
-	
-	
+	// 출석등록
+	@Override
+	public int updateStuAttend(ArrayList<StuAttendDto> stuAttendList) {
+				
+		int result= 0;
+		if(!stuAttendList.isEmpty()) {
+			for(StuAttendDto sa : stuAttendList) {
+			result += lectureDao.updateStuAttend(sa);
+			}
+		}
+		
+		return result;
+	}
 
 }

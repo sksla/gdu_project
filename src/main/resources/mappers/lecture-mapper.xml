@@ -77,11 +77,12 @@
 	</select>
 
 	<select id="selectStuListForLec" resultMap="lecStuResult">
-		select  
-		
+		select  	
 		 major_name
 		, stu_no
 		, stu_name
+		, lec_no
+		, major_no
 		from lec_stu
 		where lec_no=#{lecNo}
 	</select>
@@ -93,5 +94,13 @@
 		select seq_stu_attend_no.nextval, stu_no, lec_no, major_no, stu_name, major_name, lec_name
 			from lec_stu
 	</insert>
+	
+	<update id="updateStuAttend">
+		update stu_attend
+			 set attendance = #{attendance}
+		 where stu_no =#{stuNo}
+			 and lec_no =#{lecNo}
+			 and to_char(lecture_date,'YY/MM/DD')=to_char(sysdate, 'YY/MM/DD')
+	</update>
 	
 </mapper>
