@@ -28,4 +28,5 @@ public class ReservationDto {
 	private String resType;
 	private int revCount;
 	private List<MemberDto> memberList;
+	private List<ResourceDto> resourceList;
 }
