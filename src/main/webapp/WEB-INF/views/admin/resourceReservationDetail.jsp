@@ -75,43 +75,57 @@
               <div class="row">
                 <div class="col-lg-6 mb-4 mb-lg-0">
                   <div class="mb-4 row align-items-center">
-                    <label for="exampleInputText17" class="form-label fw-semibold col-sm-3 col-form-label">자원</label>
+                    <label for="exampleInputText17" class="form-label fw-semibold col-sm-3 col-form-label">자원명</label>
                     <div class="col-sm-9">
-                      <input class="form-control" type="text" value="예약한 자원명" id="example-text-input" readonly/>
+                      <input class="form-control" type="text" value="${r.resourceList[0].resName}" id="example-text-input" readonly/>
                     </div>
                   </div>
                   <div class="mb-4 row align-items-center">
                     <label for="exampleInputSelect4" class="form-label fw-semibold col-sm-3 col-form-label">신청자</label>
                     <div class="col-sm-9">
-                      <input class="form-control" type="text" value="홍길동 / 학과" id="example-search-input" readonly />
+                      <input class="form-control" type="text" value="${r.memberList[0].memName} / ${r.memberList[0].majorNo}" id="example-search-input" readonly />
                     </div>
                   </div>
-                    <div class="mb-4 row align-items-center">
-                      <label for="exampleInputSelect4" class="form-label fw-semibold col-sm-3 col-form-label">예약사유</label>
-                      <div class="col-sm-9">
-                        <textarea name="" id="" class="form-control" readonly>적혀있는 예약사유</textarea>
-                      </div>
-                    </div>    
+                  <div class="mb-4 row align-items-center">
+                    <label for="exampleInputSelect4" class="form-label fw-semibold col-sm-3 col-form-label">예약사유</label>
+                    <div class="col-sm-9">
+                      <textarea name="" id="" class="form-control" readonly style="resize: none;">${r.revReason}</textarea>
+                    </div>
+                  </div>    
+                  <div class="mb-4 row align-items-center">
+                    <label for="exampleInputSelect4" class="form-label fw-semibold col-sm-3 col-form-label">사용기간</label>
+                    <div class="col-sm-9">
+                      <input class="form-control" type="text" value="${r.revDate}" id="example-email-input" readonly />
+                    </div>
+                  </div>
                 </div>
                 
                 <div class="col-lg-6">
                   <div class="mb-4 row align-items-center">
-                    <label for="exampleInputSelect4" class="form-label fw-semibold col-sm-3 col-form-label">사용기간</label>
+                    <label for="exampleInputSelect4" class="form-label fw-semibold col-sm-3 col-form-label">타입</label>
                     <div class="col-sm-9">
-                      <input class="form-control" type="text" value="YYYY-MM-DD ~ YYYY-MM-DD" id="example-email-input" readonly />
+                      <input class="form-control" type="text" value="${r.resourceList[0].resType}" id="example-email-input" readonly />
                     </div>
                   </div>
                   <div class="mb-4 row align-items-center">
                     <label for="exampleInputSelect4" class="form-label fw-semibold col-sm-3 col-form-label">비고</label>
                     <div class="col-sm-9">
-                      <input class="form-control" type="text" value="시설일 경우 위치 | 비품일경우 사용갯수" id="example-email-input" readonly />
+                    	<c:choose>
+                    		<c:when test="${r.resourceList[0].resType == '비품'}">
+                      		<input class="form-control reservationCount" type="text" value="${r.revCount}개 대여" id="example-email-input" readonly />
+                      		<input type="hidden" class="resNo" value="${r.resourceList[0].resNo}">
+                    		</c:when>
+                    		<c:otherwise>
+                      		<input class="form-control" type="text" value="${r.resourceList[0].resGps}" id="example-email-input" readonly />
+                    		</c:otherwise>
+                    	</c:choose>
                     </div>
                   </div>     
                   <div class="mb-4 row align-items-center">
                     <label for="startDate3" class="form-label fw-semibold col-sm-3 col-form-label">상태</label>
                     <div class="col-sm-9">
                       <div class="input-group">
-                        <input class="form-control" type="text" value="반납 | 미반납" id="example-search-input" readonly/>
+                        <input class="form-control" type="text" value="${r.status}" id="example-search-input" readonly/>
                       </div>
                     </div>
                   </div>
@@ -121,9 +135,25 @@
               <br><br>
 
               <div align="center">
-                <button type="button" class="btn btn-secondary">뒤로가기</button>
-                <button type="button" class="btn btn-secondary">삭제</button>
+                <button type="button" class="btn btn-secondary" onclick="history.back();">뒤로가기</button>
+                <c:if test="${r.status == '미반납'}">
+                	<button type="button" class="btn btn-secondary" onclick="resourceReturn(${r.revNo});">반납처리</button>
+                </c:if>
               </div>
+              
+              <script>
+              	// 미반납 비품 반납처리 함수
+              	function resourceReturn(revNo){
+              		// 대여갯수 추출
+              		let revCountText = $(".reservationCount").val();
+              		let stock = revCountText.match(/\d+/)[0];
+              		let resNo = $(".resNo").val();
+              		console.log(resNo);
+              		if(confirm("반납처리 하시겠습니까??")){
+              			location.href = "${contextPath}/admin/resourceReturn.do?revNo=" + revNo + "&stock=" + stock + "&resNo=" + resNo;
+              		}
+              	}
+              </script>
 
             </div>
           </div>

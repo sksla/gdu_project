@@ -202,4 +202,24 @@ public interface AdminService {
 	int ajaxFilterResourceReservationListCount(ResourceDto r);
 	List<ReservationDto> ajaxFilterResourceReservationList(Map<String, Object> map);
 	
+	// 일정/예약페이지 비품사용기록 등록시 비품조회 ajax
+	List<ResourceDto> searchResourceList(String resName);
+	
+	// 일정/예약페이지 비품사용기록 등록시 사용자조회 ajax
+	List<MemberDto> searchReservationMemberList(String memName);
+	
+	// 일정/예약페이지 비품사용기록 등록기능
+	int inserResourceReservation(ReservationDto r);
+	
+	// 일정/예약페이지 비품사용기록 등록시 해당비품 갯수 업데이트
+	int updateResourceStock(Map<String, Object> map);
+	
+	// 일정/예약 상세페이지에 띄울 값 조회
+	ReservationDto selectReservationDetail(String revNo);
+	
+	// 일정/예약 상세페이지에 미반납비품 반납처리
+	int updateResourceReturn(String revNo);
+	
+	// 일정/예약 상세페이지에 미반납비품 반납처리후 자원테이블 수량 수정
+	int updateReturnResourceStock(Map<String, Object> map);
 }

@@ -120,9 +120,9 @@
                 <tbody align="center" class="tableBody">
                 	<c:forEach var="r" items="${resourceList}">
 	                  <tr onclick="resourceDetail(${r.resNo});">
-	                    <th>
+	                    <th class="selectResourceCheck">
 	                      <h6 class="fs-2 mb-0">
-	                        <input type="checkbox" value="${r.resNo}" class="selectResource">
+	                        <input type="checkbox" value="${r.resNo}" class="selectResource" onclick="event.stopPropagation();">
 	                      </h6>
 	                    </th>
 	                    <th>
@@ -448,9 +448,9 @@
               				let filterPage = "";
               				for(let i=0; i<map.resourceList.length; i++){
               					filterTable +=	"<tr onclick='resourceDetail(" + map.resourceList[i].resNo + ");'>"
-              											+			"<th>"
+              											+			"<th class='selectResourceCheck'>"
               											+				"<h6 class='fs-2 mb-0'>"
-              											+					"<input type='checkbox' value='" + map.resourceList[i].resNo + "' class='selectResource'>"
+              											+					"<input type='checkbox' value='" + map.resourceList[i].resNo + "' class='selectResource' onclick='event.stopPropagation();'>"
               											+				"</h6>"
               											+			"</th>"
               											+			"<th>"

@@ -956,6 +956,9 @@ public class AdminController {
 			}else {
 				r.setStatus("반납");
 			}
+			if(r.getStartTime() != null && !r.getStartTime().isEmpty()) {
+				r.setRevDate(r.getRevDate() + "  (" + r.getStartTime() + "-" + r.getEndTime() + ")");
+			}
 		}
 		model.addAttribute("pi", pi);
 		model.addAttribute("reserList", reserList);
@@ -981,14 +984,89 @@ public class AdminController {
 			}else {
 				re.setStatus("반납");
 			}
+			if(re.getStartTime() != null && !re.getStartTime().isEmpty()) {
+				re.setRevDate(re.getRevDate() + "  (" + re.getStartTime() + "-" + re.getEndTime() + ")");
+			}
 		}
 		map.put("reserList", reserList);
 		return map;
 	}
 	
+	
+	// 일정/예약 비품사용기록 등록시 비품조회 ajax
+	@ResponseBody
+	@PostMapping(value="/searchResource.do", produces="application/json; charset=utf-8")
+	public List<ResourceDto> searchResourceList(String resName){
+		List<ResourceDto> resourceList = adminService.searchResourceList(resName);
+		return resourceList;
+	}
+	
+	// 일정/예약 비품사용기록 등록시 사용자 조회 ajax
+	@ResponseBody
+	@PostMapping(value="/searchReservationMember.do", produces="application/json; charset=utf-8")
+	public List<MemberDto> searchReservationMemberList(String memName){
+		List<MemberDto> memList = adminService.searchReservationMemberList(memName);
+		return memList;
+	}
+	
+	// 일정/예약 비품사용기록 등록
+	@PostMapping("/insertResourceReservation.do")
+	public String inserResourceReservation(RedirectAttributes redirectAttributes, ReservationDto r){
+		Map<String, Object> map = new HashMap<>();
+		map.put("stock", r.getRevCount());
+		map.put("resNo", r.getResNo());
+		int result1 = adminService.inserResourceReservation(r);
+		int result2 = adminService.updateResourceStock(map);
+		if (result1 == 1 && result2 == 1) {
+			redirectAttributes.addFlashAttribute("alertMsg", "비품사용기록을 등록 했습니다.");
+		} else {
+			redirectAttributes.addFlashAttribute("alertMsg", "비품사용기록 등록에 실패했습니다.");
+		}
+		return "redirect:/admin/resourceReservation.page";
+	}
+	
+	// 일정/예약 자원예약내역 상세페이지
 	@GetMapping("/resourceReservationDetail.do")
 	public String resourceReservationDetail(String revNo, Model model) {
+		ReservationDto r = adminService.selectReservationDetail(revNo);
+
+	    r.getResourceList().get(0).setResType(
+	        r.getResourceList().get(0).getResType().equals("1") ? "회의실" : 
+	        r.getResourceList().get(0).getResType().equals("2") ? "강의실" : 
+	        r.getResourceList().get(0).getResType().equals("3") ? "기타" : 
+	        "비품"
+	    );
+
+	    if (r.getStatus().equals("1") && r.getResourceList().get(0).getResType().equals("비품")) {
+	        r.setStatus("미반납");
+	    } else if (r.getStatus().equals("1") && !r.getResourceList().get(0).getResType().equals("비품")) {
+	        r.setStatus("승인");
+	    } else {
+	        r.setStatus("반납");
+	    }
+
+	    if (r.getStartTime() != null && !r.getStartTime().isEmpty()) {
+	        r.setRevDate(r.getRevDate() + " (" + r.getStartTime() + "-" + r.getEndTime() + ")");
+	    }
+	    log.debug("r에 담겨있는값: {}", r);
+		model.addAttribute("r", r);
 		return "admin/resourceReservationDetail";
+	}
+	
+	// 일정/예약 상세페이지에서 미반납 비품 반납처리
+	@GetMapping("/resourceReturn.do")
+	public String resourceReturn(RedirectAttributes redirectAttributes, String revNo, String stock, String resNo) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("stock", stock);
+		map.put("resNo", resNo);
+		int result1 = adminService.updateResourceReturn(revNo);
+		int result2 = adminService.updateReturnResourceStock(map);
+		if(result1 == 1 && result2 == 1) {
+			redirectAttributes.addFlashAttribute("alertMsg", "해당 비품을 반납처리 했습니다.");
+		}else {
+			redirectAttributes.addFlashAttribute("alertMsg", "비품 반납처리에 실패 했습니다.");
+		}
+		return "redirect:/admin/resourceReservation.page";
 	}
 
 }

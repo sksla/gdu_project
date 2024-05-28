@@ -21,6 +21,10 @@
   #searchName{width: 250px;}
   .text, .searchBtn {margin: 5px;}
   .tableBody tr{cursor: pointer;}
+  .selectMember{
+  	max-height: 200px;
+  	overflow-y: scroll;
+  }
 </style>
 </head>
 <body>
@@ -94,7 +98,7 @@
                       <h6 class="fs-3 fw-semibold mb-0">예약자원</h6>
                     </th>
                     <th>
-                      <h6 class="fs-3 fw-semibold mb-0">예약시간</h6>
+                      <h6 class="fs-3 fw-semibold mb-0">예약일</h6>
                     </th>
                     <th>
                       <h6 class="fs-3 fw-semibold mb-0">사용자</h6>
@@ -117,7 +121,7 @@
 	                      <h6 class="fs-2 mb-0">${r.resNo}</h6>
 	                    </th>
 	                    <th>
-	                      <h6 class="fs-2 mb-0">${r.revDate}&nbsp;&nbsp;&nbsp;(${r.startTime}-${r.endTime})</h6>
+	                      <h6 class="fs-2 mb-0">${r.revDate}</h6>
 	                    </th>
 	                    <th>
 	                      <h6 class="fs-2 mb-0">${r.memberList[0].memName}/${r.memberList[0].majorNo}</h6>
@@ -135,7 +139,7 @@
               </div>
 
               <!-- 비품사용기록 모달 -->
-              <form action="" method="">
+              <form action="${contextPath}/admin/insertResourceReservation.do" method="post" id="insertReservationForm">
                 <div class="modal fade" id="resourcesUse" tabindex="-1" aria-labelledby="vertical-center-modal" style="display: none;" aria-hidden="true">
                   <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
@@ -144,23 +148,40 @@
                       </div>
                       <hr>
                       <div class="modal-body myModalBody resourcesBody">
-                        <div style="display: flex;">
-                          비품명 : <input type="text" class="form-control" name="" placeholder="비품명을 작성해주세요" style="width: 280px;"> <br>
-                        </div><br>
-                        <div style="display: flex;">
-                          수량 : <input type="number" class="form-control" name="" placeholder="수량을 작성해주세요(숫자만)" style="width: 280px;">
-                        </div><br>
-                        <div style="display: flex;">
-                          사용자 : <input type="text" class="form-control" name="" placeholder="사용자 이름 검색" style="width: 280px;"> <br>
-                        </div><br>
-                        <div style="display: flex;">
-                          신청일 : <input type="date" class="form-control" name="" style="width: 280px;"> <br>
-                        </div><br><hr>
-                        <div class="addMem">
-                          홍길동/15-76096582 <input type="checkbox">
+                      	<div class="addResourceReservation">
+                      		<table>
+		                      	<tr>
+		                      		<th>&nbsp;&nbsp;&nbsp;비품명:</th>
+		                      		<td><input type="text" class="form-control searchResource" placeholder="비품명을 검색 후 선택해주세요." style="width: 280px;"></td>
+		                      	</tr>          			
+                      		</table>
+                      		<br>
+                      		<div class="reservationResourceCheck">
+                      		<!-- 전부 동적생성 -->
+                      		</div>
+	                      	<table>
+		                      	<tr>
+		                      		<td>&nbsp;&nbsp;&nbsp;수량:</td>
+		                      		<td><input type="number" class="form-control" name="revCount" required placeholder="수량을 작성해주세요(숫자만)" style="width: 280px;"></td>
+		                      	</tr>
+		                      	<tr>
+		                      		<td>&nbsp;&nbsp;&nbsp;사용자:</td>
+		                      		<td><input type="text" class="form-control searchReservationMember" placeholder="사용자 이름 검색" style="width: 280px;"></td>
+		                      	</tr>
+		                      	<tr>
+		                      		<td>&nbsp;&nbsp;&nbsp;대여일:</td>
+		                      		<td><input type="date" class="form-control" name="revDate" required style="width: 280px;"></td>
+		                      	</tr>
+	                      	</table>
+                      	</div>
+                        <div class="selectMember">
+                        	<!-- 동적으로 생성 -->
+                        </div>
+                        <br>
+                        <div class="resourceReservationReason">
+													<textarea class="form-control addLeaveReason" rows="3" placeholder="상세설명을 작성해주세요" required style="width: 280px; resize:none;" name="revReason"></textarea> 	
                         </div>
                         <hr>
-                        <textarea class="form-control addLeaveReason" rows="3" placeholder="상세설명을 작성해주세요" style="width: 280px;" name=""></textarea>
                       </div>
                       <div class="modal-footer">
                         <button type="submit" class="btn bg-danger-subtle text-danger  waves-effect text-start">등록</button>
@@ -205,11 +226,149 @@
               </div>
               
               <script>
+              
+              	// 비품사용기록 등록시 사용자 조회 ajax 함수 요청
+              	$(document).on("keyup", ".searchReservationMember", function(){
+              		if($(this).val().trim() != ""){
+              			searchReservationMember();
+              		}else{
+              			$(".selectMember").text("");
+              		}
+              	});
+              
+              	// 비품사용기록 등록시 비품명 조회 ajax 함수 요청
+              	$(document).on("keyup", ".searchResource", function(){
+              		if($(this).val().trim() != ""){
+              			searchResource();
+              		}else{
+              			$(".reservationResourceCheck").text("");
+              		}
+              	});
+              	
+              	// 비품사용기록 등록시 사용자 조회 ajax 함수
+              	function searchReservationMember(){
+              		let memName = $(".searchReservationMember").val();
+              		
+              		$.ajax({
+              			url:"${contextPath}/admin/searchReservationMember.do",
+              			type:"post",
+              			data:"memName=" + memName,
+              			success:function(memList){
+              				let mem = "";
+              				$(".selectMember").text("");
+              				if(memList.length == 0){
+              					mem +=	"<hr>"
+              							+			"<span>조회된 직원이 없습니다.</span> <br>"
+              							+		"<hr>";
+              				}else{
+              					mem +=	"<hr>";
+              					for(let i=0; i<memList.length; i++){
+              						mem +=	"<span class='addMem'>" + memList[i].memNo + " / " + memList[i].memName + " / " + memList[i].majorNo +"</span><input type='checkbox' class='checkMem' value='" + memList[i].memNo + "'><br>"
+              					}
+              					mem +=	"<hr>";
+              				}
+              				$(".selectMember").append(mem);
+              			},
+              			error:function(){
+              				console.log("비품사용기록 등록시 사용자 조회 ajax 통신 실패");
+              			}
+              		});
+              	}
+              	
+              	// 비품사용기록 등록시 비품 조회 ajax 함수
+              	function searchResource(){
+              		let resName = $(".searchResource").val();
+              		
+              		$.ajax({
+              			url:"${contextPath}/admin/searchResource.do",
+              			type:"post",
+              			data:"resName=" + resName,
+              			success:function(resourceList){
+              				let resource = "";
+              				$(".reservationResourceCheck").text("");
+              				if(resourceList.length == 0){
+              					resource += "<hr>"
+              										+		"<span>검색하신 비품은 조회되지 않습니다.</span>"
+              										+	"<hr>";
+              				}else{
+              					resource += "<hr>";
+              					for(let i=0; i<resourceList.length; i++){
+              						resource += "<span>" + resourceList[i].resName + " / " + resourceList[i].stock +"개</span><input type='checkbox' class='checkResource' value='" + resourceList[i].resNo + "'> <br>"
+              					}
+              					resource += "<hr>";
+              				}
+              				$(".reservationResourceCheck").append(resource);           				
+              			},
+              			error:function(){
+              				console.log("비품사용기록 등록시 비품조회 ajax 통신 실패");
+              			}
+              		});
+              	}
+              	
+              	// 비품사용기록 등록 submit시 비품 및 사용자 체크박스 체크 안돼있으면 alert로 알려주는 구문
+              	$(document).on("submit", "#insertReservationForm", function(){
+              		
+              		let checkedResource = $(".checkResource").filter(":checked");
+              		let checkedMem = $(".checkMem:checked").filter(":checked");
+              		
+              		if(checkedMem.length == 0 && checkedResource.length == 0){
+              			event.preventDefault();
+              			alert("비품과 사용자를 선택해주세요.");
+              		}else if(checkedMem.length != 0 && checkedResource.length == 0){
+              			event.preventDefault();
+              			alert("비품을 선택해주세요.");
+              		}else if(checkedMem.length == 0 && checkedResource.length != 0){
+              			event.preventDefault();
+              			alert("사용자를 선택해주세요.");
+              		}
+              		
+              		// 입력된 수량 가져오기
+              		let inputStock = $("input[name='stock']").val();
+              		
+            	    // 선택한 비품의 재고 가져오기
+            	    let stockFullText = $(".checkResource:checked").prev().text().trim();
+            	    let stockText = stockFullText.split("/")[1];
+            	    let stock = parseInt(stockText);
+            	    
+            	    if(inputStock > stock){
+            	    	event.preventDefault();
+            	    	alert("입력하신 수량이 비품의 재고보다 많습니다.");
+            	    	$("input[name='revCount']").val("");
+            	    }
+              		
+              	});
+              	
+              	// 사용자선택 체크박스 여부에 따라 체크되지 않은 체크박스 name 속성 지우는 스크립트
+              	$(document).on("change", ".checkMem", function(){
+              		$(".checkMem").not(this).prop("checked", false).removeAttr("name");
+              		
+              		if($(this).is(":checked")){
+              			$(this).attr("name", "memNo");
+              			$(this).attr("checked", true);
+              		}else{
+              			$(this).removeAttr("name");
+              		}
+              	});
+              	
+              	// 비품 체크박스 여부에 따라 체크되지 않은 체크박스의 name 속성 지우는 스크립트
+              	$(document).on("change", ".checkResource", function(){
+              		$(".checkResource").not(this).prop("checked", false).removeAttr("name");
+              		
+              		if($(this).is(":checked")){
+              			$(this).attr("name", "resNo");
+              			$(this).attr("checked", true);
+              		}else{
+              			$(this).removeAttr("name");
+              		}
+              		
+              	});
+              	
               	// 검색 및 필터로 ajax 함수 요청
               	$(document).on("keyup change", ".searchName, .ajaxSelect", function(){
               		resourceReservationFilter(1);
               	});
               	
+              	// 예약내용 상세페이지로 이동
               	function reservationDetail(revNo){
               		let contextPath = "<c:out value='${pageContext.request.contextPath}' />";
               		location.href = contextPath + "/admin/resourceReservationDetail.do?revNo=" + revNo;
@@ -252,7 +411,7 @@
 																				+				"<h6 class='fs-2 mb-0'>" + map.reserList[i].resNo + "</h6>"
 																				+			"</th>"
 																				+			"<th>"
-																				+				"<h6 class='fs-2 mb-0'>" + map.reserList[i].revDate + "&nbsp;&nbsp;&nbsp;(" + map.reserList[i].startTime + "-" + map.reserList[i].endTime + ")" + "</h6>"	
+																				+				"<h6 class='fs-2 mb-0'>" + map.reserList[i].revDate + "</h6>"	
 																				+			"</th>"
 																				+			"<th>"
 																				+				"<h6 class='fs-2 mb-0'>" + map.reserList[i].memberList[j].memName + "/" + map.reserList[i].memberList[j].majorNo + "</h6>"

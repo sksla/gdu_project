@@ -415,4 +415,39 @@ public class AdminDao {
 		return sqlSessionTemplate.selectList("adminMapper.ajaxFilterResourceReservationList", map, rowBounds);
 	}
 
+	// 일정/예약페이지 비품사용기록 등록시 비품조회 ajax
+	public List<ResourceDto> searchResourceList(String resName) {
+		return sqlSessionTemplate.selectList("adminMapper.searchResourceList", resName);
+	}
+	
+	// 일정/예약페이지 비품사용기록 등록시 사용자조회 ajax
+	public List<MemberDto> searchReservationMemberList(String memName) {
+		return sqlSessionTemplate.selectList("adminMapper.searchReservationMemberList", memName);
+	}
+	
+	// 일정/예약페이지 비품사용기록 등록기능
+	public int inserResourceReservation(ReservationDto r) {
+		return sqlSessionTemplate.insert("adminMapper.inserResourceReservation", r);
+	}
+	
+	// 일정/예약페이지 비품사용기록 등록시 해당비품 갯수 업데이트
+	public int updateResourceStock(Map<String, Object> map) {
+		return sqlSessionTemplate.update("adminMapper.updateResourceStock", map);
+	}
+	
+	// 일정/예약 상세페이지에 띄울 값 조회
+	public ReservationDto selectReservationDetail(String revNo) {
+		return sqlSessionTemplate.selectOne("adminMapper.selectReservationDetail", revNo);
+	}
+	
+	// 일정/예약 상세페이지에 미반납비품 반납처리
+	public int updateResourceReturn(String revNo) {
+		return sqlSessionTemplate.update("adminMapper.updateResourceReturn", revNo);
+	}
+
+	// 일정/예약 상세페이지에 미반납비품 반납처리후 자원테이블 수량 수정
+	public int updateReturnResourceStock(Map<String, Object> map) {
+		return sqlSessionTemplate.update("adminMapper.updateReturnResourceStock", map);
+	}
+	
 }

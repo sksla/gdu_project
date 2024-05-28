@@ -132,6 +132,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="res_type" property="resType"/>
 		<result column="rev_count" property="revCount"/>
 		<collection resultMap="memberResult" property="memberList" />
+		<collection resultMap="resourceResult" property="resourceList" />
 	</resultMap>
 
   <select id="selectCollegeList" resultMap="collegeResult">
@@ -1248,5 +1249,96 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 order
 		    by rev_no desc
 	</select>
+	
+	<select id="searchResourceList" resultMap="resourceResult">
+		select
+		       res_no
+		     , res_name
+		     , stock
+		  from resources
+		 where status = 'Y'
+		   and res_type = '4'
+		   and res_name LIKE '%' || #{resName} || '%'
+	</select>
+	
+	<select id="searchReservationMemberList" resultMap="memberResult">
+		select
+		       mem_no
+		     , mem_name
+		     , major_name
+		  from member
+		  join major on (major.major_no = member.major_no)
+		 where member.status = 'N'
+		   and mem_name LIKE '%' || #{memName} || '%'
+	</select>
+	
+	<insert id="inserResourceReservation">
+		insert
+		  into reservation
+		  (
+		  	rev_no
+		  , rev_reason
+		  , rev_date
+		  , regist_date
+		  , status
+		  , mem_no
+		  , res_no
+		  , rev_count
+		  )
+		  values
+		  (
+		  	seq_rev_no.nextval
+		  , #{revReason}
+		  , #{revDate}
+		  , sysdate
+		  , '1'
+		  , #{memNo}
+		  , #{resNo}
+		  , #{revCount}
+		  )
+	</insert>
+	
+	<update id="updateResourceStock">
+		update resources
+		   set stock = stock - #{stock}
+		     , mod_date = sysdate
+		 where res_no = #{resNo}
+	</update>
+	
+	<select id="selectReservationDetail" resultMap="reservationResult">
+		select
+		       reservation.rev_no
+		     , reservation.res_no
+		     , resources.res_name
+		     , member.mem_name
+		     , major.major_name
+		     , reservation.rev_reason
+		     , to_char(to_date(rev_date, 'YY-MM-DD'), 'YY-MM-DD') rev_date
+		     , to_char(to_date(start_time, 'HH24:MI'), 'HH24:MI') start_time
+		     , to_char(to_date(end_time, 'HH24:MI'), 'HH24:MI') end_time
+		     , res_gps
+		     , rev_count
+		     , reservation.status
+		     , resources.res_type
+		  from reservation
+		  left join resources on (reservation.res_no = resources.res_no)
+		  left join member on (reservation.mem_no = member.mem_no)
+		  left join major on (member.major_no = major.major_no)
+		 where reservation.status != '3'
+		   and rev_no = #{revNo}
+	</select>
+	
+	<update id="updateResourceReturn">
+		update reservation
+		   set status = '2'
+		 where rev_no = #{revNo}
+	</update>
+	
+	<update id="updateReturnResourceStock">
+		update resources
+		   set mod_date = sysdate
+		     , stock = stock + #{stock}
+		 where res_no = #{resNo}
+	</update>
 
 </mapper>

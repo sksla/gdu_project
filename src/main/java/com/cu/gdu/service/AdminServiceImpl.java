@@ -434,5 +434,47 @@ public class AdminServiceImpl implements AdminService {
 	public List<ReservationDto> ajaxFilterResourceReservationList(Map<String, Object> map) {
 		return adminDao.ajaxFilterResourceReservationList(map);
 	}
+
+	// 일정/예약페이지 비품사용기록 등록시 비품조회 ajax
+	@Override
+	public List<ResourceDto> searchResourceList(String resName) {
+		return adminDao.searchResourceList(resName);
+	}
+
+	// 일정/예약페이지 비품사용기록 등록시 사용자조회 ajax
+	@Override
+	public List<MemberDto> searchReservationMemberList(String memName) {
+		return adminDao.searchReservationMemberList(memName);
+	}
+
+	// 일정/예약페이지 비품사용기록 등록기능
+	@Override
+	public int inserResourceReservation(ReservationDto r) {
+		return adminDao.inserResourceReservation(r);
+	}
+
+	// 일정/예약페이지 비품사용기록 등록시 해당비품 갯수 업데이트
+	@Override
+	public int updateResourceStock(Map<String, Object> map) {
+		return adminDao.updateResourceStock(map);
+	}
+
+	// 일정/예약 상세페이지에 띄울 값 조회
+	@Override
+	public ReservationDto selectReservationDetail(String revNo) {
+		return adminDao.selectReservationDetail(revNo);
+	}
+
+	// 일정/예약 상세페이지에 미반납비품 반납처리
+	@Override
+	public int updateResourceReturn(String revNo) {
+		return adminDao.updateResourceReturn(revNo);
+	}
+
+	// 일정/예약 상세페이지에 미반납비품 반납처리후 자원테이블 수량 수정
+	@Override
+	public int updateReturnResourceStock(Map<String, Object> map) {
+		return adminDao.updateReturnResourceStock(map);
+	}
 	
 }
