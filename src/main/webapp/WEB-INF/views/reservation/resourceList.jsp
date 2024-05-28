@@ -279,7 +279,7 @@
 	          					tbody += "<tr class='resource_title'>"
 	                            +		"<td style='width:105px;'>" + resTypeStr + "</td>"
 	                            +		"<td style='width:220px;'>" + list[i].resName + "</td>"
-	                            +		"<td style='width:150px;'><a' class='btn btn-sm btn-primary' href='${contextPath}/reservation/reserveForm.do?no=" + list[i].resNo + "'>예약하기</a></td>"
+	                            +		"<td style='width:150px;'><a class='btn btn-sm btn-primary' href='${contextPath}/reservation/reserveForm.do?no=" + list[i].resNo + "'>예약하기</a></td>"
                          	    +	"</tr>"
                          	    + "<tr class='resource_content off'>"
                          	    + 	"<td colspan='3' style='width:500px;'>"

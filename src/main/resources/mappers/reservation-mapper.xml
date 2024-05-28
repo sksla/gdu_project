@@ -10,7 +10,8 @@
 		<result column="end_time" property="endTime"/>
 		<result column="regist_date" property="registDate"/>
 		<result column="status" property="status"/>
-		<result column="mem_name" property="memNo"/>
+		<result column="mem_no" property="memNo"/>
+		<result column="mem_name" property="memName"/>
 		<result column="res_name" property="resNo"/>
 		<result column="res_type" property="resType"/>
 		<result column="rev_count" property="revCount"/>
@@ -50,8 +51,8 @@
 		  join member m on (m.mem_no = rev.mem_no)
 		  join resources res on (rev.res_no = res.res_no)
 		  <where>
-		   status in ('1', '2')
-		   and mem_no = #{mem_no}
+		   rev.status in ('1', '2')
+		   and rev.mem_no = #{memNo}
 		   <if test='keyword != null || !keyword.equals("")'>
 		   	and res_name like '%' || #{keyword} || '%'
 		   </if>
@@ -70,8 +71,8 @@
 		  join member m on (m.mem_no = rev.mem_no)
 		  join resources res on (rev.res_no = res.res_no)  
 		  <where>
-		   status in ('1', '2')
-		   and mem_no = #{mem_no}
+		   rev.status in ('1', '2')
+		   and rev.mem_no = #{memNo}
 		   <if test='keyword != null || !keyword.equals("")'>
 		   	and res_name like '%' || #{keyword} || '%'
 		   </if>
@@ -95,9 +96,23 @@
 		  from reservation rev
 		  join member m on (m.mem_no = rev.mem_no)
 		  join resources res on (rev.res_no = res.res_no)
-		 where status = '1'
+		 where rev.status = '1'
 		   and res_type = '4'
-		   and mem_no = #{memNo}
+		   and rev.mem_no = #{memNo}
+		 order
+		    by rev_no
+	</select>
+	
+	<!-- 미반납 목록 개수 -->
+	<select id="selectUnreturnedListCount" resultType="_int">
+		select
+		       count(*) count
+		  from reservation rev 
+		  join member m on (m.mem_no = rev.mem_no)
+		  join resources res on (rev.res_no = res.res_no)
+		 where rev.status = '1'
+		   and res_type = '4'
+		   and rev.mem_no = #{memNo}    
 	</select>
 	
 	<!-- 시설 예약 -->
@@ -201,6 +216,22 @@
 		     , res_gps
 		  from resources
 		 where res_no = #{resNo} 
+	</select>
+	
+	<select id="selectReservaionListByResNo" resultMap="reservationResult">
+		select
+		       rev_no
+		     , rev_reason
+		     , rev_date
+		     , start_time
+		     , end_time
+		     , rev.status
+		     , rev.mem_no
+		     , mem_name
+		  from reservation rev
+		  join member m on (m.mem_no = rev.mem_no)
+		 where res_no = #{resNo}  
+		       
 	</select>
 	
 	

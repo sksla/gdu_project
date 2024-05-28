@@ -30,11 +30,18 @@ public class ReservationServiceImpl implements ReservationService {
 		return reservationDao.searchReservationListCount(search);
 	}
 	
+	// 미반납 목록 조회
 	@Override
-	public List<ReservationDto> selectUnreturnedList(int memNo) {
-		return null;
+	public List<ReservationDto> selectUnreturnedList(int memNo, PageInfoDto pi) {
+		return reservationDao.selectUnreturnedList(memNo, pi);
 	}
 
+	@Override
+	public int selectUnreturnedListCount(int memNo) {
+		return reservationDao.selectUnreturnedListCount(memNo);
+	}
+
+	// 예약하기
 	@Override
 	public int insertReservation(ReservationDto rev) {
 		return 0;
@@ -44,26 +51,37 @@ public class ReservationServiceImpl implements ReservationService {
 	public int updateReservation(ReservationDto rev) {
 		return 0;
 	}
-
+	
+	// 예약 삭제
 	@Override
 	public int deleteReservation(int revNo) {
-		return 0;
+		return reservationDao.deleteReservation(revNo);
 	}
 
+	// 시설 목록 조회
 	@Override
 	public List<ResourceDto> searchFacilityList(Map<String, String> search) {
 		return reservationDao.searchFacilityList(search);
 	}
 
+	// 비품 목록 조회
 	@Override
 	public List<ResourceDto> searchEquipmentList(String keyword) {
 		return reservationDao.searchEquipmentList(keyword);
 	}
-
+	
+	// 시설 상세조회
 	@Override
 	public ResourceDto selectResource(int resNo) {
-		return null;
+		return reservationDao.selectResource(resNo);
 	}
+
+	// 시설번호에 해당하는 예약내역 조회
+	@Override
+	public List<ReservationDto> selectReservaionListByResNo(int resNo) {
+		return reservationDao.selectReservaionListByResNo(resNo);
+	}
+
 
 	
 	

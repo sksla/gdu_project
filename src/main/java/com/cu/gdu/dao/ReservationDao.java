@@ -20,6 +20,7 @@ public class ReservationDao {
 	
 	// 김영주 ----------------------------------------------------------------------------
 	
+	//나의 예약내역 조회
 	public List<ReservationDto> searchReservationList(Map<String, String> search, PageInfoDto pi) {
 		int limit = pi.getBoardLimit();
 		int offset = (pi.getCurrentPage() - 1) * limit;
@@ -28,14 +29,25 @@ public class ReservationDao {
 		return sqlSessionTemplate.selectList("reservationMapper.searchReservationList", search, rowBounds);
 	}
 	
+	// 나의 예약내역 개수 조회
 	public int searchReservationListCount(Map<String, String> search) {
 		return sqlSessionTemplate.selectOne("reservationMapper.searchReservationListCount", search);
 	}
 	
-	public List<ReservationDto> selectUnreturnedList(int memNo) {
-		return null;
+	// 미반납 목록 조회
+	public List<ReservationDto> selectUnreturnedList(int memNo, PageInfoDto pi) {
+		int limit = pi.getBoardLimit();
+		int offset = (pi.getCurrentPage() - 1) * limit;
+		
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return sqlSessionTemplate.selectList("reservationMapper.selectUnreturnedList", memNo, rowBounds);
 	}
-
+	
+	public int selectUnreturnedListCount(int memNo) {
+		return sqlSessionTemplate.selectOne("reservationMapper.selectUnreturnedListCount", memNo);
+	}
+	
+	// 시설 예약 등록 
 	public int insertReservation(ReservationDto rev) {
 		return 0;
 	}
@@ -44,8 +56,9 @@ public class ReservationDao {
 		return 0;
 	}
 
+	// 예약 삭제
 	public int deleteReservation(int revNo) {
-		return 0;
+		return sqlSessionTemplate.update("reservationMapper.deleteReservation", revNo);
 	}
 
 	public List<ResourceDto> searchFacilityList(Map<String, String> search) {
@@ -55,9 +68,15 @@ public class ReservationDao {
 	public List<ResourceDto> searchEquipmentList(String keyword) {
 		return sqlSessionTemplate.selectList("reservationMapper.searchEquipmentList", keyword);
 	}
-
+	
+	// 시설 조회(상세)
 	public ResourceDto selectResource(int resNo) {
-		return null;
+		return sqlSessionTemplate.selectOne("reservationMapper.selectResource",	resNo);
+	}
+	
+	// 시설에 대한 예약 내역 조회
+	public List<ReservationDto> selectReservaionListByResNo(int resNo){
+		return sqlSessionTemplate.selectList("reservationMapper.selectReservaionListByResNo", resNo);
 	}
 	
 	

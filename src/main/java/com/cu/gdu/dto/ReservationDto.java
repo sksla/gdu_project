@@ -29,4 +29,7 @@ public class ReservationDto {
 	private int revCount;
 	private List<MemberDto> memberList;
 	private List<ResourceDto> resourceList;
+
+	private String memName;
+
 }
