@@ -242,10 +242,16 @@ public class AdminController {
 		List<VacationDto> vacList = adminService.selectDashboardVacation();
 		InsertDateDto lecDate = adminService.selectLecInsertDate();
 		InsertDateDto stuDate = adminService.selectStuInsertDate();
+		List<ReservationDto> reserList = adminService.selectDashboardReservation();
+		List<ReservationDto> todayReserList = adminService.selectTodayReserList();
+		for(ReservationDto r : todayReserList) {
+			r.setRevDate(r.getRevDate() + " (" + r.getStartTime() + "-" + r.getEndTime() + ")");
+		}
+		model.addAttribute("todayReserList", todayReserList);
+		model.addAttribute("reserList", reserList);
 		model.addAttribute("lecDate", lecDate);
 		model.addAttribute("stuDate", stuDate);
 		model.addAttribute("vacList", vacList);
-		// log.debug("vacList: {}", vacList);
 		for (VacationDto v : vacList) {
 			v.setStatus(v.getStatus().equals("1") ? "대기" : v.getStatus().equals("2") ? "승인" : "반려");
 		}

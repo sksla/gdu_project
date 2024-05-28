@@ -67,6 +67,12 @@
     flex: 1; /* 화면 너비에 맞춰 균등 배분 */
     margin: 0 10px; /* 좌우 여백 추가 */
   }
+  .todayReser{font-size:18px;}
+  .todayReserList{
+  	height: 220px;
+  	max-height: 600px;
+  	overflow-y: scroll;
+  }
   /* 캘린더 스타일*/
   .fc-icon{
   	width:40px;
@@ -472,15 +478,22 @@
                 <!--오늘예약건&미반납비품-->
                 <div id="content3">
 	                <div class="todayReserve"> <!--오늘예약건-->
-	                  <p class="fs-7 fw-semibold">오늘 예약건 +</p>
+	                  <p class="fs-7 fw-semibold">오늘 시설 사용건</p>
 	                  <div class="card" style="width: 600px; height: 250px;">
 	                    <div class="card-body">
-	                      <hr>
-	                      홍길동(전자과) : 회의실 예약 <br>
-	                      홍길동(전자과) : 회의실 예약 <br>
-	                      홍길동(전자과) : 회의실 예약 <br>
-	                      홍길동(전자과) : 회의실 예약 <br>
-	                      홍길동(전자과) : 회의실 예약 <br>
+	                    	<div class="todayReserList">
+		                      <hr>
+		                      <c:choose>
+		                      	<c:when test="${empty todayReserList}">
+		                      		<span class="todayReser">오늘의 시설 사용기록이 없습니다.</span>
+		                      	</c:when>
+		                      	<c:otherwise>
+		                      		<c:forEach var="t" items="${todayReserList}">
+		                      			<span class="todayReser">${t.memberList[0].memName}(${t.memberList[0].majorNo})&nbsp;-&nbsp;${t.resourceList[0].resName} 사용 ${t.revDate}</span><br>
+		                      		</c:forEach>
+		                      	</c:otherwise>
+		                      </c:choose>
+	                      </div>
 	                    </div>
 	                  </div>
 	                </div>
@@ -501,72 +514,19 @@
 	                      </tr>
 	                    </thead>
 	                    <tbody>
-	                      <tr>
-	                        <td>
-	                          <p class="mb-0 fw-normal fs-4">xx과</p>
-	                        </td>
-	                        <td>
-	                          <p class="mb-0 fw-normal fs-4">홍길동/전자과</p>
-	                        </td>
-	                        <td>
-	                          <p class="mb-0 fw-normal fs-4" align="center">YYYY/MM/DD</p>
-	                        </td>
-	                      </tr>
-	                      <tr>
-	                        <td>
-	                          <p class="mb-0 fw-normal fs-4">xx과</p>
-	                        </td>
-	                        <td>
-	                          <p class="mb-0 fw-normal fs-4">홍길동/전자과</p>
-	                        </td>
-	                        <td>
-	                          <p class="mb-0 fw-normal fs-4" align="center">YYYY/MM/DD</p>
-	                        </td>
-	                      </tr>
-	                      <tr>
-	                        <td>
-	                          <p class="mb-0 fw-normal fs-4">xx과</p>
-	                        </td>
-	                        <td>
-	                          <p class="mb-0 fw-normal fs-4">홍길동/전자과</p>
-	                        </td>
-	                        <td>
-	                          <p class="mb-0 fw-normal fs-4" align="center">YYYY/MM/DD</p>
-	                        </td>
-	                      </tr>
-	                      <tr>
-	                        <td>
-	                          <p class="mb-0 fw-normal fs-4">xx과</p>
-	                        </td>
-	                        <td>
-	                          <p class="mb-0 fw-normal fs-4">홍길동/전자과</p>
-	                        </td>
-	                        <td>
-	                          <p class="mb-0 fw-normal fs-4" align="center">YYYY/MM/DD</p>
-	                        </td>
-	                      </tr>
-	                      <tr>
-	                        <td>
-	                          <p class="mb-0 fw-normal fs-4">xx과</p>
-	                        </td>
-	                        <td>
-	                          <p class="mb-0 fw-normal fs-4">홍길동/전자과</p>
-	                        </td>
-	                        <td>
-	                          <p class="mb-0 fw-normal fs-4" align="center">YYYY/MM/DD</p>
-	                        </td>
-	                      </tr>
-	                      <tr>
-	                        <td>
-	                          <p class="mb-0 fw-normal fs-4">xx과</p>
-	                        </td>
-	                        <td>
-	                          <p class="mb-0 fw-normal fs-4">홍길동/전자과</p>
-	                        </td>
-	                        <td>
-	                          <p class="mb-0 fw-normal fs-4" align="center">YYYY/MM/DD</p>
-	                        </td>
-	                      </tr>
+	                    	<c:forEach var="r" items="${reserList}">
+		                      <tr>
+		                        <td>
+		                          <p class="mb-0 fw-normal fs-4">${r.resourceList[0].resName}</p>
+		                        </td>
+		                        <td>
+		                          <p class="mb-0 fw-normal fs-4">${r.memberList[0].memName}/${r.memberList[0].majorNo}</p>
+		                        </td>
+		                        <td>
+		                          <p class="mb-0 fw-normal fs-4" align="center">${r.revDate}</p>
+		                        </td>
+		                      </tr>
+	                      </c:forEach>
 	                    </tbody>
 	                  </table>
 	                </div>

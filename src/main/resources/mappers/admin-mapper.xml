@@ -1340,5 +1340,53 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		     , stock = stock + #{stock}
 		 where res_no = #{resNo}
 	</update>
+	
+	<select id="selectDashboardReservation" resultMap="reservationResult">
+	    <![CDATA[
+	    SELECT *
+	    FROM (
+	        SELECT
+	            reservation.rev_no,
+	            reservation.res_no,
+	            resources.res_name,
+	            member.mem_name,
+	            major.major_name,
+	            reservation.rev_reason,
+	            TO_CHAR(TO_DATE(rev_date, 'YY-MM-DD'), 'YY-MM-DD') AS rev_date,
+	            ROW_NUMBER() OVER (ORDER BY rev_no DESC) AS row_num
+	        FROM
+	            reservation
+	        LEFT JOIN resources ON (reservation.res_no = resources.res_no)
+	        LEFT JOIN member ON (reservation.mem_no = member.mem_no)
+	        LEFT JOIN major ON (member.major_no = major.major_no)
+	        WHERE
+	            reservation.status = '1'
+	            AND resources.res_type = '4'
+	    )
+	    WHERE row_num <= 6
+	    ]]>
+	</select>
+	
+	<select id="selectTodayReserList" resultMap="reservationResult">
+		SELECT
+			    reservation.rev_no,
+			    reservation.res_no,
+			    resources.res_name,
+			    member.mem_name,
+			    major.major_name,
+			    reservation.rev_reason,
+			    TO_CHAR(TO_DATE(rev_date, 'YY-MM-DD'), 'YY-MM-DD') AS rev_date,
+			    TO_CHAR(TO_DATE(start_time, 'HH24:MI'), 'HH24:MI') AS start_time,
+			    TO_CHAR(TO_DATE(end_time, 'HH24:MI'), 'HH24:MI') AS end_time,
+			    res_gps
+		FROM
+		    	reservation
+		LEFT 	JOIN resources ON (reservation.res_no = resources.res_no)
+		LEFT 	JOIN member ON (reservation.mem_no = member.mem_no)
+		LEFT 	JOIN major ON (member.major_no = major.major_no)
+		WHERE	reservation.status = '1'
+		  AND res_type != '4'
+		  AND rev_date = TRUNC(sysdate)
+	</select>
 
 </mapper>

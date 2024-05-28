@@ -476,5 +476,17 @@ public class AdminServiceImpl implements AdminService {
 	public int updateReturnResourceStock(Map<String, Object> map) {
 		return adminDao.updateReturnResourceStock(map);
 	}
+
+	// 관리자 대시보드 미반납비품 조회기능
+	@Override
+	public List<ReservationDto> selectDashboardReservation() {
+		return adminDao.selectDashboardReservation();
+	}
+
+	// 관리자 대시보드 오늘의 예약건 조회
+	@Override
+	public List<ReservationDto> selectTodayReserList() {
+		return adminDao.selectTodayReserList();
+	}
 	
 }

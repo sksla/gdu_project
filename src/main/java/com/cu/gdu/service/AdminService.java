@@ -222,4 +222,10 @@ public interface AdminService {
 	
 	// 일정/예약 상세페이지에 미반납비품 반납처리후 자원테이블 수량 수정
 	int updateReturnResourceStock(Map<String, Object> map);
+	
+	// 관리자 대시보드 미반납비품 조회기능
+	List<ReservationDto> selectDashboardReservation();
+	
+	// 관리자 대시보드 오늘의 예약건 조회
+	List<ReservationDto> selectTodayReserList();
 }
