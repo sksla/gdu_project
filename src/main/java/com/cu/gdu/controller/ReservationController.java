@@ -8,12 +8,16 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cu.gdu.dto.AttendDto;
+import com.cu.gdu.dto.JobDto;
+import com.cu.gdu.dto.MajorDto;
 import com.cu.gdu.dto.MemberDto;
 import com.cu.gdu.dto.PageInfoDto;
 import com.cu.gdu.dto.ReservationDto;
@@ -125,7 +129,23 @@ public class ReservationController {
 	
 	// ===================================자원 예약==========================================
 	
-	
-	
 	// 김영주 ------------------------------------------------------------------------------
+	
+	
+
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
 }

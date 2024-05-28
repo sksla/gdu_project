@@ -38,6 +38,8 @@ import com.cu.gdu.dto.JobDto;
 import com.cu.gdu.dto.MajorDto;
 import com.cu.gdu.dto.MemberDto;
 import com.cu.gdu.dto.PageInfoDto;
+import com.cu.gdu.dto.ReservationDto;
+import com.cu.gdu.dto.ResourceDto;
 import com.cu.gdu.dto.VacationDto;
 import com.cu.gdu.dto.VacationTypeDto;
 import com.cu.gdu.service.AdminService;
@@ -828,6 +830,165 @@ public class AdminController {
 	    }  
 		return "redirect:/calendar/univCalendar.page";
 
+	}
+	
+
+	// 자원관리 페이지 조회
+	@GetMapping("/adminResourceList.page")
+	public String adminResourceList(@RequestParam(value = "page", defaultValue = "1") int currentPage, Model model) {
+		int listCount = adminService.adminResourceListCount();
+		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 10);
+		List<ResourceDto> resourceList = adminService.adminResourceList(pi);
+		for(ResourceDto r : resourceList) {
+			r.setResType(r.getResType().equals("1") ? "회의실" : r.getResType().equals("2") ? "강의실" : r.getResType().equals("3") ? "기타" : "비품");
+		}
+		List<ResourceDto> resourceType = adminService.resourceTypeCount();
+		int allCount = 0;
+		int meetingCount = 0;
+		int recCount = 0;
+		int thatCount = 0;
+		int objectCount = 0;
+		allCount = resourceType.size();
+		for(ResourceDto r : resourceType) {
+			if(r.getResType().equals("1")) {
+				meetingCount++;
+			}else if(r.getResType().equals("2")) {
+				recCount++;
+			}else if(r.getResType().equals("3")) {
+				thatCount++;
+			}else {
+				objectCount++;
+			}
+		}
+		model.addAttribute("allCount", allCount);
+		model.addAttribute("meetingCount", meetingCount);
+		model.addAttribute("recCount", recCount);
+		model.addAttribute("thatCount", thatCount);
+		model.addAttribute("objectCount", objectCount);
+		model.addAttribute("pi", pi);
+		model.addAttribute("resourceList", resourceList);
+		return "admin/resourceList";
+	}
+	
+	// 자원관리 페이지에서 필터 및 검색으로 조회
+	@ResponseBody
+	@GetMapping(value="/ajaxFilterResourceList.do", produces="application/json; charset=utf-8")
+	public Map<String, Object> ajaxFilterResourceList(ResourceDto r, @RequestParam(value = "page", defaultValue = "1") int currentPage){
+		Map<String, Object> map = new HashMap<>();
+		int listCount = adminService.ajaxFilterResourceListCount(r);
+		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 10);
+		map.put("r", r);
+		map.put("pi", pi);
+		List<ResourceDto> resourceList = adminService.ajaxFilterResourceList(map);
+		for(ResourceDto rList : resourceList) {
+			rList.setResType(rList.getResType().equals("1") ? "회의실" : rList.getResType().equals("2") ? "강의실" : rList.getResType().equals("3") ? "기타" : "비품");
+		}
+		map.put("resourceList", resourceList);
+		return map;
+	}
+	
+	// 자원관리 페이지에서 자원 삭제기능
+	@PostMapping("/deleteResource.do")
+	public String deleteResource(String[] resNo, String delContent, RedirectAttributes redirectAttributes) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("resNo", resNo);
+		map.put("delContent", delContent);
+		int result = adminService.deleteResource(map);
+		if (result == resNo.length) {
+			redirectAttributes.addFlashAttribute("alertMsg", "선택하신 자원을 삭제 했습니다.");
+		} else {
+			redirectAttributes.addFlashAttribute("alertMsg", "자원삭제에 실패했습니다.");
+		}
+		return "redirect:/admin/adminResourceList.page";
+	}
+	
+	// 자원관리 페이지에서 자원 수정기능
+	@PostMapping("/updateResource.do")
+	public String updateResource(String[] resNo, ResourceDto r, RedirectAttributes redirectAttributes) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("resNo", resNo);
+		map.put("r", r);
+		int result = adminService.updateResource(map);
+		if (result == resNo.length) {
+			redirectAttributes.addFlashAttribute("alertMsg", "선택하신 자원을 수정 했습니다.");
+		} else {
+			redirectAttributes.addFlashAttribute("alertMsg", "자원수정에 실패했습니다.");
+		}
+		return "redirect:/admin/adminResourceList.page";
+	}
+	
+	// 자원관리 페이지에서 자원 등록
+	@PostMapping("/insertResource.do")
+	public String insertResource(ResourceDto r, RedirectAttributes redirectAttributes) {
+		int result = adminService.insertResource(r);
+		if (result == 1) {
+			redirectAttributes.addFlashAttribute("alertMsg", "자원을 등록 했습니다.");
+		} else {
+			redirectAttributes.addFlashAttribute("alertMsg", "자원등록에 실패했습니다.");
+		}
+		return "redirect:/admin/adminResourceList.page";
+	}
+	
+	// 자원관리 자원 상세페이지
+	@GetMapping("/resourceDetail.do")
+	public String resourceDetail(String resNo, Model model) {
+		ResourceDto r = adminService.resourceDetail(resNo);
+		List<ReservationDto> reserList = adminService.selectReservationList(resNo);
+		r.setResType(r.getResType().equals("1") ? "회의실" : r.getResType().equals("2") ? "강의실" : r.getResType().equals("3") ? "기타" : "비품");
+		model.addAttribute("reserList", reserList);
+		model.addAttribute("r", r);
+		log.debug("예약목록: {}", reserList);
+		return "admin/resourceDetail";
+	}
+	
+	// 일정/예약리스트 페이지
+	@GetMapping("/resourceReservation.page")
+	public String resourceReservationList(@RequestParam(value = "page", defaultValue = "1") int currentPage, Model model) {
+		int listCount = adminService.resourceReservationListCount();
+		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 10);
+		List<ReservationDto> reserList = adminService.resourceReservationList(pi);
+		for(ReservationDto r : reserList) {
+			r.setResType(r.getResType().equals("1") ? "회의실" : r.getResType().equals("2") ? "강의실" : r.getResType().equals("3") ? "기타" : "비품");
+			if(r.getStatus().equals("1") && r.getResType().equals("비품")) {
+				r.setStatus("미반납");
+			}else if(r.getStatus().equals("1") && !r.getResType().equals("비품")) {
+				r.setStatus("승인");
+			}else {
+				r.setStatus("반납");
+			}
+		}
+		model.addAttribute("pi", pi);
+		model.addAttribute("reserList", reserList);
+		return "admin/resourceReservationList";
+	}
+	
+	// 일정/예약리스트 검색 및 필터로 ajax 호출
+	@ResponseBody
+	@PostMapping(value="/ajaxFilterResourceReservationList.do", produces="application/json; charset=utf-8")
+	public Map<String, Object> ajaxFilterResourceReservationList(ResourceDto r, @RequestParam(value = "page", defaultValue = "1") int currentPage){
+		Map<String, Object> map = new HashMap<>();
+		int listCount = adminService.ajaxFilterResourceReservationListCount(r);
+		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 10);
+		map.put("r", r);
+		map.put("pi", pi);
+		List<ReservationDto> reserList = adminService.ajaxFilterResourceReservationList(map);
+		for(ReservationDto re : reserList) {
+			re.setResType(re.getResType().equals("1") ? "회의실" : re.getResType().equals("2") ? "강의실" : re.getResType().equals("3") ? "기타" : "비품");
+			if(re.getStatus().equals("1") && re.getResType().equals("비품")) {
+				re.setStatus("미반납");
+			}else if(re.getStatus().equals("1") && !re.getResType().equals("비품")) {
+				re.setStatus("승인");
+			}else {
+				re.setStatus("반납");
+			}
+		}
+		map.put("reserList", reserList);
+		return map;
+	}
+	
+	@GetMapping("/resourceReservationDetail.do")
+	public String resourceReservationDetail(String revNo, Model model) {
+		return "admin/resourceReservationDetail";
 	}
 
 }

@@ -16,7 +16,7 @@ import lombok.ToString;
 public class ResourceDto {
 
 	private int resNo;
-	private String resType;
+	private String resType; // 1(회의실)|2(강의실)|3(기타)|4(비품)
 	private String resName;
 	private String resDetail;
 	private String useStatus;

@@ -14,6 +14,8 @@ import com.cu.gdu.dto.JobDto;
 import com.cu.gdu.dto.MajorDto;
 import com.cu.gdu.dto.MemberDto;
 import com.cu.gdu.dto.PageInfoDto;
+import com.cu.gdu.dto.ReservationDto;
+import com.cu.gdu.dto.ResourceDto;
 import com.cu.gdu.dto.VacationDto;
 import com.cu.gdu.dto.VacationTypeDto;
 
@@ -349,6 +351,88 @@ public class AdminServiceImpl implements AdminService {
 		return adminDao.univCalendarInsertMany(calList);
 	}
 
+	// 자원관리 페이지 자원갯수 조회
+	@Override
+	public int adminResourceListCount() {
+		return adminDao.adminResourceListCount();
+	}
 
+	// 자원관리 페이지 자원 조회
+	@Override
+	public List<ResourceDto> adminResourceList(PageInfoDto pi) {
+		return adminDao.adminResourceList(pi);
+	}
 
+	// 자원관리 페이지 자원별 갯수 조회
+	@Override
+	public List<ResourceDto> resourceTypeCount() {
+		return adminDao.resourceTypeCount();
+	}
+
+	// ajax 통신으로 필터별 자원관리 페이지 자원갯수 조회
+	@Override
+	public int ajaxFilterResourceListCount(ResourceDto r) {
+		return adminDao.ajaxFilterResourceListCount(r);
+	}
+
+	// ajax 통신으로 필터별 자원관리 페이지 자원 조회
+	@Override
+	public List<ResourceDto> ajaxFilterResourceList(Map<String, Object> map) {
+		return adminDao.ajaxFilterResourceList(map);
+	}
+
+	// 자원관리 페이지 자원삭제기능
+	@Override
+	public int deleteResource(Map<String, Object> map) {
+		return adminDao.deleteResource(map);
+	}
+
+	// 자원관리 페이지 자원수정기능
+	@Override
+	public int updateResource(Map<String, Object> map) {
+		return adminDao.updateResource(map);
+	}
+
+	// 자원관리 페이지 자원등록기능
+	@Override
+	public int insertResource(ResourceDto r) {
+		return adminDao.insertResource(r);
+	}
+
+	// 자원관리 상세페이지로 이동
+	@Override
+	public ResourceDto resourceDetail(String resNo) {
+		return adminDao.resourceDetail(resNo);
+	}
+
+	// 자원관리 상세페이지 자원사용내역 조회
+	@Override
+	public List<ReservationDto> selectReservationList(String resNo) {
+		return adminDao.selectReservationList(resNo);
+	}
+
+	// 일정/예약페이지 자원예약 리스트 카운트 조회
+	@Override
+	public int resourceReservationListCount() {
+		return adminDao.resourceReservationListCount();
+	}
+
+	// 일정/예약페이지 자원예약 리스트 조회
+	@Override
+	public List<ReservationDto> resourceReservationList(PageInfoDto pi) {
+		return adminDao.resourceReservationList(pi);
+	}
+
+	// 일정/예약페이지 ajax로 필터별 자원예약리스트 갯수 조회
+	@Override
+	public int ajaxFilterResourceReservationListCount(ResourceDto r) {
+		return adminDao.ajaxFilterResourceReservationListCount(r);
+	}
+
+	// 일정/예약페이지 ajax로 필터별 자원예약 리스트 조회
+	@Override
+	public List<ReservationDto> ajaxFilterResourceReservationList(Map<String, Object> map) {
+		return adminDao.ajaxFilterResourceReservationList(map);
+	}
+	
 }

@@ -48,16 +48,16 @@
 		     , rev.status
 		  from reservation rev
 		  join member m on (m.mem_no = rev.mem_no)
-		  join resource res on (rev.res_no = res.res_no)
+		  join resources res on (rev.res_no = res.res_no)
 		  <where>
 		   status in ('1', '2')
 		   and mem_no = #{mem_no}
-		   <if test='keyword != null or keyword ne "" '>
+		   <if test='keyword != null || !keyword.equals("")'>
 		   	and res_name like '%' || #{keyword} || '%'
 		   </if>
-		   <if test='condition ne 0'>
-		   	and res_type = #{condition}
-		   </if>
+		   <if test='condition != 0'>
+		   		and res_type = #{condition}
+	   	 </if>
 		  </where>
 		  order 
 		     by rev_no       
@@ -68,14 +68,14 @@
 		       count(*)
 		  from reservation rev
 		  join member m on (m.mem_no = rev.mem_no)
-		  join resource res on (rev.res_no = res.res_no)  
+		  join resources res on (rev.res_no = res.res_no)  
 		  <where>
 		   status in ('1', '2')
 		   and mem_no = #{mem_no}
-		   <if test='keyword != null or keyword ne "" '>
+		   <if test='keyword != null || !keyword.equals("")'>
 		   	and res_name like '%' || #{keyword} || '%'
 		   </if>
-		   <if test='condition ne 0'>
+		   <if test='condition != 0'>
 		   	and res_type = #{condition}
 		   </if>
 		  </where>
@@ -94,7 +94,7 @@
 		     , rev.status
 		  from reservation rev
 		  join member m on (m.mem_no = rev.mem_no)
-		  join resource res on (rev.res_no = res.res_no)
+		  join resources res on (rev.res_no = res.res_no)
 		 where status = '1'
 		   and res_type = '4'
 		   and mem_no = #{memNo}
@@ -153,15 +153,20 @@
 		     , res_name
 		     , res_detail
 		     , res_gps
-		  from resource
+		  from resources
 		  <where>
 		  	use_status = 'Y'
-		  	<if test='keyword != null or keyword ne "" '>
+		  	<if test='keyword != null || !keyword.equals("")'>
 			   	and res_name like '%' || #{keyword} || '%'
 		   	</if>
-		   	<if test='condition ne 0'>
-		   		and res_type = #{condition}
-		   	</if>
+		   	<choose>
+			   	<when test="condition != 0">
+			   		and res_type = #{condition}
+			   	</when>
+			   	<otherwise>
+			   		and res_type in ('1', '2', '3')
+			   	</otherwise>
+			  </choose>
 		  </where> 
 		  order
 		     by res_no    
@@ -176,11 +181,11 @@
 		     , res_detail
 		     , res_gps
 		     , stock
-		  from resource
+		  from resources
 		  <where>
 		  	use_status = 'Y'
 		  	and res_type = '4'
-		  	<if test='keyword != null or keyword ne "" '>
+		  	<if test='keyword != null || !keyword.equals("")'>
 			   	and res_name like '%' || #{keyword} || '%'
 		   	</if>
 		 	</where>
@@ -194,7 +199,7 @@
 		     , res_name
 		     , res_detail
 		     , res_gps
-		  from resource
+		  from resources
 		 where res_no = #{resNo} 
 	</select>
 	

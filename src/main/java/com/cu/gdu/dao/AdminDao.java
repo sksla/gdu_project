@@ -16,6 +16,8 @@ import com.cu.gdu.dto.JobDto;
 import com.cu.gdu.dto.MajorDto;
 import com.cu.gdu.dto.MemberDto;
 import com.cu.gdu.dto.PageInfoDto;
+import com.cu.gdu.dto.ReservationDto;
+import com.cu.gdu.dto.ResourceDto;
 import com.cu.gdu.dto.VacationDto;
 import com.cu.gdu.dto.VacationTypeDto;
 
@@ -329,4 +331,88 @@ public class AdminDao {
 		return sqlSessionTemplate.insert("adminMapper.univCalendarInsertMany", map);
 	}
 	
+	// 자원관리 페이지 자원갯수 조회
+	public int adminResourceListCount() {
+		return sqlSessionTemplate.selectOne("adminMapper.adminResourceListCount");
+	}
+
+	// 자원관리 페이지 자원 조회
+	public List<ResourceDto> adminResourceList(PageInfoDto pi) {
+		int limit = pi.getBoardLimit();
+		int offset = (pi.getCurrentPage()-1) * limit;
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return sqlSessionTemplate.selectList("adminMapper.adminResourceList", pi, rowBounds);
+	}
+	
+	// 자원관리 페이지 자원별 갯수 조회
+	public List<ResourceDto> resourceTypeCount() {
+		return sqlSessionTemplate.selectList("adminMapper.resourceTypeCount");
+	}
+
+	// ajax 통신으로 필터별 자원관리 페이지 자원갯수 조회
+	public int ajaxFilterResourceListCount(ResourceDto r) {
+		return sqlSessionTemplate.selectOne("adminMapper.ajaxFilterResourceListCount", r);
+	}
+	
+	// ajax 통신으로 필터별 자원관리 페이지 자원 조회
+	public List<ResourceDto> ajaxFilterResourceList(Map<String, Object> map) {
+		PageInfoDto pi = (PageInfoDto)map.get("pi");
+		int limit = pi.getBoardLimit();
+		int offset = (pi.getCurrentPage()-1) * limit;
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return sqlSessionTemplate.selectList("adminMapper.ajaxFilterResourceList", map, rowBounds);
+	}
+	
+	// 자원관리 페이지 자원삭제기능
+	public int deleteResource(Map<String, Object> map) {
+		return sqlSessionTemplate.update("adminMapper.deleteResource", map);
+	}
+	
+	// 자원관리 페이지 자원수정기능
+	public int updateResource(Map<String, Object> map) {
+		return sqlSessionTemplate.update("adminMapper.updateResource", map);
+	}
+	
+	// 자원관리 페이지 자원등록기능
+	public int insertResource(ResourceDto r) {
+		return sqlSessionTemplate.insert("adminMapper.insertResource", r);
+	}
+	
+	// 자원관리 상세페이지로 이동
+	public ResourceDto resourceDetail(String resNo) {
+		return sqlSessionTemplate.selectOne("adminMapper.resourceDetail", resNo);
+	}
+	
+	// 자원관리 상세페이지 자원사용내역 조회
+	public List<ReservationDto> selectReservationList(String resNo){
+		return sqlSessionTemplate.selectList("adminMapper.selectReservationList", resNo);
+	}
+	
+	// 일정/예약페이지 자원예약 리스트 카운트 조회
+	public int resourceReservationListCount() {
+		return sqlSessionTemplate.selectOne("adminMapper.resourceReservationListCount");
+	}
+
+	// 일정/예약페이지 자원예약 리스트 조회
+	public List<ReservationDto> resourceReservationList(PageInfoDto pi) {
+		int limit = pi.getBoardLimit();
+		int offset = (pi.getCurrentPage()-1) * limit;
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return sqlSessionTemplate.selectList("adminMapper.resourceReservationList", pi, rowBounds);
+	}
+	
+	// 일정/예약페이지 ajax로 필터별 자원예약리스트 갯수 조회
+	public int ajaxFilterResourceReservationListCount(ResourceDto r) {
+		return sqlSessionTemplate.selectOne("adminMapper.ajaxFilterResourceReservationListCount", r);
+	}
+	
+	// 일정/예약페이지 ajax로 필터별 자원예약 리스트 조회
+	public List<ReservationDto> ajaxFilterResourceReservationList(Map<String, Object> map) {
+		PageInfoDto pi = (PageInfoDto)map.get("pi");
+		int limit = pi.getBoardLimit();
+		int offset = (pi.getCurrentPage()-1) * limit;
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return sqlSessionTemplate.selectList("adminMapper.ajaxFilterResourceReservationList", map, rowBounds);
+	}
+
 }
