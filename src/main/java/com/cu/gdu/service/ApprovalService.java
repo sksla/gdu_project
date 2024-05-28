@@ -21,16 +21,32 @@ public interface ApprovalService {
 	
 	// 결재양식 등록
 	int insertAppForm(ApprovalFormDto appForm);
+	
+	// 결재양식 목록 가져오기
+	int selectCountAppFormList(Map<String, String> map);
+	List<ApprovalFormDto> selectAppFormList(PageInfoDto pi, Map<String, String> map);
 
+	// 결재양식 임시보관 상태 변경
+	int updateAppFormTmp(ApprovalFormDto appForm);
+	
+	// 양식번호로 결재양식 조회
+	ApprovalFormDto selectAppFormByNo(int no);
+	
+	// 결재양식 수정
+	int updateAppForm(ApprovalFormDto appForm);
+	
 	
 	// 결재선 단과대학, 학과 목록 조회
-	List<CollegeDto> selectCollegeMajorList();
+	List<CollegeDto> selectCollegeMajorList(String search);
 	
 	// 학과/이름으로 직원 검색
 	List<MemberDto> selectMemberByKeword(String Keyword);
 	
 	// 학과별 직원 목록 조회
 	List<MemberDto> selectMemberByMajor(MemberDto member);
+	
+	// 직원 검색
+	List<MemberDto> selectMemberBySearch(Map<String, String> map);
 	
 	// 결재문서 등록
 	int insertApp(ApprovalDocDto appDoc, int approverNo, int receiverNo, String[] collaboratorNo);

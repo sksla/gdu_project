@@ -27,7 +27,7 @@ public class ApprovalDocDto {
 	private int docNo;
 	private String docTitle;
 	private int historyCount;
-	private ApprovalHistoryDto nowApprover;
+	private String nowApprover;
 	
 	private MemberDto drafter;
 	private List<AttachDto> attachList;

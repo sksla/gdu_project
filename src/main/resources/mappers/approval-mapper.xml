@@ -23,7 +23,7 @@
 		<result column="app_category" property="appCategory"/>
 		<result column="doc_title" property="docTitle"/>
 		<result column="history_count" property="historyCount"/>
-		<association resultMap="nowApproverResult" property="nowApprover"/>
+		<result column="now_approver" property="nowApprover"/>
 		<association resultMap="memberResult" property="drafter"/>
 	</resultMap>
 	
@@ -52,15 +52,6 @@
 		<result column="comment_content" property="commentContent"/>
 		<association resultMap="memberResult" property="commneter"/>
 	</resultMap>
-	
-	<resultMap type="ApprovalHistoryDto" id="nowApproverResult">
-		<id column="app_history_no" property="appHistoryNo"/>
-		<result column="approver_no" property="approverNo"/>
-		<result column="now_approver" property="nowApprover"/>
-		<result column="app_yn" property="appYn"/>
-		<result column="app_date" property="appDate"/>
-		<result column="comment" property="comment"/>
-	</resultMap>
 
 	<resultMap type="MajorDto" id="majorResult">
 		<id column="major_no" property="majorNo"/>
@@ -85,6 +76,7 @@
   
   
 	<!-- 쿼리문 구역 -->
+	<!-- 결재 양식 관련 -->
 	<select id="selectAppCategory" resultType="String">
 		select distinct app_category
 		  from app_form
@@ -119,6 +111,61 @@
 					 )
 	</insert>
 	
+	<select id="selectCountAppFormList" resultType="_int">
+		select 
+		       count(*)
+		  from app_form
+		 where tmp = #{tmp}
+		 <if test='category != "all"'>
+			 and app_category = #{category}
+		 </if>
+		 <if test="search != ''">
+			 and app_form_name like '%' || #{search} || '%'
+		 </if>
+	</select>
+	
+	<select id="selectAppFormList" resultMap="appFormResult">
+		select 
+		       app_no
+		     , app_form_name
+		     , app_category
+		  from app_form
+		 where tmp = #{tmp}
+		 <if test='category != "all"'>
+			 and app_category = #{category}
+		 </if>
+		 <if test="search != ''">
+			 and app_form_name like '%' || #{search} || '%'
+		 </if>
+	</select>
+	
+	<update id="updateAppFormTmp">
+		update app_form
+		   set tmp = #{tmp}
+		 where app_no = #{appNo}
+	</update>
+	
+	<select id="selectAppFormByNo" resultMap="appFormResult">
+		select 
+		       app_no
+		     , app_form_name
+		     , app_form
+		     , app_category
+		     , tmp
+		  from app_form
+		 where app_no = #{no}
+	</select>
+	
+	<update id="updateAppForm">
+		update app_form
+		   set app_form_name = #{appFormName}
+				 , app_form = #{appForm}
+				 , app_category = #{appCategory}
+				 , tmp = #{tmp}
+		 where app_no = #{appNo}
+	</update>
+	
+	<!-- 전자결재 작성 관련 *****************************************-->
 	<select id="selectCollegeMajorList" resultMap="collegeResult">
 		select col_no
 		     , col_name
@@ -127,6 +174,9 @@
 		  from major
 		  join college using (col_no)
 		 where status = 'Y'
+		   <if test="search != ''">
+		   and major_name like '%' || #{search} || '%'
+		   </if>
 	</select>
 	
 	<select id="selectFormListByCategory" resultMap="appFormResult">
@@ -154,6 +204,20 @@
 		  join job on (member.job_no = job.job_no)
   	 where member.status = 'N'
   	 	 and member.major_no = #{majorNo}
+  	 	 and member.mem_no != #{memNo}
+	</select>
+	
+	<select id="selectMemberBySearch" resultMap="memberResult">
+		select
+           mem_no
+         , major_name
+         , job_name
+         , mem_name
+  		from member
+  		join major on (member.major_no = major.major_no)
+		  join job on (member.job_no = job.job_no)
+  	 where member.status = 'N'
+  	 	 and mem_name like '%' || #{search} || '%'
   	 	 and member.mem_no != #{memNo}
 	</select>
 	
@@ -386,18 +450,6 @@
              where rnum = 1
                and doc_no = #{no}
             ) now_approver
-         , (
-            select a.approver_no
-              from (
-                    select approver_no
-                        , doc_no
-                        , ROW_NUMBER() OVER (PARTITION BY approver.doc_no ORDER BY app_type, approver) AS rnum
-                      from approver
-                     where app_yn = 'N'
-                   ) a
-             where rnum = 1
-               and doc_no = #{no}
-            ) approver_no
 		  from app_doc
 		  join app_form using (app_no)
 		  join member on (drafter = mem_no)

@@ -83,7 +83,7 @@
           	<input type="hidden" name="drafter" value="${loginUser.memNo}">
             <div class="mb-4" style="display: flex; justify-content: space-between;">
               <span>
-              	<c:if test="${ docInfo.nowApprover.nowApprover == loginUser.memNo }">
+              	<c:if test="${ docInfo.nowApprover == loginUser.memNo }">
 	                <button type="button" class="btn btn-info me-1 mb-1 px-4 fs-4" data-bs-toggle="modal"
 	                data-bs-target="#approveModal">
 	                	결재하기
@@ -184,7 +184,14 @@
 		                        	<label>${ col.appDate }</label>
 		                        </c:when>
 		                        <c:otherwise>
-		                        	미결
+		                        	<c:choose>
+		                        		<c:when test="${ docInfo.nowApprover == col.approver.memNo  and docInfo.status == 2 }">
+				                        	<h5><b style="color: red;">반려</b></h5>
+		                        		</c:when>
+		                        		<c:otherwise>
+				                        	<h5><b>미결</b></h5>
+		                        		</c:otherwise>
+		                        	</c:choose>
 		                        </c:otherwise>
                         	</c:choose>
                         </td>
@@ -205,7 +212,14 @@
 	                        	<label>${ approver.appDate }</label>
 	                        </c:when>
 	                        <c:otherwise>
-	                        	미결
+	                        	<c:choose>
+	                        		<c:when test="${ docInfo.nowApprover == col.approver.memNo  and docInfo.status == 2 }">
+			                        	<h5><b style="color: red;">반려</b></h5>
+	                        		</c:when>
+	                        		<c:otherwise>
+			                        	<h5><b>미결</b></h5>
+	                        		</c:otherwise>
+	                        	</c:choose>
 	                        </c:otherwise>
                         </c:choose>
                       </td>
@@ -218,7 +232,14 @@
 	                        <label>${ col.receiver }</label>
 	                        </c:when>
 	                        <c:otherwise>
-	                        	미결
+	                        	<c:choose>
+	                        		<c:when test="${ docInfo.nowApprover == col.approver.memNo  and docInfo.status == 2 }">
+			                        	<h5><b style="color: red;">반려</b></h5>
+	                        		</c:when>
+	                        		<c:otherwise>
+			                        	<h5><b>미결</b></h5>
+	                        		</c:otherwise>
+	                        	</c:choose>
 	                        </c:otherwise>
                         </c:choose>
                       </td>

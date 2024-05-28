@@ -250,7 +250,7 @@
        		});
        		
        		$("body").append($form);
-       		$form.append($(this).children("input")).submit();
+       		$form.append($(this).children("input").clone()).submit();
        	})
         
     	})

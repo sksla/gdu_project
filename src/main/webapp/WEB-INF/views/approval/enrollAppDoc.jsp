@@ -383,20 +383,21 @@
             <form class="input-group mb-3">
               <div class="col-3">
                 <div class="input-group">
-                  <input type="text" class="form-control" placeholder="이름/부서명을 입력하세요." aria-label="Recipient's username" aria-describedby="basic-addon2">
-                  <button class="btn btn-outline-secondary me-2">검색</button>
+                  <input type="text" class="form-control search_box" placeholder="이름/부서명을 입력하세요." aria-label="Recipient's username" aria-describedby="basic-addon2">
+                  <button type="button" class="btn btn-outline-secondary me-2">검색</button>
                 </div>
               </div>
               <span class="mx-2">
                 <div class="custom-control py-2 custom-radio">
-                  <input type="radio" id="customRadio1" name="customRadio" class="form-check-input" />
-                  <label class="form-check-label" for="customRadio1">이름으로 검색</label>
+                  <input type="radio" id="customRadio1" name="searchRadio" value="name"
+                  			checked class="form-check-input searchRadio" />
+                  <label class="form-check-label" for="customRadio1">직원이름으로 검색</label>
                 </div>
               </span>
               <span class="mx-2">
                 <div class="custom-control py-2 custom-radio">
-                  <input type="radio" id="customRadio2" name="customRadio" class="form-check-input" />
-                  <label class="form-check-label" for="customRadio2">학과로 검색</label>
+                  <input type="radio" id="customRadio2" name="searchRadio" value="major" class="form-check-input searchRadio" />
+                  <label class="form-check-label" for="customRadio2">학과명으로 검색</label>
                 </div>
               </span>
             </form>
@@ -549,7 +550,38 @@
     		
     		// 결재선 선택 모달용 javascript *************************************
     		// 부서목록 리스트 조회
-    		createMajorList();
+    		createMajorList("");
+    		
+    		// 결재선 검색 기능
+    		$(".search_box").on("keyup", function(event){
+    			if(event.idComposing) return;
+    			console.log("실행");
+    			let $searchType = $(".searchRadio:checked").val();
+    			let $search = $(".search_box").val();
+    			if($searchType == "name"){
+    				if($search == ""){
+        			$(".my_mem_list").empty();
+        		}else{
+           		$.ajax({
+           			url:"${contextPath}/approval/searchMember.do",
+           			data:{ search: $search },
+           			type:"get",
+           			success: function(list){
+           				createMemList(list);
+           			},
+           			error: function(){
+           				console.log("부서목록 생성 ajax 통신 실패");
+           			}
+           		})
+        		}
+         	}else{
+         		if($search == ""){
+         			createMajorList("");
+        		}else{
+	         		createMajorList($search);
+        		}
+         	}
+    		})
     		// **************************************************************
     		
     		// 업로드 파일 목록 표시
@@ -588,7 +620,6 @@
 	    	
     	})
     	
-    	
     	function getCurrentDate() {
           var today = new Date();
           var year = today.getFullYear();
@@ -599,11 +630,13 @@
     	
     	// 결재선 모달용 javascript ********************************************
     	// treeview의 부서 목록 생성
-    	function createMajorList(){    		
+    	function createMajorList(search){
     		$.ajax({
-    			url:"${contextPath}/approval/majorTreeList.do",
-    			type:"get",
+    			url: "${contextPath}/approval/majorTreeList.do",
+    			type: "get",
+    			data: {search: search},
     			success: function(list){
+    				majorTree = [];
     				for(let i=0; i<list.length; i++){
     					majorTree[i] = {};
     					majorTree[i].text = list[i].colName;
@@ -616,20 +649,32 @@
     						majorTree[i].nodes[j].tags = [majorList[j].majorNo, "major"];
     					}
     				}
-    				testTreeView();
+    				testTreeView(search);
     			},
     			error: function(){
     				console.log("부서 목록 조회 실패");
     			}    			
     		})
-    		
+    	}
+    	
+    	// 직원 목록 생성 함수
+    	function createMemList(list){
+				$(".my_mem_list").empty();
+				for(const member of list){
+					let $newEl = $("<div>" + member.memName + " (" + member.majorNo + ", " + member.jobNo + ")" + "</div>");
+					$newEl.append("<span class='hide'>" + member.memNo + "</span>")
+								.append("<span class='hide'>" + member.majorNo + "</span>")
+								.append("<span class='hide'>" + member.jobNo + "</span>")
+								.append("<span class='hide'>" + member.memName + "</span>");
+					$(".my_mem_list").append($newEl);
+				}
     	}
       
     	// 부서목록 treeview 생성 함수
-    	function testTreeView(){
+    	function testTreeView(search){
     		
         $("#myTreeview").treeview({
-            levels: 1,
+            levels: (search == "" ? 1 : 99),
             selectedBackColor: "#03a9f3",
             onhoverColor: "rgba(0, 0, 0, 0.05)",
             expandIcon: "ti ti-plus",
@@ -638,7 +683,7 @@
             data: majorTree,
             showTags: true,
             highlightSelected: true,
-        }).on("click", function(){
+        }).on("click", function(){ // 학과 treeview 클릭 이벤트
         	let $badge = $(".node-selected").find(".badge");
         	if($badge.eq(1).text() == "major"){
         		$.ajax({
@@ -646,15 +691,7 @@
         			data:{ majorNo: $badge.eq(0).text() },
         			type:"get",
         			success: function(list){
-        				$(".my_mem_list").empty();
-        				for(const member of list){
-        					let $newEl = $("<div>" + member.memName + " (" + member.majorNo + ", " + member.jobNo + ")" + "</div>");
-        					$newEl.append("<span class='hide'>" + member.memNo + "</span>")
-        								.append("<span class='hide'>" + member.majorNo + "</span>")
-        								.append("<span class='hide'>" + member.jobNo + "</span>")
-        								.append("<span class='hide'>" + member.memName + "</span>");
-        					$(".my_mem_list").append($newEl);
-        				}
+        				createMemList(list);
         			},
         			error: function(){
         				console.log("부서목록 생성 ajax 통신 실패");

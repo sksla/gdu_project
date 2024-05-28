@@ -119,14 +119,21 @@
                       </div>
                     </th>
                     <th width="130px">
-                      <div class="btn-group">
-                        <select class="form-select fs-4 fw-semibold selectGroupping" id="selectStatus" style="border:0;">
-                          <option value="all">상태</option>
-                          <option value="10">협조</option>
-                          <option value="20">결재</option>
-                          <option value="30">수신</option>
-                      	</select>
-                      </div>
+                    	<c:choose>
+                    		<c:when test="${ optionMap.docStatus ne '' }">
+                    			<h6 class="fs-4 fw-semibold mb-0">상태</h6>
+                    		</c:when>
+                    		<c:otherwise>
+		                      <div class="btn-group">
+		                        <select class="form-select fs-4 fw-semibold selectGroupping" id="selectStatus" style="border:0;">
+		                          <option value="all">상태</option>
+		                          <option value="10">협조</option>
+		                          <option value="20">결재</option>
+		                          <option value="30">수신</option>
+		                      	</select>
+		                      </div>
+                    		</c:otherwise>
+                    	</c:choose>
                     </th>
                   </tr>
                 </thead>
@@ -243,7 +250,7 @@
        		});
        		
        		$("body").append($form);
-       		$form.append($(this).children("input")).submit();
+       		$form.append($(this).children("input").clone()).submit();
        	})
         
     	})

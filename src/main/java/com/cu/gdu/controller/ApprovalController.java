@@ -73,16 +73,92 @@ public class ApprovalController {
 	
 	// 결재양식 등록
 	@PostMapping("/enrollAppForm.do")
-	public String enrollAppForm(ApprovalFormDto appForm, Model model) {
+	public String enrollAppForm(ApprovalFormDto appForm, 
+								Model model,
+								RedirectAttributes redirectAttributes) {
 		int result = approvalService.insertAppForm(appForm);
+		
 		if(result > 0) {
-			
-			model.addAttribute("alertMsg", appForm.getTmp().equals("N") ? "결재양식이 등록되었습니다."
-																 : "임시저장 문서로 저장되었습니다.");
+			if(appForm.getTmp().equals("N")) {
+				redirectAttributes.addFlashAttribute("alertMsg", "결재양식이 등록되었습니다.");
+			} else if(appForm.getTmp().equals("Y")) {
+				redirectAttributes.addFlashAttribute("alertMsg", "임시 저장되었습니다.");				
+			}
 		} else {
-			model.addAttribute("alertMsg", "결재양식 등록에 실패했습니다.");
+			model.addAttribute("alertMsg", "결재양식 등록 실패");
+			model.addAttribute("historyBackYN", "Y");
 		}
-		return "approval/appMain";
+		return "redirect:/approval/categoryList.do?tmp=" + appForm.getTmp();
+	}
+	
+	// 결재 양식 목록
+	@GetMapping("/categoryList.do")
+	public String categoryList(@RequestParam(value="page", defaultValue="1")int currenrPage
+							, @RequestParam(value="category", defaultValue="all")String category
+							, String docStatus
+							, String search
+							, String tmp
+							, HttpSession session
+							, Model model) {
+		model.addAttribute("appCategories", approvalService.selectAppCategory());
+
+		Map<String, String> map = new HashMap<>();
+		map.put("category", category);
+		map.put("tmp", tmp);
+		map.put("search", search == null ? "" : search);
+		PageInfoDto pi = pagingUtil.getPageInfoDto(approvalService.selectCountAppFormList(map), currenrPage, 5, 8);
+
+		String keywordString = "category=" + map.get("category") 
+							 + "&search=" + map.get("search")
+							 + "&tmp=" + map.get("tmp")
+							 + "&docStstus=" + map.get("socStatus");
+
+		model.addAttribute("formList", approvalService.selectAppFormList(pi, map));
+		model.addAttribute("pi", pi);
+		model.addAttribute("optionMap", map);
+		model.addAttribute("keywordString", keywordString);
+		return "approval/categoryList";
+	}
+	
+	// 결재양식 삭제(임시저장 처리)
+	@PostMapping("/delForm.do")
+	public String deleteAppForm(ApprovalFormDto appForm, RedirectAttributes redirectAttributes) {
+		appForm.setTmp("Y");
+		if(approvalService.updateAppFormTmp(appForm) > 0) {
+			redirectAttributes.addFlashAttribute("alertMsg", "임시저장 문서로 변경되었습니다.");
+		} else {
+			redirectAttributes.addFlashAttribute("alertMsg", "결재양식 삭제 실패");
+			redirectAttributes.addFlashAttribute("historyBackYN", "Y");			
+		}
+		return "redirect:/approval/categoryList.do?tmp=Y";
+	}
+	
+	// 결재양식 수정 페이지
+	@PostMapping("/modifyForm.page")
+	public String modifyAppForm(int no, Model model) {
+		model.addAttribute("appCategories", approvalService.selectAppCategory());
+		model.addAttribute("appForm", approvalService.selectAppFormByNo(no));
+		return "approval/modifyCategory";
+	}
+	
+	// 결재양식ㄴ 수정
+	@PostMapping("/modifyForm.do")
+	public String modifyAppForm(ApprovalFormDto appForm, 
+								Model model,
+								RedirectAttributes redirectAttributes) {
+		int result = approvalService.updateAppForm(appForm);
+		
+		if(result > 0) {
+			if(appForm.getTmp().equals("N")) {
+				redirectAttributes.addFlashAttribute("alertMsg", "결재양식이 등록되었습니다.");
+			} else if(appForm.getTmp().equals("Y")) {
+				redirectAttributes.addFlashAttribute("alertMsg", "임시 저장되었습니다.");				
+			}
+		} else {
+			model.addAttribute("alertMsg", "결재양식 등록 실패");
+			model.addAttribute("historyBackYN", "Y");
+		}
+		return "redirect:/approval/categoryList.do?tmp=" + appForm.getTmp();
 	}
 	
 	// **************************** 결재 문서 ****************************
@@ -95,8 +171,8 @@ public class ApprovalController {
 	
 	@GetMapping("/majorTreeList.do")
 	@ResponseBody
-	public List<CollegeDto> ajaxSelectmajorList() {
-		return approvalService.selectCollegeMajorList();
+	public List<CollegeDto> ajaxSelectmajorList(String search) {
+		return approvalService.selectCollegeMajorList(search);
 	}
 	
 	// 양식 목록 가져오기
@@ -119,6 +195,16 @@ public class ApprovalController {
 	public List<MemberDto> ajaxMemberList(MemberDto member, HttpSession session){
 		member.setMemNo( ( (MemberDto)session.getAttribute("loginUser") ).getMemNo() );
 		return approvalService.selectMemberByMajor(member);
+	}
+	
+	// 결재선 직원 검색
+	@GetMapping(value="/searchMember.do", produces="application/json; charset=utf-8;")
+	@ResponseBody
+	public List<MemberDto> ajaxSearchMemberList(String search, HttpSession session){
+		Map<String, String> map = new HashMap<>();
+		map.put("memNo", String.valueOf(((MemberDto)session.getAttribute("loginUser")).getMemNo()) );
+		map.put("search", search);
+		return approvalService.selectMemberBySearch(map);
 	}
 	
 	// 결재문서 등록

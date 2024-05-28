@@ -64,7 +64,7 @@
               <span class="d-flex">
                 <i class="ti ti-clipboard"></i>
               </span>
-              <span class="hide-menu">결재문서 보관함</span>
+              <span class="hide-menu">내 문서함</span>
             </a>
             <ul aria-expanded="false" class="collapse first-level">
               <li class="sidebar-item">
@@ -158,7 +158,7 @@
                 </a>
               </li>
               <li class="sidebar-item">
-                <a href="" class="sidebar-link">
+                <a href="${contextPath}/approval/categoryList.do?tmp=N" class="sidebar-link">
                   <div class="round-16 d-flex align-items-center justify-content-center">
                     <i class="ti ti-circle"></i>
                   </div>
@@ -166,7 +166,7 @@
                 </a>
               </li>
               <li class="sidebar-item">
-                <a href="" class="sidebar-link">
+                <a href="${contextPath}/approval/categoryList.do?tmp=Y" class="sidebar-link">
                   <div class="round-16 d-flex align-items-center justify-content-center">
                     <i class="ti ti-circle"></i>
                   </div>

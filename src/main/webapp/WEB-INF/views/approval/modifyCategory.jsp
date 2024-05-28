@@ -55,8 +55,9 @@
           </div>
 
           <!-- 페이지 내용 -->
-          <form id="category_form" action="${contextPath}/approval/enrollAppForm.do" method="post">
-          	<input type="hidden" id="tmp_yn" name="tmp" value="N">
+          <form id="category_form" action="${contextPath}/approval/modifyForm.do" method="post">
+          	<input type="hidden" id="tmp_yn" name="tmp" value="${ appForm.tmp }">
+          	<input type="hidden" name="appNo" value="${ appForm.appNo }">
             <div class="mb-4">
               <span>
                 <button type="button" onclick="return enrollAppForm(1);" class="btn btn-info me-1 mb-1 px-4 fs-4">등록하기</button>
@@ -77,9 +78,9 @@
                         </div>
                         <div class="col-sm-9">
                           <select class="form-select exist-category" id="test" name="appCategory" aria-label="Default select example">
-                            	<c:forEach var="appCategory" items="${appCategories}">
-                            		<option value="${appCategory}">${appCategory}</option>
-                            	</c:forEach>
+                           	<c:forEach var="appCategory" items="${appCategories}">
+                           		<option value="${appCategory}" ${ appCategory eq appForm.appCategory ? 'selected' : '' }>${appCategory}</option>
+                           	</c:forEach>
                           </select>
                           <input type="text" class="form-control new-category" name="appCategory" disabled placeholder="신규 문서 구분명" style="display:none;">
                         </div>
@@ -95,7 +96,7 @@
                       <div class="mb-4 row align-items-center">
                         <label for="" class="form-label fw-semibold col-sm-3 col-form-label fs-4">문서양식이름</label>
                         <div class="col-sm-9">
-                          <input type="text" name="appFormName" class="form-control" required>
+                          <input type="text" name="appFormName" class="form-control" value="${ appForm.appFormName }" required>
                         </div>
                       </div>
                     </div>
@@ -112,7 +113,7 @@
                   <label for="example-text-input" class="col-md-2 col-form-label fs-4">양식 내용</label>
                   <div class="col-md-12">
                     <textarea cols="80" id="testedit" name="appForm" rows="10" data-sample="1" data-sample-short>
-                    	양식을 작성하세요.
+                    	${ appForm.appForm }
                   	</textarea>
 	                  <div style="display:none;">
 		                  <textarea cols="80" id="editor1" disabled>
@@ -135,18 +136,29 @@
     <script>
     
     	$(document).ready(function(){
-
-        $("#testtest").on("click", function(){
-          console.log($("input[name=appFormName]").val());
+            
+        let isNewCategory = true
+        $(".exist-category").children().each(function(index, el){
+         	if($(el).val() == "${appForm.appCategory}"){
+         		$(el).prop("selected", true);
+         		isNewCategory = false;
+         	}
         })
-		
-				if(${empty appCategories} == true){
-					$("#insertDocType").parent().css("display", "none");
-					$(".exist-category").css("display", "none")
-															.attr("disabled", true);
-					$(".new-category").css("display", "")
-														.attr("disabled", false);
-				}
+     		
+     		if(${empty appCategories} || isNewCategory){
+     			if(${empty appCategories}){
+ 						$("#insertDocType").parent().css("display", "none");
+     			} else {
+ 						$("#insertDocType").prop("checked", true);     				
+     			}
+     			$(".exist-category").css("display", "none")
+ 															.attr("disabled", true);
+	 				$(".new-category").css("display", "")
+	 													.attr("disabled", false);     				
+ 					if(isNewCategory){
+ 						$(".new-category").val("${appForm.appCategory}");
+ 					}
+     		}
 				
     	})
     		
@@ -189,19 +201,19 @@
       function enrollAppForm(type){
     	  if(type == 1){
     		  $("#tmp_yn").val("N");
+       	  AjaxValidateFormName()
+   		    	    .then(isResult => {
+   		    	    	if(isResult){
+   		    	    		$("#category_form").submit();
+   		    	    	}
+   		    	    })
+   		    	    .catch(error => {
+   		    	      console.error(error);
+   		    	    });
     	  }else if(type == 2){
     		  $("#tmp_yn").val("Y");
+    		  $("#category_form").submit();
     	  }
-    	  
-    	  AjaxValidateFormName()
-		    	    .then(isResult => {
-		    	    	if(isResult){
-		    	    		$("#category_form").submit();
-		    	    	}
-		    	    })
-		    	    .catch(error => {
-		    	      console.error(error);
-		    	    });
     	}
     	
     	

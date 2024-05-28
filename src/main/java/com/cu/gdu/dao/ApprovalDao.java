@@ -39,8 +39,8 @@ public class ApprovalDao {
 		return sqlSessionTemplate.insert("approvalMapper.insertAppForm", appForm);
 	}
 
-	public List<CollegeDto> selectCollegeMajorList() {
-		return sqlSessionTemplate.selectList("approvalMapper.selectCollegeMajorList");
+	public List<CollegeDto> selectCollegeMajorList(String search) {
+		return sqlSessionTemplate.selectList("approvalMapper.selectCollegeMajorList", search);
 	}
 
 	public List<ApprovalFormDto> selectFormListByCategory(String appCategory) {
@@ -118,6 +118,31 @@ public class ApprovalDao {
 
 	public String selectNextAppLine(String docNo) {
 		return sqlSessionTemplate.selectOne("approvalMapper.selectNextAppLine", docNo);
+	}
+
+	public int selectCountAppFormList(Map<String, String> map) {
+		return sqlSessionTemplate.selectOne("approvalMapper.selectCountAppFormList", map);
+	}
+
+	public List<ApprovalFormDto> selectAppFormList(Map<String, String> map, PageInfoDto pi) {
+		RowBounds rowBounds = new RowBounds((pi.getCurrentPage() - 1) * pi.getBoardLimit(), pi.getBoardLimit());
+		return sqlSessionTemplate.selectList("approvalMapper.selectAppFormList", map, rowBounds);
+	}
+
+	public int updateAppFormTmp(ApprovalFormDto appForm) {
+		return sqlSessionTemplate.update("approvalMapper.updateAppFormTmp", appForm);
+	}
+
+	public ApprovalFormDto selectAppFormByNo(int no) {
+		return sqlSessionTemplate.selectOne("approvalMapper.selectAppFormByNo", no);
+	}
+
+	public int updateAppForm(ApprovalFormDto appForm) {
+		return sqlSessionTemplate.update("approvalMapper.updateAppForm", appForm);
+	}
+
+	public List<MemberDto> selectMemberBySearch(Map<String, String> map) {
+		return sqlSessionTemplate.selectList("approvalMapper.selectMemberBySearch", map);
 	}
 	
 }

@@ -39,8 +39,8 @@ public class ApprovalServiceImpl implements ApprovalService {
 	}
 
 	@Override
-	public List<CollegeDto> selectCollegeMajorList() {
-		return approvalDao.selectCollegeMajorList();
+	public List<CollegeDto> selectCollegeMajorList(String search) {
+		return approvalDao.selectCollegeMajorList(search);
 	}
 
 	@Override
@@ -153,6 +153,36 @@ public class ApprovalServiceImpl implements ApprovalService {
 		}
 		
 		return result1 * result2;
+	}
+
+	@Override
+	public int selectCountAppFormList(Map<String, String> map) {
+		return approvalDao.selectCountAppFormList(map);
+	}
+
+	@Override
+	public List<ApprovalFormDto> selectAppFormList(PageInfoDto pi, Map<String, String> map) {
+		return approvalDao.selectAppFormList(map, pi);
+	}
+
+	@Override
+	public int updateAppFormTmp(ApprovalFormDto appForm) {
+		return approvalDao.updateAppFormTmp(appForm);
+	}
+
+	@Override
+	public ApprovalFormDto selectAppFormByNo(int no) {
+		return approvalDao.selectAppFormByNo(no);
+	}
+
+	@Override
+	public int updateAppForm(ApprovalFormDto appForm) {
+		return approvalDao.updateAppForm(appForm);
+	}
+
+	@Override
+	public List<MemberDto> selectMemberBySearch(Map<String, String> map) {
+		return approvalDao.selectMemberBySearch(map);
 	}
 
 	
