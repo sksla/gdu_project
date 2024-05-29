@@ -396,6 +396,7 @@
               		
 	           		}
 	           		
+	           		// 오늘날짜 조회 ajax
 	           		function today(page){
 	           			$.ajax({
 	           				url:"${contextPath}/admin/todayMemberAttend.do",
@@ -426,9 +427,13 @@
 	              												+			"<th>"
 	              												+				"<h6 class='fs-2 mb-0'>" + map.attendList[i].startTime + "</h6>"
 	              												+			"</th>"
-	              												+			"<th>"
-	              												+				"<h6 class='fs-2 mb-0'>" + map.attendList[i].endTime + "</h6>"
-	              												+			"</th>"
+	              												+			"<th>";
+	              															if(map.attendList[i].endTime == null){
+	              						filterTable	+=			"<h6 class='fs-2 mb-0'>-</h6>";
+	              															}else{
+	              						filterTable	+=			"<h6 class='fs-2 mb-0'>" + map.attendList[i].endTime + "</h6>";
+	              															}
+	              						filterTable	+=		"</th>"
 	              												+			"<th>"
 	              												+				"<h6 class='fs-2 mb-0'>" + map.attendList[i].status + "</h6>"
 	              												+			"</th>"

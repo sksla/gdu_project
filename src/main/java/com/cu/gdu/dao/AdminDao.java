@@ -460,4 +460,18 @@ public class AdminDao {
 		return sqlSessionTemplate.selectList("adminMapper.selectTodayReserList");
 	}
 	
+	// 조직도 ajax로 페이지 학과 직원수 조회
+	public int ajaxChartMemberListCount(String majorNo) {
+		return sqlSessionTemplate.selectOne("adminMapper.ajaxChartMemberListCount", majorNo);
+	}
+
+	// 조직도 ajax로 페이지 학과 직원 조회
+	public List<MemberDto> ajaxChartMemberList(Map<String, Object> map) {
+		PageInfoDto pi = (PageInfoDto)map.get("pi");
+		int limit = pi.getBoardLimit();
+		int offset = (pi.getCurrentPage()-1) * limit;
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return sqlSessionTemplate.selectList("adminMapper.ajaxChartMemberList", map, rowBounds);
+	}
+
 }

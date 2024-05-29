@@ -228,4 +228,8 @@ public interface AdminService {
 	
 	// 관리자 대시보드 오늘의 예약건 조회
 	List<ReservationDto> selectTodayReserList();
+	
+	// 조직도 페이지에서 학과 직원수 및 직원조회
+	int ajaxChartMemberListCount(String majorNo);
+	List<MemberDto> ajaxChartMemberList(Map<String, Object> map);
 }

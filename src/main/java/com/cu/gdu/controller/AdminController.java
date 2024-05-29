@@ -64,8 +64,6 @@ public class AdminController {
 	public String chart(Model model) {
 		List<CollegeDto> colList = adminService.selectCollegeList();
 		List<MajorDto> majorList = adminService.selectMajorList();
-		// log.debug("colList객체: {}", colList);
-		// log.debug("majorList객체: {}", majorList);
 		model.addAttribute("colList", colList);
 		model.addAttribute("majorList", majorList);
 
@@ -1073,6 +1071,20 @@ public class AdminController {
 			redirectAttributes.addFlashAttribute("alertMsg", "비품 반납처리에 실패 했습니다.");
 		}
 		return "redirect:/admin/resourceReservation.page";
+	}
+	
+	// 조직도 페이지 학과 클릭으로 ajax 학과직원 호출
+	@ResponseBody
+	@GetMapping(value="/chartMemberList.do", produces="application/json; charset=utf-8")
+	public Map<String, Object> ajaxChartMemberList(@RequestParam(value = "page", defaultValue = "1") int currentPage, String majorNo){
+		Map<String, Object> map = new HashMap<>();
+		int listCount = adminService.ajaxChartMemberListCount(majorNo);
+		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 10);
+		map.put("pi", pi);
+		map.put("majorNo", majorNo);
+		List<MemberDto> memList = adminService.ajaxChartMemberList(map);
+		map.put("memList", memList);
+		return map;
 	}
 
 }

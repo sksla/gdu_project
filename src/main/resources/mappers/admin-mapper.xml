@@ -1388,5 +1388,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		  AND res_type != '4'
 		  AND rev_date = TRUNC(sysdate)
 	</select>
+	
+	<select id="ajaxChartMemberListCount" resultType="_int">
+		select 
+		       count(*)
+		  from member
+		 where status = 'N'
+    and major_no = #{majorNo}
+	</select>
+	
+	<select id="ajaxChartMemberList" resultMap="memberResult">
+		select
+	         mem_no
+	       , mem_name
+	     	 , job_name
+	       , major_name
+	       , address
+	       , email
+	    from member
+	    join major on (member.major_no = major.major_no)
+	    join job on (member.job_no = job.job_no)
+	   where member.status = 'N'
+	     and member.major_no = #{majorNo}
+	   order
+	      by job_level desc
+	</select>
 
 </mapper>

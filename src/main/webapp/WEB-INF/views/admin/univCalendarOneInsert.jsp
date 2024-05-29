@@ -78,7 +78,7 @@
               <div class="memberLeave">
                 <h2 class="one" onclick="location.href='${contextPath}/admin/univCalendarInsertOne.page'">학사일정개별등록</h2>
                 <h2 class="split">|</h2>
-                <h2 class="two" onclick="location.href='${contextPath}/admin/univCalendarInsertMany.page'">학사일정일광등록</h2>
+                <h2 class="two" onclick="location.href='${contextPath}/admin/univCalendarInsertMany.page'">학사일정일괄등록</h2>
               </div>
               <br><br><br><br>
               <div class="innerOuter">
