@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketMessage;
@@ -16,14 +17,16 @@ import com.cu.gdu.dto.ChatDto;
 import com.cu.gdu.dto.MemberDto;
 import com.cu.gdu.service.ChatService;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 @Slf4j
 public class ChatEchoHandler extends TextWebSocketHandler {
 
 	private  List<WebSocketSession> sessionList = new ArrayList<>();
-	private final ChatService chatService;
+	
+	@Autowired
+	private ChatService chatService;
+	
 	
 	/**
 	 * 	1) afterConnectionEstablished : 클라이언트와 연결되었을 때 처리할 내용을 정의
