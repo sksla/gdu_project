@@ -47,10 +47,25 @@
 	<resultMap type="ApprovalCommentDto" id="commentResult">
 		<id column="comment_no" property="commentNo"/>
 		<result column="app_type" property="appType"/>
+		<result column="status_name" property="appType"/>
 		<result column="app_yn" property="appYn"/>
 		<result column="comment_date" property="commentDate"/>
 		<result column="comment_content" property="commentContent"/>
-		<association resultMap="memberResult" property="commneter"/>
+		<association resultMap="memberResult" property="commenter"/>
+	</resultMap>
+	
+	<resultMap type="ApprovalMyLineDto" id="myLineResult">
+		<id column="line_no" property="lineNo"/>
+		<result column="mem_no" property="memNo"/>
+		<result column="line_title" property="lineTitle"/>
+		<result column="enroll_date" property="enrollDate"/>
+	</resultMap>
+	
+	<resultMap type="ApprovalMyLineMemberDto" id="myLineMemberResult">
+		<result column="line_no" property="lineNo"/>
+		<result column="app_type" property="appType"/>
+		<result column="status_name" property="appType"/>
+		<association resultMap="memberResult" property="approver"/>
 	</resultMap>
 
 	<resultMap type="MajorDto" id="majorResult">
@@ -72,6 +87,7 @@
   	<result column="mem_name" property="memName"/>
   	<result column="sign_url" property="signUrl"/>
   	<result column="profile_url" property="profileUrl"/>
+  	<result column="line_mem_no" property="profileUrl"/>
   </resultMap>
   
   
@@ -457,6 +473,37 @@
 		  join job using (job_no)
 		  left join app_attach using (doc_no)
 		 where doc_no = #{no}
+		 order
+		 	  by draft_date desc
+	</select>
+	
+	<select id="selectAppAttachList" resultMap="attachResult">
+		select
+		       file_no
+		     , file_path
+		     , original_name
+		     , filesystem_name
+		  from app_attach
+		 where doc_no = #{no}
+	</select>
+	
+	<select id="selectAppCommentList" resultMap="commentResult">
+		select
+		       comment_no
+		     , mem_no
+		     , mem_name
+		     , major_name
+		     , job_name
+		     , app_yn
+		     , status_name
+		     , comment_date
+		     , comment_content
+		  from app_comment
+		  join member on (commenter = mem_no)
+		  join major using (major_no)
+		  join job using (job_no)
+		  join app_status on (app_type = status_no)
+		 where doc_no = #{no}
 	</select>
 	
 	<select id="selectApproverByDocNo" resultMap="approverResult">
@@ -526,6 +573,87 @@
 		          and doc_no = #{docNo}
 		      )
 		where rnum = 2
+	</select>
+	
+	<!-- 자주 쓰는 결재선 *****************************-->
+	<!-- 내 결재선 목록 -->
+	<select id="selectCountAppLineList" resultType="_int">
+		select count(*)
+			from app_line
+		 where mem_no = #{loginUserNo}
+		   <if test="search != ''">
+		   and line_title like '%' || #{search} || '%'
+		   </if>
+	</select>
+	
+	<select id="selectAppLineList" resultMap="myLineResult">
+		select
+					 line_no
+				 , line_title
+				 , to_char(enroll_date, 'YYYY-MM-DD') enroll_Date
+			from app_line
+		 where mem_no = #{loginUserNo}
+		   <if test="search != ''">
+		   and line_title like '%' || #{search} || '%'
+		   </if>
+		 order
+		    by enroll_date desc
+	</select>
+	
+	<!-- 결재선 등록 -->
+	<insert id="insertAppLine">
+		insert
+			into app_line
+					 (
+					 	line_no,
+					 	line_title,
+					 	mem_no
+					 )
+		values (
+						seq_line_no.nextval
+					, #{lineTitle}
+					, #{memNo}
+					 )
+	</insert>
+	
+	<insert id="insertAppLineMem">
+		insert
+			into app_line_mem
+					 (
+					  line_mem_no,
+					 	line_no,
+					 	app_type,
+					 	approver
+					 )
+		values (
+						seq_line_mem_no.nextval
+					, seq_line_no.currval
+					, #{appType}
+					, #{approver}
+					 )
+	</insert>
+	
+	<delete id="deleteAppLine">
+		delete
+		  from app_line
+		 where line_no = #{no}
+	</delete>
+	
+	<!-- 결재선 수정 -->
+	<select id="selectAppLineMem" resultMap="memberResult">
+		select 
+			     mem_no
+         , mem_name
+         , major_name
+         , job_name
+      from app_line_mem
+      join member on (approver = mem_no)
+      join job using (job_no)
+      join major using (major_no)
+     where line_no = #{no}
+       and app_type = #{appType}
+     order
+        by line_mem_no
 	</select>
 	
 </mapper>

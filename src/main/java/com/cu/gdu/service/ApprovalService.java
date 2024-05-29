@@ -6,7 +6,10 @@ import java.util.Map;
 import com.cu.gdu.dto.ApprovalCommentDto;
 import com.cu.gdu.dto.ApprovalDocDto;
 import com.cu.gdu.dto.ApprovalFormDto;
+import com.cu.gdu.dto.ApprovalMyLineDto;
+import com.cu.gdu.dto.ApprovalMyLineMemberDto;
 import com.cu.gdu.dto.ApproverDto;
+import com.cu.gdu.dto.AttachDto;
 import com.cu.gdu.dto.CollegeDto;
 import com.cu.gdu.dto.MemberDto;
 import com.cu.gdu.dto.PageInfoDto;
@@ -73,7 +76,10 @@ public interface ApprovalService {
 	// 문서 관련 결재자 조회
 	List<ApproverDto> selectCollaboratorsByDocNo(Map<String, Integer> map);
 	ApproverDto selectApproverByDocNo(Map<String, Integer> map);
+	// 결재문서 첨부파일 조회
+	List<AttachDto> selectAppAttachList(int no);
 	// 결재 코멘트 조회
+	List<ApprovalCommentDto> selectAppCommentList(int no);
 	
 	// 결재문서 상태 변경
 	int updateAppDocStatus(ApprovalDocDto appDoc);
@@ -84,5 +90,17 @@ public interface ApprovalService {
 	// 결재 승인시 결재문서 상태 변경
 	int updateAppLine(Map<String, String> map);
 	
+	// 자주 쓰는 결재선
+	// 결재선 목록
+	int selectCountAppLineList(Map<String, String> map);
+	List<ApprovalMyLineDto> selectAppLineList(PageInfoDto pi, Map<String, String> map);
+	// 결재선 등록
+	int insertAppLine(ApprovalMyLineDto myLine, int approverNo, int receiverNo, String[] collaboratorNo, String modifyYN);
+	// 결재선 수정
+	List<MemberDto> selectAppLineCollaboratorList(Map<String, Integer> map);
+	MemberDto selectAppLineApprover(Map<String, Integer> map);
+	
+	// 결재선 삭제
+	int deleteAppLine(int no);
 	
 }

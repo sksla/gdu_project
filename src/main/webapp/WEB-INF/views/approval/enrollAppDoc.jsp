@@ -281,6 +281,7 @@
                     </tr>
                   </table>
                 </div>
+                <!-- 
                 <div class="mx-7 mb-4">
                   <table style="min-height:100px; width: 100%; border: 1px solid lightgrey;">
                     <tr>
@@ -301,6 +302,7 @@
                     </tr>
                   </table>
                 </div>
+               	 -->
               </div>
               <br>
               
@@ -383,8 +385,7 @@
             <form class="input-group mb-3">
               <div class="col-3">
                 <div class="input-group">
-                  <input type="text" class="form-control search_box" placeholder="이름/부서명을 입력하세요." aria-label="Recipient's username" aria-describedby="basic-addon2">
-                  <button type="button" class="btn btn-outline-secondary me-2">검색</button>
+                  <input type="text" class="form-control" id="search_box" placeholder="이름/부서명을 입력하세요." aria-label="Recipient's username" aria-describedby="basic-addon2">
                 </div>
               </div>
               <span class="mx-2">
@@ -553,11 +554,10 @@
     		createMajorList("");
     		
     		// 결재선 검색 기능
-    		$(".search_box").on("keyup", function(event){
-    			if(event.idComposing) return;
+    		document.getElementById("search_box").onkeyup = function(e) {
     			console.log("실행");
     			let $searchType = $(".searchRadio:checked").val();
-    			let $search = $(".search_box").val();
+    			let $search = $("#search_box").val();
     			if($searchType == "name"){
     				if($search == ""){
         			$(".my_mem_list").empty();
@@ -581,7 +581,7 @@
 	         		createMajorList($search);
         		}
          	}
-    		})
+        }
     		// **************************************************************
     		
     		// 업로드 파일 목록 표시
@@ -653,7 +653,7 @@
     			},
     			error: function(){
     				console.log("부서 목록 조회 실패");
-    			}    			
+    			}
     		})
     	}
     	
@@ -769,7 +769,7 @@
     	
     	// 결재선 등록 모달 초기화
      	function resetEnrollLineModal(){
-     		createMajorList();
+     		createMajorList("");
          	$(".mem_list").each(function(index, el){
          		$(el).empty();
          	})
@@ -837,7 +837,6 @@
     	}
     	// *****************************************************************
       
-    	//
       function enrollAppForm(type){
     	  if(type == 1){
     		  if(!confirm("결재문서를 기안하시겠습니까?")){

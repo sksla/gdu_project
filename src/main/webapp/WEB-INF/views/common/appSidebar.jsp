@@ -134,7 +134,7 @@
             </a>
           </li>
           <li class="sidebar-item">
-            <a class="sidebar-link" href="" aria-expanded="false">
+            <a class="sidebar-link" href="${ contextPath }/approval/myLineList.do" aria-expanded="false">
               <span>
                 <i class="ti ti-settings"></i>
               </span>

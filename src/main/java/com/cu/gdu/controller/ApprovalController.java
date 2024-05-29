@@ -9,6 +9,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.collections4.map.HashedMap;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +24,8 @@ import com.cu.gdu.dto.ApprovalCommentDto;
 import com.cu.gdu.dto.ApprovalDocDto;
 import com.cu.gdu.dto.ApprovalFormDto;
 import com.cu.gdu.dto.ApprovalHistoryDto;
+import com.cu.gdu.dto.ApprovalMyLineDto;
+import com.cu.gdu.dto.ApprovalMyLineMemberDto;
 import com.cu.gdu.dto.ApproverDto;
 import com.cu.gdu.dto.AttachDto;
 import com.cu.gdu.dto.CollegeDto;
@@ -344,6 +347,9 @@ public class ApprovalController {
 		map.put("appType", 30);
 		model.addAttribute("receiver", approvalService.selectApproverByDocNo(map));
 		
+		model.addAttribute("attachList", approvalService.selectAppAttachList(no));
+		model.addAttribute("commentList", approvalService.selectAppCommentList(no));
+		
 		return "approval/appDetail";
 	}
 	
@@ -382,6 +388,97 @@ public class ApprovalController {
 			redirectAttributes.addFlashAttribute("historyBackYN", "Y");
 		}
 		return "redirect:/approval/receiveBoard.do";
+	}
+	
+	@GetMapping("/modifyPage.do")
+	public String appModifyPage(int no, Model model) {
+		
+		model.addAttribute("docInfo", approvalService.selectAppDoc(no));
+		
+		Map<String, Integer> map = new HashMap<>();
+		
+		map.put("no", no);
+		map.put("appType", 10);
+		model.addAttribute("collaboratorList", approvalService.selectCollaboratorsByDocNo(map));
+		
+		map.put("appType", 20);
+		model.addAttribute("approver", approvalService.selectApproverByDocNo(map));
+		
+		map.put("appType", 30);
+		model.addAttribute("receiver", approvalService.selectApproverByDocNo(map));
+		
+		model.addAttribute("attachList", approvalService.selectAppAttachList(no));
+		model.addAttribute("commentList", approvalService.selectAppCommentList(no));
+		
+		return "approval/modifyDoc";
+	}
+	
+	// 자주 쓰는 결재선
+	// 결재선 목록
+	@GetMapping("/myLineList.do")
+	public String myLineList(@RequestParam(value="page", defaultValue="1")int currenrPage
+						   , String search
+						   , HttpSession session
+						   , Model model) {
+	
+		Map<String, String> map = new HashMap<>();
+		map.put("loginUserNo", String.valueOf(((MemberDto)session.getAttribute("loginUser")).getMemNo()) );
+		map.put("search", search == null ? "" : search);
+		PageInfoDto pi = pagingUtil.getPageInfoDto(approvalService.selectCountAppLineList(map), currenrPage, 5, 8);
+	
+		model.addAttribute("lineList", approvalService.selectAppLineList(pi, map));
+		model.addAttribute("pi", pi);
+		model.addAttribute("optionMap", map);
+		return "approval/myLineList";
+	}
+	
+	// 결재선 등록/수정
+	@PostMapping("/enrollLine.do")
+	public String enrollMyLine(ApprovalMyLineDto myLine,
+							   int approverNo,
+							   int receiverNo,
+							   String[] collaboratorNo,
+							   @RequestParam(value="modifyYN", defaultValue="N") String modifyYN,
+							   RedirectAttributes redirectAttributes) {		
+		int result = approvalService.insertAppLine(myLine, approverNo, receiverNo, collaboratorNo, modifyYN);
+		if(result > 0) {
+			redirectAttributes.addFlashAttribute("alertMsg", modifyYN.equals("Y") ? "결재선이 수정되었습니다."
+																				  : "자주 쓰는 결재선에 등록되었습니다.");
+		} else {
+			redirectAttributes.addFlashAttribute("alertMsg", "결재선 등록 실패");
+		}
+		return "redirect:/approval/myLineList.do";
+	}
+	
+	// 결재선 삭제
+	@PostMapping("/delLine.do")
+	public String deleteMyAppLine(int no, RedirectAttributes redirectAttributes) {
+		if(approvalService.deleteAppLine(no) > 0) {
+			redirectAttributes.addFlashAttribute("alertMsg", "결재선이 삭제되었습니다.");
+		} else {
+			redirectAttributes.addFlashAttribute("alertMsg", "결재선 삭제 실패");
+		}
+		return "redirect:/approval/myLineList.do";
+	}
+	
+	// 결재선 수정 정보
+	@PostMapping(value="/modifyPage.do", produces="application/json; charset=utf-8;")
+	@ResponseBody
+	public Map<String, Object> ajaxModifyDataAppLine(int no, Model model) {
+		Map<String, Integer> map = new HashedMap<>();
+		map.put("no", no);
+		
+		Map<String, Object> resultMap = new HashedMap<>();
+		map.put("appType", 10);
+		List<MemberDto> list = approvalService.selectAppLineCollaboratorList(map);
+		resultMap.put("collaboratorList", list);
+		
+		map.put("appType", 20);
+		resultMap.put("approver", approvalService.selectAppLineApprover(map));
+		
+		map.put("appType", 30);
+		resultMap.put("receiver", approvalService.selectAppLineApprover(map));
+		return resultMap;
 	}
 	
 }

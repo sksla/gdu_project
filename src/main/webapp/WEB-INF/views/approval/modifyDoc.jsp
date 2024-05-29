@@ -90,7 +90,7 @@
 	              	</button>
               	</c:if>
                 <c:if test="${ docInfo.drafter.memNo == loginUser.memNo and (docInfo.status == 0 or docInfo.status == 1 or docInfo.status == 2) }">
-                	<button class="btn btn-warning mx-2 mb-1 px-4 fs-4" onclick="location.href='${contextPath}/approval/modifyPage.do?no=${docInfo.docNo}'">
+                	<button class="btn btn-warning mx-2 mb-1 px-4 fs-4">
                 		수정하기
                 	</button>
                 </c:if>

@@ -11,6 +11,8 @@ import org.springframework.stereotype.Repository;
 import com.cu.gdu.dto.ApprovalCommentDto;
 import com.cu.gdu.dto.ApprovalDocDto;
 import com.cu.gdu.dto.ApprovalFormDto;
+import com.cu.gdu.dto.ApprovalMyLineDto;
+import com.cu.gdu.dto.ApprovalMyLineMemberDto;
 import com.cu.gdu.dto.ApproverDto;
 import com.cu.gdu.dto.AttachDto;
 import com.cu.gdu.dto.CollegeDto;
@@ -143,6 +145,45 @@ public class ApprovalDao {
 
 	public List<MemberDto> selectMemberBySearch(Map<String, String> map) {
 		return sqlSessionTemplate.selectList("approvalMapper.selectMemberBySearch", map);
+	}
+
+	public List<AttachDto> selectAppAttachList(int no) {
+		return sqlSessionTemplate.selectList("approvalMapper.selectAppAttachList", no);
+	}
+
+	public List<ApprovalCommentDto> selectAppCommentList(int no) {
+		return sqlSessionTemplate.selectList("approvalMapper.selectAppCommentList", no);
+	}
+
+	public List<ApprovalMyLineDto> selectAppLineList(Map<String, String> map) {
+		return sqlSessionTemplate.selectList("approvalMapper.selectAppLineList", map);
+	}
+
+	public int selectCountAppLineList(Map<String, String> map) {
+		return sqlSessionTemplate.selectOne("approvalMapper.selectCountAppLineList", map);
+	}
+
+	public int insertAppLine(ApprovalMyLineDto myLine) {
+		return sqlSessionTemplate.insert("approvalMapper.insertAppLine", myLine);
+	}
+
+	public int insertAppLineMem(int approver, int appType) {
+		Map<String, Integer> map = new HashMap<>();
+		map.put("approver", approver);
+		map.put("appType", appType);
+		return sqlSessionTemplate.insert("approvalMapper.insertAppLineMem", map);
+	}
+
+	public int deleteAppLine(int no) {
+		return sqlSessionTemplate.delete("approvalMapper.deleteAppLine", no);
+	}
+
+	public MemberDto selectAppLineMem(Map<String, Integer> map) {
+		return sqlSessionTemplate.selectOne("approvalMapper.selectAppLineMem", map);
+	}
+
+	public List<MemberDto> selectAppLineCollaboratorList(Map<String, Integer> map) {
+		return sqlSessionTemplate.selectList("approvalMapper.selectAppLineMem", map);
 	}
 	
 }
