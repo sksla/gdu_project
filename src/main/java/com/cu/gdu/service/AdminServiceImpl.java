@@ -488,5 +488,17 @@ public class AdminServiceImpl implements AdminService {
 	public List<ReservationDto> selectTodayReserList() {
 		return adminDao.selectTodayReserList();
 	}
+
+	// 조직도 ajax로 페이지 학과 직원수 조회
+	@Override
+	public int ajaxChartMemberListCount(String majorNo) {
+		return adminDao.ajaxChartMemberListCount(majorNo);
+	}
+
+	// 조직도 ajax로 페이지 학과 직원 조회
+	@Override
+	public List<MemberDto> ajaxChartMemberList(Map<String, Object> map) {
+		return adminDao.ajaxChartMemberList(map);
+	}
 	
 }

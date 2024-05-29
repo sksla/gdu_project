@@ -92,9 +92,9 @@
             <div class="card-body">
 
               <div class="memberLeave">
-                <h2 class="one" onclick="firstPage();">직원 연차 신청현황</h2>
+                <h2 class="one" onclick="firstPage();">신청받은 연차</h2>
                 <h2 class="split">|</h2>
-                <h2 class="two" onclick="secondPage();">직원 연차관리</h2>
+                <h2 class="two" onclick="secondPage();">연차 사용내역</h2>
               </div>
               <br><br>
               
