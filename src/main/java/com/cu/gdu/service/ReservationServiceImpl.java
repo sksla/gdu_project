@@ -44,7 +44,7 @@ public class ReservationServiceImpl implements ReservationService {
 	// 예약하기
 	@Override
 	public int insertReservation(ReservationDto rev) {
-		return 0;
+		return reservationDao.insertReservation(rev);
 	}
 
 	@Override

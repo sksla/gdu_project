@@ -94,25 +94,6 @@ public class ReservationController {
 	}
 	
 	
-	// 예약 삭제
-	@ResponseBody
-	@PostMapping("/deleteReservation.do")
-	public int deleteReservation(@RequestParam int no) {
-		return reservationService.deleteReservation(no);
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	// ===================================예약 목록==========================================
 	
@@ -149,12 +130,33 @@ public class ReservationController {
 	// 시설에 대한 예약내역 조회
 	@ResponseBody
 	@PostMapping(value="/reservationList.do", produces="application/json; charset=utf-8")
-	public List<ReservationDto> reservationList(@RequestParam int resNo){
+	public List<ReservationDto> reservationList(@RequestParam(value="resNo") int resNo){
 		return reservationService.selectReservaionListByResNo(resNo);
 	}
 	
+	// 예약 삭제
+	@ResponseBody
+	@PostMapping("/deleteReservation.do")
+	public int deleteReservation(@RequestParam(value="no") int no) {
+		return reservationService.deleteReservation(no);
+	}
 	
-	
+	// 예약 등록
+	@ResponseBody
+	@PostMapping("/insertReservation.do")
+	public String insertReservation(ReservationDto rev, HttpSession session) {
+		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
+		int memNo = loginUser.getMemNo();
+		rev.setMemNo(String.valueOf(memNo));
+		
+		int result = reservationService.insertReservation(rev);
+		
+		if(result == 1) {
+			return "SUCCESS";
+		}else {
+			return "FAIL";
+		}
+	}
 	
 	
 	

@@ -49,7 +49,7 @@ public class ReservationDao {
 	
 	// 시설 예약 등록 
 	public int insertReservation(ReservationDto rev) {
-		return 0;
+		return sqlSessionTemplate.insert("reservationMapper.insertReservation", rev);
 	}
 
 	public int updateReservation(ReservationDto rev) {
@@ -60,11 +60,13 @@ public class ReservationDao {
 	public int deleteReservation(int revNo) {
 		return sqlSessionTemplate.update("reservationMapper.deleteReservation", revNo);
 	}
-
+	
+	// 시설목록 전체, 검색 조회
 	public List<ResourceDto> searchFacilityList(Map<String, String> search) {
 		return sqlSessionTemplate.selectList("reservationMapper.searchFacilityList", search);
 	}
-
+	
+	// 비품목록 전체, 검색조회 
 	public List<ResourceDto> searchEquipmentList(String keyword) {
 		return sqlSessionTemplate.selectList("reservationMapper.searchEquipmentList", keyword);
 	}

@@ -252,8 +252,8 @@
                 </div>
 
                 <form action="" method="" class="">
-                  <input type="text" class="search-style" name="" id="" placeholder="검색어 입력">
-                  <button class="btn btn-outline-primary">검색</button>
+                  <input type="text" class="search-style" name="" id="" placeholder="검색어 입력"  style="display:none;">
+                  <button class="btn btn-outline-primary" style="display:none;">검색</button>
                   
                 </form>
               </div>
@@ -1790,7 +1790,8 @@
 		   		        list:'목록'
 		   		      },
 		   		   		dayHeaderFormat: { weekday: 'short' }, // 일 제거
-		   		   		dayMaxEventRows: 3, 
+		   		   		dayMaxEvents:true,
+		   		   		//dayMaxEventRows: 3, 
 		   		   		eventMaxStack: 3,
 		   		      selectable: true,
 		   		      selectMirror: true,

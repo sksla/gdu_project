@@ -194,7 +194,7 @@
 
                 <!-- Modal footer -->
                 <div class="modal-footer justify-content-center">
-                  <button type="button" class="btn btn-danger deleteBtn" onclick="deleteValidate();">삭제</button>
+                  <button type="button" class="btn btn-danger deleteBtn" data-bs-dismiss="modal" onclick="deleteValidate();">삭제</button>
                   <button type="button" class="btn btn-info" data-bs-dismiss="modal">확인</button>
                 </div>
 
@@ -203,8 +203,8 @@
           </div>
           
           <script>
-          	let reserveArr;
-          	let unreturnedArr;
+          	//let reserveArr;
+          	//let unreturnedArr;
           	$(document).ready(function(){
           		ajaxSearchReservationList(1);
           		ajaxSelectUnreturnedList(1);
@@ -222,7 +222,7 @@
           				keyword:$("#keyword").val()
           			},
           			success:function(rep){
-          				reserveArr = new Array();
+          				//reserveArr = new Array();
           				
           				let list = rep.list;
           				let tbody = "";
@@ -261,7 +261,7 @@
           	                 +		"</td>"
           	                 + "</tr>";
           						
-   	                 reserveArr.push(list[i]);
+   	                 //reserveArr.push(list[i]);
    	                 
           					}
           					
@@ -286,7 +286,7 @@
           			async:false,
           			data:{page:requestPage},
           			success:function(rep){
-          				unreturnedArr = new Array();
+          				//unreturnedArr = new Array();
           				
           				let list = rep.list;
           				let tbody = "";
@@ -302,7 +302,7 @@
           	                 +		"<td class='unreturn-col-4 ellipsis'><button type='button' class='btn btn-primary btn-sm' onclick='openDetailModal(" + list[i].revNo + ", '" + list[i].resNo + "', '" + list[i].revDate + "', '" + list[i].memName + "', '" + list[i].revReason + "', '" + status + "'," + list[i].revCount + ");'>상세조회</button></td>"
           	                 + "</tr>";
           	                 
-          						unreturnedArr.push(list[i]);
+          						//unreturnedArr.push(list[i]);
 		          				drawPage(2, rep.pi);
           					}
           				}else{
@@ -415,15 +415,15 @@
           					console.log("예약 삭제 ajax 통신 실패");
           				}
           			})
-          		}
+          		
           	}
           	
           	function deleteValidate(){
           		let $revNo = $("#detailModal input[type='hidden'][name='revNo']").val();
-          		let status = document.getElementById("status").value;
-          		let revDate = document.getElementById("revDate")value;
+          		let status = document.getElementById("status").textContent;
+          		let revDate = document.getElementById("revDate").textContent;
           		// type == 1(시설) | 2(비품)
-          		let type = revDate.indexOf("~") == -1 : 2 : 1;
+          		let type = revDate.indexOf("~") == -1 ? 2 : 1;
           		
           		if(type == 2 && confirm("예약 내역을 삭제하시겠습니까?")){
           			
@@ -431,6 +431,7 @@
           			
           		}else{
           			// 문자열에서 시작 시간과 종료 시간 추출
+          			let now = new Date();
        	        let [datePart, timePart] = revDate.split(/ (.+)/);
        	        let [startTime, endTime] = timePart.split(' ~ ');
 
@@ -459,6 +460,9 @@
      	            } 
        	        }
           		}
+          		ajaxSearchReservationList(1);
+          		ajaxSelectUnreturnedList(1);
+          		
           	}
           	
           </script>

@@ -38,6 +38,12 @@
  <style>
  	.card-body{padding:30px 150px;}
   .fc .fc-timegrid-slot {height: 30px;}
+  .fc-event-title-container{    
+  	display: flex;
+    justify-content: center;
+    align-items: center
+   }
+   .fc-event-time{text-align:center;}
  </style>
 
 </head>
@@ -86,7 +92,7 @@
 
           <!-- 페이지 내용 -->
           <div class="card">
-            <div class="card-body">
+            <div class="card-body" style="padding:30px 150px; ">
               <h5 class="fw-semibold mb-8">시설 예약하기</h5>
               <br>
               
@@ -147,51 +153,37 @@
 
                 <!-- Modal body -->
                 <div class="modal-body">
+                	<input type="hidden" name="revNo" value="0">
                   <table class="table">
                     <tbody>
                       <tr>
                         <th width="100px">자원명</th>
-                        <td>자원명111</td>
+                        <td>${ res.resName }</td>
                       </tr>
                       <tr>
                         <th>예약시간</th>
-                        <td>2024-4-23 15:00 ~ 16:00</td>
-                        <!--비품예약일 경우-->
-                        <!--
-                        <td>2024-4-2</td>
-                        -->
+                        <td id="rev_date"></td>
                       </tr>
                       <tr>
                         <th>신청자</th>
-                        <td>김사람</td>
+                        <td id="rev_mem"></td>
                       </tr>
                       <tr>
                         <th>사용 용도</th>
-                        <td>이렇게 저렇게 사용</td>
+                        <td id="rev_reason"></td>
                       </tr>
-                      <!-- * 비품 예약일 경우 -->
-                      <!--
-                      <tr>
-                        <th>예약 수량</th>
-                        <td>2개</td>
-                      </tr>
-                      -->
                       <tr>
                         <th>예약 상태</th>
-                        <!--비품예약일 경우-->
-                        <!--
-                        <td>반납 or 미반납</td>
-                        -->
-                        <td>예약 완료</td>
+                        <td id="rev_status"></td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
 
                 <!-- Modal footer -->
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                  <button type="submit" class="btn btn-danger">삭제</button>
+                <div class="modal-footer justify-content-center">
+                  <button type="button" class="btn btn-danger deleteBtn" data-bs-dismiss="modal" onclick="ajaxDeleteReservation();">삭제</button>
+                  <button type="button" class="btn btn-info" data-bs-dismiss="modal">확인</button>
                 </div>
 
               </div>
@@ -225,7 +217,7 @@
 	                      </tr>
 	                      <tr>
 	                        <th>예약일</th>
-	                        <td><input id="inputDate" name="rev_date" type="date" required></td>
+	                        <td><input id="inputDate" name="revDate" type="date" required></td>
 	                      </tr>
 	                      <tr>
 	                        <th>예약 시간</th>
@@ -262,15 +254,15 @@
 	                      </tr>
 	                      <tr>
 	                        <th>사용 용도</th>
-	                        <td><textarea name="revReason" cols="35" rows="5" required></textarea></td>
+	                        <td><textarea id="reasonTextArea" name="revReason" cols="35" rows="5" maxlength="50" placeholder="50자 이내" required></textarea></td>
 	                      </tr>
 	                    </tbody>
 	                  </table>
 	                </div>
 	
 	                <!-- Modal footer -->
-	                <div class="modal-footer">
-	                  <button type="button" class="btn btn-primary">등록</button>
+	                <div class="modal-footer justify-content-center">
+	                  <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="ajaxInsertReservation();">등록</button>
 	                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
 	                </div>
 								</form>
@@ -278,62 +270,15 @@
             </div>
           </div>
           
-          <!-- 예약 상세조회 모달창 -->
-          <div class="modal" id="detail_reservation">
-            <div class="modal-dialog">
-              <div class="modal-content">
-
-                <!-- Modal Header -->
-                <div class="modal-header">
-                  <h4 class="modal-title">예약 상세 조회</h4>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-
-                <!-- Modal body -->
-                <div class="modal-body">
-                	<input type="hidden" name="resNo" value="${ res.resNo }">
-                  <table class="table">
-                    <tbody>
-                      <tr>
-                        <th width="100px">자원명</th>
-                        <td>${ res.resName }</td>
-                      </tr>
-                      <tr>
-                        <th>예약 시간</th>
-                        <td></td>
-                      </tr>
-                      <tr>
-                        <th>등록자</th>
-                        <td>
-                        </td>
-                      </tr>
-                      <tr>
-                        <th>사용 용도</th>
-                        <td><textarea name="" cols="35" rows="5"></textarea></td>
-                      </tr>
-                      <tr>
-                      	<th>예약 상태</th>
-                      	<td></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-
-                <!-- Modal footer -->
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-outline-danger">삭제</button>
-                  <button type="button" class="btn btn-info" data-bs-dismiss="modal">확인</button>
-                </div>
-
-              </div>
-            </div>
-          </div>
+          
           
           
           <script>
           	let memNo = ${loginUser.memNo};
           	let resNo = ${res.resNo};
-          	let revList;
+          	let revList = [];
+          	let startDateStr = "";
+          	let endDateStr = "";
           	
           	$(document).ready(function(){
           		ajaxSelectReservationList();
@@ -344,22 +289,29 @@
           		$.ajax({
           			url:"${contextPath}/reservation/reservationList.do",
           			type:"post",
-          			data:"resNo=" + resNo,
+          			data:{resNo:resNo},
+          			async:false,
           			success:function(list){
-          				revList = new Array();
+          				revList.length = 0;
           				
           				if(list.length > 0){
           					for(let i=0; i<list.length; i++){
+          						startTimeStr = list[i].revDate + "T" + list[i].startTime;
+          						endTimeStr = list[i].revDate + "T" + list[i].endTime;
           						
           						revList.push({
           							id: list[i].revNo,
           							title: list[i].memName,
-          							start: new Date(list[i].revDate),
-          							end: new Date(list[i].revDate),
-          							startTime: list[i].startTime,
-          							endTime: list[i].endTime,
+          							start: new Date(startTimeStr),
+          							end: new Date(endTimeStr),
+          							memNo: list[i].memNo,
+          							revDate:list[i].revDate + " " + list[i].startTime + " ~ " + list[i].endTime,
+          							stTime: startTimeStr,
+          							edTime: endTimeStr,
           							content: list[i].revReason,
-          							color: (list[i].memNo == memNo ? "#4FC3F7" : "#BDBDBD" )
+          							color: (list[i].memNo == memNo ? "#4FC3F7" : "#BDBDBD" ),
+          							allDay:false,
+          							status:"승인"
           						});
           						
           					}
@@ -403,7 +355,9 @@
          	    				  	|| (selectInfo.end > event.start && selectInfo.end <= event.end) 
          	    				  		|| (selectInfo.start <= event.start && selectInfo.end >= event.end)){
          	    			 
+         	    			  console.log("존재 예약 실행");
          	    			  alert("이미 존재하는 예약이 있습니다.");
+         	    			 	calendar.unselect();
          	    			  return false;
          	    		  }
          	    	  }
@@ -415,31 +369,58 @@
        	          let now = new Date();
        	          let selectedStart = new Date(info.start);
        	          let selectdEnd = new Date(info.end);
-	         	          
+	         	      console.log(revList);
 	         	          
        	          if((selectedStart.toDateString() === now.toDateString() && selectedStart < now )
        	                || selectedStart < now.setHours(0,0,0,0)){
-       	            alert("현재 시간보다 이전 시간은 선택하실 수 없습니다.");
+       	            alert("현재 시간(" + now.toLocaleString() + ")보다 이전 시간은 선택하실 수 없습니다.");
        	            calendar.unselect();
        	            return;
        	          }
 	
        	       		openInsertModal(2, startStr.slice(0,10), startStr.slice(11, 16), endStr.slice(11,16));
-         	    	  // 예약 내역이 있는 영역은 선택 불가
-         	      },
-         	      events:revList,
-         	      eventsDataTransform:function(event){
          	    	  
          	      },
+         	      events:revList
+         	    	  /*function(fetchInfo, successCallback, failureCallback) {
+                      successCallback(revList);
+                  }*/,
+         	      /*
+         	      eventsDataTransform:function(event){
+         	    	  
+         	      },*/
          	      eventClick:function(info){
          	    	  let event = info.event;
          	    	  
+         	    	  let id = event.id;
+         	    	  let title = event.title;
+         	    	  let start = event.start;
+         	    	  let end = event.end;
+         	    	  let revDate = event.extendedProps.revDate;
+         	    	  let stTime = event.extendedProps.stTime;
+         	    	  let edTime = event.extendedProps.edTime;
+         	    	  let content = event.extendedProps.content;
+         	    	  let status = event.extendedProps.status;
+         	    	  let revMemNo = event.extendedProps.memNo;
          	    	  
-         	      }
-         	      
+         	    	  console.log(event.startStr + " ~ " + event.endStr );
+         	    	  
+         	    	 $("#detail_reservation .deleteBtn").css("display", memNo == revMemNo ? "inline" : "none");
+         	    	 $("#detail_reservation input[type='hidden'][name='revNo']").val(id);
+         	    	 $("#detail_reservation #rev_mem").text(title);
+         	    	 $("#detail_reservation #rev_date").text(revDate);
+         	    	 $("#detail_reservation #rev_reason").text(content);
+         	    	 $("#detail_reservation #rev_status").text(status);
+         	    	 $("#detail_reservation").modal("show");
+         	    	  
+         	    	 startDateStr = stTime;
+        	    	 endDateStr = edTime;
+         	      } 
          	    });
+         	    
          	    calendar.render();
           		
+          		console.log(revList);
           		
           	}
           	
@@ -452,7 +433,18 @@
              	
              	let inputDate = document.getElementById("inputDate");
              	let selectStartTime = document.getElementById("selectStartTime");
+             	let startOptions = selectStartTime.options;
              	let selectEndTime = document.getElementById("selectEndTime");
+             	let endOptions = selectStartTime.options;
+             	document.getElementById("reasonTextArea").value = "";
+             	
+             	// option들 disabled 상태 초기화
+             	for(let i=0; i<startOptions.length; i++){
+             		startOptions[i].disabled = false;
+             	}
+             	for(let i=0; i<endOptions.length; i++){
+             		endOptions[i].disabled = false;
+             	}
              	
              	inputDate.setAttribute("min", todayStr);
              	
@@ -467,14 +459,129 @@
              		selectEndTime.value = end;
              	}
              	
+             	if(revList.length > 0){
+	             	for(let i=0; i<revList.length; i++){
+	             		if(revList[i].revDate == inputDate.value){
+	             			console.log("disabled 실행");
+	             			disabledOptions(startOptions, revList[i].startTime, revList[i].endTime);
+	             			disabledOptions(endOptions, revList[i].startTime, revList[i].endTime);
+	             			
+	             		}
+	             	}
+             	}
+             	
              	$("#insert_reservation").modal("show");
           	}
           	
-          	function openDetailModal(rev){
+          	function disabledOptions(options, startTime, endTime){
           		
-          		$("#detail_reservation").modal('show');
+          		for(let i=0; i<options.length; i++){
+		     				let option = options[i].value;
+		     				if((option >= startTime && optionTime < endTime)
+		     							|| (option >= startTime && option < endTime)){
+		     					options[i].disabled = true;
+		     				}
+		     			}
           	}
-          
+          	
+          	// 예약 등록용 ajax
+          	function ajaxInsertReservation(){
+          		//일정 이유 값 가져오기
+          		let $revReason = $("#reasonTextArea").val();
+          		
+          		//일정 날짜
+							let $revDate = $("#inputDate").val();
+          		
+          		// 일정 시작 시간, 끝시간
+          		let $start = $("#selectStartTime").val();
+          		let $end = $("#selectEndTime").val();
+          		
+          		let now = new Date();
+          		let startTime = new Date($revDate + "T" + $start);
+          		let endTime = new Date($revDate + "T" + $end);
+          		let isReserved = true;
+          		
+          		for(let i=0; i<revList.length; i++){
+          			let revStTime = revList[i].start;
+          			let revEdTime = revList[i].end;
+          			if((startTime >= revStTime && startTime < revEdTime)
+ 	    				  		|| (endTime > revStTime && endTime <= revEdTime) 
+	    				  			|| (startTime <= revStTime && endTime >= revEdTime) ){
+          				isReserved = false;
+          			}
+          		}
+          		
+          		if($revReason.trim() == ""){
+          			alert("예약 사유를 입력해주세요.");
+          			$("#insert_reservation").modal("show");
+          		}else if(startTime < now){
+          			alert("현재시간(" + now.toLocaleString() +")보다 이전 시간은 선택하실 수 없습니다.");
+          			$("#reasonTextArea").val($revReason);
+          			$("#insert_reservation").modal("show");
+          		}else if(endTime <= startTime){
+          			alert("종료 시간은 시작 시간보다 이후여야 합니다.");
+          			$("#reasonTextArea").val($revReason);
+          			$("#insert_reservation").modal("show");
+          		}else if(!isReserved){
+          			alert("등록된 예약이 존재합니다");
+          		}else{
+          			
+          			$.ajax({
+          				url:"${contextPath}/reservation/insertReservation.do",
+          				type:"post",
+          				data:$("#insertForm").serialize(),
+          				success:function(result){
+          					if(result == "SUCCESS"){
+          						alert("예약이 성공적으로 신청되었습니다.");
+          					}else{
+          						alert("예약 신청에 실패했습니다.");
+          					}
+          					
+          					ajaxSelectReservationList();
+          				},
+          				error:function(){
+          					
+          				}
+          			})
+          			
+          		}
+          	}
+          	
+          	
+          	
+          	function ajaxDeleteReservation(){
+          		let now = new Date();
+          		let startDateTime = new Date(startDateStr);
+          		let endDateTime = new Date(endDateStr);
+          		let confirmMsg = now < startDateTime ? "예약을 취소하시겠습니까?" 
+          																				 : "예약 내역을 삭제하시겠습니까?\n(삭제 후 복구 불가합니다.)";
+          		
+          		if(now >= startDateTime && now <= endDateTime){
+          			alert("현재 예약이 진행중이므로 취소하실 수 없습니다./n예약이 종료된 후 해당 예약내역을 삭제해주세요.");
+          		}else if(confirm(confirmMsg)){
+          			$.ajax({
+          				url:"${contextPath}/reservation/deleteReservation.do",
+          				type:"post",
+          				data:{
+          					no:$("#detail_reservation input[type='hidden'][name='revNo']").val()
+          				},
+          				success:function(result){
+          					if(result == 1){
+          						alert("성공적으로 예약이 삭제되었습니다.");
+          					}else{
+          						alert("예약 삭제에 실패했습니다.");
+          					}
+          					
+          					ajaxSelectReservationList();
+          				},
+          				error:function(){
+          					console.log("예약 삭제용 ajax 통신 실패");
+          				}
+          			})
+          		}
+          		
+          		
+          	};
           </script>
           
 					<!-- ----------------------------- 실제 내용 작성 영역 end ----------------------------- -->

@@ -230,7 +230,8 @@
 		     , mem_name
 		  from reservation rev
 		  join member m on (m.mem_no = rev.mem_no)
-		 where res_no = #{resNo}  
+		 where rev.status in ('1', '2')
+		   and res_no = #{resNo}  
 		       
 	</select>
 	
