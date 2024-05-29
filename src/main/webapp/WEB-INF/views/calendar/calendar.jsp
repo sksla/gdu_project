@@ -953,7 +953,7 @@
 	            			data:{ majorNo: $badge.eq(0).text() },
 	            			type:"get",
 	            			success: function(list){
-	            				$(".my_mem_list").empty();
+	            				$("#insert_share .my_mem_list").empty();
 	            				
 	            				
 	            				for(const member of list){
@@ -1368,6 +1368,7 @@
          			 							$(this).prop("checked", false);
          			 						}
          			 	       	});
+         		        		
          			 	       	
          			 	       	$("#insert_share .list_box_wrap input[type='hidden']").remove();
          								resetEnrollLineModal();
@@ -1448,6 +1449,10 @@
 	 							$(this).prop("disabled", true);
 		 	       	})
 		 	       	
+		 	       	$("#detail_share .custom-checkbox label").each(function(){
+		 	       		$(this).css('pointer-events', 'none');
+		 	       	})
+		 	       	
 		 	       	// ul안 초기화
 		 	       	$("#detail_share .levelOne").empty();
          			$("#detail_share .levelTwo").empty();
@@ -1470,7 +1475,7 @@
 		 	       		}
 		 	       		
 		 	       	}
-         			
+         			console.log("shList" , shList);
          			$("#detail_share").modal("show");
 		 	       	
          		}// function openDetailShareModal 끝
@@ -1520,7 +1525,16 @@
 			                   
 	            				}else if(rep[i].ctgType == "2"){
 	            					
-	            					selectCtg += "<option value='" + rep[i].ctgNo + "'>" + rep[i].ctgName + "(" + rep[i].ctgWriter + ")</option>";
+	            					
+		            					let list = rep[i].shList; 
+		            					for(let j=0; j<list.length; j++){
+		            						if(list[j].shareMemNo == memNo && list[j].rightLevel != "3"){
+		            							
+			            						selectCtg += "<option value='" + rep[i].ctgNo + "'>" + rep[i].ctgName + "(" + rep[i].ctgWriter + ")</option>";
+		            						}
+		            					}
+	            						
+	            				
 	            					
 	            					shVal += "<li>"
 				                         +		"<div class='cal_ctg'>"
