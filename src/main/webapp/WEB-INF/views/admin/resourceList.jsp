@@ -60,7 +60,7 @@
                   <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                       <li class="breadcrumb-item">
-                        <a class="text-muted text-decoration-none" href="../main/index.html">Home</a>
+                        <a class="text-muted text-decoration-none" href="${ contextPath }/member/mainpage">Home</a>
                       </li>
                       <li class="breadcrumb-item" aria-current="page">자원관리</li>
                     </ol>
@@ -93,7 +93,7 @@
               <input id="searchName" type="text" class="form-control searchName" placeholder="자원명으로 검색">
 							<br>
               <div id="deleteAndUpdate"  style="display: none;">
-                <div class="updateResource" style="display: inline;" data-bs-toggle="modal" data-bs-target="#updateResource" onclick="updateResource();">수정</div>
+                <div class="updateResource" style="display: inline;" data-bs-toggle="modal" data-bs-target="" onclick="updateResource();">수정</div>
                 <div class="deleteResource" style="display: inline;" data-bs-toggle="modal" data-bs-target="#deleteResource" onclick="deleteResource();">삭제</div>
               </div>
             
@@ -123,19 +123,20 @@
 	                    <th class="selectResourceCheck">
 	                      <h6 class="fs-2 mb-0">
 	                        <input type="checkbox" value="${r.resNo}" class="selectResource" onclick="event.stopPropagation();">
+	                        <input type="hidden" value="${r.resDetail}" class="resDetail" >
 	                      </h6>
 	                    </th>
 	                    <th>
-	                      <h6 class="fs-2 mb-0">${r.resType}</h6>
+	                      <h6 class="fs-2 mb-0 resType">${r.resType}</h6>
 	                    </th>
 	                    <th>
 	                      <h6 class="fs-2 mb-0 resName">${r.resName}</h6>
 	                    </th>
 	                    <th>
-	                      <h6 class="fs-2 mb-0">${r.resGps}</h6>
+	                      <h6 class="fs-2 mb-0 resGps">${r.resGps}</h6>
 	                    </th>
 	                    <th>
-	                      <h6 class="fs-2 mb-0">
+	                      <h6 class="fs-2 mb-0 stock">
 	                      	<c:choose>
 	                      		<c:when test="${r.stock eq '0'}">
 	                      			-
@@ -286,6 +287,7 @@
                       			<td><input type="number" class="form-control stock" name="stock" style="width: 300px;" placeholder="(비품일 경우에 입력해주세요.)"></td>
                       		</tr>
                       		<tr>
+                      			<td>상세설명: </td>
                       			<td colspan="2"><textarea class="form-control" name="resDetail" rows="3" placeholder="상세설명"></textarea></td>
                       		</tr>
                       	</table>
@@ -336,7 +338,7 @@
               
               	// ready function
               	$(document).ready(function(){
-              		$(".stock").attr("disabled", true);
+              		$("input[name='stock']").attr("disabled", true);
               	});
               
               	// 자원 수정시 타입 비품 선택시 위치 입력양식 비활성화
@@ -364,17 +366,57 @@
               	// 자원수정 함수
               	function updateResource(){
               		let checkedbox = $(".selectResource:checked");
+              		let checkedboxCount = checkedbox.length;
               		
-              		checkedbox.each(function(){
-              			let multiValue = $(this).val();
-              			let inputHidden = "<input type='hidden' name='resNo' value='" + multiValue + "'>";
-              			$("#updateForm").append(inputHidden);
-              		})
-              		
-              		$('#updateResource').on('hidden.bs.modal', function () {
-             		    $('#updateForm').find('input[name="resNo"]').remove();
-               	});
-              		
+              		if(checkedboxCount > 1){
+              			alert("자원은 다중수정이 불가능합니다.");
+              			return false;
+              		}else if(checkedboxCount == 1){
+              			
+	              		checkedbox.each(function(){
+	              			// 체크박스와 동일한 위치의 tr값들을 가져옴
+	              			let multiValue = $(this).val();
+	              			let row = $(this).closest('tr');
+                      let resDetailValue = row.find('.resDetail').val();
+                      let resTypeValue = row.find('.resType').text();
+                      let resNameValue = row.find('.resName').text();
+                      let resGpsValue = row.find('.resGps').text();
+                      let stockValue = row.find('.stock').text().trim();
+                      
+                      let form = $("#updateForm");
+                      form.find('select[name="resType"] option').each(function() {
+                        if ($(this).text() === resTypeValue) {
+                          $(this).prop('selected', true);
+                        } else {
+                          $(this).prop('selected', false);
+                        }
+                      });
+                      form.find('input[name="resName"]').val(resNameValue);
+                      form.find('input[name="resGps"]').val(resGpsValue);
+                      form.find('textarea[name="resDetail"]').val(resDetailValue);
+                      
+                      if(stockValue != '-'){
+                      	form.find('input[name="stock"]').val(parseInt(stockValue));
+                      	form.find("input[name='stock']").removeAttr("disabled");
+                      }
+                      
+                      
+	              			
+	              			let inputHidden = "<input type='hidden' name='resNo' value='" + multiValue + "'>";
+	              			$("#updateForm").append(inputHidden);
+	              			
+	              		});
+
+	              		// 모달이 닫혔을 때 append 됐던 name값을 지우는 구문
+	              		$('#updateResource').on('hidden.bs.modal', function () {
+	              			$('#updateForm').find('input[name="resNo"]').remove();
+	                  });
+	              		
+		              	// 모달 띄우기
+		                $('#updateResource').modal('show');
+	              		
+              		}
+
               	}
               	
               	// 자원삭제 함수
@@ -451,19 +493,20 @@
               											+			"<th class='selectResourceCheck'>"
               											+				"<h6 class='fs-2 mb-0'>"
               											+					"<input type='checkbox' value='" + map.resourceList[i].resNo + "' class='selectResource' onclick='event.stopPropagation();'>"
+              											+					"<input type='hidden' value='" + map.resourceList[i].resDetail + "' class='resDetail'>"
               											+				"</h6>"
               											+			"</th>"
               											+			"<th>"
-              											+				"<h6 class='fs-2 mb-0'>" + map.resourceList[i].resType + "</h6>"
+              											+				"<h6 class='fs-2 mb-0 resType'>" + map.resourceList[i].resType + "</h6>"
               											+			"</th>"
               											+			"<th>"
               											+				"<h6 class='fs-2 mb-0 resName'>" + map.resourceList[i].resName + "</h6>"
               											+			"</th>"
               											+			"<th>"
-              											+				"<h6 class='fs-2 mb-0'>" + map.resourceList[i].resGps + "</h6>"
+              											+				"<h6 class='fs-2 mb-0 resGps'>" + map.resourceList[i].resGps + "</h6>"
               											+			"</th>"
               											+			"<th>"
-              											+				"<h6 class='fs-2 mb-0'>";
+              											+				"<h6 class='fs-2 mb-0 stock'>";
 						             											if(map.resourceList[i].stock == 0){
 						             												filterTable += "-";
 						             											}else{

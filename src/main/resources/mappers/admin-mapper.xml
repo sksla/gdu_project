@@ -1027,6 +1027,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				 , use_status
 				 , res_gps
 				 , stock
+				 , res_detail
 			from resources
 		 where status = 'Y'
 		 order
@@ -1061,6 +1062,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				 , use_status
 				 , res_gps
 				 , stock
+				 , res_detail
 			from resources
 		 where status = 'Y'
 		 <if test="r.resName != ''">

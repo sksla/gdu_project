@@ -941,7 +941,6 @@ public class AdminController {
 		r.setResType(r.getResType().equals("1") ? "회의실" : r.getResType().equals("2") ? "강의실" : r.getResType().equals("3") ? "기타" : "비품");
 		model.addAttribute("reserList", reserList);
 		model.addAttribute("r", r);
-		log.debug("예약목록: {}", reserList);
 		return "admin/resourceDetail";
 	}
 	
