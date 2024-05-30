@@ -14,10 +14,25 @@
     color:#5a6a85; 
     border: 1px solid #dfe5ef;
   }
+  /* 토요일 날짜 파란색 */
+	.app-calendar .fc .fc-day-sat .fc-daygrid-day-number{
+	  color: blue;
+	  text-decoration: none;
+	}
+	.app-calendar .fc-v-event .fc-event-main  {
+		border:1px solid white;
+	}
+  
+  .holiday{
+		color:red; 
+		background-color:transparent !important; 
+		border-color:transparent;
+		pointer-events:none;
+	}
 </style>
 
-<script
-	src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@fullcalendar/google-calendar@6.1.13/index.global.min.js"></script>
 <script>
 
   document.addEventListener('DOMContentLoaded', function() {
@@ -29,6 +44,7 @@
         center: 'title',
         right: 'dayGridMonth,timeGridWeek,timeGridDay,list'
     }
+    
     });
     calendar.render();
   });
@@ -404,6 +420,7 @@
          			var calendarEl = document.getElementById('calendar');
 		   		    var calendar = new FullCalendar.Calendar(calendarEl, {
 		   		      initialView: 'dayGridMonth',
+		   		  	  googleCalendarApiKey: 'AIzaSyDcnW6WejpTOCffshGDDb4neIrXVUA1EAE',
 		   		      headerToolbar: {
 		   		        left: 'prev,next today',
 		   		        center: 'title',
@@ -556,7 +573,15 @@
 		       			    });
 
 		       			    $("#detailForm").modal("show");
-		       			}
+		       			},
+		       			eventSources: [ {
+       		        googleCalendarId: 'ko.south_korea#holiday@group.v.calendar.google.com',
+       		        classNames: 'holiday',
+       		        backgroundColor: 'white',
+       		        textColor: '#e63c09',
+       		        constraint: 'availableForMeeting'
+       		       }
+       					]
 		       			
 		       			/*
 		       			dayCellContent: function(e) {

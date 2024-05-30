@@ -9,12 +9,14 @@
 <title>일정</title>
 
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@fullcalendar/google-calendar@6.1.13/index.global.min.js"></script>
 <script>
   
   document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
     var calendar = new FullCalendar.Calendar(calendarEl, {
       initialView: 'dayGridMonth',
+    	googleCalendarApiKey: 'AIzaSyDcnW6WejpTOCffshGDDb4neIrXVUA1EAE',
       headerToolbar: {
         left: 'prev,next today',
         center: 'title',
@@ -33,8 +35,16 @@
         
       },
       events:{
-    	  
-      }
+         
+         },
+     	eventSources: [ {
+         googleCalendarId: 'ko.south_korea#holiday@group.v.calendar.google.com',
+         classNames: 'holiday',
+         backgroundColor: 'white',
+         textColor: '#e63c09',
+         constraint: 'availableForMeeting'
+        }
+			]    
 
     });
     calendar.render();
@@ -133,6 +143,13 @@
 	}
 	
 	.fc-event{cursor:pointer;}
+	.holiday{
+		color:red; 
+		background-color:transparent; 
+		border-color:transparent;
+		pointer-events:none;
+	}
+	
 	
 	
 	/* 결재선 모달 스타일 */
@@ -1773,7 +1790,9 @@
 		     			
 		     			var calendarEl = document.getElementById('calendar');
 		   		    var calendar = new FullCalendar.Calendar(calendarEl, {
+		   		   	 
 		   		      initialView: 'dayGridMonth',
+		   		   		googleCalendarApiKey: 'AIzaSyDcnW6WejpTOCffshGDDb4neIrXVUA1EAE',
 		   		      headerToolbar: {
 		   		        left: 'prev,next today',
 		   		        center: 'title',
@@ -2003,7 +2022,15 @@
 									$("#detailForm").modal("show");
 								
 		       	
-		       			}
+		       			},
+		       			eventSources: [ {
+                            googleCalendarId: 'ko.south_korea#holiday@group.v.calendar.google.com',
+                            classNames: 'holiday',
+                            //backgroundColor: 'white',
+                            textColor: '#e63c09',
+                            constraint: 'availableForMeeting'
+                           }
+            							]
 		   		    
 		   		    });
 		   		    
