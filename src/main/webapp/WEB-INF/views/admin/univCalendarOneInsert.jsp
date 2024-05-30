@@ -55,7 +55,7 @@
                   <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                       <li class="breadcrumb-item">
-                        <a class="text-muted text-decoration-none" href="../main/index.html">Home</a>
+                        <a class="text-muted text-decoration-none" href="${ contextPath }/member/mainpage">Home</a>
                       </li>
                       <li class="breadcrumb-item" aria-current="page">학사일정개별등록</li>
                     </ol>

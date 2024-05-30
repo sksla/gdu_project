@@ -38,7 +38,7 @@
        <!-- 로고 -->
        <div class="brand-logo d-flex align-items-center justify-content-between">
          <a href="${ contextPath }" class="text-nowrap logo-img">
-           <img src="${ contextPath }/assets/images/logos/dark-logo.svg" class="dark-logo" alt="Logo-Dark" />
+           <img src="${ contextPath }/assets/images/logos/longlogo.png" class="dark-logo pt-3 pb-3" width="" height="72" />
          </a>
          <a href="javascript:void(0)" class="sidebartoggler ms-auto text-decoration-none fs-5 d-block d-xl-none">
            <i class="ti ti-x"></i>
