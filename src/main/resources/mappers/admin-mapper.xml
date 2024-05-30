@@ -1270,7 +1270,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		  from member
 		  join major on (major.major_no = member.major_no)
 		 where member.status = 'N'
-		   and mem_name LIKE '%' || #{memName} || '%'
 	</select>
 	
 	<insert id="inserResourceReservation">

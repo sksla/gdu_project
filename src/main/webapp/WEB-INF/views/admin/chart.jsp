@@ -166,7 +166,8 @@
     margin: 5px;
   }
   .majorTable{
-  	margin: 0 auto;
+  	margin: auto;
+  	width: 500px;
   }
 </style>
 </head>
@@ -487,8 +488,8 @@
           <!-- 페이지 내용 -->
           <div class="card">
             <div class="card-body">
-		
-					    <div class="tree">
+							
+					    <div class="tree" align="center">
 				        <ul>
 			            <li>
 		                <a  class="topLevel">GDU</a>
@@ -545,16 +546,28 @@
               </div>
                  
                  
-               </div>
-					    
 					    <script>
+					    
+					    	let currentMajorNo = 0;
+					    
 					    	// 학과 직원 ajax 검색 함수 요청
 					    	function majorMemberList(page, majorNo, majorName){
-					    		majorMemberSelect(page, majorNo, majorName);
+
+					    		if(currentMajorNo != majorNo){
+					    			majorMemberSelect(page, majorNo, majorName);
+					    			currentMajorNo = majorNo;
+					    		}else{
+			    	        $(".majorTable, #search").slideUp("slow", function() {
+		    	            $(this).empty().show();
+		    	            currentMajorNo = 0;
+			    	        });
+					    		}
+					    		
 					    	}
 					    	
-					    	// 힉과직원 ajax 검색 함수
+					    	// 학과직원 ajax 검색 함수
 					    	function majorMemberSelect(page, majorNo, majorName){
+					    		console.log("실행되나?");
 					    		$.ajax({
 					    			url:"${contextPath}/admin/chartMemberList.do",
 					    			type:"get",
@@ -564,17 +577,16 @@
 					    				let memPage = "";
 					    				$(".majorTable").empty();
 					    				$("#search").empty();
-					    				console.log(map);
 					    				memTable +=	'<p class="fs-7 fw-semibold">' + majorName + '</p>'
 					    									+		'<br>'
-					    									+		'<table class="table border text-nowrap mb-0 align-middle ajaxTable" style="width: 400px;">'
-					    									+			'<thead class="text-dark fs-4" align="center" style="width: 400px;">'
+					    									+		'<table class="table border text-nowrap mb-0 align-middle ajaxTable">'
+					    									+			'<thead class="text-dark fs-4" align="center">'
 					    									+				'<tr>'
 					    									+					'<th>'
-					    									+						'<h6 class="fs-4 fw-semibold mb-0">이름</h6>'
+					    									+						'<h6 class="fs-4 fw-semibold mb-0">사번</h6>'
 					    									+					'</th>'
 					    									+					'<th>'
-					    									+						'<h6 class="fs-4 fw-semibold mb-0">사번</h6>'
+					    									+						'<h6 class="fs-4 fw-semibold mb-0">이름</h6>'
 					    									+					'</th>'
 					    									+					'<th>'
 					    									+						'<h6 class="fs-4 fw-semibold mb-0">직급</h6>'
@@ -582,15 +594,12 @@
 					    									+					'<th>'
 					    									+						'<h6 class="fs-4 fw-semibold mb-0">이메일</h6>'
 					    									+					'</th>'
-					    									+					'<th>'
-					    									+						'<h6 class="fs-4 fw-semibold mb-0">주소</h6>'
-					    									+					'</th>'
 					    									+				'</tr>'
 					    									+			'</thead>'
-					    									+			'<tbody align="center" style="width: 400px;">';
+					    									+			'<tbody align="center">';
 					    				if(map.memList.length == 0){
 					    					memTable +=	'<tr>'
-					    										+		'<td colspan="5">'
+					    										+		'<td colspan="4">'
 					    										+			'<h6 class="fs-4 fw-semibold mb-0" align="center">' + majorName + '의 직원이 없습니다.</h6>'
 					    										+		'</td>'
 					    										+	'</tr>';
@@ -598,10 +607,10 @@
 						    				for(let i=0; i<map.memList.length; i++){
 						    					memTable +=	'<tr>'
 						    										+		'<td>'
-						    										+			'<h6 class="mb-0 fw-normal fs-4">' + map.memList[i].memName + '</h6>'
+						    										+			'<h6 class="mb-0 fw-normal fs-4">' + map.memList[i].memNo + '</h6>'
 						    										+		'</td>'
 						    										+		'<td>'
-						    										+			'<h6 class="mb-0 fw-normal fs-4">' + map.memList[i].memNo + '</h6>'
+						    										+			'<h6 class="mb-0 fw-normal fs-4">' + map.memList[i].memName + '</h6>'
 						    										+		'</td>'
 						    										+		'<td>'
 						    										+			'<h6 class="mb-0 fw-normal fs-4">' + map.memList[i].jobNo + '</h6>'
@@ -609,16 +618,15 @@
 						    										+		'<td>'
 						    										+			'<h6 class="mb-0 fw-normal fs-4">' + map.memList[i].email + '</h6>'
 						    										+		'</td>'
-						    										+		'<td>'
-						    										+			'<h6 class="mb-0 fw-normal fs-4">' + map.memList[i].address + '</h6>'
-						    										+		'</td>'
 						    										+	'</tr>';
 						    				}
 					    				}
 					    				memTable +=		'</tbody>'
 					    									+	'</table>'
 					    									+	'<br>';
-					    				$(".majorTable").append(memTable);
+					    				//$(".majorTable").append(memTable);
+					    				//$(".majorTable").empty();
+					    				$(memTable).hide().appendTo(".majorTable").slideDown("slow");
 					    				
 					    				if(map.pi.listCount > map.pi.boardLimit){
 					    					
@@ -647,8 +655,9 @@
 							                   + 			"</li>"
 							                   +		"</ul>"
 							                   +	"</nav>";
-							           $("#search").append(memPage);
-							                   
+							           //$("#search").append(memPage);
+							           //$("#search").empty();
+							           $(memPage).hide().appendTo("#search").slideDown("slow");        
 					    				}
 					    			},
 					    			error:function(){
@@ -657,6 +666,8 @@
 					    		});
 					    	}
 					    </script>
+             </div>
+					    
 
             </div>
           </div>

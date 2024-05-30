@@ -443,8 +443,8 @@ public class AdminServiceImpl implements AdminService {
 
 	// 일정/예약페이지 비품사용기록 등록시 사용자조회 ajax
 	@Override
-	public List<MemberDto> searchReservationMemberList(String memName) {
-		return adminDao.searchReservationMemberList(memName);
+	public List<MemberDto> searchReservationMemberList() {
+		return adminDao.searchReservationMemberList();
 	}
 
 	// 일정/예약페이지 비품사용기록 등록기능

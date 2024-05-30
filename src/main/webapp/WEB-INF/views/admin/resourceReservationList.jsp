@@ -21,7 +21,7 @@
   #searchName{width: 250px;}
   .text, .searchBtn {margin: 5px;}
   .tableBody tr{cursor: pointer;}
-  .selectMember{
+  .scroll{
   	max-height: 200px;
   	overflow-y: scroll;
   }
@@ -150,8 +150,7 @@
                   <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                       <div class="modal-header d-flex align-items-center">
-                        <h4 class="modal-title" id="myLargeModalLabel">비품사용기록</h4>&nbsp;&nbsp;&nbsp;
-                        <span class="hashTag"></span>
+                        <h4 class="modal-title" id="myLargeModalLabel">비품사용기록</h4>                
                       </div>
                       <hr>
                       <div class="modal-body myModalBody resourcesBody">
@@ -185,8 +184,15 @@
 		                      		<td><input type="date" class="form-control" name="revDate" required style="width: 280px;"></td>
 		                      	</tr>
 	                      	</table>
-	                        <div class="selectMember">
-	                        	<!-- 동적으로 생성 -->
+	                      	<hr>
+	                      	<div class="scroll">
+		                      	<c:forEach var="m" items="${memList}">
+			                        <div class="selectMember">
+																<span class="addMem">${m.memNo} / ${m.memName} / ${m.majorNo}</span>
+																<input type="checkbox" class="checkMem" value="${m.memNo}">
+																<input type="hidden" class="hiddenMemName" value="${m.memName}">
+			                        </div>
+		                        </c:forEach>
 	                        </div>
                       	</div>
                         <br>
@@ -194,6 +200,7 @@
 													<textarea class="form-control addLeaveReason" rows="3" placeholder="상세설명을 작성해주세요" required style="width: 280px; resize:none;" name="revReason"></textarea> 	
                         </div>
                         <hr>
+                        <span class="resourceHashTag"></span><span class="memHashTag"></span>
                       </div>
                       <div class="modal-footer">
                         <button type="submit" class="btn bg-danger-subtle text-danger  waves-effect text-start">등록</button>
@@ -239,21 +246,22 @@
               
               <script>
               
-              	// 최초 비품들 숨기기
+              	// 최초 비품등록모달의 비품 및 사용자 숨기기
               	$(document).ready(function(){
               		$(".reservationResourceCheck").hide();
+              		$(".selectMember").hide();
               	});
               
-              	// 비품사용기록 등록시 사용자 조회 ajax 함수 요청
+              	// 비품사용기록 등록시 사용자 조회 함수 요청
               	$(document).on("keyup", ".searchReservationMember", function(){
               		if($(this).val().trim() != ""){
               			searchReservationMember();
               		}else{
-              			$(".selectMember").text("");
+              			$(".selectMember").hide();
               		}
               	});
               
-              	// 비품사용기록 등록시 비품명 조회 ajax 함수 요청
+              	// 비품사용기록 등록시 비품명 조회 함수 요청
               	$(document).on("keyup", ".searchResource", function(){
               		if($(this).val().trim() != ""){
               			searchResource();
@@ -262,39 +270,24 @@
               		}
               	});
               	
-              	// 비품사용기록 등록시 사용자 조회 ajax 함수
+              	// 비품사용기록 등록시 사용자 조회 함수
               	function searchReservationMember(){
-              		let memName = $(".searchReservationMember").val();
-              		
-              		$.ajax({
-              			url:"${contextPath}/admin/searchReservationMember.do",
-              			type:"post",
-              			data:"memName=" + memName,
-              			success:function(memList){
-              				let mem = "";
-              				$(".selectMember").text("");
-              				if(memList.length == 0){
-              					mem +=	"<hr>"
-              							+		"<span>조회된 직원이 없습니다.</span> <br>"
-              							+		"<hr>";
-              				}else{
-              					mem +=	"<hr>";
-              					for(let i=0; i<memList.length; i++){
-              						mem +=	"<span class='addMem'>" + memList[i].memNo + " / " + memList[i].memName + " / " + memList[i].majorNo +"</span><input type='checkbox' class='checkMem' value='" + memList[i].memNo + "'><br>"
-              					}
-              					mem +=	"<hr>";
-              				}
-              				$(".selectMember").append(mem);
-              			},
-              			error:function(){
-              				console.log("비품사용기록 등록시 사용자 조회 ajax 통신 실패");
+              		// 입력창에 쓴 값
+              		let memberKeyword = $(".searchReservationMember").val().trim();
+
+              		$(".hiddenMemName").each(function(){
+              			let memName = $(this).val();
+              			if(memName.includes(memberKeyword)){
+              				$(this).parent().show();
+              			}else{
+              				$(this).parent().hide();
               			}
-              		});
+              		})
+              		
               	}
               	
               	// 비품사용기록 등록시 비품 조회 함수
               	function searchResource(){
-
               		// 입력창에 쓴 값 
               		let resourceKeyword = $(".searchResource").val().replace(/\s+/g, '').toLowerCase();
               		
@@ -312,7 +305,7 @@
               	$(document).on("submit", "#insertReservationForm", function(event){
               		
               		let checkedResource = $(".checkResource").filter(":checked");
-              		let checkedMem = $(".checkMem:checked").filter(":checked");
+              		let checkedMem = $(".checkMem").filter(":checked");
               		
               		if(checkedMem.length == 0 && checkedResource.length == 0){
               			event.preventDefault();
@@ -326,16 +319,15 @@
               		}
               		
               		// 입력된 수량 가져오기
-              		let inputStock = $("input[name='revCount']").val();
-              		
-            	    // 선택한 비품의 재고 가져오기
-            	    //let stockFullText = $(".resourceNameStock").text().trim();
-            	    //let stockText = stockFullText.split("/")[1];
-            	    //let stock = parseInt(stockText);
-            	    let selectedResource = $(".checkResource:checked");
-            	    let resourceStock = parseInt(selectedResource.data("stock"));
+              		let inputStock = $("input[name='revCount']").val().trim();
             	    
-            	    if(inputStock > resourceStock){
+              		// 체크된 체크박스의 수량 가져오기
+            	    let stockFullText = checkedResource.closest(".reservationResourceCheck").find(".resourceNameStock").text().trim();
+                  let stockText = stockFullText.split("/")[1].replace("개", "").trim();
+                  let stock = parseInt(stockText);
+                  let inputStockInt = parseInt(inputStock);
+
+            	    if(inputStockInt > stock){
             	    	event.preventDefault();
             	    	alert("입력하신 수량이 비품의 재고보다 많습니다.");
             	    	$("input[name='revCount']").val("");
@@ -345,34 +337,44 @@
               	
               	// 사용자선택 체크박스 여부에 따라 체크되지 않은 체크박스 name 속성 지우는 스크립트
               	$(document).on("change", ".checkMem", function(){
+              		
               		$(".checkMem").not(this).prop("checked", false).removeAttr("name");
+									let memName = "";
               		
               		if($(this).is(":checked")){
+              			$(".memHashTag").empty();
               			$(this).attr("name", "memNo");
               			$(this).attr("checked", true);
+              			memNamePull = $(this).prev().text().trim();
+              			memName = memNamePull.split("/")[1];
+              			memName += "/" + memNamePull.split("/")[2];
+              			memName = '<span class="addHashTag">#' + memName + '</span>';
+              			console.log(memName);
+              			$(".memHashTag").append(memName);
               		}else{
               			$(this).removeAttr("name");
+              			$(".memHashTag").empty();
+              			$(this).prop("checked", false);
               		}
               	});
               	
               	// 비품 체크박스 여부에 따라 체크되지 않은 체크박스의 name 속성 지우는 스크립트
               	$(document).on("change", ".checkResource", function(){
               		
+             			$(".checkResource").not(this).prop("checked", false).removeAttr("name");
               		let resourceName = "";
-              		
-              		if($(this).is(":checked")){			
-              			$(".checkResource").not(this).prop("checked", false).removeAttr("name");
-              			
-              			$(".hashTag").empty();
+             			
+              		if($(this).is(":checked")){					
+              			$(".resourceHashTag").empty();
               			$(this).attr("name", "resNo");
               			$(this).prop("checked", true);
               			resourceNamePull = $(this).prev().text().trim();
               			resourceName = resourceNamePull.split("/")[0];
               			resourceName = '<span class="addHashTag">#' + resourceName + '</span>';
-              			$(".hashTag").append(resourceName);
+              			$(".resourceHashTag").append(resourceName);
               		}else{
               			$(this).removeAttr("name");
-              			$(".hashTag").empty();
+              			$(".resourceHashTag").empty();
               			$(this).prop("checked", false);
               		}
               		

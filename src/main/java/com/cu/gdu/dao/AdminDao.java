@@ -421,8 +421,8 @@ public class AdminDao {
 	}
 	
 	// 일정/예약페이지 비품사용기록 등록시 사용자조회 ajax
-	public List<MemberDto> searchReservationMemberList(String memName) {
-		return sqlSessionTemplate.selectList("adminMapper.searchReservationMemberList", memName);
+	public List<MemberDto> searchReservationMemberList() {
+		return sqlSessionTemplate.selectList("adminMapper.searchReservationMemberList");
 	}
 	
 	// 일정/예약페이지 비품사용기록 등록기능

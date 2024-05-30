@@ -950,6 +950,7 @@ public class AdminController {
 		int listCount = adminService.resourceReservationListCount();
 		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 10);
 		List<ReservationDto> reserList = adminService.resourceReservationList(pi);
+		List<MemberDto> memList = adminService.searchReservationMemberList();
 		for(ReservationDto r : reserList) {
 			r.setResType(r.getResType().equals("1") ? "회의실" : r.getResType().equals("2") ? "강의실" : r.getResType().equals("3") ? "기타" : "비품");
 			if(r.getStatus().equals("1") && r.getResType().equals("비품")) {
@@ -964,6 +965,7 @@ public class AdminController {
 			}
 		}
 		List<ResourceDto> resourceList = adminService.searchResourceList();
+		model.addAttribute("memList", memList);
 		model.addAttribute("resourceList", resourceList);
 		model.addAttribute("pi", pi);
 		model.addAttribute("reserList", reserList);
@@ -995,25 +997,6 @@ public class AdminController {
 		}
 		map.put("reserList", reserList);
 		return map;
-	}
-	
-	
-	// 일정/예약 비품사용기록 등록시 비품조회 ajax
-	/*
-	@ResponseBody
-	@PostMapping(value="/searchResource.do", produces="application/json; charset=utf-8")
-	public List<ResourceDto> searchResourceList(String resName){
-		List<ResourceDto> resourceList = adminService.searchResourceList(resName);
-		return resourceList;
-	}
-	*/
-	
-	// 일정/예약 비품사용기록 등록시 사용자 조회 ajax
-	@ResponseBody
-	@PostMapping(value="/searchReservationMember.do", produces="application/json; charset=utf-8")
-	public List<MemberDto> searchReservationMemberList(String memName){
-		List<MemberDto> memList = adminService.searchReservationMemberList(memName);
-		return memList;
 	}
 	
 	// 일정/예약 비품사용기록 등록
