@@ -37,6 +37,7 @@
 		<typeAlias type="com.cu.gdu.dto.ResourceDto" alias="ResourceDto"/>
 		<typeAlias type="com.cu.gdu.dto.ChatDto" alias="ChatDto" />
 		<typeAlias type="com.cu.gdu.dto.ChatRoomDto" alias="ChatRoomDto" />
+		<typeAlias type="com.cu.gdu.dto.TodoListDto" alias="TodoListDto" />
 		
 	</typeAliases>
 	
