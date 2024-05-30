@@ -65,6 +65,15 @@
              </a>
            </li>
            <li class="sidebar-item">
+             <a class="sidebar-link" href="${ contextPath }/calendar/univCalendar.page" aria-expanded="false">
+               <span>
+                 <i class="ti ti-calendar"></i>
+               </span>
+               <span class="hide-menu">학사일정</span>
+             </a>
+           </li>
+           <!--  
+           <li class="sidebar-item">
              <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
                <span class="d-flex">
                  <i class="ti ti-calendar"></i>
@@ -90,9 +99,9 @@
                </li>
              </ul>
            </li>
-
+						-->
            <li class="sidebar-item">
-             <a class="sidebar-link" href="./main/app-kanban.html" aria-expanded="false">
+             <a class="sidebar-link" href="${ contextPath }/calendar/todoList.page" aria-expanded="false">
                <span>
                  <i class="ti ti-list-check"></i>
                </span>
