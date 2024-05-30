@@ -203,7 +203,7 @@ public interface AdminService {
 	List<ReservationDto> ajaxFilterResourceReservationList(Map<String, Object> map);
 	
 	// 일정/예약페이지 비품사용기록 등록시 비품조회 ajax
-	List<ResourceDto> searchResourceList(String resName);
+	List<ResourceDto> searchResourceList();
 	
 	// 일정/예약페이지 비품사용기록 등록시 사용자조회 ajax
 	List<MemberDto> searchReservationMemberList(String memName);

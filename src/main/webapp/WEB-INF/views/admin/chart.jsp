@@ -168,9 +168,6 @@
   .majorTable{
   	margin: 0 auto;
   }
-  .ajaxTable{
-  	
-  }
 </style>
 </head>
 

@@ -437,8 +437,8 @@ public class AdminServiceImpl implements AdminService {
 
 	// 일정/예약페이지 비품사용기록 등록시 비품조회 ajax
 	@Override
-	public List<ResourceDto> searchResourceList(String resName) {
-		return adminDao.searchResourceList(resName);
+	public List<ResourceDto> searchResourceList() {
+		return adminDao.searchResourceList();
 	}
 
 	// 일정/예약페이지 비품사용기록 등록시 사용자조회 ajax

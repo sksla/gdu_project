@@ -963,6 +963,8 @@ public class AdminController {
 				r.setRevDate(r.getRevDate() + "  (" + r.getStartTime() + "-" + r.getEndTime() + ")");
 			}
 		}
+		List<ResourceDto> resourceList = adminService.searchResourceList();
+		model.addAttribute("resourceList", resourceList);
 		model.addAttribute("pi", pi);
 		model.addAttribute("reserList", reserList);
 		return "admin/resourceReservationList";
@@ -997,12 +999,14 @@ public class AdminController {
 	
 	
 	// 일정/예약 비품사용기록 등록시 비품조회 ajax
+	/*
 	@ResponseBody
 	@PostMapping(value="/searchResource.do", produces="application/json; charset=utf-8")
 	public List<ResourceDto> searchResourceList(String resName){
 		List<ResourceDto> resourceList = adminService.searchResourceList(resName);
 		return resourceList;
 	}
+	*/
 	
 	// 일정/예약 비품사용기록 등록시 사용자 조회 ajax
 	@ResponseBody

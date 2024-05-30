@@ -1260,7 +1260,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		  from resources
 		 where status = 'Y'
 		   and res_type = '4'
-		   and res_name LIKE '%' || #{resName} || '%'
 	</select>
 	
 	<select id="searchReservationMemberList" resultMap="memberResult">

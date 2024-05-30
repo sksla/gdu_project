@@ -25,6 +25,12 @@
   	max-height: 200px;
   	overflow-y: scroll;
   }
+  .addHashTag{
+    background-color: #ebf3fe;
+    padding: 8px;
+    border-radius: 18px;
+    color: gray;
+  }
 </style>
 </head>
 <body>
@@ -144,7 +150,8 @@
                   <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                       <div class="modal-header d-flex align-items-center">
-                        <h4 class="modal-title" id="myLargeModalLabel">비품사용기록</h4>
+                        <h4 class="modal-title" id="myLargeModalLabel">비품사용기록</h4>&nbsp;&nbsp;&nbsp;
+                        <span class="hashTag"></span>
                       </div>
                       <hr>
                       <div class="modal-body myModalBody resourcesBody">
@@ -153,30 +160,35 @@
 		                      	<tr>
 		                      		<th>&nbsp;&nbsp;&nbsp;비품명:</th>
 		                      		<td><input type="text" class="form-control searchResource" placeholder="비품명을 검색 후 선택해주세요." style="width: 280px;"></td>
-		                      	</tr>          			
+		                      	</tr>    			
                       		</table>
-                      		<br>
-                      		<div class="reservationResourceCheck">
-                      		<!-- 전부 동적생성 -->
-                      		</div>
+                      		<hr>
+                     			<c:forEach var="r" items="${resourceList}">
+                     				<div class="reservationResourceCheck">
+                      				<span class="resourceNameStock">${r.resName} / ${r.stock}개</span>
+															<input type="checkbox" class="checkResource" value="${r.resNo}">
+															<input type="hidden" class="hiddenResName" value="${r.resName}">
+														</div>
+                     			</c:forEach>
+                     			<br>
 	                      	<table>
-		                      	<tr>
-		                      		<td>&nbsp;&nbsp;&nbsp;수량:</td>
-		                      		<td><input type="number" class="form-control" name="revCount" required placeholder="수량을 작성해주세요(숫자만)" style="width: 280px;"></td>
-		                      	</tr>
 		                      	<tr>
 		                      		<td>&nbsp;&nbsp;&nbsp;사용자:</td>
 		                      		<td><input type="text" class="form-control searchReservationMember" placeholder="사용자 이름 검색" style="width: 280px;"></td>
+		                      	</tr>
+		                      	<tr>
+		                      		<td>&nbsp;&nbsp;&nbsp;수량:</td>
+		                      		<td><input type="number" class="form-control" name="revCount" required placeholder="수량을 작성해주세요(숫자만)" style="width: 280px;"></td>
 		                      	</tr>
 		                      	<tr>
 		                      		<td>&nbsp;&nbsp;&nbsp;대여일:</td>
 		                      		<td><input type="date" class="form-control" name="revDate" required style="width: 280px;"></td>
 		                      	</tr>
 	                      	</table>
+	                        <div class="selectMember">
+	                        	<!-- 동적으로 생성 -->
+	                        </div>
                       	</div>
-                        <div class="selectMember">
-                        	<!-- 동적으로 생성 -->
-                        </div>
                         <br>
                         <div class="resourceReservationReason">
 													<textarea class="form-control addLeaveReason" rows="3" placeholder="상세설명을 작성해주세요" required style="width: 280px; resize:none;" name="revReason"></textarea> 	
@@ -227,6 +239,11 @@
               
               <script>
               
+              	// 최초 비품들 숨기기
+              	$(document).ready(function(){
+              		$(".reservationResourceCheck").hide();
+              	});
+              
               	// 비품사용기록 등록시 사용자 조회 ajax 함수 요청
               	$(document).on("keyup", ".searchReservationMember", function(){
               		if($(this).val().trim() != ""){
@@ -241,7 +258,7 @@
               		if($(this).val().trim() != ""){
               			searchResource();
               		}else{
-              			$(".reservationResourceCheck").text("");
+              			$(".reservationResourceCheck").hide();
               		}
               	});
               	
@@ -258,7 +275,7 @@
               				$(".selectMember").text("");
               				if(memList.length == 0){
               					mem +=	"<hr>"
-              							+			"<span>조회된 직원이 없습니다.</span> <br>"
+              							+		"<span>조회된 직원이 없습니다.</span> <br>"
               							+		"<hr>";
               				}else{
               					mem +=	"<hr>";
@@ -275,38 +292,24 @@
               		});
               	}
               	
-              	// 비품사용기록 등록시 비품 조회 ajax 함수
+              	// 비품사용기록 등록시 비품 조회 함수
               	function searchResource(){
-              		let resName = $(".searchResource").val();
+
+              		// 입력창에 쓴 값 
+              		let resourceKeyword = $(".searchResource").val().replace(/\s+/g, '').toLowerCase();
               		
-              		$.ajax({
-              			url:"${contextPath}/admin/searchResource.do",
-              			type:"post",
-              			data:"resName=" + resName,
-              			success:function(resourceList){
-              				let resource = "";
-              				$(".reservationResourceCheck").text("");
-              				if(resourceList.length == 0){
-              					resource += "<hr>"
-              										+		"<span>검색하신 비품은 조회되지 않습니다.</span>"
-              										+	"<hr>";
-              				}else{
-              					resource += "<hr>";
-              					for(let i=0; i<resourceList.length; i++){
-              						resource += "<span>" + resourceList[i].resName + " / " + resourceList[i].stock +"개</span><input type='checkbox' class='checkResource' value='" + resourceList[i].resNo + "'> <br>"
-              					}
-              					resource += "<hr>";
-              				}
-              				$(".reservationResourceCheck").append(resource);           				
-              			},
-              			error:function(){
-              				console.log("비품사용기록 등록시 비품조회 ajax 통신 실패");
+              		$(".hiddenResName").each(function(){
+              			let resourceName = $(this).val().replace(/\s+/g, '').toLowerCase();
+              			if(resourceName.indexOf(resourceKeyword) != -1){
+              				$(this).parent().show();
+              			}else{
+              				$(this).parent().hide();
               			}
               		});
-              	}
+              	}       	
               	
               	// 비품사용기록 등록 submit시 비품 및 사용자 체크박스 체크 안돼있으면 alert로 알려주는 구문
-              	$(document).on("submit", "#insertReservationForm", function(){
+              	$(document).on("submit", "#insertReservationForm", function(event){
               		
               		let checkedResource = $(".checkResource").filter(":checked");
               		let checkedMem = $(".checkMem:checked").filter(":checked");
@@ -323,14 +326,16 @@
               		}
               		
               		// 입력된 수량 가져오기
-              		let inputStock = $("input[name='stock']").val();
+              		let inputStock = $("input[name='revCount']").val();
               		
             	    // 선택한 비품의 재고 가져오기
-            	    let stockFullText = $(".checkResource:checked").prev().text().trim();
-            	    let stockText = stockFullText.split("/")[1];
-            	    let stock = parseInt(stockText);
+            	    //let stockFullText = $(".resourceNameStock").text().trim();
+            	    //let stockText = stockFullText.split("/")[1];
+            	    //let stock = parseInt(stockText);
+            	    let selectedResource = $(".checkResource:checked");
+            	    let resourceStock = parseInt(selectedResource.data("stock"));
             	    
-            	    if(inputStock > stock){
+            	    if(inputStock > resourceStock){
             	    	event.preventDefault();
             	    	alert("입력하신 수량이 비품의 재고보다 많습니다.");
             	    	$("input[name='revCount']").val("");
@@ -352,13 +357,23 @@
               	
               	// 비품 체크박스 여부에 따라 체크되지 않은 체크박스의 name 속성 지우는 스크립트
               	$(document).on("change", ".checkResource", function(){
-              		$(".checkResource").not(this).prop("checked", false).removeAttr("name");
               		
-              		if($(this).is(":checked")){
+              		let resourceName = "";
+              		
+              		if($(this).is(":checked")){			
+              			$(".checkResource").not(this).prop("checked", false).removeAttr("name");
+              			
+              			$(".hashTag").empty();
               			$(this).attr("name", "resNo");
-              			$(this).attr("checked", true);
+              			$(this).prop("checked", true);
+              			resourceNamePull = $(this).prev().text().trim();
+              			resourceName = resourceNamePull.split("/")[0];
+              			resourceName = '<span class="addHashTag">#' + resourceName + '</span>';
+              			$(".hashTag").append(resourceName);
               		}else{
               			$(this).removeAttr("name");
+              			$(".hashTag").empty();
+              			$(this).prop("checked", false);
               		}
               		
               	});
