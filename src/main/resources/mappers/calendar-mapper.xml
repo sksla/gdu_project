@@ -36,12 +36,22 @@
 	</resultMap>
 	
 	<resultMap type="ShareMemDto" id="shareMemResult">
-		<result column="share_ctg_no" property="shareCtgNo"/>
+		<id column="share_ctg_no" property="shareCtgNo"/>
 		<result column="share_mem_no" property="shareMemNo"/>
 		<result column="share_mem_name" property="shareMemName"/>
 		<result column="right_level" property="rightLevel"/>
 		<result column="major_name" property="majorName"/>
 		<result column="job_name" property="jobName"/>
+	</resultMap>
+	
+	<resultMap type="TodoListDto" id="todoListResult">
+		<id column="tdl_no" property="tdlNo"/>
+		<result column="tdl_writer" property="tdlWriter"/>
+		<result column="tdl_content" property="tdlContent"/>
+		<result column="tdl_date" property="tdlDate"/>
+		<result column="is_Completed" property="isCompleted"/>
+		<result column="order_no" property="orderNo"/>
+		<result column="status" property="status"/>
 	</resultMap>
 	
 	
@@ -299,6 +309,87 @@
 		  from calendar c
       join cal_ctg ctg on (ctg_type = 3 and c.ctg_no = ctg.ctg_no)  
 		 where c.status = 'Y'
+	</select>
+	
+	<!-- 투두리스트 조회 -->
+	<select id="selectTodoList" resultMap="todoListResult">
+		select 
+					 tdl_no
+		     , tdl_writer
+		     , tdl_content
+		     , tdl_date
+		     , is_completed
+		     , order_no
+		  from todolist
+		 where status = 'Y'
+		 	 and tdl_writer = #{tdlWriter}
+		   and tdl_date = #{tdlDate}
+		 order
+		    by order_no      
+	</select>
+	
+	
+	<!-- 투두리스트 등록 -->
+	<insert id="insertTodo">
+		insert
+		  into todolist
+		  (
+		    tdl_no
+		  , tdl_writer
+		  , tdl_content
+		  , tdl_date 
+		  , order_no
+		  )
+		  values
+		  (
+		    seq_tdl_no.nextval
+		  , #{tdlWriter}
+		  , #{tdlContent}
+		  , #{tdlDate}
+		  , (select nvl(max(order_no), 0)
+				  from todolist
+				 where tdl_writer = #{tdlWriter}
+				   and tdl_date = #{tdlDate}
+			   ) + 1  
+		  )
+	</insert>
+	
+	<!-- 상태값 변경 -->
+	<update id="updateTodoIsCompleted">
+		update
+		       todolist
+		   set is_completed = #{isCompleted}    
+		 where tdl_no = #{tdlNo}  
+	</update>
+	
+	<!-- 투두리스트 삭제 -->
+	<update id="deleteTodoList">
+		update
+		       todolist
+		   set status = 'N'    
+		 <where>
+		 	<choose>
+		 		<when test='delType != null and delType == 1'>
+		 		 tdl_no = #{todo.tdlNo}
+		 		</when>
+		 		<otherwise>
+		 		 tdl_writer = #{todo.tdlWriter}
+		 		 and tdl_date = #{todo.tdlDate}
+		 		 and is_completed = 'Y'
+		 		</otherwise>
+		 	</choose>
+		 </where> 
+	</update>
+	
+	<!-- 해당 날짜의 투두들 개수 조회 -->
+	<select id="selectTodoListCountByDate" resultType="_int">
+		select
+		       count(*) count
+		  from todolist
+		 where is_completed = 'Y' 
+		 	 and tdl_writer = #{tdlWriter}
+		   and tdl_date = #{tdlDate}
+		       
 	</select>
 	
 	

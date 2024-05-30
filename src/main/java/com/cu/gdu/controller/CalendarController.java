@@ -19,6 +19,7 @@ import com.cu.gdu.dto.CalCtgDto;
 import com.cu.gdu.dto.CalendarDto;
 import com.cu.gdu.dto.MemberDto;
 import com.cu.gdu.dto.ShareMemDto;
+import com.cu.gdu.dto.TodoListDto;
 import com.cu.gdu.service.CalendarService;
 
 import lombok.RequiredArgsConstructor;
@@ -399,6 +400,63 @@ public class CalendarController {
 	
 	
 	// 학사 일정 끝 ---------------------------------------------------------------
+	
+	
+	// 투두리스트
+	@GetMapping("todoList.page")
+	public String todoListPage() {
+		return "calendar/todoList";
+	}
+	
+	@ResponseBody
+	@PostMapping(value="/todoList.do", produces="application/json; charset=utf-8")
+	public List<TodoListDto> selectTodoList(TodoListDto todo, HttpSession session){
+		int memNo = ((MemberDto)session.getAttribute("loginUser")).getMemNo();
+		
+		todo.setTdlWriter(memNo);
+				
+		return calendarService.selectTodoList(todo);
+	}
+	
+	// 투두리스트 등록
+	@ResponseBody
+	@PostMapping("/insertTodo.do")
+	public String insertTodo(TodoListDto todo, HttpSession session) {
+		
+		int memNo = ((MemberDto)session.getAttribute("loginUser")).getMemNo();
+				
+		todo.setTdlWriter(memNo);
+		
+		return calendarService.insertTodo(todo) == 1 ? "SUCCESS" : "FAIL";
+	}
+	
+	// 투두리스트 완료여부 변경
+	@ResponseBody
+	@PostMapping("/toggleTodoStatus.do")
+	public String updateTodoIsCompleted(TodoListDto todo) {
+		return calendarService.updateTodoIsCompleted(todo) == 1 ? "SUCCESS" : "FAIL";
+	}
+	
+	@ResponseBody
+	@PostMapping("/deleteTodo.do")
+	public String deleteTodoList(@RequestParam int delType, TodoListDto todo, HttpSession session) {
+		int memNo = ((MemberDto)session.getAttribute("loginUser")).getMemNo();
+		todo.setTdlWriter(memNo);
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("delType", delType);
+		map.put("todo", todo);
+		
+		int result = calendarService.deleteTodoList(map);
+		if(delType == 1 && result == 1 || delType == 2 && result == calendarService.selectTodoListCountByDate(todo)) {
+			return "SUCCESS";
+		}else {
+			return "FAIL";
+		}
+		
+	}
+	
+	
 	
 	// -------김영주 부분 끝 -------------------------------------------------------------
 				   

@@ -6,6 +6,7 @@ import java.util.Map;
 import com.cu.gdu.dto.CalCtgDto;
 import com.cu.gdu.dto.CalendarDto;
 import com.cu.gdu.dto.ShareMemDto;
+import com.cu.gdu.dto.TodoListDto;
 
 public interface CalendarService {
 
@@ -51,4 +52,21 @@ public interface CalendarService {
 	// 학사 일정 조회
 	List<CalendarDto> selectUnivCalList();
 	
+	
+	// 투두리스트 관련 --------------------------
+	
+	// 투두리스트 조회
+	List<TodoListDto> selectTodoList(TodoListDto todo);
+	
+	// 투두리스트 등록
+	int insertTodo(TodoListDto todo);
+	
+	// 투두리스트 완료여부 변경
+	int updateTodoIsCompleted(TodoListDto todo);
+	
+	// 투두리스트 삭제
+	int deleteTodoList(Map<String, Object> delInfo);
+	
+	// 해당 날짜의 투두리스트 개수 조회(상태값 Y인 것만)
+	int selectTodoListCountByDate(TodoListDto todo);
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.cu.gdu.dto.CalCtgDto;
 import com.cu.gdu.dto.CalendarDto;
 import com.cu.gdu.dto.ShareMemDto;
+import com.cu.gdu.dto.TodoListDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -156,5 +157,48 @@ public class CalendarDao {
 	 */
 	public int selectShareMemListCount(int ctgNo) {
 		return sqlSessionTemplate.selectOne("calendarMapper.selectShareMemListCount", ctgNo);
+	}
+	
+	// 투두리스트
+	/**
+	 * 투두리스트 조회
+	 * @param todo
+	 * @return
+	 */
+	public List<TodoListDto> selectTodoList(TodoListDto todo){
+		return sqlSessionTemplate.selectList("calendarMapper.selectTodoList", todo);
+	}
+	
+	/**
+	 * 투두리스트 등록
+	 * @author 김영주
+	 */
+	public int insertTodo(TodoListDto todo) {
+		return sqlSessionTemplate.insert("calendarMapper.insertTodo", todo);
+	}
+	
+	/**
+	 * 투두리스트 완료여부 변경
+	 * @author 김영주
+	 */
+	public int updateTodoIsCompleted(TodoListDto todo) {
+		return sqlSessionTemplate.update("calendarMapper.updateTodoIsCompleted", todo);
+	}
+	
+	/**
+	 * 투두리스트 삭제
+	 * delType : 1(개별삭제)|2(해당날짜의모든투두들 삭제) 
+	 * @author 김영주
+	 */
+	public int deleteTodoList(Map<String, Object> delInfo) {
+		return sqlSessionTemplate.update("calendarMapper.deleteTodoList", delInfo);
+	}
+	
+	/**
+	 * 해당 날짜의 투두리스트 개수 조회(상태값 Y인 것만)
+	 * @author 김영주
+	 */
+	public int selectTodoListCountByDate(TodoListDto todo) {
+		return sqlSessionTemplate.selectOne("calendarMapper.selectTodoListCountByDate", todo);
 	}
 }

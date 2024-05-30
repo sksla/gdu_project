@@ -19,10 +19,11 @@ public class TodoListDto {
 
 	private int tdlNo;
 	private int tdlWriter;
-	private String tdl_content;
-	private String tdl_date;
+	private String tdlContent;
+	private String tdlDate;
 	private String isCompleted;
-	private int order;
+	private int orderNo;
 	private String status;
 	private List<TodoListDto> tdList;
+	
 }

@@ -10,6 +10,7 @@ import com.cu.gdu.dao.CalendarDao;
 import com.cu.gdu.dto.CalCtgDto;
 import com.cu.gdu.dto.CalendarDto;
 import com.cu.gdu.dto.ShareMemDto;
+import com.cu.gdu.dto.TodoListDto;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -203,13 +204,60 @@ public class CalendarServiceImpl implements CalendarService {
 
 	/**
 	 * 학사 일정 조회
-	 * author 김영주
+	 * @author 김영주
 	 */
 	@Override
 	public List<CalendarDto> selectUnivCalList() {
 		return calendarDao.selectUnivCalList();
 	}
 
+	// 투두리스트 관련 ----------------------------------
+	/**
+	 * 투두리스트 조회
+	 * @author 김영주
+	 */
+	@Override
+	public List<TodoListDto> selectTodoList(TodoListDto todo) {
+		return calendarDao.selectTodoList(todo);
+	}
+
+	/**
+	 * 투두리스트 등록
+	 * @author 김영주
+	 */
+	@Override
+	public int insertTodo(TodoListDto todo) {
+		return calendarDao.insertTodo(todo);
+	}
+
+	/**
+	 * 투두리스트 완료여부 변경
+	 * @author 김영주
+	 */
+	@Override
+	public int updateTodoIsCompleted(TodoListDto todo) {
+		return calendarDao.updateTodoIsCompleted(todo);
+	}
+
+	/**
+	 * 투두리스트 삭제
+	 * @author 김영주
+	 */
+	@Override
+	public int deleteTodoList(Map<String, Object> delInfo) {
+		return calendarDao.deleteTodoList(delInfo);
+	}
+
+	/**
+	 * 해당 날짜의 투두리스트 개수 조회(상태값 Y인 것만)
+	 * @author 김영주
+	 */
+	@Override
+	public int selectTodoListCountByDate(TodoListDto todo) {
+		return calendarDao.selectTodoListCountByDate(todo);
+	}
+	
+	
 
 
 
