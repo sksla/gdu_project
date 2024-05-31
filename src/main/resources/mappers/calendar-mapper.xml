@@ -36,7 +36,7 @@
 	</resultMap>
 	
 	<resultMap type="ShareMemDto" id="shareMemResult">
-		<id column="share_ctg_no" property="shareCtgNo"/>
+		<result column="share_ctg_no" property="shareCtgNo"/>
 		<result column="share_mem_no" property="shareMemNo"/>
 		<result column="share_mem_name" property="shareMemName"/>
 		<result column="right_level" property="rightLevel"/>
@@ -77,21 +77,22 @@
                where sc.ctg_no = c.ctg_no
             ) count
 		  from cal_ctg c
-      join member cm on (ctg_writer = mem_no)
+      join member cm on (c.ctg_writer = cm.mem_no)
       left join share_mem s on (s.ctg_no = c.ctg_no)
       left join member sm on (s.mem_no = sm.mem_no)
       left join job sj on (sm.job_no = sj.job_no)
       left join major sma on (sm.major_no = sma.major_no) 
      where c.status = 'Y'
-       and ctg_type in ('1', '2')
-       and ctg_writer = #{memNo}
+       and c.ctg_type in ('1', '2')
+       and (c.ctg_writer = #{memNo}
        	or c.ctg_no in (
        									 select ctg_no
                            from share_mem
                           where mem_no = #{memNo}
                         )
+      			)                  
      order
-        by c.ctg_no asc, right_level
+        by c.ctg_no, right_level
 		       
 	</select>
 	
