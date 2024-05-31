@@ -195,6 +195,7 @@
               <br><br>
               <div style="text-align: right;">
                 <button type="button" class="btn btn-secondary" onclick="today(1);">오늘날짜</button>
+                <button type="button" class="btn btn-secondary" onclick="allMem(1);">전체</button>
               </div>
               <br><br><br>
               <!-- 페이징바 & 검색창-->
@@ -238,6 +239,8 @@
            	         // 체크가 해제되면 startDate와 endDate 값을 지워줍니다.
            	         $(".startDate").val("");
            	         $(".endDate").val("");
+	           	    }else{
+	           	    	attendMemberFilter(1);
 	           	    }
 		           	});
               
@@ -324,40 +327,48 @@
               				$(".pagination").empty();              				
               				let filterTable = "";
               				let filterPage = "";
-              				
-              				for(let i=0; i<map.attendList.length; i++){
-              					for(let j=0; j<map.attendList[i].memberList.length; j++){
-              						filterTable +=	"<tr>"
-              												+			"<th>"
-              												+				"<h6 class='fs-2 mb-0'>" + map.attendList[i].memNo + "</h6>"
-              												+			"</th>"
-              												+			"<th>"
-              												+				"<h6 class='fs-2 mb-0'>" + map.attendList[i].memberList[j].memName + "</h6>"
-              												+			"</th>"
-              												+			"<th>"
-              												+				"<h6 class='fs-2 mb-0'>" + map.attendList[i].memberList[j].majorNo + "</h6>"
-              												+			"</th>"
-              												+			"<th>"
-              												+				"<h6 class='fs-2 mb-0'>" + map.attendList[i].memberList[j].jobNo + "</h6>"
-              												+			"</th>"
-              												+			"<th>"
-              												+				"<h6 class='fs-2 mb-0'>" + map.attendList[i].startTime + "</h6>"
-              												+			"</th>"
-              												+			"<th>";
-              															if(map.attendList[i].endTime == null){
-              						filterTable	+=			"<h6 class='fs-2 mb-0'>-</h6>";
-              															}else{
-              						filterTable	+=			"<h6 class='fs-2 mb-0'>" + map.attendList[i].endTime + "</h6>";
-              															}
-              						filterTable	+=		"</th>"
-              												+			"<th>"
-              												+				"<h6 class='fs-2 mb-0'>" + map.attendList[i].status + "</h6>"
-              												+			"</th>"
-              												+			"<th>"
-              												+				"<h6 class='fs-2 mb-0'>" + map.attendList[i].registDate + "</h6>"
-              												+			"</th>"
-              												+		"</tr>";
-              					}
+              				if(map.attendList.length == 0){
+              					filterTable +=	'<tr>'
+              											+			'<th colspan="8">'
+              											+				'<h6 class="fs-2 mb-0">조건에 맞는 직원이 없습니다.</h6>'
+              											+			'</th>'
+              											+		'</tr>';
+
+              				}else{
+	              				for(let i=0; i<map.attendList.length; i++){
+	              					for(let j=0; j<map.attendList[i].memberList.length; j++){
+	              						filterTable +=	"<tr>"
+	              												+			"<th>"
+	              												+				"<h6 class='fs-2 mb-0'>" + map.attendList[i].memNo + "</h6>"
+	              												+			"</th>"
+	              												+			"<th>"
+	              												+				"<h6 class='fs-2 mb-0'>" + map.attendList[i].memberList[j].memName + "</h6>"
+	              												+			"</th>"
+	              												+			"<th>"
+	              												+				"<h6 class='fs-2 mb-0'>" + map.attendList[i].memberList[j].majorNo + "</h6>"
+	              												+			"</th>"
+	              												+			"<th>"
+	              												+				"<h6 class='fs-2 mb-0'>" + map.attendList[i].memberList[j].jobNo + "</h6>"
+	              												+			"</th>"
+	              												+			"<th>"
+	              												+				"<h6 class='fs-2 mb-0'>" + map.attendList[i].startTime + "</h6>"
+	              												+			"</th>"
+	              												+			"<th>";
+	              															if(map.attendList[i].endTime == null){
+	              						filterTable	+=			"<h6 class='fs-2 mb-0'>-</h6>";
+	              															}else{
+	              						filterTable	+=			"<h6 class='fs-2 mb-0'>" + map.attendList[i].endTime + "</h6>";
+	              															}
+	              						filterTable	+=		"</th>"
+	              												+			"<th>"
+	              												+				"<h6 class='fs-2 mb-0'>" + map.attendList[i].status + "</h6>"
+	              												+			"</th>"
+	              												+			"<th>"
+	              												+				"<h6 class='fs-2 mb-0'>" + map.attendList[i].registDate + "</h6>"
+	              												+			"</th>"
+	              												+		"</tr>";
+	              					}
+	              				}
               				}
               				$(".tableBody").append(filterTable);
               				
@@ -398,6 +409,13 @@
 	           		
 	           		// 오늘날짜 조회 ajax
 	           		function today(page){
+	           			
+	           			$(".checkDate").prop("checked", false);
+	           			$(".startDate").val("");
+	           			$(".endDate").val("");
+	           			$(".dateToDate").hide();
+	           			$(".searchName").val("");
+	           			
 	           			$.ajax({
 	           				url:"${contextPath}/admin/todayMemberAttend.do",
 	           				type:"get",
@@ -409,40 +427,49 @@
 	              				let filterTable = "";
 	              				let filterPage = "";
 	              				
-	              				for(let i=0; i<map.attendList.length; i++){
-	              					for(let j=0; j<map.attendList[i].memberList.length; j++){
-	              						filterTable +=	"<tr>"
-	              												+			"<th>"
-	              												+				"<h6 class='fs-2 mb-0'>" + map.attendList[i].memNo + "</h6>"
-	              												+			"</th>"
-	              												+			"<th>"
-	              												+				"<h6 class='fs-2 mb-0'>" + map.attendList[i].memberList[j].memName + "</h6>"
-	              												+			"</th>"
-	              												+			"<th>"
-	              												+				"<h6 class='fs-2 mb-0'>" + map.attendList[i].memberList[j].majorNo + "</h6>"
-	              												+			"</th>"
-	              												+			"<th>"
-	              												+				"<h6 class='fs-2 mb-0'>" + map.attendList[i].memberList[j].jobNo + "</h6>"
-	              												+			"</th>"
-	              												+			"<th>"
-	              												+				"<h6 class='fs-2 mb-0'>" + map.attendList[i].startTime + "</h6>"
-	              												+			"</th>"
-	              												+			"<th>";
-	              															if(map.attendList[i].endTime == null){
-	              						filterTable	+=			"<h6 class='fs-2 mb-0'>-</h6>";
-	              															}else{
-	              						filterTable	+=			"<h6 class='fs-2 mb-0'>" + map.attendList[i].endTime + "</h6>";
-	              															}
-	              						filterTable	+=		"</th>"
-	              												+			"<th>"
-	              												+				"<h6 class='fs-2 mb-0'>" + map.attendList[i].status + "</h6>"
-	              												+			"</th>"
-	              												+			"<th>"
-	              												+				"<h6 class='fs-2 mb-0'>" + map.attendList[i].registDate + "</h6>"
-	              												+			"</th>"
-	              												+		"</tr>";
-	              					}
+	              				if(map.attendList.length == 0){
+	              					filterTable +=	'<tr>'
+																			+			'<th colspan="8">'
+																			+				'<h6 class="fs-2 mb-0">조건에 맞는 직원이 없습니다.</h6>'
+																			+			'</th>'
+																			+		'</tr>';
+	              				}else{           					
+		              				for(let i=0; i<map.attendList.length; i++){
+		              					for(let j=0; j<map.attendList[i].memberList.length; j++){
+		              						filterTable +=	"<tr>"
+		              												+			"<th>"
+		              												+				"<h6 class='fs-2 mb-0'>" + map.attendList[i].memNo + "</h6>"
+		              												+			"</th>"
+		              												+			"<th>"
+		              												+				"<h6 class='fs-2 mb-0'>" + map.attendList[i].memberList[j].memName + "</h6>"
+		              												+			"</th>"
+		              												+			"<th>"
+		              												+				"<h6 class='fs-2 mb-0'>" + map.attendList[i].memberList[j].majorNo + "</h6>"
+		              												+			"</th>"
+		              												+			"<th>"
+		              												+				"<h6 class='fs-2 mb-0'>" + map.attendList[i].memberList[j].jobNo + "</h6>"
+		              												+			"</th>"
+		              												+			"<th>"
+		              												+				"<h6 class='fs-2 mb-0'>" + map.attendList[i].startTime + "</h6>"
+		              												+			"</th>"
+		              												+			"<th>";
+		              															if(map.attendList[i].endTime == null){
+		              						filterTable	+=			"<h6 class='fs-2 mb-0'>-</h6>";
+		              															}else{
+		              						filterTable	+=			"<h6 class='fs-2 mb-0'>" + map.attendList[i].endTime + "</h6>";
+		              															}
+		              						filterTable	+=		"</th>"
+		              												+			"<th>"
+		              												+				"<h6 class='fs-2 mb-0'>" + map.attendList[i].status + "</h6>"
+		              												+			"</th>"
+		              												+			"<th>"
+		              												+				"<h6 class='fs-2 mb-0'>" + map.attendList[i].registDate + "</h6>"
+		              												+			"</th>"
+		              												+		"</tr>";
+		              					}
+		              				}
 	              				}
+	              				
 	              				$(".tableBody").append(filterTable);
 	              				
 	              				// 페이징 처리
@@ -476,7 +503,106 @@
 	           				error:function(){
 	           					
 	           				}
-	           			})
+	           			});
+	           		}
+	           		
+	           		// 전체 조회 ajax
+	           		function allMem(page){
+	           			
+	           			$(".checkDate").prop("checked", false);
+	           			$(".startDate").val("");
+	           			$(".endDate").val("");
+	           			$(".dateToDate").hide();
+	           			$(".searchName").val("");
+	           			
+	           			$.ajax({
+	           				url:"${contextPath}/admin/allMemberAttend.do",
+	           				type:"get",
+	           				data:"page=" + page,
+	           				success:function(map){
+	           					
+	              				$(".tableBody").empty();
+	              				$(".pagination").empty();              				
+	              				let filterTable = "";
+	              				let filterPage = "";
+	              				
+	              				if(map.attendList.length == 0){
+	              					filterTable +=	'<tr>'
+																			+			'<th colspan="8">'
+																			+				'<h6 class="fs-2 mb-0">조건에 맞는 직원이 없습니다.</h6>'
+																			+			'</th>'
+																			+		'</tr>';
+	              				}else{           					
+		              				for(let i=0; i<map.attendList.length; i++){
+		              					for(let j=0; j<map.attendList[i].memberList.length; j++){
+		              						filterTable +=	"<tr>"
+		              												+			"<th>"
+		              												+				"<h6 class='fs-2 mb-0'>" + map.attendList[i].memNo + "</h6>"
+		              												+			"</th>"
+		              												+			"<th>"
+		              												+				"<h6 class='fs-2 mb-0'>" + map.attendList[i].memberList[j].memName + "</h6>"
+		              												+			"</th>"
+		              												+			"<th>"
+		              												+				"<h6 class='fs-2 mb-0'>" + map.attendList[i].memberList[j].majorNo + "</h6>"
+		              												+			"</th>"
+		              												+			"<th>"
+		              												+				"<h6 class='fs-2 mb-0'>" + map.attendList[i].memberList[j].jobNo + "</h6>"
+		              												+			"</th>"
+		              												+			"<th>"
+		              												+				"<h6 class='fs-2 mb-0'>" + map.attendList[i].startTime + "</h6>"
+		              												+			"</th>"
+		              												+			"<th>";
+		              															if(map.attendList[i].endTime == null){
+		              						filterTable	+=			"<h6 class='fs-2 mb-0'>-</h6>";
+		              															}else{
+		              						filterTable	+=			"<h6 class='fs-2 mb-0'>" + map.attendList[i].endTime + "</h6>";
+		              															}
+		              						filterTable	+=		"</th>"
+		              												+			"<th>"
+		              												+				"<h6 class='fs-2 mb-0'>" + map.attendList[i].status + "</h6>"
+		              												+			"</th>"
+		              												+			"<th>"
+		              												+				"<h6 class='fs-2 mb-0'>" + map.attendList[i].registDate + "</h6>"
+		              												+			"</th>"
+		              												+		"</tr>";
+		              					}
+		              				}
+	              				}
+	              				
+	              				$(".tableBody").append(filterTable);
+	              				
+	              				// 페이징 처리
+												if(map.pi.listCount > map.pi.boardLimit){
+													filterPage += "<li class='page-item " + (map.pi.currentPage == 1 ? 'disabled' : '') + "'>"
+																			+		"<a class='page-link link' onclick='attendMemberFilter(" + (map.pi.currentPage-1) + ");' aria-label='Previous'>"
+																			+			"<span aria-hidden='true'>"
+																			+				"<i class='ti ti-chevrons-left fs-4'></i>"
+																			+			"</span>"
+																			+		"</a>"
+																			+	"</li>";
+													
+													for (let p=map.pi.startPage; p<=map.pi.endPage; p++) {
+														filterPage += "<li class='page-item " + (map.pi.currentPage == p ? 'disabled' : '') + "'>"
+									                      +   "<a class='page-link link' onclick='attendMemberFilter(" + p + ");' >"
+									                      +    	p
+									                      +   "</a>"
+									                      + "</li>";
+													}
+													
+													filterPage += "<li class='page-item " + (map.pi.currentPage == map.pi.maxPage ? 'disabled' : '') + "'>"
+									                   +    "<a class='page-link link' onclick='attendMemberFilter(" + (map.pi.currentPage+1) + ");' aria-label='Next'>"
+									                   +       "<span aria-hidden='true'>"
+									                   +          "<i class='ti ti-chevrons-right fs-4'></i>"
+									                   +        "</span>"
+									                   +    "</a>"
+									                   + 	"</li>";
+									        $(".pagination").append(filterPage);
+												}
+	           				},
+	           				error:function(){
+	           					
+	           				}
+	           			});
 	           		}
 	           		
               </script>

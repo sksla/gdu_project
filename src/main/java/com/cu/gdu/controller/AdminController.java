@@ -499,6 +499,22 @@ public class AdminController {
 		}
 		return "redirect:/admin/memberLeaveDetail.page?memNo=" + vac.getMemNo();
 	}
+	
+	// 직원 근태관리 전체 조회
+	@ResponseBody
+	@GetMapping(value = "/allMemberAttend.do", produces = "application/json; charset=utf-8")
+	public Map<String, Object> ajaxAllMemberAttendList(
+			@RequestParam(value = "page", defaultValue = "1") int currentPage) {
+		
+		Map<String, Object> map = new HashMap<>();
+		int listCount = adminService.memberAttendListCount();
+		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 10); // 받아온 리스트카운트 통해 pi 생성
+		map.put("pi", pi);
+		List<AttendDto> attendList = adminService.memberAttendList(pi);
+		map.put("attendList", attendList);
+		return map;
+		
+	}
 
 	// 직원 근태조회
 	@GetMapping("/memberAttend.do")
@@ -545,7 +561,7 @@ public class AdminController {
 		Date today = new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd");
 		String startDate = sdf.format(today);
-		log.debug("오늘날짜는: {}", startDate);
+		//log.debug("오늘날짜는: {}", startDate);
 		Map<String, Object> map = new HashMap<>();
 		map.put("startDate", startDate);
 		int listCount = adminService.ajaxTodayMemberAttendListCount(map);
@@ -555,6 +571,7 @@ public class AdminController {
 		map.put("attendList", attendList);
 		return map;
 	}
+	
 	
 	// 직원일괄등록 페이지
 	@GetMapping("/insertManyMember.page")
@@ -576,7 +593,7 @@ public class AdminController {
 	        rowIterator.next();
 	    }
 	    List<MemberDto> m = new ArrayList<>();
-		
+
 	    // 나머지 행들을 처리
 	    while (rowIterator.hasNext()) {
 	        Row row = rowIterator.next();
@@ -585,21 +602,41 @@ public class AdminController {
 	            continue; // 데이터가 없으면 다음 행으로 건너뜀
 	        }
 	        // 각 열에서 데이터 추출
-	        String name = String.valueOf(row.getCell(0)); // 이름
-	        String id = String.valueOf(row.getCell(1)); // ID
-	        String major = String.valueOf(row.getCell(2)); // 학과
-	        String job = String.valueOf(row.getCell(3)); // 직급
-	        String resident = String.valueOf(row.getCell(4)); // 주민등록번호
-	        String email = String.valueOf(row.getCell(5)); // 이메일
-	        String phone = String.valueOf(row.getCell(6)); // 휴대전화        
-	        // HireDate(입사일) 날짜 형식 변환
+	        String name = String.valueOf(row.getCell(0)).trim(); // 이름
+	        String id = String.valueOf(row.getCell(1)).trim(); // ID
+	        String major = String.valueOf(row.getCell(2)).trim(); // 학과
+	        String job = String.valueOf(row.getCell(3)).trim(); // 직급
+	        String resident = String.valueOf(row.getCell(4)).trim(); // 주민등록번호
+	        String email = String.valueOf(row.getCell(5)).trim(); // 이메일
+	        String phone = String.valueOf(row.getCell(6)).trim(); // 휴대전화      
+	        
+	        // hireDate(입사일) 날짜 형식 변환
 	        Cell hireDateCell = row.getCell(7);
-	        Date hireDate = hireDateCell.getDateCellValue();
-	        String formattedHireDate = ""; // 초기화
-	        if (hireDate != null) {
-	            SimpleDateFormat dateFormat = new SimpleDateFormat("yy/MM/dd");
-	            formattedHireDate = dateFormat.format(hireDate);
+	        Date hiretDate = null;
+	        String formattedHireDate = ""; // 초기화 - 입사일 담을 필드
+	        if (hireDateCell != null) {
+	            if (hireDateCell.getCellType() == CellType.NUMERIC) {
+	            	hiretDate = hireDateCell.getDateCellValue();
+	                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	                formattedHireDate = dateFormat.format(hiretDate);
+	            } else if (hireDateCell.getCellType() == CellType.STRING) {
+	                // 문자열 형식의 날짜인 경우에 대한 처리
+	                String dateString = hireDateCell.getStringCellValue();
+	                // 예시: "2024-05-26"
+	                SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	                try {
+	                	hiretDate = inputDateFormat.parse(dateString);
+	                    SimpleDateFormat outputDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	                    formattedHireDate = outputDateFormat.format(hiretDate);
+	                } catch (ParseException e) {
+	                    // 날짜 형식이 올바르지 않은 경우 예외 처리
+	                    e.printStackTrace();
+	                    // 혹은 로그를 남기고 다음 행으로 넘어가도록 처리할 수 있습니다.
+	                    continue;
+	                }
+	            }
 	        }
+
 	        String address = String.valueOf(row.getCell(8)); // 주소
 	        // Salary(급여) 숫자 형식 변환
 	        Cell salaryCell = row.getCell(9);
@@ -633,12 +670,10 @@ public class AdminController {
 	        member.setMemPwd(bcryptPwdEncoder.encode(member.getMemPwd())); // 암호화
 	        m.add(member);
 	    }
+
 	    workbook.close();
 	    inputStream.close();
-//	    for(MemberDto mem : m) {
-//	    	log.debug("멤버에 반복문으로 접근시 : {}", mem);
-//	    }
-	    
+
 	    int result = adminService.insertManyMember(m);
 	    
 	    if(result == m.size()) {
