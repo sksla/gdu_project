@@ -213,7 +213,6 @@
 
                 <div align="center">
                   <button type="submit" class="btn btn-secondary">등록하기</button>
-                  <button type="button" class="btn btn-secondary">뒤로가기</button>
                 </div>
 
               </form>

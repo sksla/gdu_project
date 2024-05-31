@@ -60,7 +60,7 @@
             
               <div align="center" class="">
                 <img
-                  src="${contextPath}<c:out value='${m.profileUrl}' default='/assets/images/profile/user-2.jpg'/>"
+                  src="${contextPath}<c:out value='${m.profileUrl}' default='/assets/images/profile/user-1.jpg'/>"
                   class="shadow-warning rounded-2"
                   alt=""
                   width="72"
@@ -187,14 +187,14 @@
                 </div>
                 <br><br>
                 <div align="center">
-                  <button type="submit" class="btn btn-secondary">수정하기</button>
+                  <button type="submit" class="btn btn-success">수정하기</button>
                   <button type="button" class="btn btn-secondary" onclick="history.back();">뒤로가기</button>
 									<c:choose>
 										<c:when test="${m.status eq 'N'}">
-                  		<button type="button" class="btn btn-secondary"  data-bs-toggle="modal" data-bs-target="#outModal" onclick="outModal(${m.memNo});">퇴직처리</button>										
+                  		<button type="button" class="btn btn-danger"  data-bs-toggle="modal" data-bs-target="#outModal" onclick="outModal(${m.memNo});">퇴직처리</button>										
 										</c:when>
 										<c:otherwise>
-                  		<button type="button" class="btn btn-secondary"  data-bs-toggle="modal" data-bs-target="#outModal" disabled>퇴직처리</button>												
+                  		<button type="button" class="btn btn-danger"  data-bs-toggle="modal" data-bs-target="#outModal" disabled>퇴직처리</button>												
 										</c:otherwise>
 									</c:choose>
                 </div>

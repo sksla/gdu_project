@@ -217,7 +217,7 @@
               <br><br>
               <div style="text-align: right;">
                 <button type="button" class="btn btn-secondary modalButton" data-bs-toggle="modal" data-bs-target="#yesModal" onclick="yesModal();">승인</button>
-                <button type="button" class="btn btn-secondary modalButton" data-bs-toggle="modal" data-bs-target="#noModal" onclick="noModal();">거절</button>
+                <button type="button" class="btn btn-danger modalButton" data-bs-toggle="modal" data-bs-target="#noModal" onclick="noModal();">거절</button>
               </div>
               
               <!-- 휴가승인 모달 -->
