@@ -80,7 +80,7 @@
                     <table align="center">
                       <tr>
                         <th><label for="title">제목</label></th>
-                        <td><input type="text" id="title" class="form-control" name="boardTitle" value="${board.boardTitle}" required maxlength="15" placeholder="제목 입력(15자 이내)"></td>
+                        <td><input type="text" id="title" class="form-control" name="boardTitle" value="${board.boardTitle}" required maxlength="30" placeholder="제목 입력(30자 이내)"></td>
                       </tr>
                       <tr>
                         <th><label for="writer">작성자</label></th>
@@ -215,6 +215,12 @@
 	        		  
 			        	alert("하나 이상의 파일을 첨부해주세요.");
 								return false;
+	        	  }else if($("#title").val().trim() == ""){
+	        		 	alert("제목을 입력해주세요");
+	        		 	return false;
+	        	  }else if($("#testedit").val().trim() == ""){
+	        		  alert("내용을 입력해주세요");
+	        		  return false;
 	        	  }
 	        	  
 						}

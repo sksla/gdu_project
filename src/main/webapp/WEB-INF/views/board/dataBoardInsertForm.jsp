@@ -82,7 +82,7 @@
                     <table align="center">
                       <tr>
                         <th><label for="title">제목</label></th>
-                        <td><input type="text" id="title" class="form-control" name="boardTitle" required maxlength="15" placeholder="제목 입력(15자 이내)"></td>
+                        <td><input type="text" id="title" class="form-control" name="boardTitle" required maxlength="30" placeholder="제목 입력(30자 이내)"></td>
                       </tr>
                       <tr>
                         <th><label for="writer">작성자</label></th>
@@ -114,7 +114,7 @@
                        	<textarea cols="80" id="testedit" name="boardContent" rows="10" data-sample="1" data-sample-short style="resize:none;" required placeholder="내용 입력">
 		                    </textarea>
 		                  	<div style="display:none;">
-				                  <textarea cols="80" id="editor1" style="resize:none;" disabled>
+				                  <textarea cols="80" id="editor1" style="resize:none;" placeholder="내용 입력" disabled>
 													</textarea>
 												</div>
                        </th>
@@ -123,7 +123,7 @@
                     <br>
         
                     <div align="center">
-                      <button type="submit" class="btn btn-primary">등록하기</button>
+                      <button type="submit" onclick="return registValidate();" class="btn btn-primary">등록하기</button>
                       <button type="reset" class="btn btn-danger">취소하기</button>
                     </div>
                   </form>
@@ -168,6 +168,16 @@
 												
 											})
 										})
+										
+										function registValidate(){
+											if($("#title").val().trim() == ""){
+												alert("제목을 입력해주세요");
+												return false;
+											}else if($("#testedit").val().trim() == ""){
+												alert("내용을 입력해주세요");
+												return false;
+											}
+										}
 										
 										
 									</script>
