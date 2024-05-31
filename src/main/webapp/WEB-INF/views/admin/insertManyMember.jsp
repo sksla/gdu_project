@@ -96,7 +96,7 @@
 	                <br><br><br><br><br>
 	
 	                <span style="font-size: 22px; color: black;">대상파일선택</span>
-	                <input type="file" class="form-control" name="file"style="width: 500px;" accept=".xlsx, .xls">
+	                <input type="file" required class="form-control" name="file"style="width: 500px;" accept=".xlsx, .xls">
 	
 	                <br><br><br>
 	

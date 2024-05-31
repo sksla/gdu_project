@@ -549,10 +549,11 @@
 					    <script>
 					    
 					    	let currentMajorNo = 0;
-					    
+					    	let currentPage = 0;
+				    	
 					    	// 학과 직원 ajax 검색 함수 요청
 					    	function majorMemberList(page, majorNo, majorName){
-
+					    		currentPage = 0;
 					    		if(currentMajorNo != majorNo){
 					    			majorMemberSelect(page, majorNo, majorName);
 					    			currentMajorNo = majorNo;
@@ -567,7 +568,7 @@
 					    	
 					    	// 학과직원 ajax 검색 함수
 					    	function majorMemberSelect(page, majorNo, majorName){
-					    		console.log("실행되나?");
+					    		
 					    		$.ajax({
 					    			url:"${contextPath}/admin/chartMemberList.do",
 					    			type:"get",
@@ -576,7 +577,7 @@
 					    				let memTable = "";
 					    				let memPage = "";
 					    				$(".majorTable").empty();
-					    				$("#search").empty();
+					    				$("#search").empty();		
 					    				memTable +=	'<p class="fs-7 fw-semibold">' + majorName + '</p>'
 					    									+		'<br>'
 					    									+		'<table class="table border text-nowrap mb-0 align-middle ajaxTable">'
@@ -624,16 +625,19 @@
 					    				memTable +=		'</tbody>'
 					    									+	'</table>'
 					    									+	'<br>';
-					    				//$(".majorTable").append(memTable);
-					    				//$(".majorTable").empty();
-					    				$(memTable).hide().appendTo(".majorTable").slideDown("slow");
+					    				if(currentPage == 0){
+					    					$(memTable).hide().appendTo(".majorTable").slideDown("slow");
+					    					currentPage++;
+					    				}else{
+					    					$(".majorTable").append(memTable);
+					    				}
 					    				
 					    				if(map.pi.listCount > map.pi.boardLimit){
 					    					
 						    					memPage +=	'<nav aria-label="Page navigation example">'
 						    									+			'<ul class="pagination">'
 																	+ 			"<li class='page-item " + (map.pi.currentPage == 1 ? 'disabled' : '') + "'>"
-																	+					"<a class='page-link link' onclick='majorMemberList(" + (map.pi.currentPage-1) + ", " + majorNo + ", " + majorName + ");' aria-label='Previous'>"
+																	+					"<a class='page-link link' onclick='majorMemberSelect(" + (map.pi.currentPage-1) + ", " + majorNo + ", " + majorName + ");' aria-label='Previous'>"
 																	+						"<span aria-hidden='true'>"
 																	+							"<i class='ti ti-chevrons-left fs-4'></i>"
 																	+						"</span>"
@@ -641,13 +645,13 @@
 																	+				"</li>";
 													for (let p=map.pi.startPage; p<=map.pi.endPage; p++) {
 														memPage += "<li class='page-item " + (map.pi.currentPage == p ? 'disabled' : '') + "'>"
-							                      +    "<a class='page-link link' onclick='majorMemberList(" + p + ", " + majorNo + ", \"" + majorName + "\");' >"
+							                      +    "<a class='page-link link' onclick='majorMemberSelect(" + p + ", " + majorNo + ", \"" + majorName + "\");' >"
 							                      +    	 p
 							                      +    "</a>"
 							                      +  "</li>";
 													}
 												 memPage += 	"<li class='page-item " + (map.pi.currentPage == map.pi.maxPage ? 'disabled' : '') + "'>"
-							                   +    		"<a class='page-link link' onclick='majorMemberList(" + (map.pi.currentPage+1) + ", " + majorNo + ", " + majorName + ");' aria-label='Next'>"
+							                   +    		"<a class='page-link link' onclick='majorMemberSelect(" + (map.pi.currentPage+1) + ", " + majorNo + ", " + majorName + ");' aria-label='Next'>"
 							                   +       		"<span aria-hidden='true'>"
 							                   +          	"<i class='ti ti-chevrons-right fs-4'></i>"
 							                   +        	"</span>"
@@ -655,9 +659,12 @@
 							                   + 			"</li>"
 							                   +		"</ul>"
 							                   +	"</nav>";
-							           //$("#search").append(memPage);
-							           //$("#search").empty();
-							           $(memPage).hide().appendTo("#search").slideDown("slow");        
+						    				 if(currentPage == 0){
+						    					 $(memPage).hide().appendTo("#search").slideDown("slow");
+						    				 }else{
+						    					 $("#search").append(memPage);
+						    				 }
+						    				 
 					    				}
 					    			},
 					    			error:function(){
