@@ -97,9 +97,34 @@
                 <br><br><br>
 
                 <div align="center">
-                  <button type="submit" class="btn btn-secondary">등록하기</button>
+                  <button type="submit" class="btn btn-secondary submitButton">등록하기</button>
                 </div>
               </form> 
+ 
+							<div class="modal fade" id="loadingModal" tabindex="-1" aria-labelledby="loadingModalLabel" aria-hidden="true">
+							  <div class="modal-dialog modal-dialog-centered">
+							    <div class="modal-content">
+							      <div class="modal-body text-center">
+							        <div class="spinner-border text-primary" role="status">
+							          <span class="visually-hidden">Loading...</span>
+							        </div>
+							        <p>등록 중입니다. 잠시만 기다려주세요.</p>
+							      </div>
+							    </div>
+							  </div>
+							</div>
+							
+             	<script>
+                $(document).on("submit", "form", function(event){
+                  // 폼 중단
+                  event.preventDefault();
+                  
+                  $('#loadingModal').modal('show');
+                  $(".submitButton").attr("disabled", true);
+                  // 폼을 제출
+                  $(this).unbind('submit').submit();
+                });
+             	</script>
  
             </div>
           </div>

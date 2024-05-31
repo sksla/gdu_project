@@ -68,6 +68,14 @@
           <div class="card">
             <div class="card-body">
 
+								<!-- 테스트
+								<div class="d-flex justify-content-center">
+                  <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                </div>
+ 								-->
+
 	              <div class="memberLeave">
 	                <h2 class="one" onclick="location.href='${contextPath}/admin/insertOneMemberEnrollForm.do'">직원개별등록</h2>
 	                <h2 class="split">|</h2>
@@ -99,11 +107,36 @@
 	                <input type="file" required class="form-control" name="file"style="width: 500px;" accept=".xlsx, .xls">
 	
 	                <br><br><br>
-	
+
 	                <div align="center">
-	                  <button type="submit" class="btn btn-secondary">등록하기</button>
+	                  <button type="submit" class="btn btn-secondary submitButton">등록하기</button>
 	                </div>
               	</form>
+              	
+								<div class="modal fade" id="loadingModal" tabindex="-1" aria-labelledby="loadingModalLabel" aria-hidden="true">
+								  <div class="modal-dialog modal-dialog-centered">
+								    <div class="modal-content">
+								      <div class="modal-body text-center">
+								        <div class="spinner-border text-primary" role="status">
+								          <span class="visually-hidden">Loading...</span>
+								        </div>
+								        <p>등록 중입니다. 잠시만 기다려주세요.</p>
+								      </div>
+								    </div>
+								  </div>
+								</div>
+              	
+              	<script>
+	                $(document).on("submit", "form", function(event){
+	                  // 폼 중단
+	                  event.preventDefault();
+	                  
+	                  $('#loadingModal').modal('show');
+	                  $(".submitButton").attr("disabled", true);
+	                  // 폼을 제출
+	                  $(this).unbind('submit').submit();
+	                });
+              	</script>
 
             </div>
           </div>

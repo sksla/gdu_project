@@ -26,7 +26,7 @@
         today:'오 늘',
         day:'일간',
         week:'주간',
-        month:'월간',
+        month:'월간'
       },
 		})
 		calendar.render()
@@ -194,7 +194,7 @@
 	                <div id="majorSchedule">
 	                  <div>
 	                    <p class="fs-7 fw-semibold univGo" onclick="location.href='${contextPath}/calendar/univCalendar.page'">학사일정 +</p>
-	                    <div style="width: 650px; height: 600px;" class="calendar-sidebar app-calendar">
+	                    <div style="width: 650px; height: 530px;" class="calendar-sidebar app-calendar">
 												<div id="calendar">
 												
 												</div>
