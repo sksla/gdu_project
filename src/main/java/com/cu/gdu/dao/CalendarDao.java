@@ -12,7 +12,9 @@ import com.cu.gdu.dto.ShareMemDto;
 import com.cu.gdu.dto.TodoListDto;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 @Repository
 public class CalendarDao {
@@ -26,6 +28,7 @@ public class CalendarDao {
 	 * @return List<CalCtgDto> 
 	 */
 	public List<CalCtgDto> selectCalCtgList(int memNo){
+		List<CalCtgDto> list  = sqlSessionTemplate.selectList("calendarMapper.selectCalCtgList", memNo);
 		return sqlSessionTemplate.selectList("calendarMapper.selectCalCtgList", memNo);
 	}
 	

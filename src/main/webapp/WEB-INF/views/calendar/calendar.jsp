@@ -638,19 +638,18 @@
 	                        	<div class="input-group">
 								              <div class="col-4">
 								                <div class="input-group">
-								                  <input type="text" class="form-control" placeholder="검색어 입력" aria-label="Recipient's username" aria-describedby="basic-addon2">
-								                  <button type="button" class="btn btn-outline-secondary me-2">검색</button>
+								                  <input type="text" id="search_box" class="form-control" placeholder="이름/부서명을 입력하세요." aria-label="Recipient's username" aria-describedby="basic-addon2">
 								                </div>
 								              </div>
 								              <span class="mx-2">
 								                <div class="custom-control py-2 custom-radio">
-								                  <input type="radio" id="customRadio1" name="customRadio" class="form-check-input" checked/>
+								                  <input type="radio" id="customRadio1" name="searchRadio" value="name" class="form-check-input searchRadio" checked/>
 								                  <label class="form-check-label" for="customRadio1">이름으로 검색</label>
 								                </div>
 								              </span>
 								              <span class="mx-2">
 								                <div class="custom-control py-2 custom-radio">
-								                  <input type="radio" id="customRadio2" name="customRadio" class="form-check-input" />
+								                  <input type="radio" id="customRadio2" name="searchRadio" value="major" class="form-check-input searchRadio" />
 								                  <label class="form-check-label" for="customRadio2">학과로 검색</label>
 								                </div>
 								              </span>
@@ -869,10 +868,13 @@
 	          let originMembers = new Array();
          		// 일정 담을 배열
        			let calList = [];
+         		
+         		let cookieName = "user_" + memNo;
 
             $(document).ready(function(){
             	
             	ajaxSelectListCalCtg();
+            	getCookie(cookieName);
             	ajaxSelectCalList();
             	
             	// 종일 버튼 클릭시 시간input 선택 가능 여부 결정
@@ -890,16 +892,107 @@
               
               // 카테고리 체크박스 클릭시 일정 조회
               $(".show_chk").on("click", function(){
+            	  setCookie();
             	  ajaxSelectCalList();
               })
               
+              // 쿠키 도전~~~~~~~!!!!!!!
+              
+              
+              
+              
 		          // 결재선 선택 모달용 javascript **************************************
 		      		// 부서목록 리스트 조회
-		      		createMajorList();
+		      		createMajorList("");
+            	
+            	
+           		// 공유멤버선택 검색 기능
+      				document.getElementById("search_box").onkeyup = function(e) {
+		      			console.log("실행");
+		      			let $searchType = $(".searchRadio:checked").val();
+		      			let $search = $("#search_box").val();
+		      			if($searchType == "name"){
+		      				if($search == ""){
+		          			$("#insert_share .my_mem_list").empty();
+		          		}else{
+		             		$.ajax({
+		             			url:"${contextPath}/approval/searchMember.do",
+		             			data:{ search: $search },
+		             			type:"get",
+		             			success: function(list){
+		             				createMemList(list);
+		             			},
+		             			error: function(){
+		             				console.log("부서목록 생성 ajax 통신 실패");
+		             			}
+		             		})
+		          		}
+		           	}else{
+		           		if($search == ""){
+		           			createMajorList("");
+		          		}else{
+		  	         		createMajorList($search);
+		          		}
+		           	}
+		          }
+           		
+            	
             	
               
             })
             
+            // 쿠키 설정
+            function setCookie(){
+            	let checkedCtgs = [];
+            	// 체크된 체크박스 요소의 value 값을 배열에 저장
+            	$('.show_chk:checked').each(function(){
+            		checkedCtgs.push($(this).val());
+              });
+            	// 배열을 콤마로 구분된 문자열로 변환
+              let resultString = checkedCtgs.join(' ');
+            	console.log("카테고리값 문자열 : '"+ resultString + "'" );
+            	
+            	let name = "user_" + memNo;
+            	let value = checkedCtgs.join(',');
+            	
+            	// expires 속성에 사용됨 나는 max-age를 쓸거임 초단위임
+            	//let date = new Date(Date.now() + 86400e3);
+            	//date = date.toUTCString();
+            	document.cookie = encodeURIComponent(name) + '=' + encodeURIComponent(value)
+            									+ "; path=/; max-age=" + (3600 * 24);
+            	
+            	console.log("쿠키 오븐에 넣음",document.cookie);
+            	
+            }
+            
+            // 주어진 이름의 쿠키를 반환하는데, 조건에 맞는 쿠키가 없다면 undefined 반환
+            function getCookie(name){
+            	console.log("name : ", name);
+            	console.log("getCookie실행");
+            	let matches = document.cookie.match(new RegExp(
+            			"(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+           			));
+            	
+            	let cookieVal = matches ? decodeURIComponent(matches[1]) : undefined;
+            	console.log("오븐에 넣어둔 쿠키가 있나여? : ", cookieVal);
+            	if(cookieVal != undefined){
+            		cookieValArr = cookieVal.split(",");
+            		
+            		$(".show_chk").each(function(){
+            			let checkValue = $(this).val();
+            			if(cookieValArr.includes(checkValue)){
+            				$(this).prop("checked", true);
+            			}else{
+										$(this).prop("checked", false);            				
+            			}
+            		})
+            	}
+            }
+            
+            
+            
+            
+            // 카테고리 접혔다 폈다 하는 funciton
             function toggleIcons(type){
             	let titleName = type == 1 ? ".my_calendar" : ".share_calendar";
             	
@@ -921,11 +1014,13 @@
             
             // 결재선 모달용 javascript ********************************************
 			    	// treeview의 부서 목록 생성
-			    	function createMajorList(){    		
+			    	function createMajorList(search){    		
 			    		$.ajax({
 			    			url:"${contextPath}/approval/majorTreeList.do",
 			    			type:"get",
+			    			data:{search:search},
 			    			success: function(list){
+			    				//majorTree = [];
 			    				for(let i=0; i<list.length; i++){
 			    					majorTree[i] = {};
 			    					majorTree[i].text = list[i].colName;
@@ -938,7 +1033,9 @@
 			    						majorTree[i].nodes[j].tags = [majorList[j].majorNo, "major"];
 			    					}
 			    				}
-			    				testTreeView();
+			    				console.log("createMajorList :", list);
+			    				console.log("majorTree : ", majorTree);
+			    				testTreeView(search);
 			    			},
 			    			error: function(){
 			    				console.log("부서 목록 조회 실패");
@@ -947,13 +1044,39 @@
 			    		
 			    	}
             
+            function createMemList(list){
+            	$("#insert_share .my_mem_list").empty();
+				
+				
+							for(const member of list){
+								let $newEl = $("<div>" + member.memName + " (" + member.majorNo + ", " + member.jobNo + ")" + "</div>");
+								$newEl.append("<span class='hide'>" + member.memNo + "</span>");
+											//.append("<span class='hide'>" + member.majorNo + "</span>")
+											//.append("<span class='hide'>" + member.jobNo + "</span>")
+											//.append("<span class='hide'>" + member.memName + "</span>");
+											
+								if(memNo == member.memNo){
+									$newEl.addClass("calOwner");
+								}
+									
+								$("#insert_share .my_mem_list").append($newEl);
+							
+							}
+							
+							if(list.length == 0 || list.length == 1 && $(".my_mem_list div").hasClass("calOwner")){
+								$("#insert_share .select_all_btn").css("display", "none");
+								$("#insert_share .select_all_btn").text("전체선택");
+							}else{
+								$("#insert_share .select_all_btn").css("display", "inline" );
+								$("#insert_share .select_all_btn").text("전체선택");
+							}
+            }
+            
 	         	// 부서목록 treeview 생성 함수
-	        	function testTreeView(){
-	        	 
-	        	 
-	        		
+	        	function testTreeView(search){
+	        		console.log("search", search);
 	            $("#myTreeview").treeview({
-	                levels: 1,
+	                levels: (search == "" ? 1 : 99),
 	                selectedBackColor: "#03a9f3",
 	                onhoverColor: "rgba(0, 0, 0, 0.05)",
 	                expandIcon: "ti ti-plus",
@@ -962,7 +1085,7 @@
 	                data: majorTree,
 	                showTags: true,
 	                highlightSelected: true,
-	            }).on("click", function(){
+	            }).on("click", function(){ // 학과 treeview클릭 이벤트
 	            	let $badge = $(".node-selected").find(".badge");
 	            	if($badge.eq(1).text() == "major"){
 	            		$.ajax({
@@ -970,9 +1093,10 @@
 	            			data:{ majorNo: $badge.eq(0).text() },
 	            			type:"get",
 	            			success: function(list){
+	            				//console.log("뭐지",list);
 	            				$("#insert_share .my_mem_list").empty();
-	            				
-	            				
+	            				createMemList(list);
+	            				/*
 	            				for(const member of list){
 	            					let $newEl = $("<div>" + member.memName + " (" + member.majorNo + ", " + member.jobNo + ")" + "</div>");
 	            					$newEl.append("<span class='hide'>" + member.memNo + "</span>");
@@ -995,7 +1119,7 @@
 	            					$("#insert_share .select_all_btn").css("display", "inline" );
 	            					$("#insert_share .select_all_btn").text("전체선택");
 	            				}
-	            				
+	            				*/
 	            				
 	            				
 	            			},
@@ -1066,16 +1190,7 @@
     							return false;
         				}
            		})
-           		/*
-	        		if(appType == "levelOne" && ($boxMem.children("div").length + $selectedMem.length > 5)){
-	        			alert("협조자는 최대 5명까지 선택할 수 있습니다.");
-	        		}
-	        		else if(appType != "levelOne" && $boxMem.children("div").length + $selectedMem.length > 1){
-	        			alert("결재자, 수신자는 1명만 선택할 수 있습니다.");
-	        		}else{
-	        			
-	        		}
-        			*/
+           		
 	        	}
 	        	// 화살표 클릭시 결재자 제거
 	        	function removeAppMember(appType){
@@ -1086,7 +1201,7 @@
         	
 	        	// 결재선 등록 모달 초기화 => 공유 멤버 등록 모달 초기화
 	         	function resetEnrollLineModal(){
-	         		createMajorList();
+	         		createMajorList("");
              	$("#insert_share .mem_list").each(function(index, el){
              		$(el).empty();
              	})
@@ -1102,6 +1217,8 @@
 							console.log("등록 멤버 초기화");
 	         	}
 	        	
+            	//console.log("originMem", originMembers);
+	        	
 	        	// 수정상태일때의 공유직원 등록 모달 초기화
 	        	function resetUpdateLineModal(){
 	        		
@@ -1111,10 +1228,9 @@
         		    //}
 	        		});
              	
-	        		createMajorList();
+	        		createMajorList("");
 	        		$("#insert_share .list_box_wrap input[type='hidden']").remove();
 	        		
-             	console.log(originMembers)
              	for(let i=0; i< originMembers.length; i++){
 	        			
 	        			let om = originMembers[i];
@@ -1291,6 +1407,7 @@
 		     			
 		     			$("#insert_share #customRadio1").prop("checked", true);
 		     			$("#insert_share #customRadio2").prop("checked", false);
+		     			$("#insert_share #search_box").val("");
 		     			
 		     			$("#insert_share .resetEnrollLineBtn").css("display", "inline");
 		     			$("#insert_share .resetUpdateLineBtn").css("display", "none");
@@ -1365,6 +1482,7 @@
          								// 공유캘린더 소유자일 경우 => 공유캘린더 수정 모달
          								$("#insert_share #customRadio1").prop("checked", true);
          			     			$("#insert_share #customRadio2").prop("checked", false);
+         			     			$("#insert_share #search_box").val("");
          			     			
          			     			$("#insert_share .resetEnrollLineBtn").css("display", "none");
          			     			$("#insert_share .resetUpdateLineBtn").css("display", "inline");
@@ -1511,7 +1629,7 @@
             		async:false,
             		data:{},
             		success:function(rep){
-            			console.log(rep);
+            			console.log("카테고리 조회용:",rep);
             			
             			let selectCtg = "";
             			let myVal = "";
