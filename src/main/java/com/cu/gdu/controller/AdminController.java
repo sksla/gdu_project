@@ -376,7 +376,7 @@ public class AdminController {
 		for (VacationDto v : vacList) {
 			v.setStatus(v.getStatus().equals("1") ? "대기" : v.getStatus().equals("2") ? "승인" : "반려");
 		}
-		log.debug("vacList값: {}", vacList);
+		//log.debug("vacList값: {}", vacList);
 		model.addAttribute("pi", pi);
 		model.addAttribute("vacList", vacList);
 		model.addAttribute("majorList", majorList);
@@ -454,7 +454,7 @@ public class AdminController {
 		map.put("pi", pi); // map에 담고
 		List<VacationDto> vacList = adminService.ajaxFilterMemberLeaveList(map);
 		map.put("vacList", vacList);
-		log.debug("걸러져서 담겨있는 map: {}", map);
+		//log.debug("걸러져서 담겨있는 map: {}", map);
 		return map;
 	}
 
@@ -856,11 +856,7 @@ public class AdminController {
 	    
 	    workbook.close();
 	    inputStream.close();
-	    
-	    for(CalendarDto c : calList) {
-	    	log.debug("캘린더에 반복문으로 접근시 : {}", c);
-	    }
-	    
+
 	    int result = adminService.univCalendarInsertMany(calList);
 	    if(result == calList.size()) {
 	    	redirectAttributes.addFlashAttribute("alertMsg", "학사일정들을 등록했습니다.");
@@ -1073,7 +1069,7 @@ public class AdminController {
 	    if (r.getStartTime() != null && !r.getStartTime().isEmpty()) {
 	        r.setRevDate(r.getRevDate() + " (" + r.getStartTime() + "-" + r.getEndTime() + ")");
 	    }
-	    log.debug("r에 담겨있는값: {}", r);
+	    //log.debug("r에 담겨있는값: {}", r);
 		model.addAttribute("r", r);
 		return "admin/resourceReservationDetail";
 	}
