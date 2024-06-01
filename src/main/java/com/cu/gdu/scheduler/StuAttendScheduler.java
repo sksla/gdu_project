@@ -1,10 +1,11 @@
 package com.cu.gdu.scheduler;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.cu.gdu.dto.AffReservationDto;
-import com.cu.gdu.dto.StuAttendDto;
 import com.cu.gdu.service.LectureService;
 
 import lombok.RequiredArgsConstructor;
@@ -17,10 +18,12 @@ public class StuAttendScheduler {
 	
 	private final LectureService lectureService;
 	
-	@Scheduled(cron="0 00 0 * * *")	
+	@Scheduled(cron="0 05 1 * * *")	
 	public void execute1() {
-		int result = lectureService.insertStuList();
-		log.debug("오전 12시 학생 등록 실행 확인용 : {}", result);
-	}
+		
+		String str =new SimpleDateFormat("E").format(new Date());
+		int result = lectureService.insertStuList(str);
+		log.debug(str);
 
+	   }
 }

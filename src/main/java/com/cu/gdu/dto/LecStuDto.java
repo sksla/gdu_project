@@ -22,5 +22,6 @@ public class LecStuDto {
 	private String stuName;
 	private String lecName;
 	private String majorName;
+	private String attendance;
 
 }

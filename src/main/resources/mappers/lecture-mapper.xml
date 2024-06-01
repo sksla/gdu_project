@@ -17,9 +17,14 @@
 	
 	<resultMap id="lectureResult" type="lectureDto">
 		<id column="lec_no" property="lecNo"/>
-		<result column="mem_no" property="memNo" />
-		<result column="major_no" property="majorNo" />
-		<result column="lec_name" property="lecName" />
+		<result column="mem_no" property="memNo"/>
+		<result column="mem_name" property="memNo"/>
+		<result column="major_no" property="majorNo"/>
+		<result column="lec_name" property="lecName"/>
+		<result column="res_no" property="resNo"/>
+		<result column="res_name" property="resNo"/>
+		<result column="major_name" property="majorName"/>
+		<result column="lecture_date" property="lectureDate"/>
 	</resultMap>
 	
 	<resultMap id="lecStuResult" type="lecStuDto">
@@ -30,6 +35,7 @@
 		<result column="stu_name" property="stuName" />
 		<result column="lec_name" property="lecName" />
 		<result column="major_name" property="majorName" />
+		<result column="attendance" property="attendance" />
 	</resultMap>
 	
 	<resultMap id="attachResult" type="AttachDto">
@@ -41,7 +47,67 @@
 		<result column="ref_no" property="refNo"/>
 		<result column="ref_type" property="refType"/>
   </resultMap>
+  
+  <resultMap id="majorResult" type="majorDto">
+  	<id column="major_no" property="majorNo"/>
+		<result column="col_no" property="colNo"/>
+		<result column="major_name" property="majorName"/>
+		<result column="status" property="status"/>
+  </resultMap>
+  
+  <resultMap type="ResourceDto" id="resourceResult">
+		<id column="res_no" property="resNo"/>
+		<result column="res_Type" property="resType"/>
+		<result column="res_name" property="resName"/>
+		<result column="res_detail" property="resDetail"/>
+		<result column="use_status" property="useStatus"/>
+		<result column="res_gps" property="resGps"/>
+		<result column="regist_date" property="registDate"/>
+		<result column="mod_date" property="modifyDate"/>
+		<result column="stock" property="stock"/>
+		<result column="status" property="status"/>
+		<result column="del_content" property="delContent"/>
+	</resultMap>
 	
+	<resultMap type="OpenLecDto" id="openLecResult">
+		<id column="open_lec_no" property="openLecNo"/>
+		<result column="lec_no" property="lecNo"/>
+		<result column="lec_name" property="lecName"/>
+		<result column="res_no" property="resNo"/>
+		<result column="start_Date" property="startDate"/>
+		<result column="end_Date" property="endDate"/>
+		<result column="start_time" property="startTime"/>
+		<result column="end_time" property="endTime"/>
+		<result column="lecture_date" property="lectureDate"/>
+		<result column="major_name" property="majorName"/>
+		<result column="mem_name" property="memName"/>
+		<result column="res_name" property="resName"/>
+		<result column="mem_no" property="memNo"/>
+		<result column="lec_status" property="lecStatus"/>
+	</resultMap>
+	
+	<resultMap type="MemberDto" id="memberResult" >
+  	<id column="mem_no" property="memNo"/>
+  	<result column="major_name" property="majorNo"/>
+  	<result column="job_name" property="jobNo"/>
+  	<result column="mem_name" property="memName"/>
+  	<result column="mem_id" property="memId"/>
+  	<result column="mem_pwd" property="memPwd"/>
+  	<result column="phone" property="phone"/>
+  	<result column="email" property="email"/>
+  	<result column="address" property="address"/>
+  	<result column="resident" property="resident"/>
+  	<result column="hire_date" property="hireDate"/>
+  	<result column="end_date" property="endDate"/>
+  	<result column="status" property="status"/>
+  	<result column="salary" property="salary"/>
+  	<result column="sign_url" property="signUrl"/>
+  	<result column="profile_url" property="profileUrl"/>
+  	<result column="leave_count" property="leaveCount"/>
+  	<result column="birth" property="birth"/>
+  	<result column="gender" property="gender"/>
+  </resultMap>
+
 	<!-- 출석 관련 -->
 	<select id="selectStuAttendListCount" resultType="int">
 		select
@@ -50,41 +116,48 @@
 	</select>
 	
 	<!-- 교수 강의목록 -->
-	<select id="selectLectureList" resultMap="lectureResult">
-		select
-		lec_no
-		,lec_name
-		from lecture
-		where mem_no=#{memNo}
+	<select id="selectLectureList" resultMap="openLecResult">		 
+		 select
+				   lec_no
+				 , lec_name
+				 , lecture_date
+			from open_lec
+      join lecture using(lec_no)
+		 where mem_no=#{memNo}
 	</select>
 	
 	<!-- 학생 출석목록 -->
 	<select id="selectStuAttendList" resultMap="lecStuResult">
 		select
-		lecstu_no
-		,lec_no
-		, file_no
-    , file_path
-    , filesystem_name
-    , original_name
-		, major_name
-		, major_no
-		, stu_no
-		, stu_name
-			from lec_stu
-			left join board_attach on (ref_type = 'S' and ref_no = lecstu_no)
-			order by stu_no asc
+					 l.lecstu_no
+				 , l.lec_no
+				 , b.file_no
+		     , b.file_path
+		     , b.filesystem_name
+		     , b.original_name
+				 , l.major_name
+				 , l.major_no
+				 , l.stu_no
+				 , l.stu_name
+				 , s.attendance
+			from lec_stu l
+			left join board_attach b on (b.ref_type = 'S' and b.ref_no = l.lecstu_no)
+			left outer join stu_attend s on (l.stu_no = s.stu_no and s.lecture_date = #{lectureDate})
+		 order by l.stu_no asc
 	</select>
 
 	<select id="selectStuListForLec" resultMap="lecStuResult">
 		select  	
-		 major_name
-		, stu_no
-		, stu_name
-		, lec_no
-		, major_no
-		from lec_stu
-		where lec_no=#{lecNo}
+				   l.major_name
+				 , l.stu_no
+				 , l.stu_name
+				 , l.lec_no
+				 , l.major_no
+				 , s.attendance
+		  from lec_stu l
+		  left join stu_attend s on (l.stu_no = s.stu_no)
+		 where l.lec_no=#{lecNo}
+		 and to_char(lecture_date, 'YYYY-MM-DD') = #{date}
 	</select>
 	
 	<!-- 학생 출석 목록 스케줄러 이용해서 등록 -->
@@ -93,14 +166,138 @@
 			into stu_attend (atten_no, stu_no, lec_no, major_no, stu_name, major_name, lec_name)
 		select seq_stu_attend_no.nextval, stu_no, lec_no, major_no, stu_name, major_name, lec_name
 			from lec_stu
+			
+		 where lecture_date = #{lectureDate}
 	</insert>
 	
-	<update id="updateStuAttend">
+	<update id="updateStuAttend" >
 		update stu_attend
 			 set attendance = #{attendance}
 		 where stu_no =#{stuNo}
 			 and lec_no =#{lecNo}
 			 and to_char(lecture_date,'YY/MM/DD')=to_char(sysdate, 'YY/MM/DD')
 	</update>
+	
+	
+	<!-- 강의관련 -->
+	<!-- 과목리스트 -->
+	<select id="selectLecList" resultMap="lectureResult">
+		select 
+					 lec_no
+				 , lec_name
+      from lecture
+	</select>
+	<!-- 강의리스트 -->
+	<select id="selectAllLecList" resultMap="openLecResult">
+		select 
+					 open_lec_no
+				 , ol.lec_no
+				 , l.lec_name
+				 , j.major_name
+				 , m.mem_name
+				 , r.res_name
+			from open_lec ol
+			join member m on ol.mem_no = m.mem_no
+			join lecture l on ol.lec_no = l.lec_no
+			join major j on j.major_no = l.major_no
+			join resources r on r.res_no = ol.res_no
+	</select>
+	<!-- 학과목록 -->
+	<select id="selectMajorList" resultMap="majorResult">
+		select 
+					 major_no
+				 , major_name
+      from major
+	</select>
+  <!-- 강의실목록 -->
+	<select id="selectResList" resultMap="resourceResult">
+		select res_no
+				 , res_name
+			from resources
+		 where res_type='2'
+			 and use_status='N'
+		 order by res_no
+  </select>
+  <!-- 교수목록 -->
+		<select id="selectMemList" resultMap="memberResult">
+		SELECT DISTINCT m.mem_no, m.mem_name
+FROM member m
+JOIN lecture l ON m.major_no = l.major_no
+WHERE m.major_no = #{majorNo}
+AND m.JOB_NO IN (6, 7, 13)
+  </select>
+  <!-- 강의등록 -->
+  <select id="selectMemList" resultMap="memberResult">
+  SELECT DISTINCT m.mem_no, m.mem_name
+		FROM member m
+		JOIN lecture l ON m.major_no = l.major_no
+		WHERE m.major_no = #{majorNo}
+		AND m.JOB_NO IN (6, 7, 13)
+  </select>
+	<insert id="insertLecture">
+		insert
+			into open_lec
+		(
+				OPEN_LEC_NO
+      , LEC_NO
+      , START_DATE
+      , END_DATE
+      , LECTURE_DATE
+      , START_TIME
+      , END_TIME
+      , RES_NO
+      , LEC_STATUS
+		)
+	 values
+		(
+				seq_open_lec_no.nextval
+    	,	#{lecNo}
+			, #{startDate}
+			, #{endDate}
+			, #{lectureDate}
+			, #{startTime}
+    	, #{endTime}
+			, #{resNo}
+			, 'Y'
+		)
+	</insert>
+	<!-- 강의 상세조회 -->
+		<select id="selectLecDetail" resultMap="openLecResult">
+			select open_lec_no
+					 , ol.lec_no
+					 , lec_name
+	         , m.mem_name
+					 , to_char(ol.start_date, 'YYYY-MM-DD') start_date
+					 , to_char(ol.end_date, 'YYYY-MM-DD') end_date
+					 , ol.lecture_date
+					 , start_time
+					 , end_time
+					 , max_student
+					 , ol.res_no
+					 , ol.mem_no
+				from open_lec ol
+	      join lecture l on l.lec_no=ol.lec_no
+	      join member m on m.mem_no =ol.mem_no
+	      where open_lec_no=#{openLecNo}
+		</select>
+	<!-- 강의 수정 -->
+		<update id="modifyLecture">
+			update open_lec
+				 set open_lec_no = #{openLecNo}
+	         , LEC_NO =#{lecNo}
+	         , START_DATE=#{startDate}
+	         , END_DATE=#{endDate}
+	         , LECTURE_DATE=#{lectureDate}
+	         , START_TIME=#{startTime}
+	         , END_TIME=#{endTime}
+	         , RES_NO=#{resNo}
+			 where open_lec_no = #{openLecNo}
+		</update>
+	<!-- 강의 삭제 -->
+		<update id="deleteLecture">		 
+			update open_lec
+				 set LEC_STATUS = 'N'
+			 where open_lec_no = #{openLecNo}
+		</update>
 	
 </mapper>

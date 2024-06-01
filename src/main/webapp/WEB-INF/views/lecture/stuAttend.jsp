@@ -142,15 +142,12 @@
 			                  <!-- 날짜 -->
 		                    <!-- start Input Type Date Time -->
 		                    <div class="date" style="width: 400px; height: 100px;">
-		                      <input type="date" class="form-control" id="dateArea"/>                
+		                      <input type="date" class="form-control" id="lectureDate" value="" onchange="handleChange();" />                
 		                    </div>
 		                    <!-- end Input Type Date Time -->
-		                    
-		                    
-		                    
 			                  <!-- 출석관련 버튼 -->
 			                  <div class="buttons" style="display: flex; align-items: center;">
-			                  	<select class="form-select w-auto attendance_option" name="stuAttendList[${status.index}].attendance" style="width:100px;">
+			                  	<select class="form-select w-auto attendance_option" name="attendance_option" style="width:100px;">
 									        	<option value="Y">출석</option>
 									          <option value="N">결석</option>
 									         	<option value="E">조퇴</option>
@@ -196,7 +193,7 @@
 		                        <c:otherwise>
 			                        <c:forEach var="a" items="${stulist}" varStatus="status">
 				                        <tr>
-					                        <td height="50px"><input type="checkbox" class="checkOne" name="checkOne" id="CheckOnebox" value="CheckOnebox"></td>
+					                        <td height="50px"><input type="checkbox" class="checkOne" name="checkOne" id="CheckOnebox" value="${status.index}"></td>
 					                        <td>
 						                        <input type="hidden" name="stuAttendList[${status.index}].lecNo" value="${a.lecNo}">
 						                        <p class="mb-0 fw-normal fs-4">${status.count}</p>
@@ -217,11 +214,39 @@
 					                        </td>
 					                        <td>
 						                      	<div class="form-group" style="width: 100px;">
-								                  		<select class="form-select w-auto attendance" name="stuAttendList[${status.index}].attendance">
-									                			<option value="Y">출석</option>
-									                  		<option value="N">결석</option>
-									                			<option value="E">조퇴</option>
-									               				<option value="A">공결</option>
+								                  		<select class="form-select w-auto attendance" name="stuAttendList[${status.index}].attendance" id="attendance_${status.index}" value="${a.attendance}">
+								                  			<c:choose>
+									                  		<c:when test="${a.attendance == 'Y'}">
+												              		<option value="Y" selected>출석</option>
+												              	</c:when>
+												              	<c:otherwise>
+												              		<option value="Y">출석</option>
+												              	</c:otherwise>
+												              	</c:choose>
+												              	<c:choose>
+												              	<c:when test="${a.attendance == 'N'}">
+												              		<option value="N" selected>결석</option>
+												              	</c:when>
+												              	<c:otherwise>
+												              		<option value="N">결석</option>
+												              	</c:otherwise>
+												              	</c:choose>
+												              	<c:choose>
+												              	<c:when test="${a.attendance == 'E'}">
+												              		<option value="E" selected>조퇴</option>
+												              	</c:when>
+												              	<c:otherwise>
+												              		<option value="E">조퇴</option>
+												              	</c:otherwise>
+												              	</c:choose>
+												              	<c:choose>
+												              	<c:when test="${a.attendance == 'A'}">
+												              		<option value="A" selected>공결</option>
+												              	</c:when>
+												              	<c:otherwise>
+												              		<option value="A">공결</option>
+												              	</c:otherwise>
+												              	</c:choose>
 								                  		</select>
 							                    	</div>        
 					                        </td>
@@ -266,13 +291,28 @@
 	
 	<!-- 스크립트 -->
 	<script>
+	// --------- 학생리스트 시작 ---------
+	
+	// 문서가 완전히 로드되면 실행될 코드
+	$(document).ready(function(){
+		// 기본 날짜를 오늘 날짜로 설정
+		// 현재 시간
+		let date = new Date(); 
+		let offset = date.getTimezoneOffset() * 60000;
+		let dateOffset = new Date(date.getTime() - offset);
+		// 날짜 부분만 가져오기
+		let lecDate = dateOffset.toISOString().slice(0, 10);
+	  
+	  document.getElementById('lectureDate').value = lecDate;
+	});
 	
 	// handleChange 함수
 	function handleChange() {
+
 	  var selectElement = document.getElementById('lectureSelect');
-	  var lecNo = selectElement.value; // 선택된 강의의 번호
-	
-	//빈 문자열이거나 숫자가 아닌 경우 처리
+	  var lecNo = selectElement.value; // 선택된 강의번호
+
+		//빈 문자열이거나 숫자가 아닌 경우 처리
 	  if (!lecNo || isNaN(parseInt(lecNo))) {
 	    console.error('Invalid Lecture Number:', lecNo);
 	    return; // 올바르지 않은 경우 처리 중단
@@ -281,10 +321,15 @@
 			$.ajax({
 				url: '${contextPath}/lec/stuListForLec.do', // 서버 URL
 				method: 'GET',
-				data: {lecNo:lecNo}, // 선택된 강의 번호를 전달
+				data: {
+					lecNo:lecNo, 
+					date:$("#lectureDate").val()
+				}, // 선택된 강의 번호를 전달
 				success: function(result) {
 									let tbody = "";
 									console.log(result);
+									
+									
 									
 									if(result.length > 0){
 										
@@ -292,7 +337,7 @@
 											
 											
 											tbody  += "<tr>"
-															+ 	"<td height='50px'>" + "<input type='checkbox' class='checkOne' name='checkOne' id='CheckOnebox' value='CheckOnebox'>" + "</td>"
+															+ 	"<td height='50px'>" + "<input type='checkbox' class='checkOne' name='checkOne' id='CheckOnebox' value='" + i + "'>" + "</td>"
 															+ 	"<td><input type='hidden' name='stuAttendList[" + i + "].lecNo' value='" + result[i].lecNo + "'><p class='mb-0 fw-normal fs-4'>" + (i + 1) + "</p></td>"
 															+ 	"<td><p class='mb-0 fw-normal fs-4'>" + result[i].사진 + "</p></td>"
 															+ 	"<td><input type='hidden' name='stuAttendList[" + i + "].majorNo' value='" + result[i].majorNo +"'><p class='mb-0 fw-normal fs-4'>" + result[i].majorName + "</p></td>" 
@@ -300,15 +345,38 @@
 															+ 	"<td><p class='mb-0 fw-normal fs-4'>" + result[i].stuName + "</p></td>"             
 															+ 	"<td>"  
 										          +   	"<div class='form-group' style='width: 100px;'>" 
-										          +				"<select class='form-select w-auto' name='stuAttendList[" + i + "].attendance'>" 
-										          +					"<option value='Y'>출석</option>" 
-										          +					"<option value='N'>결석</option>"
-										          +					"<option value='E'>조퇴</option>" 
-										          +					"<option value='A'>공결</option>" 
-										          +				"</select>" 
-										          +			"</div>"
-										          + 	"</td>"
-						                  + "</tr>";							
+										          +				"<select class='form-select w-auto' name='stuAttendList[" + i + "].attendance' id='attendance_" + i + "'>";
+										  if(result[i].attendance == "Y")  {
+											  tbody += "<option value='Y' selected>출석</option>"
+											  			 + "<option value='N'>결석</option>"
+											  			 + "<option value='E'>조퇴</option>"
+											  			 + "<option value='A'>공결</option>";
+										  } else if(result[i].attendance == "N") {
+											  tbody += "<option value='Y'>출석</option>"
+										  			 + "<option value='N' selected>결석</option>"
+										  			 + "<option value='E'>조퇴</option>"
+										  			 + "<option value='A'>공결</option>";
+										  } else if(result[i].attendance == "E") {
+											  tbody += "<option value='Y'>출석</option>"
+										  			 + "<option value='N'>결석</option>"
+										  			 + "<option value='E' selected>조퇴</option>"
+										  			 + "<option value='A'>공결</option>";
+										  } else if(result[i].attendance == "A") {
+											  tbody += "<option value='Y'>출석</option>"
+										  			 + "<option value='N'>결석</option>"
+										  			 + "<option value='E'>조퇴</option>"
+										  			 + "<option value='A' selected>공결</option>";
+										  } else {
+											  tbody += "<option value='Y'>출석</option>"
+										  			 + "<option value='N'>결석</option>"
+										  			 + "<option value='E'>조퇴</option>"
+										  			 + "<option value='A'>공결</option>";
+										  }
+										  
+										  tbody +=				"</select>" 
+								          	 +			"</div>"
+								          	 + 	"</td>"
+				                  	 + "</tr>";		
 															
 										}
 										
@@ -328,58 +396,60 @@
 	  
 	  console.log("handleChange selectElement :",selectElement);
 	  console.log("handleChange lecno :", lecNo);
-	}  
-	 
-								    // 서버에서 받은 출석 리스트를 화면에 표시하는 함수
-								    function displayStuAttendList(data) {
-								        // 받은 데이터를 화면에 표시하는 코드 작성
-								        $('#StuAttendList').html(data);
-								    }
+	}
+
+	// 서버에서 받은 출석 리스트를 화면에 표시하는 함수
+	function displayStuAttendList(data) {
+		// 받은 데이터를 화면에 표시하는 코드 작성
+		$('#StuAttendList').html(data);
+	}
+	// --------- 학생리스트 끝 ---------
 	
-								    // 체크박스
-								    $(document).ready(function(){
-										// th체크박스 클릭 시, 나머지 체크박스도 선택되게 
-										$("#checkAllBox").click(function(){
-										var checkAll=$("#checkAllBox").prop("checked");
+	// --------- 체크박스 시작 ---------
+	$(document).ready(function(){
+		
+		// th체크박스 클릭 시, 나머지 체크박스도 선택되게 
+		$("#checkAllBox").click(function(){
+			var checkAll=$("#checkAllBox").prop("checked");
+				
+			if(checkAll){
+				$(".checkOne").prop("checked",true);
+			}else{
+				$(".checkOne").prop("checked",false);
+			}
+		});
+		
+		// 일괄 변경
+		$("#bulkAttendSubmit").on("click", function(){
+			$(".checkOne").each(function(index, el){
+				if($(el).prop("checked")){
+// 					console.log($(el).parent().parent().children().eq(6).children().children().val($(".attendance").val()));
+						console.log($(this).val());
+						console.log($('.attendance_option').val());
+						
+						var index = $(this).val();
+						var temp_attendance = $('.attendance_option').val();
+						
+						$('#attendance_'+index).val(temp_attendance);
+				}
+			})											
+		})
+		
+		// 체크박스가 모두 선택되었을 때 상위 체크박스 선택되도록 설정
+		$('#myTable').on('change', '.checkOne', function() {
+			var checkOne = $(".checkOne").length;
+			var checkedCheckOne = $(".checkOne:checked").length;
+			
+			if (checkOne == checkedCheckOne) {
+				$("#checkAllBox").prop("checked", true);
+			} else {
+				$("#checkAllBox").prop("checked", false);
+			}
+		});
+	});
+	// ---------체크박스 끝 ---------
+	
 
-											if(checkAll){
-												$(".checkOne").prop("checked",true);
-										    }
-										    else{
-										        $(".checkOne").prop("checked",false);
-										    }
-										});
-										
-										$("#bulkAttendSubmit").on("click", function(){
-											$(".checkOne").each(function(index, el){
-												if($(el).prop("checked")){
-													console.log($(el).parent().parent().children().eq(6).children().children().val($(".attendance_option").val()));
-												}
-											})											
-										})
-
-										
-										$('#myTable').on('change', '.checkOne', function() {
-										    var checkOne = $(".checkOne").length;
-										    var checkedCheckOne = $(".checkOne:checked").length;
-
-										    // 체크박스가 모두 선택되었을 때 상위 체크박스 선택되도록 설정
-										    if (checkOne == checkedCheckOne) {
-										        $("#checkAllBox").prop("checked", true);
-										    } else {
-										        $("#checkAllBox").prop("checked", false);
-										    }
-										});
-										
-										});
-								    
-								    // 날짜
-								    // 오늘 날짜를 가져와서 YYYY-MM-DD 형식의 문자열로 변환
-    var today = new Date().toISOString().split('T')[0];
-
-    // 기본 날짜를 오늘 날짜로 설정
-    document.getElementById('dateArea').value = today;
-								    
-								    </script>
+	</script>
 </body>
 </html>

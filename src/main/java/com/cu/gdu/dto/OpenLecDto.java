@@ -22,7 +22,11 @@ public class OpenLecDto {
 	private String endDate;
 	private String startTime;
 	private String endTime;
-	private String maxStudent;
 	private String lectureDate;
-
+	private String lecName;
+	private String majorName;
+	private String memName;
+	private String resName;
+	private String memNo;
+	private String lecStatus;
 }

@@ -19,5 +19,7 @@ public class LectureDto {
 	private String memNo;
 	private String majorNo;
 	private String lecName;
+	private String resNo;
+	private String majorName;
 
 }
