@@ -113,15 +113,17 @@ public class LectureController {
 		List<OpenLecDto> openLecList = lectureService.selectAllLecList();
 		// 강의실 리스트
 		List<ResourceDto> resList = lectureService.selectResList();		
+		// 교수 리스트
+		List<MemberDto> profList = lectureService.selectProfList();
 		
-		List<MemberDto> memList = lectureService.selectMemList();
 		log.debug("강의목록: {}", openLecList);
-		log.debug("교수목록:{}",memList);  
+		log.debug("교수목록:{}", profList);  
+		
 		mv.addObject("openLecList", openLecList)
 		  .addObject("majorList", majorList )
 		  .addObject("resList", resList )
 		  .addObject("lecList", lecList )
-		  .addObject("memList", memList )
+		  .addObject("profList", profList )
 		  .setViewName("/lecture/lectureList");
 		
 		return mv;

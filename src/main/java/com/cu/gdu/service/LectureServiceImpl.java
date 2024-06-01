@@ -80,8 +80,8 @@ public class LectureServiceImpl implements LectureService {
 		return lectureDao.selectResList();
 	}
 	@Override
-	public List<MemberDto> selectMemList() {
-		return lectureDao.selectMemList();
+	public List<MemberDto> selectProfList() {
+		return lectureDao.selectProfList();
 	}
 	// 강의등록
 	@Override
@@ -103,16 +103,5 @@ public class LectureServiceImpl implements LectureService {
 	public int deleteLec(String openLecNo) {
 		return lectureDao.deleteLec(openLecNo);
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
 }

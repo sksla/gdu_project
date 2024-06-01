@@ -189,7 +189,7 @@
 	</select>
 	<!-- 강의리스트 -->
 	<select id="selectAllLecList" resultMap="openLecResult">
-		select 
+		 select 
 					 open_lec_no
 				 , ol.lec_no
 				 , l.lec_name
@@ -201,6 +201,7 @@
 			join lecture l on ol.lec_no = l.lec_no
 			join major j on j.major_no = l.major_no
 			join resources r on r.res_no = ol.res_no
+			where ol.lec_status = 'Y'
 	</select>
 	<!-- 학과목록 -->
 	<select id="selectMajorList" resultMap="majorResult">
@@ -219,19 +220,21 @@
 		 order by res_no
   </select>
   <!-- 교수목록 -->
-		<select id="selectMemList" resultMap="memberResult">
+	<select id="selectProfList" resultMap="memberResult">
 		SELECT DISTINCT m.mem_no, m.mem_name
-FROM member m
-JOIN lecture l ON m.major_no = l.major_no
-WHERE m.major_no = #{majorNo}
-AND m.JOB_NO IN (6, 7, 13)
+			FROM member m
+   		join lecture l on m.major_no = l.major_no
+		 where m.JOB_NO IN (6, 7, 13)
+       and m.major_no= l.major_no
   </select>
+  <!-- 강의등록 -->
 
 	<insert id="insertLecture">
 		insert
 			into open_lec
 		(
 				OPEN_LEC_NO
+			, MEM_NO
       , LEC_NO
       , START_DATE
       , END_DATE
@@ -244,6 +247,7 @@ AND m.JOB_NO IN (6, 7, 13)
 	 values
 		(
 				seq_open_lec_no.nextval
+			, #{memNo}
     	,	#{lecNo}
 			, #{startDate}
 			, #{endDate}

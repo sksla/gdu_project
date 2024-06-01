@@ -66,8 +66,8 @@ public class LectureDao {
 	public List<ResourceDto> selectResList() {
 		return sqlSessionTemplate.selectList("lectureMapper.selectResList");
 	}
-	public List<MemberDto> selectMemList() {
-		return sqlSessionTemplate.selectList("lectureMapper.selectMemList");
+	public List<MemberDto> selectProfList() {
+		return sqlSessionTemplate.selectList("lectureMapper.selectProfList");
 	}
 	
 	// 강의등록

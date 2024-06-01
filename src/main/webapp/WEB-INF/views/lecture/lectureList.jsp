@@ -134,12 +134,11 @@
                       </div>
                       <div class="mb-3">
 						            <label for="mem_no" class="control-label">담당교수</label>
-						            <select class="form-select" id="lectureList" name="lecNo">
-	                        <c:forEach var="mem" items="${memList}">
-	                        	<option value="${mem.memNo}">${mem.memName}</option>
+						            <select class="form-select" id="profList1" name="memNo">
+	                        <c:forEach var="prof" items="${profList}">
+	                        	<option value="${prof.memNo}">${prof.memName}</option>
 	                        </c:forEach> 
                         </select>
-						            <input type="hidden" class="form-control" name="memNo" id="mem_no" value=""/>
 						          </div>
 	                 		<div class="mb-3">
                         <label for="lec_date" class="control-label">강의기간</label>
@@ -484,7 +483,15 @@
   		$("#lecDetailForm").attr("action", num==1 ? "${contextPath}/lec/modifyLec.do" : "${contextPath}/lec/deleteLec.do");	
   	}  
 	  
-	  
+	  $(document).ready(function() {
+		    $("#modifyButton").click(function() {
+		        frmSubmit(1);
+		    });
+
+		    $("#deleteButton").click(function() {
+		        frmSubmit(2);
+		    });
+		});
 	  
 	  
 	  

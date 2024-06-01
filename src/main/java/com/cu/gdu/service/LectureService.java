@@ -35,7 +35,7 @@ public interface LectureService {
 	List<OpenLecDto> selectAllLecList();
 	List<MajorDto> selectMajorList();
 	List<ResourceDto> selectResList();
-	List<MemberDto> selectMemList();
+	List<MemberDto> selectProfList();
 	// 강의 등록
 	int insertLecture(OpenLecDto ol);
 	// 강의 상세조회
