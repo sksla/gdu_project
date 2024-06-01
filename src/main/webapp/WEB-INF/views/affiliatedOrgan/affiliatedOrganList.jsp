@@ -218,16 +218,10 @@
                                                 <h6 class="fs-4 fw-semibold mb-0">기관명</h6>
                                               </th>
                                               <th>
-                                                <h6 class="fs-4 fw-semibold mb-0">위치</h6>
-                                              </th>
-                                              <th>
                                                 <h6 class="fs-4 fw-semibold mb-0">관리자</h6>
                                               </th>
                                               <th>
                                                 <h6 class="fs-4 fw-semibold mb-0">사용기간</h6>
-                                              </th>
-                                              <th>
-                                                <h6 class="fs-4 fw-semibold mb-0">사유</h6>
                                               </th>
                                             </tr>
                                           </thead>
@@ -240,14 +234,12 @@
 		                                          		</tr>
 		                                          	</c:when>
 		                                          	<c:otherwise>
-		                                          		<c:forEach var="res" items="${ reslist }">
+		                                          		<c:forEach var="res" items="${ reslist }"  varStatus="status">
 		                                          			<tr>
-		                                          				<td></td>
+		                                          				<td>${ res.rownum }</td>
 		                                          				<td>${ res.affNo }</td>
-		                                          				<td>${ res.affLocation }</td>
 		                                          				<td>${ res.majorNo }</td>
 		                                          				<td>${ res.startDate }~${ res.endDate }</td>
-		                                          				<td>${ res.reason }</td>
 		                                          			</tr>
 		                                          		</c:forEach>
 		                                          	</c:otherwise>
@@ -288,7 +280,7 @@
                       </div>
                     </div>
                   </div>
-                  </div>
+                 </div>
                 </div>
               </div>
             </div>
@@ -343,6 +335,8 @@
 						return null;
 				}
 			});
+			
+			
     </script>
     
     <!-- 세팅메뉴(바) -->
