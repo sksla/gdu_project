@@ -7,11 +7,8 @@
   	<id column="chro_no" property="chroNo"/>
   	<result column="chro_name" property="chroName"/>
   	<result column="lastmsg" property="lastMsg"/>
-  	<result column="chatmem" property="chatMem"/>
-  	<result column="profile_url" property="profileUrl"/>
   	<result column="msg_date" property="msgDate"/>
-  	<result column="job_name" property="jobName"/>
-  	
+  	<collection  resultMap="memberResult" property="memberList"/>
   </resultMap>
   
   <resultMap id="chatResult" type="ChatDto">
@@ -23,6 +20,15 @@
   	<result column="ch_read" property="chRead"/>
   	<result column="mem_name" property="memName"/>
   	<result column="profile_url" property="profileUrl"/>
+  	<result column="job_name" property="jobName"/>
+  </resultMap>
+  
+  <resultMap id="memberResult" type="MemberDto">
+  	<id column="mem_no" property="memNo"/>
+  	<result column="chatmem" property="memName"/>
+  	<result column="mem_name" property="memName"/>
+  	<result column="profile_url" property="profileUrl"/>
+  	<result column="job_name" property="jobNo"/>
   </resultMap>
   
   
@@ -111,14 +117,46 @@
 	<select id="selectChatList" resultMap="chatResult">
 		SELECT 
 				chat_no
+			, chro_no
 			, c.mem_no
 			, ch_content
 			, TO_CHAR(ch_date, 'HH24:MI') as ch_date
 			, ch_read
 			, mem_name
       , profile_url
+      , j.job_name
 			FROM chat c
 			join member m on(c.mem_no = m.mem_no)
+			join job j on m.job_no = j.job_no
+		 WHERE chro_no = #{chroNo}
+		 order by chat_no
+	</select>
+	
+	<!-- 채팅 멤버 초대 -->
+	<insert id="insertAddMem">
+		insert
+		 	into chat_mem
+		 	(
+		    chro_no
+		 	, mem_no
+		 	)
+		 	values
+		 	(
+		    #{chroNo}
+		 	, #{memNo}
+		 	)
+	</insert>
+	
+	<!-- 채팅방 멤버 조회 -->
+	<select id="selectChatRoomMem" resultMap="memberResult">
+	SELECT 
+				   m.MEM_NAME 
+				 , c.mem_no
+				 , m.profile_url
+				 , j.job_name
+			FROM chat_mem c
+			JOIN member m ON c.MEM_NO = m.MEM_NO
+			JOIN JOB j on m.job_no = j.job_no
 		 WHERE chro_no = #{chroNo}
 	</select>
 </mapper>

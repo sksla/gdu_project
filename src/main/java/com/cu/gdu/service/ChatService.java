@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.cu.gdu.dto.ChatDto;
 import com.cu.gdu.dto.ChatRoomDto;
+import com.cu.gdu.dto.MemberDto;
 
 public interface ChatService {
 
@@ -22,6 +23,16 @@ public interface ChatService {
 	
 	// 채팅방별 메세지 조회하기
 	List<ChatDto> selectChatList(int chroNo);
+	
+	// 채팅방에 멤버 추가하기
+	int addMemChatRoom(ChatDto ch);
+	
+	// 채팅방별 멤버 조회하기
+	List<MemberDto> selectChatRoomMem(int chroNo);
+	
+	
+	
+	
 	
 	
 }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.cu.gdu.dto.ChatDto;
 import com.cu.gdu.dto.ChatRoomDto;
+import com.cu.gdu.dto.MemberDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -42,6 +43,14 @@ public class ChatDao {
 	
 	public int updateMessage(ChatDto ch) {
 		return sqlSessionTemplate.update("chatMapper.updateMessage", ch);
+	}
+	
+	public int addMemChatRoom(ChatDto ch) {
+		return sqlSessionTemplate.insert("chatMapper.insertAddMem", ch);
+	}
+	
+	public List<MemberDto> selectChatRoomMem(int chroNo){
+		return sqlSessionTemplate.selectList("chatMapper.selectChatRoomMem", chroNo);
 	}
 	
 	

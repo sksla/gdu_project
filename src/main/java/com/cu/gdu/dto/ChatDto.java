@@ -24,4 +24,5 @@ public class ChatDto {
 	 private String chRead;
 	 private String memName; // 조인으로 추가된 변수
 	 private String profileUrl; // 조인으로 추가된 변수
+	 private String jobName; // 조인으로 추가된 변수
 }

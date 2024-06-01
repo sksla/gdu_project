@@ -1,5 +1,7 @@
 package com.cu.gdu.dto;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,10 +21,9 @@ public class ChatRoomDto {
 	 private String chroName;
 	 private String lastMsg;
 	 private String msgDate;
-	 private String chatMem; // 조인으로 추가된 변수
-	 private String profileUrl; // 조인으로 추가된 변수
-	 private String jobName; // 조인으로 추가된 변수
 	
 	
+	 // has Many 관계
+	 private List<MemberDto> memberList;
 	
 }

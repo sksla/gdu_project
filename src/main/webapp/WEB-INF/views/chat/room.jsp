@@ -12,8 +12,17 @@
         display: none;
      }
      .active {
-            display: block;
+        display: block;
      }
+     .list-mem {
+    		max-height: 600px;
+     }
+     .detail_chatmem {
+     		max-height: 400px;
+     		min-height: 50px;
+     }
+     
+     
      
      /* 결재선 모달 스타일 */
 	  .list_box_wrap{
@@ -72,6 +81,20 @@
 	  	height:95%;
 	  	overflow: auto;
 	  }
+	 
+	 /*스크롤바 스타일*/  
+   	.scrollmy{
+   		overflow: auto;
+   	}
+   	.scrollmy::-webkit-scrollbar {
+	  	width: 6px;
+		}
+		.scrollmy::-webkit-scrollbar-thumb {
+	 	  background-color: lightgrey;
+		  border-radius: 5px;
+		  height: 10px;
+		}
+  
 </style>
 </head>
 <body>
@@ -200,7 +223,7 @@
                   </div>
                 </div>
                 <div class="app-chat">
-                  <ul class="chat-users mb-0 mh-n100" data-simplebar>
+                  <ul class="chat-users mb-0 list-mem scrollmy" >
                     <!--  목록 한개 부분 -->
                     <li>
                       <a href="" onclick="openChat(event, 'chat1')"
@@ -237,11 +260,21 @@
               
               <!-- 기본 채팅부분 -->
                <div id="createChatBtn">
-						        
-						        <button type="button" class="btn me-1 mb-1 sm-subtle text-info px-2 fs-4 " data-bs-toggle="modal"
-			                data-bs-target="#app_line_modal">
-			                <b>채팅 만들기</b>
-             				</button>
+						      <div  style="text-align:center; padding: 200px; cursor: pointer;" onclick="openModal('createChat')"> 
+						      	<p>
+						      		<svg xmlns="http://www.w3.org/2000/svg" width="70" height="70" viewBox="0 0 24 24" fill="none" stroke="#618FFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-message-plus">
+											  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+											  <path d="M8 9h8" />
+											  <path d="M8 13h6" />
+											  <path d="M12.01 18.594l-4.01 2.406v-3h-2a3 3 0 0 1 -3 -3v-8a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v5.5" />
+											  <path d="M16 19h6" />
+											  <path d="M19 16v6" />
+											</svg> <br>
+							        <button type="button" class="btn me-1 mb-1 sm-subtle text-info px-2 fs-4 " onclick="openModal('createChat')">
+				                <b>채팅 만들기</b>
+	             				</button>
+             				</p>
+             		  </div> 
 						   </div>
               
               
@@ -259,8 +292,9 @@
                     </div>
                   </div>
                   <div class="chatting-box d-block">
-                    <div class="p-9 border-bottom chat-meta-user d-flex align-items-center justify-content-between">
-                      <div class="hstack gap-3 current-chat-user-name">
+                    <div class="p-9 border-bottom chat-meta-user d-flex align-items-center justify-content-between ">
+                     <div class="d-flex align-items-center memDetail memListscroll" style="display: flex; overflow-x: auto; white-space: nowrap; -ms-overflow-style: none; scrollbar-width: none; max-width: 634px;">
+                      <div class="hstack gap-3 current-chat-user-name memDetail" >
                         <div class="position-relative" id="profileurl">
                           <img src="../assets/images/profile/user-2.jpg" alt="user1" width="48" height="48"
                             class="rounded-circle" />
@@ -273,15 +307,24 @@
                           <p class="mb-0" id="chatMemjob">Away</p>
                         </div>
                       </div>
+                     </div>
+                      
+                      
                       <ul class="list-unstyled mb-0 d-flex align-items-center">
-                        <li>
-                          <a class="text-dark px-2 fs-7 bg-hover-primary nav-icon-hover position-relative z-index-5"
-                            href="javascript:void(0)"><i class="ti ti-phone"></i></a>
+                     		 <li>
+                          <a class="text px-2 fs-7 bg-hover-primary nav-icon-hover position-relative z-index-5 button"
+                             onclick="openChatMemList()"><i class="ti ti-user"></i></a>
                         </li>
+                        <li>
+                          <a class="text px-2 fs-7 bg-hover-primary nav-icon-hover position-relative z-index-5 button"
+                            href="javascript:void(0)" onclick="openModal('invite')"><i class="ti ti-user-plus"></i></a>
+                        </li>
+                        <!--  
                         <li>
                           <a class="text-dark px-2 fs-7 bg-hover-primary nav-icon-hover position-relative z-index-5"
                             href="javascript:void(0)"><i class="ti ti-video"></i></a>
                         </li>
+                        -->
                         <li>
                           <a class="chat-menu text-dark px-2 fs-7 bg-hover-primary nav-icon-hover position-relative z-index-5"
                             href="javascript:void(0)">
@@ -294,8 +337,8 @@
                     <div class="d-flex parent-chat-box">
              <!-- 채팅방 부분 -->
                       <div class="chat-box w-xs-100">
-                        <div class="chat-box-inner p-9" data-simplebar>
-                          <div class="chat-list chat active-chat" data-user-id="1">
+                        <div class="chat-box-inner p-9 scrollmy" id="ongoing-tasks" >
+                          <div class="chat-list chat active-chat"   data-user-id="1" >
                       		 <!-- 채팅부분 -->
                         
                             
@@ -489,7 +532,7 @@
                           </div>
                         </div>
                       </div>
-                      미디어 파일 부분 끝 -->
+                       미디어 파일 부분 끝 -->
                     </div>
 
                   </div>
@@ -499,8 +542,49 @@
               <script src="https://cdn.jsdelivr.net/sockjs/1/sockjs.min.js"></script> 
               <script>
               
-              	
-              	
+		              
+				      $(document).ready(function(){
+				    	  ajaxChatRoomList();
+				    	  
+				    	 
+				    	  
+				    	  
+				    	// 참여자 목록 가로 스크롤링
+			              var startX;
+			              var scrollLeft;
+		
+			              document.querySelector('.memListscroll').addEventListener('mousedown', function(e) {
+			                  startX = e.pageX - this.offsetLeft;
+			                  scrollLeft = this.scrollLeft;
+			                  this.style.cursor = 'grabbing';
+			              });
+		
+			              document.querySelector('.memListscroll').addEventListener('mousemove', function(e) {
+			                  if (!startX) return;
+			                  e.preventDefault();
+			                  const x = e.pageX - this.offsetLeft;
+			                  const walk = (x - startX) * 2; // 스크롤 속도 조절
+			                  this.scrollLeft = scrollLeft - walk;
+			              });
+		
+			              document.querySelector('.memListscroll').addEventListener('mouseup', function() {
+			                  startX = 0;
+			                  this.style.cursor = 'grab';
+			              });
+		
+			              document.querySelector('.memListscroll').addEventListener('mouseleave', function() {
+			                  startX = 0;
+			                  this.style.cursor = 'grab';
+			              });
+				    	  
+				    	  
+				    	  
+				      }) // 레디fuction끝
+              
+              
+              
+              
+              
 					   
 					   		const sock = new SockJS("${contextPath}/chat"); // * 웹소켓서버와 연결됨 (=> ChatEchoHandler에 재정의해둔 afterConnectionEstablished의 메소드가 실행됨)
 					   		sock.onmessage = onMessage;
@@ -534,7 +618,7 @@
 					      		
 					      		// 내가보낸메세지든 상대방이보낸메세지든 공통적으로 만들어야되는 요소작업
 										$chatDiv.addClass("hstack gap-3 align-items-start mb-7")
-														.addClass(msgArr[2] == "${loginUser.memName}" ? "justify-content-end" : "justify-content-start") ;
+														.addClass(msgArr[2] == "${loginUser.memName}${loginUser.jobNo}" ? "justify-content-end" : "justify-content-start") ;
 										if ($chatDiv.hasClass("justify-content-end")) {
 								            $chatDiv.append(
 								              $("<div>").addClass("text-end")
@@ -568,24 +652,27 @@
 					      	}
 					      	
 					      	$chatArea.append($chatDiv);
-					      	$chatArea.scrollTop = $chatArea.scrollHeight;
+					      	const ongoingTasks = document.getElementById("ongoing-tasks");
+					      	ongoingTasks.scrollTop = ongoingTasks.scrollHeight;
+					      	
 					      	//$chatArea.scrollTop($chatArea[0].scrollHeight); // 스크롤항상 하단으로 유지시켜주는 내용
 					      	
 					      }
 					      
 					      // 퇴장하기 클릭시 실행되는 function
 					      function onClose(){
-					    	  location.href = "/${contextPath}";
+					    	  location.href = "${contextPath}";
 					      }
 					      
 					      
 				      	// 메세지 입력후 엔터치면 전송되는 function
 				      	document.getElementById('messageInput').addEventListener('keyup', function(event) {
+				      		
 				          if (event.key === 'Enter') {
 				            sendMessage();
 				          }
+				         
 				        });
-					      
 					      
 					      
 								// 채팅방 보이기 
@@ -593,6 +680,7 @@
 					            event.preventDefault();
 					            console.log(chroNo);
 					            $chatArea.empty();
+        		          window.chatRoomNumber = chroNo;
 					            
 					            // 모든 채팅 상세보기 숨기기
 					            var chats = document.getElementsByClassName('chat-container');
@@ -605,12 +693,11 @@
 					            chat.classList.add('active');
 					            
 											// 채팅 상대방프로필 이름 가져오기
-											var profileImageUrl = profileUrl ? profileUrl : '/assets/images/profile/user-1.jpg';
-											document.querySelector('#profileurl img').src = "${contextPath}" + profileImageUrl;
-											
+											//var profileImageUrl = profileUrl ? profileUrl : '/assets/images/profile/user-1.jpg';
+											//document.querySelector('#profileurl img').src = "${contextPath}" + profileImageUrl;
 											//document.querySelector('#profileurl img').src = "${contextPath}" +  (profileUrl ? profileUrl : '/assets/images/profile/user-1.jpg');
-											document.getElementById('chatMem').textContent = chatMem;
-											document.getElementById('chatMemjob').textContent = jobName;
+											//document.getElementById('chatMem').textContent = chatMem;
+											//document.getElementById('chatMemjob').textContent = jobName;
 									
 											
 					            // 채팅 만들기 div 숨기기
@@ -624,11 +711,12 @@
 			        		        success: function(response) {
 			        		            // 새로운 채팅방이 성공적으로 생성되면 실행될 작업
 			        		            // 예를 들어, 채팅창으로 이동하는 코드를 이곳에 작성합니다.
-			        		            console.log("채팅방번호:", response);
+			        		            console.log("채팅내역:", response);
 			        		            
 												      	
 			        		          for(let i = 0; i<response.length; i++){  
 			        		            let $chatDiv = $("<div>"); // 채팅창에 append시킬 div요소 (각 조건에 따라 다르게 제작)
+				        		          console.log("채팅방번호:", response[i].chroNo);
 			        		            if('${loginUser.memNo}' == response[i].memNo){ // 내 메세지일경우
 												      		
 																	$chatDiv.addClass("hstack gap-3 align-items-start mb-7")
@@ -645,9 +733,9 @@
 												      		$chatDiv.addClass("hstack gap-3 align-items-start mb-7")
 																					.addClass("justify-content-start") ;
 																      		 $chatDiv.append(
-																		              $("<img>").attr("src", "${contextPath}/"+ response[i].profileUrl).attr("alt", "user8").attr("width", "40").attr("height", "40").addClass("rounded-circle"),
+																		              $("<img>").attr("src", "${contextPath}"+ (response[i].profileUrl ? response[i].profileUrl : '/assets/images/profile/user-1.jpg')).attr("alt", "user8").attr("width", "40").attr("height", "40").addClass("rounded-circle"),
 																		              $("<div>")
-																		                .append($("<h6>").addClass("fs-2 text-muted").text(response[i].memName + ", " + response[i].chDate ))
+																		                .append($("<h6>").addClass("fs-2 text-muted").text(response[i].memName + response[i].jobName + ", " + response[i].chDate ))
 																		                .append($("<div>").addClass("p-2 text-bg-light rounded-1 d-inline-block text-dark fs-3").text(response[i].chContent))
 																		            );
 																      		$chatArea.append($chatDiv);
@@ -655,12 +743,19 @@
 			        		            
 			        		          } // for문 끝
 			        		          //$chatArea.append($chatDiv);
-			        		          window.chatRoomNumber = chroNo;
+			        		          //$chatArea.scrollTop = $chatArea.scrollHeight;
+			        		          const ongoingTasks = document.getElementById("ongoing-tasks");
+								      			ongoingTasks.scrollTop = ongoingTasks.scrollHeight;
+			        		          
 			        		        },
 			        		        error: function(xhr, status, error) {
 			        		            // AJAX 요청이 실패한 경우 실행될 작업
 			        		        }
 			        		    });
+					            
+					            // 채팅 참여자 목록 가져오기
+					            selectChatMem(chroNo);	 
+					            
 					        }
 
 					        
@@ -688,12 +783,104 @@
 					        		    });
 					        		
 					        }
-					      
 					        
-					      $(document).ready(function(){
-					    	  ajaxChatRoomList();
-					    	  
-					      })
+					        
+					        // 초대하기 
+					        function inviteMem(){
+					        	
+					        	var form = document.getElementById("appForm");
+				            var input = document.createElement("input");
+				            input.type = "hidden";
+				            input.name = "chroNo";
+				            input.value = window.chatRoomNumber;
+				            form.appendChild(input);
+					        	
+				            $("#appForm input").each(function() {
+				                console.log($(this).val());
+				            });
+					        	
+					        	$.ajax({
+			        		        url: "${contextPath}/chat/addChatMem.do",
+			        		        type: "post",
+			        		        data: $("#appForm").serialize(),
+			        		        success: function(response) {
+			        		        // 채팅자 목록 조회해오기
+			        		        ajaxChatRoomList();
+			        		        selectChatMem(window.chatRoomNumber);	 
+							            
+			        		        },
+			        		        error: function(xhr, status, error) {
+			        		            // AJAX 요청이 실패한 경우 실행될 작업
+			        		        }
+			        		    });
+					        	
+					        }
+					        
+					      
+					        // 채팅창 참여자 목록 조회해오는 함수
+					        function selectChatMem(chroNo){
+					        // 채팅자 목록 조회해오기
+					            $.ajax({
+					                url: "${contextPath}/chat/chatRoomMem.do", 
+					                type: "get",
+					                data: { chroNo: chroNo }, 
+					                success: function(result) {
+					                	console.log(result);
+					                	var chatList = document.querySelector(".memDetail");  
+					                	chatList.innerHTML = "";
+					                	
+					                    result.forEach(function(member) {
+					                        if ( member.memNo !== ${loginUser.memNo}) { // 로그인 멤버는 제외
+					                        	 // div 요소 생성
+					                            var chatUserDiv = document.createElement("div");
+					                            chatUserDiv.className = "hstack gap-3 current-chat-user-name";
+
+					                            // 이미지 및 뱃지 요소 생성
+					                            var imgDiv = document.createElement("div");
+					                            imgDiv.className = "position-relative";
+					                            var img = document.createElement("img");
+					                            img.src = "${contextPath}" + (member.profileUrl ? member.profileUrl : '/assets/images/profile/user-1.jpg');
+					                            img.alt = member.memName;
+					                            img.width = 48;
+					                            img.height = 48;
+					                            img.className = "rounded-circle";
+					                            var badgeSpan = document.createElement("span");
+					                            badgeSpan.className = "position-absolute bottom-0 end-0 p-1 badge rounded-pill bg-success";
+					                            var visuallyHiddenSpan = document.createElement("span");
+					                            visuallyHiddenSpan.className = "visually-hidden";
+					                            visuallyHiddenSpan.textContent = "New alerts";
+					                            badgeSpan.appendChild(visuallyHiddenSpan);
+					                            imgDiv.appendChild(img);
+					                            imgDiv.appendChild(badgeSpan);
+
+					                            // 이름 및 상태 요소 생성
+					                            var textDiv = document.createElement("div");
+					                            var nameH6 = document.createElement("h6");
+					                            nameH6.className = "mb-1 name fw-semibold";
+					                            nameH6.textContent = member.memName;
+					                            var statusP = document.createElement("p");
+					                            statusP.className = "mb-0";
+					                            statusP.textContent = member.jobNo; // 멤버 상태 정보를 여기에 추가할 수 있음
+
+					                            // div에 이미지, 이름, 상태 추가
+					                            textDiv.appendChild(nameH6);
+					                            textDiv.appendChild(statusP);
+
+					                            // chatUserDiv에 이미지, 이름, 상태 div 추가
+					                            chatUserDiv.appendChild(imgDiv);
+					                            chatUserDiv.appendChild(textDiv);
+
+					                            // chatList에 chatUserDiv 추가
+					                            //chatList.insertAdjacentElement('afterend', chatUserDiv);
+					                            chatList.append(chatUserDiv);
+					                        }
+					                    })
+					                  }
+					               });
+					       	}
+					        
+					        
+					     
 					      
 					      // 채팅방 목록 조회용
 					      function ajaxChatRoomList() {
@@ -711,13 +898,17 @@
 
 					    	            // 각 채팅방에 대한 정보를 반복하여 처리
 					    	            result.forEach(function(room) {
-					    	            	console.log(room.chatMem);
+					    	            	console.log(room.memberList);
 					    	                // 각 채팅방에 대한 HTML 생성
+					    	             if (room.memberList && room.memberList.length > 0) {
+					    	            	 var firstMember = room.memberList[0];
+					    	               var MembersCount = room.memberList.length - 1;
+					    	            	 
 					    	            	 var listItem = document.createElement("li");
 					    	            	    var anchor = document.createElement("a");
 					    	            	    anchor.href = "#";
-					    	            	    anchor.setAttribute("onclick", "openChat(event, 'chat1', " + room.chroNo + ",'"+ room.chatMem + "','" + room.profileUrl + "','"+ room.jobName +"')");
-					    	            	    anchor.className = "px-4 py-3 bg-hover-light-black d-flex align-items-start justify-content-between chat-user bg-light-subtle";
+					    	            	    anchor.setAttribute("onclick", "openChat(event, 'chat1', " + room.chroNo + ",'"+ firstMember.memName + "','" + firstMember.profileUrl + "','"+ firstMember.jobNo +"')");
+					    	            	    anchor.className = "px-4 py-3 bg-hover-light-black d-flex align-items-start justify-content-between chat-user ";
 					    	            	    anchor.setAttribute("data-user-id", room.chroNo);
 
 					    	            	    var innerDiv = document.createElement("div");
@@ -727,7 +918,8 @@
 					    	            	    positionSpan.className = "position-relative";
 
 					    	            	    var img = document.createElement("img");
-					    	            	    img.src = "${contextPath}" +  (room.profileUrl ? room.profileUrl : '/assets/images/profile/user-1.jpg');
+					    	            	    var proUrl = firstMember.profileUrl ? firstMember.profileUrl : '/assets/images/profile/user-1.jpg';
+					    	            	    img.src = "${contextPath}" +  proUrl;
 					    	            	    img.alt = "user1";
 					    	            	    img.width = "48";
 					    	            	    img.height = "48";
@@ -745,8 +937,8 @@
 
 					    	            	    var h6 = document.createElement("h6");
 					    	            	    h6.className = "mb-1 fw-semibold chat-title";
-					    	            	    h6.setAttribute("data-username", room.chatMem);
-					    	            	    h6.textContent = room.chatMem +" "+ room.jobName;
+					    	            	    h6.setAttribute("data-username", firstMember.memName);
+					    	            	    h6.textContent = firstMember.memName +" "+ firstMember.jobNo + (MembersCount > 0 ? " 외 " + MembersCount + "명" : "");
 
 					    	            	    var messageSpan = document.createElement("span");
 					    	            	    messageSpan.className = "fs-3 text-truncate text-body-color d-block";
@@ -769,6 +961,7 @@
 
 					    	            	    // 채팅방 목록에 추가
 					    	            	    chatList.appendChild(listItem);
+					    	             	}
 					    	            	});
 					    	        },
 					    		  error:function(){
@@ -779,9 +972,106 @@
 								}
 					      
 					      
+					   
+					      // 모달 오픈용 
+					      function openModal(action) {
+					    	  
+							    // 모달 요소 선택
+					    	  var myModal = new bootstrap.Modal(document.getElementById('app_line_modal'), {
+					    	        keyboard: false
+					    	    });
+							    var modalConfirmButton = document.getElementById("modalConfirmButton");
+							
+									 // 현재 작업 설정
+							    currentAction = action;
+							    
+							    // 각 액션에 따른 모달 내용 설정
+							    if (action === 'createChat') {
+							    	modalConfirmButton.textContent = "채팅 만들기";
+							    } else if (action === 'invite') {
+							    	modalConfirmButton.textContent = "초대하기";
+							    }
+							
+							    // 모달 표시
+							    myModal.show();
+								}
 					      
-					      
-					      
+					    // 채팅참여자 모달 
+					    function openChatMemList(){
+					    	
+					    	var myModal = new bootstrap.Modal(document.getElementById('chatMemList'), {
+				    	        keyboard: false
+				    	    });
+					                	var chatList = document.querySelector(".detail_chatmem");  
+					                	chatList.innerHTML = "";
+					    	 $.ajax({
+					                url: "${contextPath}/chat/chatRoomMem.do", 
+					                type: "get",
+					                data: { chroNo: window.chatRoomNumber }, 
+					                success: function(result) {
+					                	console.log(result);
+					                	
+				                	 // 참여자 수 업데이트
+				                    var chatMemCountSpan = document.querySelector(".chatMemCount");
+				                    chatMemCountSpan.textContent = result.length;
+					                    
+					                	
+					                	
+					                    result.forEach(function(member) {
+					                        if ( member.memNo !== ${loginUser.memNo}) { // 로그인 멤버는 제외
+					                        	 // div 요소 생성
+					                            var chatUserDiv = document.createElement("div");
+					                            chatUserDiv.className = "hstack gap-3 current-chat-user-name";
+
+					                            // 이미지 및 뱃지 요소 생성
+					                            var imgDiv = document.createElement("div");
+					                            imgDiv.className = "position-relative";
+					                            var img = document.createElement("img");
+					                            img.src = "${contextPath}" + (member.profileUrl ? member.profileUrl : '/assets/images/profile/user-1.jpg');
+					                            img.alt = member.memName;
+					                            img.width = 48;
+					                            img.height = 48;
+					                            img.className = "rounded-circle";
+					                            var badgeSpan = document.createElement("span");
+					                            badgeSpan.className = "position-absolute bottom-0 end-0 p-1 badge rounded-pill bg-success";
+					                            var visuallyHiddenSpan = document.createElement("span");
+					                            visuallyHiddenSpan.className = "visually-hidden";
+					                            visuallyHiddenSpan.textContent = "New alerts";
+					                            badgeSpan.appendChild(visuallyHiddenSpan);
+					                            imgDiv.appendChild(img);
+					                            imgDiv.appendChild(badgeSpan);
+
+					                            // 이름 및 상태 요소 생성
+					                            var textDiv = document.createElement("div");
+					                            var nameH6 = document.createElement("h6");
+					                            nameH6.className = "mb-1 name fw-semibold";
+					                            nameH6.textContent = member.memName;
+					                            var statusP = document.createElement("p");
+					                            statusP.className = "mb-0";
+					                            statusP.textContent = member.jobNo; // 멤버 상태 정보를 여기에 추가할 수 있음
+
+					                            // div에 이미지, 이름, 상태 추가
+					                            textDiv.appendChild(nameH6);
+					                            textDiv.appendChild(statusP);
+
+					                            // chatUserDiv에 이미지, 이름, 상태 div 추가
+					                            chatUserDiv.appendChild(imgDiv);
+					                            chatUserDiv.appendChild(textDiv);
+
+					                            // chatList에 chatUserDiv 추가
+					                            //chatList.insertAdjacentElement('afterend', chatUserDiv);
+					                            chatList.append(chatUserDiv);
+					                        }
+					                    })
+					                  }
+					               });
+					    	 myModal.show();
+					    }
+						
+						
+								
+											      
+											      
 					      
 					      
 					      
@@ -789,6 +1079,57 @@
 					      
 					      
 					   </script>
+					   
+					   
+					   
+					   
+		<!-- 채팅자 목록 모달창 -->
+          <div class="modal" id="chatMemList">
+            <div class="modal-dialog">
+              <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                  <h4 class="modal-title">채팅 참여자 목록</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                	<input type="hidden" name="calNo" value="">
+                  <table class="table">
+                    <tbody>
+                      <tr>
+                        <th width="100px">인원수</th>
+                        <td>
+                          <span id="ctgName"></span>
+                          <button id="shareListBtn" class="btn btn-sm rounded-circle btn-light">
+                          	<i class="ti ti-user"></i>
+                         	</button> &nbsp;
+                          	<span class="chatMemCount"></span>명
+                        </td> 
+                      </tr>
+                      <tr>
+                        <th>참여자</th>
+                        <td><div class="detail_chatmem scrollmy"></div></td>
+                      </tr>
+                      
+                    </tbody>
+                  </table>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer justify-content-center">
+                  
+               
+                  <div class="onlyConfirmBtn" >
+                  	<button type="button" class="btn bg-info-subtle text-info" data-bs-dismiss="modal">확인</button>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>			   
               
               
               
@@ -857,43 +1198,8 @@
               	<div class="my-1" style="display: block; height: 35px; text-align:right;">
               		<button class="btn btn-light fw-semibold" onclick="resetEnrollLineModal();">초기화</button>
               	</div>
-                <div style="height: 220px; margin-bottom: 10px;">
-                  <div class="app_mem_etc">
-                    <div>
-                      <div class="mb-2 add_collaborator" onclick="addAppMember('collaborator');">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="m10.5 9l3 3l-3 3"/><path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z" opacity="0.5"/></g></svg>
-                      </div>
-                      <div class="remove_collaborator" onclick="removeAppMember('collaborator');">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="m13.5 9l-3 3l3 3"/><path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z" opacity="0.5"/></g></svg>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="app_collaborator app_mem">
-                    <div class="box_header">협조자</div>
-                    <div class="mem_list">
-                    
-                    </div>
-                  </div>
-                </div>
-                <div style="height: 80px; margin-bottom: 10px;">
-                  <div class="app_mem_etc">
-                    <div>
-                      <div class="mb-2 add_approver" onclick="addAppMember('approver');">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="m10.5 9l3 3l-3 3"/><path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z" opacity="0.5"/></g></svg>
-                      </div>
-                      <div class="remove_approver" onclick="removeAppMember('approver');">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="m13.5 9l-3 3l3 3"/><path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z" opacity="0.5"/></g></svg>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="app_approver app_mem">
-                    <div class="box_header">결재자</div>
-                    <div class="mem_list">
-                    
-                    </div>
-                  </div>
-                </div>
-                <div style="height: 80px;">
+              
+                <div style="height: 400px;">
                   <div class="app_mem_etc">
                     <div>
                       <div class="mb-2 add_receiver" onclick="addAppMember('receiver');">
@@ -916,7 +1222,7 @@
           </div>
           <div class="modal-footer justify-content-center pb-4 pt-7">
           <form id="appForm" method="post" >
-            <button type="button" class="btn btn-primary waves-effect text-start"
+            <button type="button" class="btn btn-primary waves-effect text-start"  id="modalConfirmButton"
               onclick="confirmAppLine();">
               확인
             </button>
@@ -936,7 +1242,8 @@
     	
     	// treeview의 부서 목록 전역변수
     	let majorTree = [];
-    
+    	var currentAction = null; // 현재 모달의 작업을 저장하는 변수
+    	
     	$(document).ready(function(){
     		
     		// test용 버튼 이벤트
@@ -959,7 +1266,7 @@
 	    	// 부서 선택 시 직원 목록 조회
  				
 	    	
-    	})
+    	}) //레디 function 끝
     	
     	function getCurrentDate() {
           var today = new Date();
@@ -1161,7 +1468,13 @@
     			}
     			$("#appForm").append('<input type="hidden" name="receiverNo" value="' + $selectedReceiverProp.eq(0).text() + '">');
     			 console.log("Receiver No added to form:", $selectedReceiverProp.eq(0).text());
-    	   newChat();
+    	   
+	   			 if (currentAction === 'createChat') {
+	   			        newChat();
+	   			 } else if (currentAction === 'invite') {
+	   			        inviteMem();
+	   			 }
+	   			 
     		}else{
     			for(let i=0; i<$(".receiver").length; i++){
     				$(".receiver").eq(i).text("-");
@@ -1465,5 +1778,6 @@
 	<script src="../assets/libs/bootstrap-tree/dist/bootstrap-treeview.min.js"></script>
 	<script src="../assets/js/plugins/bootstrap-treeview-init.js"></script>
 	
+	<%-- <script src="${ contextPath }/assets/js/apps/chat.js"></script> --%>
 </body>
 </html>

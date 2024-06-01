@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.cu.gdu.dao.ChatDao;
 import com.cu.gdu.dto.ChatDto;
 import com.cu.gdu.dto.ChatRoomDto;
+import com.cu.gdu.dto.MemberDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -49,5 +50,15 @@ public class ChatServiceImpl implements ChatService {
 	@Override
 	public int updateMessage(ChatDto ch) {
 		return chatDao.updateMessage(ch);
+	}
+
+	@Override
+	public int addMemChatRoom(ChatDto ch) {
+		return chatDao.addMemChatRoom(ch);
+	}
+
+	@Override
+	public List<MemberDto> selectChatRoomMem(int chroNo) {
+		return chatDao.selectChatRoomMem(chroNo);
 	}
 }

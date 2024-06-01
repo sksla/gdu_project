@@ -81,7 +81,7 @@ public class ChatEchoHandler extends TextWebSocketHandler {
 		for(WebSocketSession client : sessionList) {
 			// 전달하고자 하는 메세지의 형식 : 메세지유형(chat/entry/exit)|메세지내용|발신자아이디|...
 			String msg = "chat|" + chatMessage + "|" 
-						+ ((MemberDto)session.getAttributes().get("loginUser")).getMemName()+ "|"
+						+ ((MemberDto)session.getAttributes().get("loginUser")).getMemName()+ ((MemberDto)session.getAttributes().get("loginUser")).getJobNo()+ "|"
 		                + currentTime + "|"
 				        + ((MemberDto)session.getAttributes().get("loginUser")).getProfileUrl();
 			client.sendMessage(new TextMessage(msg)); // * 채팅방jsp의 onMessage function실행됨

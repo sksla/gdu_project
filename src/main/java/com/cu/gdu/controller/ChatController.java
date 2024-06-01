@@ -59,5 +59,19 @@ public class ChatController {
 		return chatService.selectChatList(chroNo);
 	}
 	
+	@ResponseBody
+	@PostMapping("/addChatMem.do")
+	public String ajaxAddChatMem (ChatDto ch, String receiverNo) {
+		System.out.println(ch);
+		ch.setMemNo(Integer.parseInt(receiverNo));
+		return chatService.addMemChatRoom(ch) > 0 ? "SUCCESS" : "FAIL";
+	}
+	
+	@ResponseBody
+	@GetMapping(value="/chatRoomMem.do", produces="application/json; charset=utf-8")
+	public List<MemberDto> ajaxSelectChatRoomMem (int chroNo){
+		return chatService.selectChatRoomMem(chroNo);
+	}
+	
 	
 }
