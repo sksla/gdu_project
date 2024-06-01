@@ -58,7 +58,7 @@ public class AffiliatedOrganDao {
 		
 		RowBounds rowBounds = new RowBounds(offset, limit);
 		
-		return sqlSessionTemplate.selectList("affiliatedOrganMapper.selectAffiliatedOrganResList", rowBounds);
+		return sqlSessionTemplate.selectList("affiliatedOrganMapper.selectAffiliatedOrganResList", null, rowBounds);
 	}
 	
 	// * ------------------- 부속기관 등록관련 -------------------

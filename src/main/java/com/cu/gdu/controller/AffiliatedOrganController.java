@@ -80,7 +80,7 @@ public class AffiliatedOrganController {
 	// * ------------------- 부속기관 예약관련 -------------------
 	// 부속기관 예약페이지
 	@GetMapping("/affiliatedOrganResForm.page")
-	public String affiliatedOrganFrom(int no, Model model) {	
+	public String affiliatedOrganFrom(@RequestParam(value="no", defaultValue="1") int no, Model model) {	
 		model.addAttribute("affiliatedOrgan",affiliatedOrganService.selectAffiliatedOrgan(no));
 		
 		return "/affiliatedOrgan/affiliatedOrganRes";
@@ -96,12 +96,13 @@ public class AffiliatedOrganController {
 		if(result > 0) {
 			// 성공메세지
 			redirectAttributes.addFlashAttribute("alertMsg", "성공");
+			//redirectAttributes.addFlashAttribute("tab", "resList");
 		}else{
 			// 실패메세지
 			redirectAttributes.addFlashAttribute("alertMsg", "실패");
 			redirectAttributes.addFlashAttribute("historyBackYN", "Y");
 		}
-		return "affiliatedOrgan/affiliatedOrganRes";
+		return "redirect:/aff/affiliatedOrganList.do?tab=resList";
 	}
 	
 	
