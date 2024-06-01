@@ -226,14 +226,7 @@ JOIN lecture l ON m.major_no = l.major_no
 WHERE m.major_no = #{majorNo}
 AND m.JOB_NO IN (6, 7, 13)
   </select>
-  <!-- 강의등록 -->
-  <select id="selectMemList" resultMap="memberResult">
-  SELECT DISTINCT m.mem_no, m.mem_name
-		FROM member m
-		JOIN lecture l ON m.major_no = l.major_no
-		WHERE m.major_no = #{majorNo}
-		AND m.JOB_NO IN (6, 7, 13)
-  </select>
+
 	<insert id="insertLecture">
 		insert
 			into open_lec
