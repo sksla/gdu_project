@@ -62,13 +62,27 @@ public class ReservationDao {
 	}
 	
 	// 시설목록 전체, 검색 조회
-	public List<ResourceDto> searchFacilityList(Map<String, String> search) {
-		return sqlSessionTemplate.selectList("reservationMapper.searchFacilityList", search);
+	public List<ResourceDto> searchFacilityList(Map<String, String> search, PageInfoDto pi) {
+		int limit = pi.getBoardLimit();
+		int offset = (pi.getCurrentPage() - 1) * limit;
+		
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return sqlSessionTemplate.selectList("reservationMapper.searchFacilityList", search, rowBounds);
+	}
+	public int searchFacilityListCount(Map<String, String> search) {
+		return sqlSessionTemplate.selectOne("reservationMapper.searchFacilityListCount", search);
 	}
 	
 	// 비품목록 전체, 검색조회 
-	public List<ResourceDto> searchEquipmentList(String keyword) {
-		return sqlSessionTemplate.selectList("reservationMapper.searchEquipmentList", keyword);
+	public List<ResourceDto> searchEquipmentList(String keyword, PageInfoDto pi) {
+		int limit = pi.getBoardLimit();
+		int offset = (pi.getCurrentPage() - 1) * limit;
+		
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return sqlSessionTemplate.selectList("reservationMapper.searchEquipmentList", keyword, rowBounds);
+	}
+	public int searchEquipmentListCount(String keyword) {
+		return sqlSessionTemplate.selectOne("reservationMapper.searchEquipmentListCount", keyword);
 	}
 	
 	// 시설 조회(상세)

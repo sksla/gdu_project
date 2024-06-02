@@ -61,7 +61,7 @@
 	   	 </if>
 		  </where>
 		  order 
-		     by rev_no       
+		     by  to_date(rev_date, 'YYYY-MM-DD') desc      
 	</select>
 	
 	<select id="searchReservationListCount" resultType="_int">
@@ -187,6 +187,26 @@
 		     by res_no    
 	</select>
 	
+	<select id="searchFacilityListCount" resultType="_int">
+		select 
+		       count(*) count
+		  from resources
+		  <where>
+		  	use_status = 'Y'
+		  	<if test='keyword != null || !keyword.equals("")'>
+			   	and res_name like '%' || #{keyword} || '%'
+		   	</if>
+		   	<choose>
+			   	<when test="condition != 0">
+			   		and res_type = #{condition}
+			   	</when>
+			   	<otherwise>
+			   		and res_type in ('1', '2', '3')
+			   	</otherwise>
+			  </choose>
+		  </where>
+	</select>
+	
 	<!-- 비품 목록 조회 -->
 	<select id="searchEquipmentList" resultMap="resourceResult">
 		select 
@@ -204,6 +224,20 @@
 			   	and res_name like '%' || #{keyword} || '%'
 		   	</if>
 		 	</where>
+	</select>
+	
+	<select id="searchEquipmentListCount" resultType="_int">
+		select 
+		       count(*) count
+		  from resources
+		  <where>
+		  	use_status = 'Y'
+		  	and res_type = '4'
+		  	<if test='keyword != null || !keyword.equals("")'>
+			   	and res_name like '%' || #{keyword} || '%'
+		   	</if>
+		 	</where>
+	
 	</select>
 	
 	<!-- 시설 조회 -->

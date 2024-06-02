@@ -60,14 +60,22 @@ public class ReservationServiceImpl implements ReservationService {
 
 	// 시설 목록 조회
 	@Override
-	public List<ResourceDto> searchFacilityList(Map<String, String> search) {
-		return reservationDao.searchFacilityList(search);
+	public List<ResourceDto> searchFacilityList(Map<String, String> search, PageInfoDto pi) {
+		return reservationDao.searchFacilityList(search, pi);
+	}
+	@Override
+	public int searchFacilityListCount(Map<String, String> search) {
+		return reservationDao.searchFacilityListCount(search);
 	}
 
 	// 비품 목록 조회
 	@Override
-	public List<ResourceDto> searchEquipmentList(String keyword) {
-		return reservationDao.searchEquipmentList(keyword);
+	public List<ResourceDto> searchEquipmentList(String keyword, PageInfoDto pi) {
+		return reservationDao.searchEquipmentList(keyword, pi);
+	}
+	@Override
+	public int searchEquipmentListCount(String keyword) {
+		return reservationDao.searchEquipmentListCount(keyword);
 	}
 	
 	// 시설 상세조회
@@ -81,6 +89,12 @@ public class ReservationServiceImpl implements ReservationService {
 	public List<ReservationDto> selectReservaionListByResNo(int resNo) {
 		return reservationDao.selectReservaionListByResNo(resNo);
 	}
+
+	
+
+
+	
+
 
 
 	

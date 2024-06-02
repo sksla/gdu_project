@@ -103,16 +103,38 @@ public class ReservationController {
 		return "reservation/resourceList";
 	}
 	
+	// 시설 목록 조회
 	@ResponseBody
 	@PostMapping(value="/searchFacilityList.do", produces="application/json; charset=utf-8")
-	public List<ResourceDto> searchFacilityList(@RequestParam Map<String, String> search){
-		return reservationService.searchFacilityList(search);
+	public Map<String,Object> searchFacilityList(@RequestParam(value="page", defaultValue="1") int currentPage
+											  ,@RequestParam Map<String, String> search){
+		int listCount = reservationService.searchFacilityListCount(search);
+		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 8);
+		
+		List<ResourceDto> list = new ArrayList<>();
+		list = reservationService.searchFacilityList(search, pi);
+		
+		Map<String,Object> map = new HashMap<>();
+		map.put("list", list);
+		map.put("pi", pi);
+		return map;
 	}
 	
+	// 비품 목록 조회
 	@ResponseBody
 	@PostMapping(value="/searchEquipmentList.do", produces="application/json; charset=utf-8")
-	public List<ResourceDto> searchEquipmentList(String keyword){
-		return reservationService.searchEquipmentList(keyword);
+	public Map<String,Object> searchEquipmentList(@RequestParam String keyword
+												,@RequestParam(value="page", defaultValue="1") int currentPage){
+		
+		int listCount = reservationService.searchEquipmentListCount(keyword);
+		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 8);
+		List<ResourceDto> list = new ArrayList<>();
+		list = reservationService.searchEquipmentList(keyword, pi);
+		
+		Map<String,Object> map = new HashMap<>();
+		map.put("list", list);
+		map.put("pi", pi);
+		return map;
 	}
 	
 	@GetMapping("/reserveForm.do")

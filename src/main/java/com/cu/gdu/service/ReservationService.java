@@ -29,10 +29,12 @@ public interface ReservationService {
 	int deleteReservation(int revNo);
 	
 	// 시설 목록 조회(전체, 검색)
-	List<ResourceDto> searchFacilityList(Map<String, String> search);
+	List<ResourceDto> searchFacilityList(Map<String, String> search, PageInfoDto pi);
+	int searchFacilityListCount(Map<String, String> search);
 	
 	// 비품 목록 조회(전체, 검색)
-	List<ResourceDto> searchEquipmentList(String keyword);
+	List<ResourceDto> searchEquipmentList(String keyword, PageInfoDto pi);
+	int searchEquipmentListCount(String keyword);
 	
 	// 시설 조회
 	ResourceDto selectResource(int resNo);

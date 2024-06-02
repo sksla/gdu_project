@@ -9,27 +9,24 @@
 <title>자원예약</title>
 <style>
 	table {width: 100%;}
+	/*
 	table thead tr, table tbody tr, table tfoot tr {
 	  display: table;
 	  width: 500px;
 	}
-	.reserve_scroll{
-		display:block;
-    max-height: 500px;
-    overflow-y: auto;
-  }
+	*/
  
   .search-style{
     height:35px; 
     color:#5a6a85; 
     border: 1px solid #dfe5ef;}
     
-  .reserve_scroll td{
+  table td{
   	text-overflow: ellipsis;
    	overflow: hidden;
    	white-space: nowrap;
   }  
-  
+ 	.resource-title{cursor:pointer;} 
   .off{display:none;}
   
 
@@ -119,7 +116,7 @@
                           <th style="width:150px;">예약하기</th>
                         </tr>
                       </thead>
-                      <tbody align="center" class="reserve_scroll">
+                      <tbody align="center">
                       	
                         <!-- <tr>
                           <td>강의실</td>
@@ -143,6 +140,11 @@
                         </tr> -->
                       </tbody>
                     </table>
+                    <br>
+                  	
+                  	<ul class="pagination justify-content-center facility_pagination">
+                
+              			</ul>
                   
                   </div>
     
@@ -175,25 +177,15 @@
                           <th style='width:130px;'>잔여수량</th>
                         </tr>
                       </thead>
-                      <tbody align="center" class="reserve_scroll">
-                        <tr>
-                          <td>비품</td>
-                          <td>비품명11111</td>
-                          <td>50</td>
-                        </tr>
-                        <tr>
-                          <td>비품</td>
-                          <td>비품명22222</td>
-                          <td>30</td>
-                        </tr>
-                        <tr>
-                          <td>비품</td>
-                          <td>비품명22222</td>
-                          <td>10</td>
-                        </tr>
+                      <tbody align="center">
+                        
                       </tbody>
                     </table>
-                  
+                  	<br>
+                  	
+                  	<ul class="pagination justify-content-center equipment_pagination">
+                
+              			</ul>
                   </div>
     
                 </div>
@@ -208,8 +200,8 @@
           	let equipmentArr;
           	
           	$(document).ready(function(){
-          		ajaxSearchFacilityList();
-          		ajaxSearchEquipmentList();
+          		ajaxSearchFacilityList(1);
+          		ajaxSearchEquipmentList(1);
           		
           	})
           	
@@ -259,15 +251,25 @@
           	}
           	
           	// 시설목록 조회 ajax
-          	function ajaxSearchFacilityList(){
+          	function ajaxSearchFacilityList(requestPage){
           		
           		faciltiyArr = new Array();
+          		
+          		// 폼 데이터를 배열 형태로 직렬화
+          		let formDataArray = $("#searchFacilityForm").serializeArray();
+
+          		// page 값을 추가
+          		formDataArray.push({ name: 'page', value: requestPage });
+
+          		// 배열을 직렬화된 문자열로 변환
+          		let formData = $.param(formDataArray);
           		
           		$.ajax({
           			url:"${contextPath}/reservation/searchFacilityList.do",
           			type:"post",
-          			data:$("#searchFacilityForm").serialize(),
-          			success:function(list){
+          			data:formData,
+          			success:function(rep){
+          				let list = rep.list;
           				let tbody = "";
           				
           				if(list.length > 0){
@@ -278,10 +280,10 @@
           																						: (resType == "2" ? "강의실" : "기타"); 
 	          					tbody += "<tr class='resource_title'>"
 	                            +		"<td style='width:105px;'>" + resTypeStr + "</td>"
-	                            +		"<td style='width:220px;'>" + list[i].resName + "</td>"
+	                            +		"<td style='width:220px;' class='resource-title' data-bs-toggle='collapse' data-bs-target='#facility" + i + "'>" + list[i].resName + "</td>"
 	                            +		"<td style='width:150px;'><a class='btn btn-sm btn-primary' href='${contextPath}/reservation/reserveForm.do?no=" + list[i].resNo + "'>예약하기</a></td>"
                          	    +	"</tr>"
-                         	    + "<tr class='resource_content off'>"
+                         	    + "<tr class='collapse' id='facility" + i + "'>"
                          	    + 	"<td colspan='3' style='width:500px;'>"
                          	    + 		"<div class='card' style='width: 400px; height: 250px;'>"
                          	    + 			"<div class='card-body'>"
@@ -304,7 +306,7 @@
           				}else{
           					tbody += "<tr><td colspan='3'>조회된 결과가 없습니다.</td></tr>";
           				}
-          				
+          				drawPage(1, rep.pi);
           				$(".facility_table tbody").html(tbody);
           				
           			},
@@ -317,26 +319,35 @@
           	
           	
           	// 비품목록 조회 ajax
-          	function ajaxSearchEquipmentList(){
+          	function ajaxSearchEquipmentList(requestPage){
           		
           		equipmentArr = new Array();
+          		
+          		// 폼 데이터를 배열 형태로 직렬화
+          		let formDataArray = $("#searchEquipmentForm").serializeArray();
+
+          		// page 값을 추가
+          		formDataArray.push({ name: 'page', value: requestPage });
+
+          		// 배열을 직렬화된 문자열로 변환
+          		let formData = $.param(formDataArray);
           		
           		$.ajax({
           			url:"${contextPath}/reservation/searchEquipmentList.do",
           			type:"post",
-          			data:$("#searchEquipmentForm").serialize(),
-          			success:function(list){
+          			data:formData,
+          			success:function(rep){
+          				let list = rep.list;
           				let tbody = "";
-          				
           				if(list.length > 0){
           					
           					for(let i=0; i<list.length; i++){
           						tbody += "<tr class='resource_title'>"
                              +		"<td style='width:130px;'>" + ( list[i].resType == "4" ? "비품" : "--" ) + "</td>"
-                             +		"<td style='width:240px;'>" + list[i].resName + "</td>"
+                             +		"<td style='width:240px;' class='resource-title' data-bs-toggle='collapse' data-bs-target='#equipment" + i + "'>" + list[i].resName + "</td>"
                              +		"<td style='width:130px;'>" + list[i].stock + " 개</td>"
                        	     + "</tr>"
-                       	  	 + "<tr class='resource_content off'>"
+                       	  	 + "<tr class='collapse' id='equipment" + i + "'>"
                    	    		 +		"<td colspan='3' style='width:500px;'>"
                    	    		 + 			"<div class='card' style='width: 400px; height: 250px;'>"
                    	    		 + 				"<div class='card-body'>"
@@ -358,7 +369,7 @@
           				}else{
           					tbody += "<tr><td colspan='3'>조회된 결과가 없습니다.</td></tr>";
           				}
-          				
+          				drawPage(2, rep.pi);
           				$(".equipment_table tbody").html(tbody);
           				
           			},
@@ -368,6 +379,40 @@
           		})
           	}
           	
+          	// 페이징 처리 function
+          	function drawPage(type, pi){
+          		console.log(pi);
+          		let ulClassName = (type == 1 ? ".facility_pagination" : ".equipment_pagination");
+          		let functionName =  (type == 1 ? "ajaxSearchFacilityList" : "ajaxSearchEquipmentList");
+          		let paging = "";
+          		
+          		paging += "<li class='page-item " + (pi.currentPage == 1 ? "disabled" : "") + "'>"
+          						+		"<a class='page-link link' href='#' onclick='" + functionName + "(" + (pi.currentPage - 1 ) + ");'" +  " aria-label='Previous'>"
+          						+			"<span aria-hidden='true'>"
+          						+				"<i class='ti ti-chevrons-left fs-4'></i>"
+          						+			"</span>"
+          						+		"</a>"
+          						+	"</li>";
+   						
+   						for(let p=pi.startPage; p<=pi.endPage; p++){
+          			if(p == pi.currentPage){
+          				paging += "<li class='page-item'><a class='page-link link active' onclick='" + functionName + "(" + p + ");' href='#'>" + p + "</a></li>";
+          			}else{
+          				paging += "<li class='page-item'><a class='page-link link' onclick='" + functionName + "(" + p + ");' href='#'>" + p + "</a></li>";
+          			}
+        			}
+   						
+   						paging += "<li class='page-item " + (pi.currentPage == pi.maxPage ? "disabled" : "") + "'>"
+				  						+		"<a class='page-link link' href='#' onclick='"+ functionName + "(" + (pi.currentPage + 1 ) + ");'" +  " aria-label='Next'>"
+				  						+			"<span aria-hidden='true'>"
+				  						+				"<i class='ti ti ti-chevrons-right fs-4'></i>"
+				  						+			"</span>"
+				  						+		"</a>"
+				  						+	"</li>";
+          						
+          		$(ulClassName).html(paging);
+          	}
+          	/*
          		// 동적으로 테이블 생성시 호버이벤트 적용용 도큐먼트
 						$(document).on("mouseenter", ".resource_title", function() {
 					    var leaveReasonContent = $(this).next(".resource_content");
@@ -408,7 +453,7 @@
 					      });
 					    });
 					  });	
-					  
+					  */
           </script>
 					<!-- ----------------------------- 실제 내용 작성 영역 end ----------------------------- -->
         </div>
