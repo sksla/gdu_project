@@ -15,24 +15,20 @@
       margin: auto;
       display: flex;
       flex-direction: column;
-      border: 1px solid black;
     }
     .lec_content1{
       height: 100px;
-      display:flex;
-      border: 1px solid lightgray;
+      display: flex;
     }
 
     .lec_content2{
       height: 800px;
       display:flex;
-      border: 1px solid greenyellow;
     }
   
     .lec_content3{
       height: 100px;
       display:flex;
-      border: 1px solid lightgray;
     }
   
   </style>
@@ -86,32 +82,8 @@
         <div class="card-body">
           <div class="lec_wrap">
             <div class="lec_content1">
-              강의목록
+             <h5 class="fw-semibold mb-8">강의목록</h5>
             </div>
-            <div class="d-flex flex-row justify-content-between">
-              <div class="searchForm">
-                <form class="d-flex">
-                  <div class="form-group" style="width: 150px;">
-                    <select class="form-select" id="exampleFormControlSelect1">
-                        <option selected disabled>검색</option> 
-                        <option>학년</option>
-                        <option>교수명</option>
-                        <option>강의실</option>
-                    </select>
-                  </div>
-                  &nbsp;
-                  <div class="input-group">
-                    <input type="text" class="form-control" placeholder="검색어를 입력하세요." aria-label="Recipient's username" aria-describedby="basic-addon2">  
-                    <button type="button col-3" class="btn btn-info">검색</button>
-                  </div>
-                </form>
-              </div>
-              <div class="col-3">
-                <button type="button" class="btn mb-1 px-4 fs-4 bg-primary-subtle text-primary"
-                data-bs-toggle="modal" data-bs-target="#samedata-modal" data-bs-whatever="@mdo">강의등록</button>
-              </div>
-            </div>
-
             <!-- 강의 등록 모달 시작 -->
             <div class="modal fade" id="samedata-modal" tabindex="-1" aria-labelledby="exampleModalLabel1">
               <div class="modal-dialog" role="document">
@@ -208,10 +180,17 @@
 						<!-- 강의 리스트 시작 -->
             <div class="lec_content2">
               <div class="list">
-                <div class="card-body p-4">
-                  <div class="table-responsive mb-4">
+                <div class="card-body p-4" style="justify-content: center;">
+	                <div class="d-flex flex-row justify-content-between">
+		              	<div class="lec"></div>
+			              <div class="col-3">
+			                <button type="button" class="btn mb-1 px-4 fs-4 bg-primary-subtle text-primary"
+			                data-bs-toggle="modal" data-bs-target="#samedata-modal" data-bs-whatever="@mdo">강의등록</button>
+			              </div>
+            			</div>
+                  <div class="table-responsive mb-4" >
 	                  <form id="lecListForm" method="get" action="${contextPath}/lec/lecList.do">
-	                    <table class="table border text-nowrap mb-0 align-middle">
+	                    <table class="table border text-nowrap mb-0 align-middle app_doc_table overflow-hidden">
 	                      <thead class="text-dark fs-4">
 	                        <tr>
 	                          <th>

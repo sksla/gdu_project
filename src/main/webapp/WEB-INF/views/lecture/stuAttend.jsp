@@ -15,46 +15,37 @@
       margin: auto;
       display: flex;
       flex-direction: column;
-      /*border: 1px solid black;*/
     }
   
     .attend_content1{
       height: 100px;
       display:flex;
-      border: 1px solid lightgray;
     }
     .attend_title2{
       width: 600px;
-      border: 3px solid skyblue;
     }
-    .attend_title1, .attend_rate{
+    .attend_title1, .attend_title3{
       width: 200px;
-      border: 3px solid skyblue;
     }
   
     .attend_content2{
       display:flex;
-      /*border: 1px solid lightgray;*/
     }
     .date{
       width: 70%;
-      /*border: 3px solid gold;*/
     }
     .button{
       width: 30%;
-      /*border: 3px solid palevioletred;*/
     }
     
     .attend_content3{
       height: 800px;
       display:flex;
-      /*border: 3px solid greenyellow;*/
     }
   
     .attend_content4{
       height: 100px;
       display:flex;
-      /*border: 1px solid lightgray;*/
     }
   	
   	#myTable td{padding: 8px}
@@ -108,14 +99,14 @@
         <div class="card-body">
           <div class="attend_wrap">
             <div class="attend_content1">
-              <div class="attend_title1">X</div>
+              <div class="attend_title1"></div>
               <div class="attend_title2">
 								 <c:choose>
 	              	<c:when test="${empty leclist}">
 	              		없음
 	              	</c:when>
 	              	<c:otherwise>
-	              		<div class="form-group" style="width: 100px;">
+	              		<div class="form-group" style="display: flex; justify-content: center;">
 								      <select class="form-select w-auto" id="lectureSelect" name="lectureSelect" onchange="handleChange();">
 								      	<option value="0">강의선택</option>
 								      	<c:forEach var="lec" items="${leclist}">
@@ -127,7 +118,7 @@
 	              	</c:otherwise>
 	              </c:choose>
 							</div>
-              <div class="attend_rate">출석율</div>
+              <div class="attend_title3"></div>
             </div>
             <!-- 리스트 시작 -->
             <div class="attend_content3">
