@@ -287,7 +287,7 @@
           			data:{page:requestPage},
           			success:function(rep){
           				//unreturnedArr = new Array();
-          				
+          				console.log("rep",rep.list);
           				let list = rep.list;
           				let tbody = "";
           				if(list.length > 0){
@@ -296,10 +296,10 @@
           						let status = list[i].status == "1" ? "미반납" : "반납";
           						
           						tbody += "<tr>"
-          	                 +		"<td class='unreturn-col-1 ellipsis'>" + list[i].resName + "</td>"
+          	                 +		"<td class='unreturn-col-1 ellipsis'>" + list[i].resNo + "</td>"
           	                 +		"<td class='unreturn-col-2 ellipsis'>" + list[i].revDate + "</td>"
           	                 +		"<td class='unreturn-col-3 ellipsis'>" + list[i].revCount + "개</td>"
-          	                 +		"<td class='unreturn-col-4 ellipsis'><button type='button' class='btn btn-primary btn-sm' onclick='openDetailModal(" + list[i].revNo + ", '" + list[i].resNo + "', '" + list[i].revDate + "', '" + list[i].memName + "', '" + list[i].revReason + "', '" + status + "'," + list[i].revCount + ");'>상세조회</button></td>"
+          	                 +		"<td class='unreturn-col-4 ellipsis'><button type='button' class='btn btn-primary btn-sm' onclick=\"openDetailModal(" + list[i].revNo + ", '4'"  + ", '" + list[i].resNo + "', '" + list[i].revDate + "', '" + list[i].memName + "', '" + list[i].revReason + "', '" + status + "'," + list[i].revCount + ");\">상세조회</button></td>"
           	                 + "</tr>";
           	                 
           						//unreturnedArr.push(list[i]);
@@ -380,7 +380,7 @@
           		//let arr = type == 1 ? reserveArr : unreturnedArr;
           		
           		if(resType == "4"){
-          			$("#detailModal #revCount td").text(revCount + 개);
+          			$("#detailModal #revCount td").text(revCount + "개");
           			$("#detailModal #revCount").css("display", "table-row");
           		}else{
           			$("#detailModal #revCount").css("display", "none");
