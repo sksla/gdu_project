@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.cu.gdu.dao.ChatDao;
+import com.cu.gdu.dto.AttachDto;
+import com.cu.gdu.dto.BoardDto;
 import com.cu.gdu.dto.ChatDto;
 import com.cu.gdu.dto.ChatRoomDto;
 import com.cu.gdu.dto.MemberDto;
@@ -60,5 +62,25 @@ public class ChatServiceImpl implements ChatService {
 	@Override
 	public List<MemberDto> selectChatRoomMem(int chroNo) {
 		return chatDao.selectChatRoomMem(chroNo);
+	}
+
+	@Override
+	public int insertChatFile(BoardDto b) {
+		
+		int result = 1;
+		// attachment insert
+		List<AttachDto> attachList = b.getAttachList();
+		if(!attachList.isEmpty()) {
+			result = 0;
+			for(AttachDto at : attachList) {
+				result += chatDao.insertChatFile(at);
+			}
+		}
+		return result;
+	}
+
+	@Override
+	public List<AttachDto> selectChatFiles(int refNo) {
+		return chatDao.selectChatFiles(refNo);
 	}
 }

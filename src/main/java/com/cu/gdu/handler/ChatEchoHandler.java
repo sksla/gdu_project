@@ -1,6 +1,7 @@
 package com.cu.gdu.handler;
 
 
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -66,39 +67,56 @@ public class ChatEchoHandler extends TextWebSocketHandler {
 		log.debug("현재 웹소켓으로 메세지를 보낸 회원의 정보: {}", session.getAttributes().get("loginUser"));
 		log.debug("현재 웹소켓으로 전달된 메세지 내용: {}", message.getPayload());
 		
-		// 받은 메시지를 문자열로 변환
-	    String receivedMessage = message.getPayload().toString();
-	    
-	    // 채팅방 번호와 메시지 분리
-	    String[] messageParts = receivedMessage.split("\\|");
-	    String chatRoomNumber = messageParts[0]; // 채팅방 번호
-	    String chatMessage = messageParts[1]; // 채팅 메시지
-		
-		// 현재 시간을 가져와서 포맷팅합니다.
-	    String currentTime = new SimpleDateFormat("HH:mm").format(new Date());
-		
-		// 현재 해당 웹소켓에 연결되어있는 모든 클라이언트들에게 현재 들어온 메세지를 재발송함 (작성자 본인포함)
-		for(WebSocketSession client : sessionList) {
-			// 전달하고자 하는 메세지의 형식 : 메세지유형(chat/entry/exit)|메세지내용|발신자아이디|...
-			String msg = "chat|" + chatMessage + "|" 
-						+ ((MemberDto)session.getAttributes().get("loginUser")).getMemName()+ ((MemberDto)session.getAttributes().get("loginUser")).getJobNo()+ "|"
-		                + currentTime + "|"
-				        + ((MemberDto)session.getAttributes().get("loginUser")).getProfileUrl();
-			client.sendMessage(new TextMessage(msg)); // * 채팅방jsp의 onMessage function실행됨
-			
-		}
-		
-		// db에 채팅메시지 내역을 남기고자할 경우
-		// EchoHandler에서 Service 연결해서
-		// insert요청하기
-		 ChatDto ch = new ChatDto();
-		 ch.setChroNo(Integer.parseInt(chatRoomNumber));
-		 ch.setMemNo(((MemberDto)session.getAttributes().get("loginUser")).getMemNo());
-		 ch.setChContent(chatMessage);
 		 
-		 chatService.insertMessage(ch);
-		 chatService.updateMessage(ch);
-		
+		    
+			
+		     // 받은 메시지를 문자열로 변환
+			    String receivedMessage = message.getPayload().toString();
+			    
+			    // 채팅방 번호와 메시지 분리
+			    String[] messageParts = receivedMessage.split("\\|");
+			    String messageType = messageParts[0]; // 메시지 유형 (file 또는 chat)
+			    String chatRoomNumber = messageParts[1]; // 채팅방 번호
+			    String chatMessage = messageParts[2]; // 채팅 메시지 또는 파일 URL
+			    String originalName = messageParts.length > 3 ? messageParts[3] : ""; // 파일 원본 이름 (파일 전송인 경우)
+		        
+			    
+				// 현재 시간을 가져와서 포맷팅합니다.
+			    String currentTime = new SimpleDateFormat("HH:mm").format(new Date());
+				
+				// 현재 해당 웹소켓에 연결되어있는 모든 클라이언트들에게 현재 들어온 메세지를 재발송함 (작성자 본인포함)
+				for(WebSocketSession client : sessionList) {
+					// 전달하고자 하는 메세지의 형식 : 메세지유형(chat/entry/exit)|메세지내용|발신자아이디|...
+					String msg = messageType  + "|" + chatMessage + "|" 
+								+ ((MemberDto)session.getAttributes().get("loginUser")).getMemName()+ ((MemberDto)session.getAttributes().get("loginUser")).getJobNo()+ "|"
+				                + currentTime + "|"
+						        + ((MemberDto)session.getAttributes().get("loginUser")).getProfileUrl();
+					 if (messageType.equals("file")) {
+			                msg += "|" + originalName; // 파일 전송인 경우 원본 이름 추가
+			         }
+					
+					client.sendMessage(new TextMessage(msg)); // * 채팅방jsp의 onMessage function실행됨
+					
+				}
+				
+				 if (messageType.equals("file")) {
+					 chatMessage += ";" + originalName; // 파일 전송인 경우 원본 이름 추가
+		         }
+				
+				// db에 채팅메시지 내역을 남기고자할 경우
+				// EchoHandler에서 Service 연결해서
+				// insert요청하기
+				 ChatDto ch = new ChatDto();
+				 ch.setChroNo(Integer.parseInt(chatRoomNumber));
+				 ch.setMemNo(((MemberDto)session.getAttributes().get("loginUser")).getMemNo());
+				 ch.setChContent(chatMessage);
+				 
+				 chatService.insertMessage(ch);
+				 chatService.updateMessage(ch);
+		        
+		     
+	
+	
 	}
 	
 	

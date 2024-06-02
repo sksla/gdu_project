@@ -5,6 +5,7 @@ import java.util.List;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.cu.gdu.dto.AttachDto;
 import com.cu.gdu.dto.ChatDto;
 import com.cu.gdu.dto.ChatRoomDto;
 import com.cu.gdu.dto.MemberDto;
@@ -53,6 +54,13 @@ public class ChatDao {
 		return sqlSessionTemplate.selectList("chatMapper.selectChatRoomMem", chroNo);
 	}
 	
+	public int insertChatFile(AttachDto at) {
+		return sqlSessionTemplate.insert("chatMapper.insertChatFile", at);
+	}
+	
+	public List<AttachDto> selectChatFiles(int refNo){
+		return sqlSessionTemplate.selectList("chatMapper.selectChatFiles", refNo);
+	}
 	
 	
 	

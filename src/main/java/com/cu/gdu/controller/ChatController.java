@@ -1,6 +1,8 @@
 package com.cu.gdu.controller;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -9,11 +11,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.cu.gdu.dto.AttachDto;
+import com.cu.gdu.dto.BoardDto;
 import com.cu.gdu.dto.ChatDto;
 import com.cu.gdu.dto.ChatRoomDto;
 import com.cu.gdu.dto.MemberDto;
 import com.cu.gdu.service.ChatService;
+import com.cu.gdu.util.FileUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,6 +29,7 @@ import lombok.RequiredArgsConstructor;
 public class ChatController {
 	
 	private final ChatService chatService;
+	private final FileUtil fileUtil;
 
 	@GetMapping("/room.page")
 	public void chatRoomPage() {
@@ -73,5 +80,42 @@ public class ChatController {
 		return chatService.selectChatRoomMem(chroNo);
 	}
 	
+	@ResponseBody
+	@PostMapping(value="uploadChatFile.do", produces="application/json; charset=utf-8")
+	public List<AttachDto> ajaxUploadFile(BoardDto board, List<MultipartFile> uploadFiles, HttpSession session) {
+		
+		List<AttachDto> attachList = new ArrayList<>();
+		for(MultipartFile uploadFile: uploadFiles) {
+			if(uploadFile != null && !uploadFile.isEmpty()) {
+				 //파일 업로드
+				Map<String, String> map = fileUtil.fileUpload(uploadFile, session, "chat");
+				
+				// insert할 데이터 => AttachDto객체만들기 => attachList쌓기
+				attachList.add( AttachDto.builder()
+										 .filePath(map.get("filePath"))
+										 .filesystemName(map.get("filesystemName"))
+										 .originalName(map.get("originalName"))
+										 .refType("C")
+										 .refNo(board.getBoardNo())
+										 .build());
+			
+			}
+		}
+		board.setAttachList(attachList); 
+		chatService.insertChatFile(board); 
+		// List<AttachDto> savedFiles = chatService.selectChatFiles(board.getBoardNo());
+		    
+		 return attachList;
+	}
+	
+	@ResponseBody
+	@GetMapping(value="selectChatFile.do", produces="application/json; charset=utf-8")
+	public List<AttachDto> ajaxSelectFiles(String refNo) {
+		
+		
+		List<AttachDto> list = chatService.selectChatFiles(Integer.parseInt(refNo));
+		
+		return list ;
+	}
 	
 }

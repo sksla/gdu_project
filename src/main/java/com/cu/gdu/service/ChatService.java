@@ -2,6 +2,8 @@ package com.cu.gdu.service;
 
 import java.util.List;
 
+import com.cu.gdu.dto.AttachDto;
+import com.cu.gdu.dto.BoardDto;
 import com.cu.gdu.dto.ChatDto;
 import com.cu.gdu.dto.ChatRoomDto;
 import com.cu.gdu.dto.MemberDto;
@@ -30,7 +32,11 @@ public interface ChatService {
 	// 채팅방별 멤버 조회하기
 	List<MemberDto> selectChatRoomMem(int chroNo);
 	
+	// 첨부파일 등록
+	int insertChatFile(BoardDto b);
 	
+	// 첨부파일 조회
+	List<AttachDto> selectChatFiles(int refNo);
 	
 	
 	

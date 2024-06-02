@@ -21,7 +21,7 @@
      		max-height: 400px;
      		min-height: 50px;
      }
-     
+   
      
      
      /* 결재선 모달 스타일 */
@@ -84,7 +84,8 @@
 	 
 	 /*스크롤바 스타일*/  
    	.scrollmy{
-   		overflow: auto;
+   		overflow-y: auto; /* 세로 스크롤바 표시 */
+    	overflow-x: hidden; /* 가로 스크롤바 숨기기 */
    	}
    	.scrollmy::-webkit-scrollbar {
 	  	width: 6px;
@@ -328,7 +329,7 @@
                         <li>
                           <a class="chat-menu text-dark px-2 fs-7 bg-hover-primary nav-icon-hover position-relative z-index-5"
                             href="javascript:void(0)">
-                            <i class="ti ti-menu-2"></i>
+                             <i class="ti ti-menu-2"></i>
                           </a>
                         </li>
                       </ul>
@@ -345,6 +346,17 @@
                           </div>
                         </div>
                         
+                        <div class="d-flex justify-content-between fileList_wrap " style=" display:none;">
+                        	<div> 
+                        		
+                        	</div>
+	                        <div class="fileList_wrap chat-box " style=" display:none;">
+	                       			 <a id="closeBTN" class="position-relative nav-icon-hover z-index-5 closeBTN" ><i class="ti ti-circle-x closeBTN"></i></a>
+		                        	<ul id="fileList" class="file-list">
+		                        		
+		                        	</ul>
+	                      	</div>
+                        </div>
                         <!-- 채팅 푸터 시작 -->
                         <div class="px-9 py-6 border-top chat-send-message-footer">
                           <div class="d-flex align-items-center justify-content-between">
@@ -354,20 +366,24 @@
                               <input type="text" class="form-control message-type-box text-muted border-0 p-0 ms-2"
                                 placeholder="Type a Message" fdprocessedid="0p3op" id="messageInput" />
                             </div>
+                           
                             <ul class="list-unstyledn mb-0 d-flex align-items-center">
                               <li>
                                 <a class="text-dark px-2 fs-7 bg-hover-primary nav-icon-hover position-relative z-index-5"
-                                  href="javascript:void(0)"><i class="ti ti-photo-plus"></i></a>
+                                 id="attachFileButton2"><i class="ti ti-photo-plus"></i></a>
                               </li>
                               <li>
+                             	  <input type="file" id="fileInput" style="display: none;" multiple name="uploadFiles">
                                 <a class="text-dark px-2 fs-7 bg-hover-primary nav-icon-hover position-relative z-index-5"
-                                  href="javascript:void(0)"><i class="ti ti-paperclip"></i></a>
+                                  id="attachFileButton"><i class="ti ti-paperclip"></i></a>
                               </li>
                               <li>
-                                <a class="text-dark px-2 fs-7 bg-hover-primary nav-icon-hover position-relative z-index-5"
-                                  href="javascript:void(0)"><i class="ti ti-microphone"></i></a>
+                                <a id="sendFile" onclick="sendFile();"class="text-dark px-2 fs-7 bg-hover-primary nav-icon-hover position-relative z-index-5">
+																		<i class="ti ti-send"></i>                                
+                                </a>
                               </li>
                             </ul>
+                                  <!-- <i class="ti ti-microphone"></i> -->
                           </div>
                         </div>
                         <!--  채팅 푸터 끝 -->
@@ -375,12 +391,12 @@
                     </div>
            <!-- 채팅방 부분 끝 -->
                       
-                      <!-- 미디어 파일 부분 
+                      <!-- 미디어 파일 부분 -->
                       <div class="app-chat-offcanvas border-start">
-                        <div class="custom-app-scroll mh-n100" data-simplebar>
+                        <div class="custom-app-scroll mh-n100 scrollmy" >
                           <div class="p-3 d-flex align-items-center justify-content-between">
                             <h6 class="fw-semibold mb-0 text-nowrap">
-                              Media <span class="text-muted">(36)</span>
+                              Media <span class="text-muted imgCount">(36)</span>
                             </h6>
                             <a class="chat-menu d-lg-none d-block text-dark fs-6 bg-hover-primary nav-icon-hover position-relative z-index-5"
                               href="javascript:void(0)">
@@ -388,50 +404,31 @@
                             </a>
                           </div>
                           <div class="offcanvas-body p-9">
-
-                            <div class="row mb-7 text-nowrap">
+										
+											<!-- 미디어 파일 div -->
+                          <div class="row mb-7 text-nowrap imgArea"> 
+                            <!-- 미디어 한개 -->
                               <div class="col-4 px-1 mb-2">
 
                                 <img src="../assets/images/products/product-1.jpg" width="88" height="65" alt=""
                                   class="rounded" />
 
                               </div>
-                              <div class="col-4 px-1 mb-2">
+                            <!-- 한개 끝  -->
+                             
+                             
+                              
+                             
 
-                                <img src="../assets/images/products/product-2.jpg" width="88" height="65" alt=""
-                                  class="rounded" />
-
-                              </div>
-                              <div class="col-4 px-1 mb-2">
-
-                                <img src="../assets/images/products/product-3.jpg" width="88" height="65" alt=""
-                                  class="rounded" />
-
-                              </div>
-                              <div class="col-4 px-1 mb-2">
-
-                                <img src="../assets/images/products/product-4.jpg" width="88" height="65" alt=""
-                                  class="rounded" />
-
-                              </div>
-                              <div class="col-4 px-1 mb-2">
-
-                                <img src="../assets/images/products/product-1.jpg" width="88" height="65" alt=""
-                                  class="rounded" />
-
-                              </div>
-                              <div class="col-4 px-1 mb-2">
-
-                                <img src="../assets/images/products/product-2.jpg" width="88" height="65" alt=""
-                                  class="rounded" />
-
-                              </div>
-
-                            </div>
-                            <div class="files-chat">
+                          </div>
+                        <!-- 미디어 끝 -->
+                        
+                        <!-- 파일 부분 -->
+                            <div class="files-chat fileArea">
                               <h6 class="fw-semibold mb-3 text-nowrap">
-                                Files <span class="text-muted">(36)</span>
+                                Files <span class="text-muted fileCount">(36)</span>
                               </h6>
+                            <!-- 파일 한개  -->
                               <a href="javascript:void(0)"
                                 class="hstack gap-3 file-chat-hover justify-content-between text-nowrap mb-9">
                                 <div class="d-flex align-items-center gap-3">
@@ -452,87 +449,16 @@
                                   <i class="ti ti-download text-dark fs-6 bg-hover-primary"></i>
                                 </span>
                               </a>
-                              <a href="javascript:void(0)"
-                                class="hstack gap-3 file-chat-hover justify-content-between text-nowrap mb-9">
-                                <div class="d-flex align-items-center gap-3">
-                                  <div class="rounded-1 text-bg-light p-6">
-                                    <img src="../assets/images/chat/icon-figma.svg" alt="" width="24"
-                                      height="24" />
-                                  </div>
-                                  <div>
-                                    <h6 class="fw-semibold">
-                                      homepage-design.fig
-                                    </h6>
-                                    <div class="d-flex align-items-center gap-3 fs-2 text-muted">
-                                      <span>2 MB</span><span>2 Dec 2023</span>
-                                    </div>
-                                  </div>
-                                </div>
-                                <span class="position-relative nav-icon-hover download-file">
-                                  <i class="ti ti-download text-dark fs-6 bg-hover-primary"></i>
-                                </span>
-                              </a>
-                              <a href="javascript:void(0)"
-                                class="hstack gap-3 file-chat-hover justify-content-between text-nowrap mb-9">
-                                <div class="d-flex align-items-center gap-3">
-                                  <div class="rounded-1 text-bg-light p-6">
-                                    <img src="../assets/images/chat/icon-chrome.svg" alt="" width="24"
-                                      height="24" />
-                                  </div>
-                                  <div>
-                                    <h6 class="fw-semibold">about-us.html</h6>
-                                    <div class="d-flex align-items-center gap-3 fs-2 text-muted">
-                                      <span>2 MB</span><span>2 Dec 2023</span>
-                                    </div>
-                                  </div>
-                                </div>
-                                <span class="position-relative nav-icon-hover download-file">
-                                  <i class="ti ti-download text-dark fs-6 bg-hover-primary"></i>
-                                </span>
-                              </a>
-                              <a href="javascript:void(0)"
-                                class="hstack gap-3 file-chat-hover justify-content-between text-nowrap mb-9">
-                                <div class="d-flex align-items-center gap-3">
-                                  <div class="rounded-1 text-bg-light p-6">
-                                    <img src="../assets/images/chat/icon-zip-folder.svg" alt="" width="24"
-                                      height="24" />
-                                  </div>
-                                  <div>
-                                    <h6 class="fw-semibold">
-                                      work-project.zip
-                                    </h6>
-                                    <div class="d-flex align-items-center gap-3 fs-2 text-muted">
-                                      <span>2 MB</span><span>2 Dec 2023</span>
-                                    </div>
-                                  </div>
-                                </div>
-                                <span class="position-relative nav-icon-hover download-file">
-                                  <i class="ti ti-download text-dark fs-6 bg-hover-primary"></i>
-                                </span>
-                              </a>
-                              <a href="javascript:void(0)"
-                                class="hstack gap-3 file-chat-hover justify-content-between text-nowrap">
-                                <div class="d-flex align-items-center gap-3">
-                                  <div class="rounded-1 text-bg-light p-6">
-                                    <img src="../assets/images/chat/icon-javascript.svg" alt="" width="24"
-                                      height="24" />
-                                  </div>
-                                  <div>
-                                    <h6 class="fw-semibold">custom.js</h6>
-                                    <div class="d-flex align-items-center gap-3 fs-2 text-muted">
-                                      <span>2 MB</span><span>2 Dec 2023</span>
-                                    </div>
-                                  </div>
-                                </div>
-                                <span class="position-relative nav-icon-hover download-file">
-                                  <i class="ti ti-download text-dark fs-6 bg-hover-primary"></i>
-                                </span>
-                              </a>
+                           <!-- 파일한개 끝 -->
+                              
+                              
+                              
+                              
                             </div>
                           </div>
                         </div>
                       </div>
-                       미디어 파일 부분 끝 -->
+                       <!-- 미디어 파일 부분 끝 -->
                     </div>
 
                   </div>
@@ -549,7 +475,7 @@
 				    	 
 				    	  
 				    	  
-				    	// 참여자 목록 가로 스크롤링
+				    		 // 참여자 목록 가로 스크롤링
 			              var startX;
 			              var scrollLeft;
 		
@@ -577,12 +503,68 @@
 			                  this.style.cursor = 'grab';
 			              });
 				    	  
-				    	  
+			              
+			           // 파일 첨부 버튼에 클릭 이벤트 리스너 추가
+			              document.getElementById('attachFileButton').addEventListener('click', function() {
+			              		// 파일 입력 필드 클릭
+			                  document.getElementById('fileInput').click();
+			              });
+			              document.getElementById('attachFileButton2').addEventListener('click', function() {
+			              		// 파일 입력 필드 클릭
+			                  document.getElementById('fileInput').click();
+			              });
+			              
+			          			
+			              // 첨부파일 미리보기 
+			              <!--
+			              	let totalSize = 0;
+							
+											$("#fileInput").change(function(evt){
+												
+													let fileNames = "";
+													const files= evt.target.files;	// FileList {0:File, 1:File, 2:File, ..., length:x}
+													
+														for(let i=0; i<files.length; i++){
+															if(files[i].size > 10*1024*1024){	// 첨부파일 한개의 크기가 10MB를 초과했을 경우
+																alert("첨부파일의 최대 크기는 10MB까지 입니다.");
+																evt.target.value="";
+																return;
+															}
+															totalSize += files[i].size;
+															if(totalSize > 100*1024*1024){// 누적된 첨부파일의 전체 크기가 100MB를 초과했을 경우
+																alert("전체 첨부파일의 최대 크기는 100MB까지 입니다.");
+																evt.target.value="";
+																return;
+															}
+															
+															fileNames += "<li>" + files[i].name + "</li>";
+															
+														}
+														
+														$("#fileList").html(fileNames);
+														
+														$(".fileList_wrap").css("display", (files.length > 0 ? "block" : "none" ));
+														
+												})
+												
+						
+												const closeButton = document.getElementById('closeBTN');
+
+								            closeButton.addEventListener('click', function() {
+								                // 파일 목록을 감추기
+								                document.querySelector('.fileList_wrap').style.display = 'none';
+
+								                // 파일 입력 필드 비우기
+								                const fileInput = document.getElementById('fileInput');
+								                fileInput.value = ''; // 파일 입력 필드 초기화
+								            });
+								            -->
+												
 				    	  
 				      }) // 레디fuction끝
               
-              
-              
+				      
+				      	
               
               
 					   
@@ -598,7 +580,7 @@
 					    	  let message = $("#messageInput").val(); // * websocket으로 메세지 전달(=> ChatEchoHandler의 handleMessage 메소드 실행)
 					    	  let chatRoomNumber = window.chatRoomNumber; // 전역 변수에 저장된 채팅방 번호
 					    	  
-					    	  let chatData = chatRoomNumber + "|" + message;
+					    	  let chatData = "chat|" + chatRoomNumber + "|" + message;
 					    	  sock.send(chatData);
 					    	  
 					    	  $("#messageInput").val("");
@@ -610,11 +592,11 @@
 					    	  console.log("evt", evt);
 					      	console.log("evt.data", evt.data); // new TextMessage객체로 보내준 텍스트에
 					      	
-					      	let msgArr = evt.data.split("|"); // ["메세지유형(chat/entry/exit)", "메세지내용", "발신자아이디"]
+					      	let msgArr = evt.data.split("|"); // ["메세지유형(chat/entry/exit/file)", "메세지내용", "발신자아이디"]
 					      	
 					      	let $chatDiv = $("<div>"); // 채팅창에 append시킬 div요소 (각 조건에 따라 다르게 제작)
+					      	
 					      	if(msgArr[0] =="chat"){// 채팅메세지일 경우
-					      		
 					      		
 					      		// 내가보낸메세지든 상대방이보낸메세지든 공통적으로 만들어야되는 요소작업
 										$chatDiv.addClass("hstack gap-3 align-items-start mb-7")
@@ -627,14 +609,67 @@
 								            );
 								          } else {
 								            $chatDiv.append(
-								              $("<img>").attr("src", "${contextPath}/"+ msgArr[4]).attr("alt", "user8").attr("width", "40").attr("height", "40").addClass("rounded-circle"),
+								              $("<img>").attr("src",  (msgArr[4] && msgArr[4] !== "null") ? "${contextPath}" + msgArr[4] : "${contextPath}/assets/images/profile/user-1.jpg" ).attr("alt", "user8").attr("width", "40").attr("height", "40").addClass("rounded-circle"),
 								              $("<div>")
 								                .append($("<h6>").addClass("fs-2 text-muted").text(msgArr[2] + ", " + msgArr[3] ))
 								                .append($("<div>").addClass("p-2 text-bg-light rounded-1 d-inline-block text-dark fs-3").text(msgArr[1]))
 								            );
 								          }
 					      		
-					      	}else { // 입장 또는 퇴장메세지일 경우
+					      	}else if (msgArr[0] == "file") { // 파일 메시지인 경우
+					            $chatDiv.addClass("hstack gap-3 align-items-start mb-7")
+				                .addClass(msgArr[2] == "${loginUser.memName}${loginUser.jobNo}" ? "justify-content-end" : "justify-content-start");
+				        
+					      	
+					            if (msgArr[5].toLowerCase().endsWith(".jpg") || 
+					            	  msgArr[5].toLowerCase().endsWith(".jpeg") || 
+					            	  msgArr[5].toLowerCase().endsWith(".png")) {// 이미지 파일인 경우
+					            	
+					                if ($chatDiv.hasClass("justify-content-end")) {
+					                    $chatDiv.append(
+					                        $("<div>").addClass("text-end")
+					                                  .append($("<h6>").addClass("fs-2 text-muted").text(msgArr[3]))
+					                                  .append($("<div>").addClass("p-2 bg-info-subtle text-dark rounded-1 d-inline-block fs-3")
+					                                  .append($("<a>").attr("href", "${contextPath}"+ msgArr[1]).attr("target", "_blank").attr("download", msgArr[5])
+					                                                 .append($("<img>").attr("src", "${contextPath}/"+ msgArr[1]).attr("alt", "file").css("max-width", "400px"))))
+					                    );
+					                } else {
+					                    $chatDiv.append(
+					                    		$("<img>").attr("src", (msgArr[4] && msgArr[4] !== "null") ? "${contextPath}" + msgArr[4] : "${contextPath}/assets/images/profile/user-1.jpg" ).attr("alt", "user8").attr("width", "40").attr("height", "40").addClass("rounded-circle"),
+					                        $("<div>")
+					                            .append($("<h6>").addClass("fs-2 text-muted").text(msgArr[2] + ", " + msgArr[3]))
+					                            .append($("<div>").addClass("p-2 text-bg-light rounded-1 d-inline-block text-dark fs-3")
+					                            .append($("<a>").attr("href", "${contextPath}"+ msgArr[1]).attr("download", msgArr[5])
+					                            										.append( $("<img>").attr("src", "${contextPath}/"+ msgArr[1]).attr("alt", "file").css("max-width", "390px"))))
+					                    );
+					                }
+					          
+					      	
+							      	}else{ // 이미지 파일이 아닌 경우 (다운로드 가능한 파일)
+							      					if ($chatDiv.hasClass("justify-content-end")) {
+											            $chatDiv.append(
+											                $("<div>").addClass("text-end")
+											                          .append($("<h6>").addClass("fs-2 text-muted").text(msgArr[3]))
+											                          .append($("<div>").addClass("p-2 bg-info-subtle text-dark rounded-1 d-inline-block fs-3")
+											                          .append($("<a>").attr("href", "${contextPath}"+ msgArr[1]).attr("download", msgArr[5]).attr("target", "_blank").text(msgArr[5])))
+											            );
+											        } else {
+											            $chatDiv.append(
+											                $("<img>").attr("src", (msgArr[4] && msgArr[4] !== "null") ? "${contextPath}" + msgArr[4] : "${contextPath}/assets/images/profile/user-1.jpg").attr("alt", "user8").attr("width", "40").attr("height", "40").addClass("rounded-circle"),
+											                $("<div>")
+											                    .append($("<h6>").addClass("fs-2 text-muted").text(msgArr[2] + ", " + msgArr[3]))
+											                    .append($("<div>").addClass("p-2 text-bg-light rounded-1 d-inline-block text-dark fs-3")
+											                    .append($("<a>").attr("href", "${contextPath}"+ msgArr[1]).attr("download", msgArr[5]).attr("target", "_blank").text(msgArr[5])))
+											            );
+											        }
+									      	
+							      	}
+					      	
+					      	
+					      
+					      	
+					      	
+					      	}	else { // 입장 또는 퇴장메세지일 경우
 					      		
 					      		/*
 					      		<div class="chat-user entry">
@@ -656,6 +691,11 @@
 					      	ongoingTasks.scrollTop = ongoingTasks.scrollHeight;
 					      	
 					      	//$chatArea.scrollTop($chatArea[0].scrollHeight); // 스크롤항상 하단으로 유지시켜주는 내용
+					      	ajaxChatRoomList();
+					      	
+					      	if(window.chatRoomNumber != null){
+					      		selectChatFiles();
+					      	}
 					      	
 					      }
 					      
@@ -711,36 +751,110 @@
 			        		        success: function(response) {
 			        		            // 새로운 채팅방이 성공적으로 생성되면 실행될 작업
 			        		            // 예를 들어, 채팅창으로 이동하는 코드를 이곳에 작성합니다.
-			        		            console.log("채팅내역:", response);
+			        		            // console.log("채팅내역:", response);
 			        		            
 												      	
 			        		          for(let i = 0; i<response.length; i++){  
 			        		            let $chatDiv = $("<div>"); // 채팅창에 append시킬 div요소 (각 조건에 따라 다르게 제작)
 				        		          console.log("채팅방번호:", response[i].chroNo);
-			        		            if('${loginUser.memNo}' == response[i].memNo){ // 내 메세지일경우
-												      		
-																	$chatDiv.addClass("hstack gap-3 align-items-start mb-7")
-																					.addClass("justify-content-end") ;
-																
-															            $chatDiv.append(
-															              $("<div>").addClass("text-end")
-															                .append($("<h6>").addClass("fs-2 text-muted").text(response[i].chDate))
-															                .append($("<div>").addClass("p-2 bg-info-subtle text-dark rounded-1 d-inline-block fs-3").text(response[i].chContent))
-															            );
-															            $chatArea.append($chatDiv);
-												      		
-												      	}else { // 다른사람 메세지일경우
-												      		$chatDiv.addClass("hstack gap-3 align-items-start mb-7")
-																					.addClass("justify-content-start") ;
-																      		 $chatDiv.append(
-																		              $("<img>").attr("src", "${contextPath}"+ (response[i].profileUrl ? response[i].profileUrl : '/assets/images/profile/user-1.jpg')).attr("alt", "user8").attr("width", "40").attr("height", "40").addClass("rounded-circle"),
-																		              $("<div>")
-																		                .append($("<h6>").addClass("fs-2 text-muted").text(response[i].memName + response[i].jobName + ", " + response[i].chDate ))
-																		                .append($("<div>").addClass("p-2 text-bg-light rounded-1 d-inline-block text-dark fs-3").text(response[i].chContent))
-																		            );
-																      		$chatArea.append($chatDiv);
-												      	}
 			        		            
+					        		            if(response[i].chContent.startsWith("/resources")){ // 파일 메세지일 경우
+					        		            
+					        		            		let contentParts = response[i].chContent.split(";");
+					        		                let filePath = contentParts[0];
+					        		                let originalName = contentParts[1];
+					        		                
+					        		                
+							        		            	 if (response[i].chContent.toLowerCase().endsWith(".jpg") || 
+							        		            			 response[i].chContent.toLowerCase().endsWith(".jpeg") || 
+							        		            			 response[i].chContent.toLowerCase().endsWith(".png")) {// 이미지 파일인 경우
+							   					            	
+							        		            		 		if('${loginUser.memNo}' == response[i].memNo){ // 내 메세지일경우
+							        		            		 			$chatDiv.addClass("hstack gap-3 align-items-start mb-7")
+																												.addClass("justify-content-end") ; 
+																      					$chatDiv.append(
+																			              $("<div>").addClass("text-end")
+																			                .append($("<h6>").addClass("fs-2 text-muted").text(response[i].chDate))
+																			                .append($("<div>").addClass("p-2 bg-info-subtle text-dark rounded-1 d-inline-block fs-3")
+																			                		.append($("<a>").attr("href", "${contextPath}"+ filePath ).attr("download", originalName).attr("target", "_blank")
+																			                				.append($("<img>").attr("src", "${contextPath}"+ filePath).attr("alt", "file").css("max-width", "400px"))))
+																			            );
+																			            $chatArea.append($chatDiv); 
+							        		            		 			
+									   					                } else {
+									   					                	$chatDiv.addClass("hstack gap-3 align-items-start mb-7")
+																												.addClass("justify-content-start") ;
+																							      		 $chatDiv.append(
+																									              $("<img>").attr("src", "${contextPath}"+ (response[i].profileUrl ? response[i].profileUrl : '/assets/images/profile/user-1.jpg')).attr("alt", "user8").attr("width", "40").attr("height", "40").addClass("rounded-circle"),
+																									              $("<div>")
+																									                .append($("<h6>").addClass("fs-2 text-muted").text(response[i].memName + response[i].jobName + ", " + response[i].chDate ))
+																									                .append($("<div>").addClass("p-2 text-bg-light rounded-1 d-inline-block text-dark fs-3")
+																									                		.append($("<a>").attr("href", "${contextPath}"+ filePath).attr("download", originalName).attr("target", "_blank")
+																									                				.append( $("<img>").attr("src", "${contextPath}/"+ filePath).attr("alt", "file").css("max-width", "390px"))))
+																									            );
+																							      		$chatArea.append($chatDiv);
+									   					                	
+									   					                }
+							   					          
+							   					      	
+							   							      		}else{ // 이미지 파일이 아닌 경우 (다운로드 가능한 파일)
+							   							      		
+							   							      					if('${loginUser.memNo}' == response[i].memNo){ // 내 메세지일경우
+									   							      					$chatDiv.addClass("hstack gap-3 align-items-start mb-7")
+																													.addClass("justify-content-end") ; 
+									   							      					$chatDiv.append(
+																				              $("<div>").addClass("text-end")
+																				                .append($("<h6>").addClass("fs-2 text-muted").text(response[i].chDate))
+																				                .append($("<div>").addClass("p-2 bg-info-subtle text-dark rounded-1 d-inline-block fs-3")
+																				                		.append($("<a>").attr("href", "${contextPath}"+ filePath ).attr("download", originalName).attr("target", "_blank").text(originalName)))
+																				            );
+																				            $chatArea.append($chatDiv);
+							   							      					
+							   							      						
+							   											        } else {
+							   											        	$chatDiv.addClass("hstack gap-3 align-items-start mb-7")
+																												.addClass("justify-content-start") ;
+																							      		 $chatDiv.append(
+																									              $("<img>").attr("src", "${contextPath}"+ (response[i].profileUrl ? response[i].profileUrl : '/assets/images/profile/user-1.jpg')).attr("alt", "user8").attr("width", "40").attr("height", "40").addClass("rounded-circle"),
+																									              $("<div>")
+																									                .append($("<h6>").addClass("fs-2 text-muted").text(response[i].memName + response[i].jobName + ", " + response[i].chDate ))
+																									                .append($("<div>").addClass("p-2 text-bg-light rounded-1 d-inline-block text-dark fs-3")
+																									                		.append($("<a>").attr("href", "${contextPath}"+ filePath).attr("download", originalName).attr("target", "_blank").text(originalName)))
+																									            );
+																							      		$chatArea.append($chatDiv);
+							   											        	   
+							   											        }
+							   									      	
+							   							      	}
+					        		            	
+					        		            	
+					        		            	
+					        		            }else{ // 텍스트 메세지일경우
+					        		            
+								        		            if('${loginUser.memNo}' == response[i].memNo){ // 내 메세지일경우
+																	      		
+																						$chatDiv.addClass("hstack gap-3 align-items-start mb-7")
+																										.addClass("justify-content-end") ;
+																					
+																				            $chatDiv.append(
+																				              $("<div>").addClass("text-end")
+																				                .append($("<h6>").addClass("fs-2 text-muted").text(response[i].chDate))
+																				                .append($("<div>").addClass("p-2 bg-info-subtle text-dark rounded-1 d-inline-block fs-3").text(response[i].chContent))
+																				            );
+																				            $chatArea.append($chatDiv);
+																	      		
+																	      	}else { // 다른사람 메세지일경우
+																	      		$chatDiv.addClass("hstack gap-3 align-items-start mb-7")
+																										.addClass("justify-content-start") ;
+																					      		 $chatDiv.append(
+																							              $("<img>").attr("src", "${contextPath}"+ (response[i].profileUrl ? response[i].profileUrl : '/assets/images/profile/user-1.jpg')).attr("alt", "user8").attr("width", "40").attr("height", "40").addClass("rounded-circle"),
+																							              $("<div>")
+																							                .append($("<h6>").addClass("fs-2 text-muted").text(response[i].memName + response[i].jobName + ", " + response[i].chDate ))
+																							                .append($("<div>").addClass("p-2 text-bg-light rounded-1 d-inline-block text-dark fs-3").text(response[i].chContent))
+																							            );
+																					      		$chatArea.append($chatDiv);
+																	      	}
+			        		           			}
 			        		          } // for문 끝
 			        		          //$chatArea.append($chatDiv);
 			        		          //$chatArea.scrollTop = $chatArea.scrollHeight;
@@ -752,6 +866,11 @@
 			        		            // AJAX 요청이 실패한 경우 실행될 작업
 			        		        }
 			        		    });
+					            
+					            
+					            
+					            // 첨부파일 목록 가져오기
+					            selectChatFiles(chroNo);
 					            
 					            // 채팅 참여자 목록 가져오기
 					            selectChatMem(chroNo);	 
@@ -825,7 +944,7 @@
 					                type: "get",
 					                data: { chroNo: chroNo }, 
 					                success: function(result) {
-					                	console.log(result);
+					                	// console.log(result);
 					                	var chatList = document.querySelector(".memDetail");  
 					                	chatList.innerHTML = "";
 					                	
@@ -942,7 +1061,21 @@
 
 					    	            	    var messageSpan = document.createElement("span");
 					    	            	    messageSpan.className = "fs-3 text-truncate text-body-color d-block";
-					    	            	    messageSpan.textContent = room.lastMsg;
+					    	            	    
+					    	            	    let lastMsg = room.lastMsg;
+					    	            	    if (lastMsg && lastMsg.startsWith("/resources")) {
+					    	            	        // /resources로 시작하는 경우 ;로 분리하여 originalName만 추출
+					    	            	        let msgParts = lastMsg.split(";");
+					    	            	        if (msgParts.length > 0) {
+					    	            	        	messageSpan.textContent = msgParts[1]; // originalName
+					    	            	        } else {
+					    	            	        	messageSpan.textContent = lastMsg; // 분리할 수 없는 경우 전체 메시지를 사용
+					    	            	        }
+					    	            	    } else {
+					    	            	        // 그렇지 않은 경우 전체 메시지를 사용
+					    	            	    	messageSpan.textContent = lastMsg;
+					    	            	    }
+					    	            	    
 
 					    	            	    var timeP = document.createElement("p");
 					    	            	    timeP.className = "fs-2 mb-0 text-muted";
@@ -1068,9 +1201,196 @@
 					    	 myModal.show();
 					    }
 						
+						// 첨부파일 전송
+						function sendFile(){
+								// 선택된 파일 가져오기
+						    var files = document.getElementById('fileInput').files;
+						    
+						    // FormData 생성
+						    var formData = new FormData();
+						    
+						    // 파일을 FormData에 추가
+						    for (var i = 0; i < files.length; i++) {
+						        formData.append('uploadFiles', files[i]);
+						    }
+						    
+						    // 채팅방 번호도 FormData에 추가 
+						    formData.append('boardNo', window.chatRoomNumber);
+							
+							
+									$.ajax({
+				                url: "${contextPath}/chat/uploadChatFile.do", 
+				                type: "post",
+				                data: formData,
+				                processData: false, 
+				                contentType: false,
+				                success: function(result) {
+				                	 if (result && result.length > 0) {
+				                         result.forEach(fileInfo => {
+				                             let fileUrl = fileInfo.filePath +"/"+ fileInfo.filesystemName  ;
+				                             let msg = "file|" + window.chatRoomNumber + "|" + fileUrl + "|" + fileInfo.originalName;
+				                             sock.send(msg);
+				                         });
+				                     } else {
+				                         console.log("파일 업로드 실패");
+				                     }
+				                	
+				                }
+				          });
+									$(".fileList_wrap").css("display", "none");
+									
+						}
 						
+						
+					
+								function selectChatFiles(chroNo){
+									
+									 // 첨부파일 전체 조회해오기
+						            $.ajax({
+						            	url:"${contextPath}/chat/selectChatFile.do",
+						            	type:"get",
+						            	data:{refNo:chroNo},
+						            	success:function(result){
+						            		console.log("첨부파일", result);
+						            		
+						            		let imgAreaDiv = $(".imgArea"); // imgArea 클래스를 가진 div를 선택
+						            		let fileAreaDiv = $(".fileArea"); // 
+						            		
+						            		imgAreaDiv.empty();
+						            		fileAreaDiv.empty();
+						            		
+						            		// 파일 관련 정보를 나타내는 <h6> 요소 생성
+						            		let fileHeader = $("<h6>").addClass("fw-semibold mb-3 text-nowrap")
+						            		                           .text("Files ")
+						            		                           .append($("<span>").addClass("text-muted fileCount").text("(0)"));
+
+						            		// fileDiv에 생성한 <h6> 요소 추가
+						            		fileAreaDiv.append(fileHeader);
+						            		
+	   					            	let imgCount = 0;
+	   					            	let fileCount = 0;
+	   					            	
+						            		 for(let i = 0; i<result.length; i++){  
+						            				 if (result[i].originalName.toLowerCase().endsWith(".jpg") || 
+						            					 	 result[i].originalName.toLowerCase().endsWith(".jpeg") || 
+						            					 	 result[i].originalName.toLowerCase().endsWith(".png")) {// 이미지 파일인 경우
+						            					 		
+						            				        let newImgDiv = $("<div>").addClass("col-4 px-1 mb-2") 
+						            				        									.append($("<a>").attr("href", "${contextPath}"+ result[i].filePath + "/" + result[i].filesystemName ).attr("download", result[i].originalName).attr("target", "_blank")
+								            				                          .append($("<img>").attr({
+								            				                              "src": "${contextPath}" + result[i].filePath + "/" +result[i].filesystemName ,
+								            				                              "width": "88",
+								            				                              "height": "65",
+								            				                              "alt": ""
+								            				                          }).addClass("rounded"))); // img 요소 추가 및 속성 설정
+
+						            				        imgAreaDiv.append(newImgDiv); // imgArea div에 새로운 div를 추가
+						            					 
+						            					 			imgCount += 1;
+				        		            		 		
+				   					          
+				   					      	
+				   							      		}else{ // 이미지 파일이 아닌 경우 (다운로드 가능한 파일)
+						   							      		let fileExtension = result[i].originalName.split('.').pop().toLowerCase(); // 파일 확장자 추출
+						   							         
+						   							         // 확장자에 따른 아이콘 설정
+						   							         let iconSrc = "";
+						   							         switch (fileExtension) {
+						   							             case 'pdf':
+						   							                 iconSrc = "../assets/images/chat/icon-adobe.svg";
+						   							                 break;
+						   							             case 'zip':
+						   							                 iconSrc = "../assets/images/chat/icon-zip-folder.svg";
+						   							                 break;
+							   							           case 'xls':
+							   						             case 'xlsx':
+							   						             case 'ppt':
+							   						             case 'pptx':
+							   						                 iconSrc = "../assets/images/chat/icon-figma.svg";
+							   						                 break;
+								   						           case 'html':
+								   					             case 'htm':
+								   					             case 'php':
+								   					             case 'asp':
+								   					             case 'aspx':
+								   					                 iconSrc = "../assets/images/chat/icon-chrome.svg";
+								   					                 break;
+						   							             default:
+						   							                 iconSrc = "../assets/images/chat/icon-adobe.svg"; // 기본 아이콘
+						   							                 break;
+						   							         }
+				   							      		
+						   							      let date = new Date(result[i].uploadDate);
+						   						        
+						   						        // 날짜를 "dd MM yyyy" 형식으로 포맷팅
+						   						        let options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+																	let formattedDate = date.toLocaleDateString('ko-KR', options);
+				   							      		
+				   							      				
+				   							      		let newFileLink = $("<a>").attr("href", "${contextPath}" + result[i].filePath + "/" +result[i].filesystemName)
+																	   							      		.addClass("hstack gap-3 file-chat-hover justify-content-between text-nowrap mb-9")
+																	   							      		.attr("download", result[i].originalName)
+												   			                            .append(
+												   			                                $("<div>").addClass("d-flex align-items-center gap-3")
+												   			                                    .append(
+												   			                                        $("<div>").addClass("rounded-1 text-bg-light p-6")
+												   			                                            .append(
+												   			                                                $("<img>").attr({
+												   			                                                    "src": iconSrc,
+												   			                                                    "alt": "",
+												   			                                                    "width": "24",
+												   			                                                    "height": "24"
+												   			                                                })
+												   			                                            )
+												   			                                    )
+													   			                                    .append(
+													   			                                        $("<div>")
+													   			                                            .append(
+													   			                                                $("<h6>").addClass("fw-semibold").text(result[i].originalName)
+													   			                                            )
+													   			                                            .append(
+													   			                                                $("<div>").addClass("d-flex align-items-center gap-3 fs-2 text-muted")
+													   			                                                   // .append($("<span>").text("2 MB"))
+													   			                                                    .append($("<span>").text(formattedDate))
+													   			                                            )
+													   			                                    )
+													   			                            )
+													   			                            .append(
+													   			                                $("<span>").addClass("position-relative nav-icon-hover download-file")
+													   			                                    .append(
+													   			                                        $("<i>").addClass("ti ti-download text-dark fs-6 bg-hover-primary")
+													   			                                    )
+													   			                            );
+
+				   			        										fileAreaDiv.append(newFileLink); //
+				   							      							fileCount += 1;
+				   									      	
+				   							      		}
+						            		 
+						            		 }
+						            					 $(".imgCount").text("(" + imgCount + ")");
+						            					 $(".fileCount").text("(" + fileCount + ")");
+						            		 
+						            		
+						            		
+						            	},error:function(){
+														console.log("첨부파일 조회용 ajax 통신 실패");
+													}
+						            	
+						            });
+						            
+									
+								}		
 								
-											      
+										// 날짜 변환 함수
+						        function formatDate(dateObj) {
+						            let day = String(dateObj.getDate()).padStart(2, '0');
+						            let month = String(dateObj.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1
+						            let year = dateObj.getFullYear();
+						            return `${day} ${month} ${year}`;
+						        }
+
+						        
 											      
 					      
 					      
