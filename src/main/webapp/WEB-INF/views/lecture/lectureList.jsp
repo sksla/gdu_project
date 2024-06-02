@@ -147,13 +147,13 @@
                         <input type="date" class="form-control" id="end_date1" name="endDate">
                       </div>
                       <div class="mb-3">
-                        <label for="lec_date" class="control-label">요일</label><br><!-- 요일로바꾸고 -->
-                        <input type="checkbox" id="mon1" name="lectureDate" value="월"><label for="scales">월</label>
-                        <input type="checkbox" id="tue1" name="lectureDate" value="화"><label for="scales">화</label>
-                        <input type="checkbox" id="wed1" name="lectureDate" value="수"><label for="scales">수</label>
-                        <input type="checkbox" id="thu1" name="lectureDate" value="목"><label for="scales">목</label>
-                        <input type="checkbox" id="fri1" name="lectureDate" value="금"><label for="scales">금</label>
-                        <input type="checkbox" id="sat1" name="lectureDate" value="토"><label for="scales">토</label>
+                        <label for="lec_date1" class="control-label">요일</label><br><!-- 요일로바꾸고 -->
+                        <input type="radio" id="mon1" name="lectureDate1" value="월"><label for="scales">월</label>
+                        <input type="radio" id="tue1" name="lectureDate1" value="화"><label for="scales">화</label>
+                        <input type="radio" id="wed1" name="lectureDate1" value="수"><label for="scales">수</label>
+                        <input type="radio" id="thu1" name="lectureDate1" value="목"><label for="scales">목</label>
+                        <input type="radio" id="fri1" name="lectureDate1" value="금"><label for="scales">금</label>
+                        <input type="radio" id="sat1" name="lectureDate1" value="토"><label for="scales">토</label>
                       </div>
                       <div class="mb-3">
                         <label for="lec_time" class="control-label">강의시간</label><!-- 교시로 바꾸기 -->
@@ -309,12 +309,12 @@
 						          </div>
 						          <div class="mb-3">
                         <label for="lec_date" class="control-label">요일</label><br>
-                        <input type="checkbox" id="mon" name="lectureDate" value="월"><label for="scales">월</label>
-                        <input type="checkbox" id="tue" name="lectureDate" value="화"><label for="scales">화</label>
-                        <input type="checkbox" id="wed" name="lectureDate" value="수"><label for="scales">수</label>
-                        <input type="checkbox" id="thu" name="lectureDate" value="목"><label for="scales">목</label>
-                        <input type="checkbox" id="fri" name="lectureDate" value="금"><label for="scales">금</label>
-                        <input type="checkbox" id="sat" name="lectureDate" value="토"><label for="scales">토</label>
+                        <input type="radio" id="mon" name="lectureDate" value="월"><label for="scales">월</label>
+                        <input type="radio" id="tue" name="lectureDate" value="화"><label for="scales">화</label>
+                        <input type="radio" id="wed" name="lectureDate" value="수"><label for="scales">수</label>
+                        <input type="radio" id="thu" name="lectureDate" value="목"><label for="scales">목</label>
+                        <input type="radio" id="fri" name="lectureDate" value="금"><label for="scales">금</label>
+                        <input type="radio" id="sat" name="lectureDate" value="토"><label for="scales">토</label>
                       </div>
 						          <div class="mb-3">
 						          	<label for="lec_time" class="control-label">강의시간</label>
@@ -478,7 +478,8 @@
 				console.log("ajax 통신실패");
 	  	}
   	});	
-  
+	  
+	  // 수정, 삭제버튼 클릭시
 	  function frmSubmit(num){
   		$("#lecDetailForm").attr("action", num==1 ? "${contextPath}/lec/modifyLec.do" : "${contextPath}/lec/deleteLec.do");	
   	}  
@@ -492,9 +493,6 @@
 		        frmSubmit(2);
 		    });
 		});
-	  
-	  
-	  
   }
 
 	</script>
