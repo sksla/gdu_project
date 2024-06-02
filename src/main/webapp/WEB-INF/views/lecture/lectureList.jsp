@@ -148,12 +148,12 @@
                       </div>
                       <div class="mb-3">
                         <label for="lec_date1" class="control-label">요일</label><br><!-- 요일로바꾸고 -->
-                        <input type="radio" id="mon1" name="lectureDate1" value="월"><label for="scales">월</label>
-                        <input type="radio" id="tue1" name="lectureDate1" value="화"><label for="scales">화</label>
-                        <input type="radio" id="wed1" name="lectureDate1" value="수"><label for="scales">수</label>
-                        <input type="radio" id="thu1" name="lectureDate1" value="목"><label for="scales">목</label>
-                        <input type="radio" id="fri1" name="lectureDate1" value="금"><label for="scales">금</label>
-                        <input type="radio" id="sat1" name="lectureDate1" value="토"><label for="scales">토</label>
+                        <input type="radio" id="mon1" name="lectureDate" value="월"><label for="scales">월</label>
+                        <input type="radio" id="tue1" name="lectureDate" value="화"><label for="scales">화</label>
+                        <input type="radio" id="wed1" name="lectureDate" value="수"><label for="scales">수</label>
+                        <input type="radio" id="thu1" name="lectureDate" value="목"><label for="scales">목</label>
+                        <input type="radio" id="fri1" name="lectureDate" value="금"><label for="scales">금</label>
+                        <input type="radio" id="sat1" name="lectureDate" value="토"><label for="scales">토</label>
                       </div>
                       <div class="mb-3">
                         <label for="lec_time" class="control-label">강의시간</label><!-- 교시로 바꾸기 -->
