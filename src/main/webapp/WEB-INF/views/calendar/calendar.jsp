@@ -666,7 +666,7 @@
 									              </div>
 									              <div class="list_box_wrap">
 									              	<div class="my-1 text-end" style="height: 30px">
-									              		<button class="btn btn-sm text-info fw-semibold select_all_btn" style="display:none;" onclick="selectAllMem(this);">전체선택</button>
+									              		<button type="button" class="btn btn-sm text-info fw-semibold select_all_btn" style="display:none;" onclick="selectAllMem(this);">전체선택</button>
 									              	</div>
 										              <div class="mem_list_box">
 										                <div class="box_header">직원목록</div>
@@ -895,9 +895,6 @@
             	  setCookie();
             	  ajaxSelectCalList();
               })
-              
-              // 쿠키 도전~~~~~~~!!!!!!!
-              
               
               
               
