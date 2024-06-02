@@ -184,8 +184,9 @@
 	<select id="selectLecList" resultMap="lectureResult">
 		select 
 					 lec_no
-				 , lec_name
-      from lecture
+				 , l.lec_name
+      from open_lec ol
+      join lecture l using(lec_no)
 	</select>
 	<!-- 강의리스트 -->
 	<select id="selectAllLecList" resultMap="openLecResult">
