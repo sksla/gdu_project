@@ -49,21 +49,6 @@
 
        <nav class="sidebar-nav scroll-sidebar" data-simplebar>
          <ul id="sidebarnav">
-         	 <!-- ---------------------------------- -->
-           <!-- 학생 -->
-           <!-- ---------------------------------- -->
-           <li class="nav-small-cap">
-             <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-             <span class="hide-menu">학생</span>
-           </li>
-           <li class="sidebar-item">
-             <a class="sidebar-link" href="" aria-expanded="false">
-               <span>
-                 <i class="ti ti-user"></i>
-               </span>
-               <span class="hide-menu">학생관리</span>
-             </a>
-           </li>
            <!-- ---------------------------------- -->
            <!-- 수업 -->
            <!-- ---------------------------------- -->
@@ -71,47 +56,20 @@
              <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
              <span class="hide-menu">수업</span>
            </li>
+	 					<li class="sidebar-item">
+	             <a class="sidebar-link" href="${ contextPath }/lec/lecList.do" aria-expanded="false">
+	               <span>
+	                 <i class="ti ti-notebook"></i>
+	               </span>
+	               <span class="hide-menu">강의목록</span>
+	             </a>
+	           </li>
            <li class="sidebar-item">
-             <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
-               <span class="d-flex">
-                 <i class="ti ti-notebook"></i>
-               </span>
-               <span class="hide-menu">강의</span>
-             </a>
-             <ul aria-expanded="false" class="collapse first-level">
-               <li class="sidebar-item">
-                 <a href="./main/blog-posts.html" class="sidebar-link">
-                   <div class="round-16 d-flex align-items-center justify-content-center">
-                     <i class="ti ti-circle"></i>
-                   </div>
-                   <span class="hide-menu">강의관리</span>
-                 </a>
-               </li>
-               <li class="sidebar-item">
-                 <a href="./main/blog-detail.html" class="sidebar-link">
-                   <div class="round-16 d-flex align-items-center justify-content-center">
-                     <i class="ti ti-circle"></i>
-                   </div>
-                   <span class="hide-menu">수강생관리</span>
-                 </a>
-               </li>
-             </ul>
-           </li>
-
-           <li class="sidebar-item">
-             <a class="sidebar-link" href="${ contextPath }/lec/stuAttend.page" aria-expanded="false">
+             <a class="sidebar-link" href="${ contextPath }/lec/stuAttendList.do" aria-expanded="false">
                <span>
                  <i class="ti ti-list-check"></i>
                </span>
                <span class="hide-menu">출석</span>
-             </a>
-           </li>
-           <li class="sidebar-item">
-             <a class="sidebar-link" href="./main/app-kanban.html" aria-expanded="false">
-               <span>
-                 <i class="ti ti-typography"></i>
-               </span>
-               <span class="hide-menu">성적</span>
              </a>
            </li>
            <li class="sidebar-item">

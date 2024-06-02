@@ -123,7 +123,7 @@
                 <a class="nav-link" href="${ contextPath }/board/noticeList.do">게시판</a>
               </li>
               <li class="nav-item dropdown-hover d-none d-lg-block">
-                <a class="nav-link" href="./main/app-email.html">학생&수업</a>
+                <a class="nav-link" href="${ contextPath }/lec/lecList.do" >학생&수업</a>
               </li>
             </ul>
             <div class="d-block d-xl-none">
