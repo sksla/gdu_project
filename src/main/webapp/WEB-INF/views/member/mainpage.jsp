@@ -10,7 +10,9 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+  <!-- 날씨관련 라이브러리 -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.10/css/weather-icons.min.css">
+	
   <!-- Favicon icon-->
   <link rel="shortcut icon" type="image/png" href="${ contextPath }/assets/images/logos/favicon.png" />
 
@@ -384,16 +386,18 @@
               </div>
             </div>
 
-						<div class="card" style="height: 90px; margin-bottom: 10px;">
-						  <div class="card-body">
-						    날씨
-						    <div class="SKY"></div>
-						    <div class="wicon"></div>
+						<!-- 기상청 api -->
+						<div class="card" >
+						  <div class="card-body weather" style="font-size:18px; color:black;">
+						    <span class="SKY"></span>
+						    <span class="wicon"></span>
+						    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						    <span class="T1H"></span>
+						    <div class="WSD"></div>
 						  </div>
 						</div>
-			
+						<!-- 기상청 api -->
 						<script>
-						
 							$(document).ready(function(){
 								
                  let date = new Date();
@@ -413,7 +417,7 @@
                        let REH = result.response.body.items.item[30].fcstValue;
                        let SKY = result.response.body.items.item[18].fcstValue;
                        let PTY = result.response.body.items.item[6].fcstValue;
-                       $(".T1H").text(T1H + "°");
+                       $(".T1H").text("기온: " + T1H + "°");
                        $(".WSD").text("풍속 " + WSD + "m/s 　습도 " + REH + "%");
                        if(PTY == 0){
                           if(SKY == 1){
@@ -445,9 +449,8 @@
                           }
                        }
                     }
-                 })
-							})
-							
+                 });
+							});					
 	         </script> 
 
             <div class="card" style="height: 90px; margin-bottom: 10px;">
