@@ -7,7 +7,7 @@
   	<id column="chro_no" property="chroNo"/>
   	<result column="chro_name" property="chroName"/>
   	<result column="lastmsg" property="lastMsg"/>
-  	<result column="msg_date" property="msgDate"/>
+  	<result column="lastmsg_date" property="msgDate"/>
   	<collection  resultMap="memberResult" property="memberList"/>
   </resultMap>
   
@@ -99,8 +99,9 @@
 				 , r.LASTMSG
 				 , m.MEM_NAME AS chatmem
 				 , m.profile_url
-				 , TO_CHAR(msg_date, 'HH24:MI') as msg_date
+				 , TO_CHAR(msg_date, 'HH24:MI') as lastmsg_date
 				 , j.job_name
+				 , msg_date
 			FROM chatroom r
 			JOIN chat_mem m1 ON r.CHRO_NO = m1.CHRO_NO
 			JOIN chat_mem m2 ON r.CHRO_NO = m2.CHRO_NO
@@ -108,7 +109,7 @@
 			JOIN JOB j on m.job_no = j.job_no
 		 WHERE m1.MEM_NO = #{memNo}
 			 AND m2.MEM_NO != #{memNo}
-		 order by r.chro_no desc
+		 order by msg_date desc nulls last
 	</select>
 	
 	<!-- 채팅 메세지 등록 -->

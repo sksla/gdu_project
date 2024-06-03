@@ -21,7 +21,9 @@
      		max-height: 400px;
      		min-height: 50px;
      }
-   
+     
+     
+     
      
      
      /* 결재선 모달 스타일 */
@@ -351,7 +353,13 @@
                         		
                         	</div>
 	                        <div class="fileList_wrap chat-box " style=" display:none;">
-	                       			 <a id="closeBTN" class="position-relative nav-icon-hover z-index-5 closeBTN" ><i class="ti ti-circle-x closeBTN"></i></a>
+	                        	<div class="d-flex justify-content-between">
+	                        		<div></div>
+	                        		<div style="margin-right: 30px;">
+		                        		<a class="text-dark px-2 fs-7 bg-hover-primary nav-icon-hover position-relative z-index-5"
+	                                 id="closeBTN"><i class="ti ti-circle-x closeBTN"></i></a>
+		                        		</div>
+	                        	</div>
 		                        	<ul id="fileList" class="file-list">
 		                        		
 		                        	</ul>
@@ -516,7 +524,7 @@
 			              
 			          			
 			              // 첨부파일 미리보기 
-			              <!--
+			              
 			              	let totalSize = 0;
 							
 											$("#fileInput").change(function(evt){
@@ -547,7 +555,7 @@
 														
 												})
 												
-						
+											/*
 												const closeButton = document.getElementById('closeBTN');
 
 								            closeButton.addEventListener('click', function() {
@@ -558,8 +566,16 @@
 								                const fileInput = document.getElementById('fileInput');
 								                fileInput.value = ''; // 파일 입력 필드 초기화
 								            });
-								            -->
-												
+								      */
+								       
+								            
+					            document.getElementById('closeBTN').addEventListener('click', function() {
+					            	// 파일 목록을 감추기
+					            	$(".fileList_wrap").css("display", "none");
+					                const fileInput = document.getElementById('fileInput');
+					                fileInput.value = ''; // 파일 입력 필드 초기화
+					            })
+									
 				    	  
 				      }) // 레디fuction끝
               
@@ -591,6 +607,7 @@
 					      function onMessage(evt){ // evt : 웹소켓에서 클라이언트에게 보내준 데이터
 					    	  console.log("evt", evt);
 					      	console.log("evt.data", evt.data); // new TextMessage객체로 보내준 텍스트에
+					      	console.log("window", window.chatRoomNumber);
 					      	
 					      	let msgArr = evt.data.split("|"); // ["메세지유형(chat/entry/exit/file)", "메세지내용", "발신자아이디"]
 					      	
@@ -694,7 +711,7 @@
 					      	ajaxChatRoomList();
 					      	
 					      	if(window.chatRoomNumber != null){
-					      		selectChatFiles();
+					      		selectChatFiles(window.chatRoomNumber);
 					      	}
 					      	
 					      }
@@ -1067,13 +1084,22 @@
 					    	            	        // /resources로 시작하는 경우 ;로 분리하여 originalName만 추출
 					    	            	        let msgParts = lastMsg.split(";");
 					    	            	        if (msgParts.length > 0) {
-					    	            	        	messageSpan.textContent = msgParts[1]; // originalName
+					    	            	        	//messageSpan.textContent = msgParts[1]; // originalName
+					    	            	        	let originalName = msgParts[1];
+					    	            	        	messageSpan.textContent = originalName.length > 12 ? originalName.substring(0, 12) + "..." : originalName;
 					    	            	        } else {
-					    	            	        	messageSpan.textContent = lastMsg; // 분리할 수 없는 경우 전체 메시지를 사용
+					    	            	        	//messageSpan.textContent = lastMsg; // 분리할 수 없는 경우 전체 메시지를 사용
+					    	            	        	messageSpan.textContent = lastMsg.length > 12 ? lastMsg.substring(0, 12) + "..." : lastMsg;
+					    	            	        	  
 					    	            	        }
 					    	            	    } else {
 					    	            	        // 그렇지 않은 경우 전체 메시지를 사용
-					    	            	    	messageSpan.textContent = lastMsg;
+					    	            	    	if(lastMsg == null){
+					    	            	    		messageSpan.textContent = "";
+					    	            	    	}else{
+					    	            	    			//messageSpan.textContent = lastMsg;
+					    	            	    	 	messageSpan.textContent = lastMsg.length > 12 ? lastMsg.substring(0, 12) + "..." : lastMsg;
+					    	            	    	}
 					    	            	    }
 					    	            	    
 
@@ -1238,13 +1264,15 @@
 				                }
 				          });
 									$(".fileList_wrap").css("display", "none");
-									
+									window.chatRoomNumber = window.chatRoomNumber ;
+							
+									ajaxChatRoomList();
 						}
 						
 						
 					
 								function selectChatFiles(chroNo){
-									
+									console.log("파일조회",chroNo);
 									 // 첨부파일 전체 조회해오기
 						            $.ajax({
 						            	url:"${contextPath}/chat/selectChatFile.do",
@@ -1382,13 +1410,7 @@
 									
 								}		
 								
-										// 날짜 변환 함수
-						        function formatDate(dateObj) {
-						            let day = String(dateObj.getDate()).padStart(2, '0');
-						            let month = String(dateObj.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1
-						            let year = dateObj.getFullYear();
-						            return `${day} ${month} ${year}`;
-						        }
+										
 
 						        
 											      
