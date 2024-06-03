@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <c:set var="contextPath" value="${ pageContext.request.contextPath }" />
 <!DOCTYPE html>
 <html>
@@ -67,11 +68,47 @@
     flex: 1; /* 화면 너비에 맞춰 균등 배분 */
     margin: 0 10px; /* 좌우 여백 추가 */
   }
+  /* 스크롤바 div
   .todayReser{font-size:18px;}
   .todayReserList{
   	height: 220px;
   	max-height: 600px;
   	overflow-y: scroll;
+  }
+  */
+  /* 미반납비품 테이블 스크롤 */
+  .noReturn table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .noReturn thead, .noReturn tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+  }
+
+  .noReturn tbody {
+    display: block;
+    max-height: 200px; /* Adjust height as needed */
+    overflow-y: auto;
+  }
+  /* 오늘 시설사용건 테이블 스크롤 */
+  .todayReserve table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .todayReserve thead, .todayReserve tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+  }
+
+  .todayReserve tbody {
+    display: block;
+    max-height: 200px; /* Adjust height as needed */
+    overflow-y: auto;
   }
   /* 캘린더 스타일*/
   .fc-icon{
@@ -206,7 +243,7 @@
 	                  <div id="leave"> <!--신청받은연차-->
 	                    <p class="fs-7 fw-semibold leaveGo" onclick="location.href='${contextPath}/admin/requestMemberLeave.page'">신청받은연차 +</p>
 	                    <div class="table-responsive mb-4">
-	                      <table class="table border text-nowrap mb-0 align-middle">
+	                      <table class="table border text-nowrap mb-0 align-middle leaveTable">
 	                        <thead class="text-dark fs-4" align="center">
 	                          <tr>
 	                            <th>
@@ -263,7 +300,7 @@
 	                  <div id="register"> <!--강의학생등록기간-->
 	                    <p class="fs-7 fw-semibold">강의&학생등록기간</p>
 	                    <div class="table-responsive mb-4">
-	                      <table class="table border text-nowrap mb-0 align-middle">
+	                      <table class="table border text-nowrap mb-0 align-middle lecAndStuTable">
 	                        <thead class="text-dark fs-4" align="center">
 	                          <tr>
 	                            <th>
@@ -477,7 +514,8 @@
         
                 <!--오늘예약건&미반납비품-->
                 <div id="content3">
-	                <div class="todayReserve"> <!--오늘예약건-->
+                	<!-- 오늘 시설 사용건
+	                <div class="todayReserve"> 
 	                  <p class="fs-7 fw-semibold">오늘 시설 사용건</p>
 	                  <div class="card" style="width: 600px; height: 250px;">
 	                    <div class="card-body">
@@ -497,30 +535,136 @@
 	                    </div>
 	                  </div>
 	                </div>
-	                <div class="noReturn"> <!--미반납비품-->
-	                  <p class="fs-7 fw-semibold">미반납비품</p>
+	                 -->
+	                <!-- 대기
+	                <div class="todayReserve">
+	                  <p class="fs-7 fw-semibold">오늘 시설 사용건</p>
 	                  <table class="table border text-nowrap mb-0 align-middle">
 	                    <thead class="text-dark fs-4" align="center">
 	                      <tr>
 	                        <th>
-	                          <h6 class="fs-4 fw-semibold mb-0">비품명</h6>
+	                          <h6 class="fs-4 fw-semibold mb-0">사용자</h6>
 	                        </th>
 	                        <th>
+	                          <h6 class="fs-4 fw-semibold mb-0">시설명</h6>
+	                        </th>
+	                        <th>
+	                          <h6 class="fs-4 fw-semibold mb-0">사용시간</h6>
+	                        </th>
+	                      </tr>
+	                    </thead>
+	                    <tbody>
+	                    	<c:choose>
+	                    		<c:when test="${empty todayReserList}">
+	                    			<tr>
+	                    				<td colspan="3" align="center">
+	                    					<p class="mb-0 fw-normal fs-4">오늘의 시설 사용기록이 없습니다.</p>
+	                    				</td>
+	                    			</tr>
+	                    		</c:when>
+	                    		<c:otherwise>
+			                    	<c:forEach var="t" items="${todayReserList}">
+				                      <tr>
+				                        <td>
+				                          <p class="mb-0 fw-normal fs-4">${t.memberList[0].memName}/${t.memberList[0].majorNo}</p>
+				                        </td>
+				                        <td>
+				                          <p class="mb-0 fw-normal fs-4">${t.resourceList[0].resName}</p>
+				                        </td>
+				                        <td>
+				                          <p class="mb-0 fw-normal fs-4" align="center">${t.revDate}</p>
+				                        </td>
+				                      </tr>
+			                      </c:forEach>
+	                    		</c:otherwise>
+	                    	</c:choose>
+	                    </tbody>
+	                  </table>
+	                </div>
+	                -->
+								<div class="todayReserve"> <!-- 오늘 시설 사용건 -->
+								  <p class="fs-7 fw-semibold">오늘 시설 사용건</p>
+								  <table class="table border text-nowrap mb-0 align-middle todayTable">
+								    <thead class="text-dark fs-2" align="center">
+								      <tr>
+								        <th>
+								          <h6 class="fs-4 fw-semibold mb-0">사용자</h6>
+								        </th>
+								        <th>
+								          <h6 class="fs-4 fw-semibold mb-0">시설명</h6>
+								        </th>
+								        <th>
+								          <h6 class="fs-4 fw-semibold mb-0">사용시간</h6>
+								        </th>
+								      </tr>
+								    </thead>
+								    <tbody style="display: block; max-height: 200px; overflow-y: auto;">
+								      <c:choose>
+								        <c:when test="${empty todayReserList}">
+								          <tr>
+								            <td colspan="3" align="center">
+								              <p class="mb-0 fw-normal fs-4">오늘의 시설 사용기록이 없습니다.</p>
+								            </td>
+								          </tr>
+								          <c:forEach var="i" begin="1" end="5">
+								            <tr style="display: table; width: 100%; table-layout: fixed;">
+								              <td>&nbsp;</td>
+								              <td>&nbsp;</td>
+								              <td>&nbsp;</td>
+								            </tr>
+								          </c:forEach>
+								        </c:when>
+								        <c:otherwise>
+								          <c:forEach var="t" items="${todayReserList}" varStatus="status">
+								            <tr style="display: table; width: 100%; table-layout: fixed;" align="center">
+								              <td>
+								                <p class="mb-0 fw-normal fs-3">${t.memberList[0].memName}/${t.memberList[0].majorNo}</p>
+								              </td>
+								              <td>
+								                <p class="mb-0 fw-normal fs-3">${t.resourceList[0].resName}</p>
+								              </td>
+								              <td>
+								                <p class="mb-0 fw-normal fs-3" align="center">${t.revDate}</p>
+								              </td>
+								            </tr>
+								          </c:forEach>
+								          <c:forEach var="i" begin="${fn:length(todayReserList)}" end="5">
+								            <tr style="display: table; width: 100%; table-layout: fixed;">
+								              <td>&nbsp;</td>
+								              <td>&nbsp;</td>
+								              <td>&nbsp;</td>
+								            </tr>
+								          </c:forEach>
+								        </c:otherwise>
+								      </c:choose>
+								    </tbody>
+								  </table>
+								</div>
+
+	                <div class="noReturn"> <!--미반납비품-->
+	                  <p class="fs-7 fw-semibold">미반납비품</p>
+	                  <table class="table border text-nowrap mb-0 align-middle noReturnTable">
+	                    <thead class="text-dark fs-4" align="center">
+	                      <tr>
+	                        <th>
 	                          <h6 class="fs-4 fw-semibold mb-0">사용자</h6>
+	                        </th>
+	                        <th>
+	                          <h6 class="fs-4 fw-semibold mb-0">비품명</h6>
 	                        </th>
 	                        <th>
 	                          <h6 class="fs-4 fw-semibold mb-0">예약시간</h6>
 	                        </th>
 	                      </tr>
 	                    </thead>
-	                    <tbody>
+	                    <tbody style="display: block; max-height: 200px; overflow-y: auto;">
 	                    	<c:forEach var="r" items="${reserList}">
-		                      <tr>
-		                        <td>
-		                          <p class="mb-0 fw-normal fs-4">${r.resourceList[0].resName}</p>
-		                        </td>
+		                      <tr style="display: table; width: 100%; table-layout: fixed;">
 		                        <td>
 		                          <p class="mb-0 fw-normal fs-4">${r.memberList[0].memName}/${r.memberList[0].majorNo}</p>
+		                        </td>
+		                        <td>
+		                          <p class="mb-0 fw-normal fs-4">${r.resourceList[0].resName}</p>
 		                        </td>
 		                        <td>
 		                          <p class="mb-0 fw-normal fs-4" align="center">${r.revDate}</p>
