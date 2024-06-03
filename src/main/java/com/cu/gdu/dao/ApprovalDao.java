@@ -65,6 +65,15 @@ public class ApprovalDao {
 		Map<String, Integer> map = new HashMap<>();
 		map.put("memNo", memNo);
 		map.put("appType", appType);
+		map.put("docNo", 0);
+		return sqlSessionTemplate.insert("approvalMapper.insertApprover", map);
+	}
+	
+	public int insertApprover(int memNo, int appType, int docNo) {
+		Map<String, Integer> map = new HashMap<>();
+		map.put("memNo", memNo);
+		map.put("appType", appType);
+		map.put("docNo", docNo);
 		return sqlSessionTemplate.insert("approvalMapper.insertApprover", map);
 	}
 
@@ -118,8 +127,8 @@ public class ApprovalDao {
 		return sqlSessionTemplate.update("approvalMapper.insertAppComment", appComment);
 	}
 
-	public String selectNextAppLine(String docNo) {
-		return sqlSessionTemplate.selectOne("approvalMapper.selectNextAppLine", docNo);
+	public String selectNowAppLine(String docNo) {
+		return sqlSessionTemplate.selectOne("approvalMapper.selectNowAppLine", docNo);
 	}
 
 	public int selectCountAppFormList(Map<String, String> map) {
@@ -184,6 +193,26 @@ public class ApprovalDao {
 
 	public List<MemberDto> selectAppLineCollaboratorList(Map<String, Integer> map) {
 		return sqlSessionTemplate.selectList("approvalMapper.selectAppLineMem", map);
+	}
+
+	public int updateAppDoc(ApprovalDocDto appDoc) {
+		return sqlSessionTemplate.update("approvalMapper.updateAppDoc", appDoc);
+	}
+
+	public int deleteApprover(int docNo) {
+		return sqlSessionTemplate.delete("approvalMapper.deleteApprover", docNo);
+	}
+
+	public int deleteAttach(String[] delFileNo) {
+		return sqlSessionTemplate.delete("approvalMapper.deleteAttach", delFileNo);
+	}
+
+	public List<AttachDto> selectDeleteAppAttachList(String[] delFileNo) {
+		return sqlSessionTemplate.selectList("approvalMapper.selectDeleteAppAttachList", delFileNo);
+	}
+
+	public int updateAppDocContent(ApprovalDocDto appDoc) {
+		return sqlSessionTemplate.update("approvalMapper.updateAppDocContent", appDoc);
 	}
 	
 }

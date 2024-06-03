@@ -54,6 +54,10 @@ public interface ApprovalService {
 	// 결재문서 등록
 	int insertApp(ApprovalDocDto appDoc, int approverNo, int receiverNo, String[] collaboratorNo);
 	
+	// 결재문서 수정
+	int updateApp(ApprovalDocDto appDoc, int approverNo, int receiverNo, String[] collaboratorNo, String[] delFileNo, int nowStatus);
+	List<AttachDto> selectDeleteAppAttachList(String[] delFileNo);
+	
 	// 문서구분으로 양식 목록 조회
 	List<ApprovalFormDto> selectFormListByCategory(String appCategory);
 	
@@ -102,5 +106,8 @@ public interface ApprovalService {
 	
 	// 결재선 삭제
 	int deleteAppLine(int no);
+
+	String selectNowAppLine(String docNo);
+
 	
 }

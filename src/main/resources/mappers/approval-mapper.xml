@@ -251,7 +251,7 @@
 		       )
 		values (
 		       #{docContent}
-		     , #{drafter}
+		     , #{drafterNo}
 		     , #{prePeriod}
 		     , #{appNo}
 		     , seq_doc_no.nextval
@@ -272,7 +272,14 @@
 		values (
 		       seq_approver_no.nextval
 		     , #{memNo}
+		     <choose>
+	       	 <when test="docNo == 0">
 		     , seq_doc_no.currval
+	       	 </when>
+	       	 <otherwise>
+	       , #{ docNo }
+	       	 </otherwise>
+	       </choose>
 		     , #{appType}
 		       )
 	</insert>
@@ -289,12 +296,70 @@
 		       )
 		values (
 		       seq_app_file_no.nextval
+	       <choose>
+	       	 <when test="refNo == 0">
 		     , seq_doc_no.currval
+	       	 </when>
+	       	 <otherwise>
+	       , #{ refNo }
+	       	 </otherwise>
+	       </choose>
 		     , #{filePath}
 		     , #{originalName}
 		     , #{filesystemName}
 		       )
 	</insert>
+	
+	<update id="updateAppDoc">
+		update app_doc
+		   set doc_content = #{docContent}
+		     , pre_period = #{prePeriod}
+		     , app_no = #{appNo}
+		     , doc_title = #{docTitle}
+		     , status = #{status}
+		     , modify_date = sysdate
+		 where doc_no = #{docNo}
+	</update>
+	
+	<update id="updateAppDocContent">
+		update app_doc
+		   set doc_content = #{docContent}
+		     , status = #{status}
+		     , modify_date = sysdate
+		 where doc_no = #{docNo}
+	</update>
+	
+	<delete id="deleteApprover">
+		delete
+			from approver
+		 where doc_no = #{docNo}
+	</delete>
+	
+	<delete id="deleteAttach">
+		delete
+			from app_attach
+	 <where>
+			<foreach item="item" collection="array"
+							open="file_no in (" separator="," close=")">
+				#{item}
+			</foreach>
+		</where>
+	</delete>
+	
+	<select id="selectDeleteAppAttachList" resultMap="attachResult">
+		select
+		       file_no
+		     , file_path
+		     , original_name
+		     , filesystem_name
+		  from app_attach
+		<where>
+			<foreach item="item" collection="array"
+							open="file_no in (" separator="," close=")">
+				#{item}
+			</foreach>
+		</where>
+	</select>
 	
 	<!-- 전자결재 문서함 ************************************************* -->
 	<select id="selectCountOngoingBoardList" resultType="_int">
@@ -357,7 +422,7 @@
 			 and doc_no like '%' || #{search} || '%'
 		</if>
 		order
-		   by draft_date
+		   by draft_date desc
 	</select>
 	
 	<select id="selectCountReceiveBoardList" resultType="_int">
@@ -432,7 +497,7 @@
 		</if>
 	</select>
 	
-	<!-- 전자결재 상세 페이지 -->
+	<!-- 전자결재 상세 페이지 ********************************-->
 	<select id="selectAppDoc" resultMap="appDocResult">
 		select 
 		       doc_no
@@ -441,6 +506,7 @@
 		     , app_form_name
 		     , drafter
 		     , to_char(draft_Date, 'YYYY-MM-DD') draft_date
+		     , to_char(modify_Date, 'YYYY-MM-DD') modify_date
 		     , doc_title
 		     , pre_period
 		     , app_doc.status doc_status
@@ -563,7 +629,7 @@
 		   and approver = #{memNo}
 	</update>
 	
-	<select id="selectNextAppLine" resultType="String">
+	<select id="selectNowAppLine" resultType="String">
 		select app_type
 		 from (
 		       select app_type
@@ -572,7 +638,7 @@
 		        where app_yn = 'N'
 		          and doc_no = #{docNo}
 		      )
-		where rnum = 2
+		where rnum = 1
 	</select>
 	
 	<!-- 자주 쓰는 결재선 *****************************-->

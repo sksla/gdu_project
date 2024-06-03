@@ -129,7 +129,7 @@
           <!-- 페이지 내용 -->
           <form id="appForm" method="post" action="${contextPath}/approval/enroll.do" enctype="multipart/form-data">
           	<input type="hidden" id="status" name="status" value="20">
-          	<input type="hidden" name="drafter" value="${loginUser.memNo}">
+          	<input type="hidden" name="drafterNo" value="${loginUser.memNo}">
             <div class="mb-4" style="display: flex; justify-content: space-between;">
               <span>
                 <button onclick="return enrollAppForm(1);" class="btn btn-info me-1 mb-1 px-4 fs-4">기안하기</button>
@@ -186,11 +186,8 @@
                     </div>
                     <div class="col-lg-6">
                       <div class="row align-items-center">
-                        <label for="" class="form-label fw-semibold col-sm-3 col-form-label fs-4">???</label>
-                        <div class="col-sm-9">
-                          <select class="form-select" id="" aria-label="Default select example">
-                            
-                          </select>
+                        <label for="" class="form-label fw-semibold col-sm-3 col-form-label fs-4">기안일</label>
+                        <div class="col-sm-9 draft_date">
                         </div>
                       </div>
                     </div>
@@ -203,7 +200,6 @@
               <h5 class="card-title fw-semibold mb-4" style="display: inline;">결재선</h5>
               &nbsp;&nbsp;&nbsp;&nbsp;
               <!-- 결재선 modal -->
-              <!-- ------------------------------------------ -->
               <button type="button" class="btn me-1 mb-1 sm-subtle text-info px-2 fs-4 " data-bs-toggle="modal"
                 data-bs-target="#app_line_modal">
                 <b>결재선 선택</b>
@@ -547,15 +543,15 @@
         })
         
         // 기안 결재선에 현재날짜 표시
+				$(".draft_date").text(getCurrentDate());
 				$(".sign_area_wrap>.drafter>label").text(getCurrentDate());
     		
     		// 결재선 선택 모달용 javascript *************************************
     		// 부서목록 리스트 조회
-    		createMajorList("");
+    		createMajorList(""); // 변경
     		
     		// 결재선 검색 기능
     		document.getElementById("search_box").onkeyup = function(e) {
-    			console.log("실행");
     			let $searchType = $(".searchRadio:checked").val();
     			let $search = $("#search_box").val();
     			if($searchType == "name"){
@@ -567,7 +563,7 @@
            			data:{ search: $search },
            			type:"get",
            			success: function(list){
-           				createMemList(list);
+           				createMemList(list); // 변경
            			},
            			error: function(){
            				console.log("부서목록 생성 ajax 통신 실패");
@@ -576,7 +572,7 @@
         		}
          	}else{
          		if($search == ""){
-         			createMajorList("");
+         			createMajorList(""); // 변경
         		}else{
 	         		createMajorList($search);
         		}
@@ -671,10 +667,10 @@
     	}
       
     	// 부서목록 treeview 생성 함수
-    	function testTreeView(search){
+    	function testTreeView(search){ // 변경
     		
         $("#myTreeview").treeview({
-            levels: (search == "" ? 1 : 99),
+            levels: (search == "" ? 1 : 99), // 변경
             selectedBackColor: "#03a9f3",
             onhoverColor: "rgba(0, 0, 0, 0.05)",
             expandIcon: "ti ti-plus",
@@ -691,7 +687,7 @@
         			data:{ majorNo: $badge.eq(0).text() },
         			type:"get",
         			success: function(list){
-        				createMemList(list);
+        				createMemList(list); // 변경
         			},
         			error: function(){
         				console.log("부서목록 생성 ajax 통신 실패");
@@ -762,9 +758,13 @@
     	}
     	// 화살표 클릭시 결재자 제거
     	function removeAppMember(appType){
-    		let $boxMem = $(".app_" + appType + ">.mem_list").children(".selected_mem").each(function(index, el){
-    			$(el).remove();
-    		});
+    		if(appType == "collaborator"){
+	    		$(".app_" + appType + ">.mem_list").children(".selected_mem").each(function(index, el){
+	    			$(el).remove();
+	    		});    			
+    		} else {
+    			$(".app_" + appType + ">.mem_list").children().remove()
+    		}
     	}
     	
     	// 결재선 등록 모달 초기화
@@ -786,10 +786,15 @@
     		$("#appForm>input[name='collaboratorNo']").each(function(index, el){
     			$(el).remove();
     		});
+    		for(let i = 0; i < 5; i++){
+        		$(".collaborator" + (i + 1)).each(function(index, el){
+        			$(el).text("-");
+        		})
+    		}
     		if($(".selected_collaborator").length != 0){
     			$(".selected_collaborator").each(function(index, el){
     				let $collaborator = $(".collaborator" + (index+1));
-    				$collaborator.eq(0).html("<h>미결<h>");
+    				$collaborator.eq(0).html("<h5><b>미결</b></h5>");
     				for(let i=1; i<=$collaborator.length-1; i++){
        				$collaborator.eq(i).text( $(el).children("span").eq(i).text() );
        			}
@@ -806,9 +811,12 @@
     		}
     		// 결재자
     		$("#appForm>input[name='approverNo']").remove();
+    		$(".approver").each(function(index, el){
+    			$(el).text("-");
+    		})
     		if($(".selected_approver").length != 0){
     			let $selectedApproverProp = $(".selected_approver>span");
-    			$(".approver").eq(0).text("미결");
+    			$(".approver").eq(0).html("<h5><b>미결</b></h5>");
     			for(let i=1; i<=$(".approver").length-1; i++){
     				$(".approver").eq(i).text( $selectedApproverProp.eq(i).text() );
     			}
@@ -820,9 +828,12 @@
     		}
     		// 수신자
     		$("#appForm>input[name='receiverNo']").remove();
+    		$(".receiver").each(function(index, el){
+    			$(el).text("-");
+    		})
     		if($(".selected_receiver").length != 0){
     			let $selectedReceiverProp = $(".selected_receiver>span");
-    			$(".receiver").eq(0).text("미결");
+    			$(".receiver").eq(0).html("<h5><b>미결</b></h5>");
     			for(let i=1; i<=$(".receiver").length-1; i++){
     				$(".receiver").eq(i).text( $selectedReceiverProp.eq(i).text() );    				
     			}
@@ -839,7 +850,12 @@
       
       function enrollAppForm(type){
     	  if(type == 1){
-    		  if(!confirm("결재문서를 기안하시겠습니까?")){
+    		  if($("#appForm>input[name='approverNo']").length == 1){
+       		  if(!confirm("결재문서를 기안하시겠습니까?")){
+       			  return false;
+       		  }
+    		  }else{
+    			  alert("결재선을 선택해주세요.");
     			  return false;
     		  }
     	  }else if(type == 2){

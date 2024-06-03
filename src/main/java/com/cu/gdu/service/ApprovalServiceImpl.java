@@ -65,25 +65,36 @@ public class ApprovalServiceImpl implements ApprovalService {
 		int result1 = approvalDao.insertAppDoc(appDoc);
 		
 		int result2 = 1;
-		if(Integer.parseInt(appDoc.getStatus()) != 0) {
-			result2 = 0;
+		if((approverNo != 0 || receiverNo != 0 || collaboratorNo != null)) {
+			int approverResult = 0;
+			int approverSuccess = 0;
 			if(collaboratorNo != null) {
+				approverSuccess += collaboratorNo.length;
 				for(String collaborator : collaboratorNo) {
-					result2 += approvalDao.insertApprover(Integer.parseInt(collaborator), 10);
+					approverResult += approvalDao.insertApprover(Integer.parseInt(collaborator), 10, appDoc.getDocNo());
 				}
 			}
-			result2 += approvalDao.insertApprover(approverNo, 20);
-			result2 += approvalDao.insertApprover(receiverNo, 30);
-		}
-		
-		int result3 = 0;
-		if(!appDoc.getAttachList().isEmpty()) {
-			for(AttachDto att : appDoc.getAttachList()) {
-				result3 += approvalDao.insertAppAttach(att);
+			if(approverNo != 0) {
+				approverSuccess++;
+				approverResult += approvalDao.insertApprover(approverNo, 20, appDoc.getDocNo());				
 			}
+			if(receiverNo != 0) {
+				approverSuccess++;
+				approverResult += approvalDao.insertApprover(receiverNo, 30, appDoc.getDocNo());				
+			}
+			result2 = approverResult == approverSuccess ? 1 : 0;
 		}
 		
-		return result1 * (result2 + result3);
+		int result3 = 1;
+		if(!appDoc.getAttachList().isEmpty()) {
+			int insertFileresult = 0;
+			for(AttachDto att : appDoc.getAttachList()) {
+				insertFileresult += approvalDao.insertAppAttach(att);
+			}
+			result3 = insertFileresult == appDoc.getAttachList().size() ? 1 : 0;
+		}
+		
+		return result1 * result2 * result3;
 	}
 
 	@Override
@@ -147,13 +158,11 @@ public class ApprovalServiceImpl implements ApprovalService {
 		int result2 = 0;
 		if(map.get("appYn").equals("A")) {
 			result1 = 0;
-			// 다음 결재 단계 조회
-			String nextAppLine = approvalDao.selectNextAppLine(map.get("docNo"));
-			log.debug(" before : {}", nextAppLine);
-			map.put("status", nextAppLine == null ? "40" : nextAppLine);
 			// 결재유무 A로 변경
 			result1 = approvalDao.updateApproverY(map);
-			log.debug(" after : {}", approvalDao.selectNextAppLine(map.get("docNo")));
+			// 현재 결재 단계 조회
+			String nextAppLine = approvalDao.selectNowAppLine(map.get("docNo"));
+			map.put("status", nextAppLine == null ? "40" : nextAppLine);
 			result2 = approvalDao.updateAppDocStatus(map);
 		} else if(map.get("appYn").equals("R")) {
 			map.put("status", "2");
@@ -232,7 +241,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 		result2 += approvalDao.insertAppLineMem(approverNo, 20);
 		result2 += approvalDao.insertAppLineMem(receiverNo, 30);
 		
-		return result1 * result2;
+		return result0 * result1 * result2;
 	}
 
 	@Override
@@ -248,6 +257,69 @@ public class ApprovalServiceImpl implements ApprovalService {
 	@Override
 	public MemberDto selectAppLineApprover(Map<String, Integer> map) {
 		return approvalDao.selectAppLineMem(map);
+	}
+
+	@Override
+	public int updateApp(ApprovalDocDto appDoc, 
+						 int approverNo, 
+						 int receiverNo, 
+						 String[] collaboratorNo, 
+						 String[] delFileNo,
+						 int nowStatus) {
+		
+		int result1 = nowStatus != 2 ? approvalDao.updateAppDoc(appDoc)
+									 : approvalDao.updateAppDocContent(appDoc);
+		
+		int result2 = 1;
+		if(nowStatus != 2) {
+			log.info("삭제된 기존 결재자 수 {}", approvalDao.deleteApprover(appDoc.getDocNo()));
+			if((approverNo != 0 || receiverNo != 0 || collaboratorNo != null)) {
+				int approverResult = 0;
+				int approverSuccess = 0;
+				if(collaboratorNo != null) {
+					approverSuccess += collaboratorNo.length;
+					for(String collaborator : collaboratorNo) {
+						approverResult += approvalDao.insertApprover(Integer.parseInt(collaborator), 10, appDoc.getDocNo());
+					}
+				}
+				if(approverNo != 0) {
+					approverSuccess++;
+					approverResult += approvalDao.insertApprover(approverNo, 20, appDoc.getDocNo());				
+				}
+				if(receiverNo != 0) {
+					approverSuccess++;
+					approverResult += approvalDao.insertApprover(receiverNo, 30, appDoc.getDocNo());				
+				}
+				result2 = approverResult == approverSuccess ? 1 : 0;
+			}
+		}
+		
+		int result3 = 1;
+		if(delFileNo != null) {
+			int delFileresult = approvalDao.deleteAttach(delFileNo);
+			log.debug("삭제된 기존 파일 수 : {}", delFileresult);
+			result3 = delFileresult == delFileNo.length ? 1 : 0;
+		}
+		if(!appDoc.getAttachList().isEmpty()) {
+			int insertFileresult = 0;
+			for(AttachDto att : appDoc.getAttachList()) {
+				insertFileresult += approvalDao.insertAppAttach(att);
+			}
+			result3 = insertFileresult == appDoc.getAttachList().size() ? 1 : 0;
+		}
+		
+		return result1 * result2 * result3;
+		
+	}
+
+	@Override
+	public List<AttachDto> selectDeleteAppAttachList(String[] delFileNo) {
+		return approvalDao.selectDeleteAppAttachList(delFileNo);
+	}
+
+	@Override
+	public String selectNowAppLine(String docNo) {
+		return approvalDao.selectNowAppLine(docNo);
 	}
 
 	

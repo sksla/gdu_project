@@ -1,5 +1,6 @@
 package com.cu.gdu.controller;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,10 +24,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.cu.gdu.dto.ApprovalCommentDto;
 import com.cu.gdu.dto.ApprovalDocDto;
 import com.cu.gdu.dto.ApprovalFormDto;
-import com.cu.gdu.dto.ApprovalHistoryDto;
 import com.cu.gdu.dto.ApprovalMyLineDto;
-import com.cu.gdu.dto.ApprovalMyLineMemberDto;
-import com.cu.gdu.dto.ApproverDto;
 import com.cu.gdu.dto.AttachDto;
 import com.cu.gdu.dto.CollegeDto;
 import com.cu.gdu.dto.MemberDto;
@@ -213,8 +211,8 @@ public class ApprovalController {
 	// 결재문서 등록
 	@PostMapping("/enroll.do")
 	public String enrollApproval(ApprovalDocDto appDoc,
-								 int approverNo, 
-								 int receiverNo,
+								 @RequestParam(value="approverNo", defaultValue="0")int approverNo, 
+								 @RequestParam(value="approverNo", defaultValue="0")int receiverNo,
 								 String[] collaboratorNo,
 								 List<MultipartFile> uploadFiles,
 								 HttpSession session,
@@ -236,14 +234,69 @@ public class ApprovalController {
 		appDoc.setAttachList(attachList);
 		
 		int result = approvalService.insertApp(appDoc, approverNo, receiverNo, collaboratorNo);
-		int success = (collaboratorNo != null ? collaboratorNo.length : 0) + 2 + appDoc.getAttachList().size();
-		if(result == success) {
-			redirectAttributes.addFlashAttribute("alertMsg", "결재문서를 기안했습니다.");
+		if(result > 0) {
+			redirectAttributes.addFlashAttribute("alertMsg"
+											   , Integer.parseInt(appDoc.getStatus()) != 0 ? "결재문서를 기안했습니다."
+																					 	   : "임시저장 되었습니다.");
 		} else {
 			redirectAttributes.addFlashAttribute("alertMsg", "기안 실패.");
 			redirectAttributes.addFlashAttribute("historyBackYN", "Y");
 		}
-		return "redirect:/approval/main.do";
+		
+		return "redirect:/approval/ongoingBoard.do?docStatus" + appDoc.getStatus();
+	}
+	
+	// 결재문서 수정
+	@PostMapping("/modify.do")
+	public String modifyApproval(ApprovalDocDto appDoc,
+								 @RequestParam(value="approverNo", defaultValue="0")int approverNo, 
+								 @RequestParam(value="approverNo", defaultValue="0")int receiverNo,
+								 String[] collaboratorNo,
+								 String[] delFileNo,
+								 int nowStatus,
+								 List<MultipartFile> uploadFiles,
+								 HttpSession session,
+								 RedirectAttributes redirectAttributes) {
+		
+		List<AttachDto> delFileList = new ArrayList<>();
+		if(delFileNo !=  null) {
+			delFileList = approvalService.selectDeleteAppAttachList(delFileNo);			
+		}
+		if(nowStatus == 2) {
+			// 반려문서인 경우(결재선 수정 불가) 결재상태 최신화
+			String nowAppLine = approvalService.selectNowAppLine(String.valueOf(appDoc.getDocNo()));
+			appDoc.setStatus(nowAppLine);
+		}
+		List<AttachDto> addAttachList = new ArrayList<>();
+		if(!uploadFiles.isEmpty()) {
+			for(MultipartFile uploadFile : uploadFiles) {
+				if(uploadFile != null && !uploadFile.isEmpty()) {
+					Map<String, String> map = fileUtil.fileUpload(uploadFile, session, "approval");	
+					addAttachList.add(AttachDto.builder().filePath(map.get("filePath"))
+							  .filesystemName(map.get("filesystemName"))
+							  .originalName(map.get("originalName"))
+							  .refNo(appDoc.getDocNo())
+							  .build()
+							  );
+				}
+			}
+		}
+		appDoc.setAttachList(addAttachList);
+		
+		int result = approvalService.updateApp(appDoc, approverNo, receiverNo, collaboratorNo, delFileNo, nowStatus);
+		if(result > 0) {
+			// 성공한 경우 선택된 파일들 삭제
+			for(AttachDto delFile : delFileList) {
+				new File(session.getServletContext().getRealPath(delFile.getFilePath() + "/" + delFile.getFilesystemName())).delete();
+			}
+			redirectAttributes.addFlashAttribute("alertMsg"
+											   , Integer.parseInt(appDoc.getStatus()) != 0 ? "결재문서를 기안했습니다."
+																					 	   : "임시저장 되었습니다.");
+		} else {
+			redirectAttributes.addFlashAttribute("alertMsg", "기안 실패.");
+			redirectAttributes.addFlashAttribute("historyBackYN", "Y");
+		}
+		return "redirect:/approval/ongoingBoard.do?docStatus=" + nowStatus;
 	}
 	
 	// **************************** 결재 보관함 ****************************
@@ -393,6 +446,7 @@ public class ApprovalController {
 	@GetMapping("/modifyPage.do")
 	public String appModifyPage(int no, Model model) {
 		
+		model.addAttribute("appCategories", approvalService.selectAppCategory());
 		model.addAttribute("docInfo", approvalService.selectAppDoc(no));
 		
 		Map<String, Integer> map = new HashMap<>();

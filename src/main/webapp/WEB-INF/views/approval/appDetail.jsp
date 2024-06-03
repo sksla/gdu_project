@@ -34,6 +34,39 @@
     text-align: center;
     width: 150px;
   }
+  
+  @media print {
+    
+ 	.td1 { 프린트시 background-color 안나오는 현상 수정
+        background-color: #dfe3e7 !important; 
+        -webkit-print-color-adjust:exact;
+    } 
+    
+    header{
+    display: none;
+    }
+    
+    .print{
+    display: none;
+    }
+    
+    .leftDiv{
+    display: none;
+    }
+    
+     .rightDiv{
+    margin-right: 21rem;
+	} 
+	
+	html{
+    font-size:12px; 1rem=10px
+	}
+	
+	p{
+    margin-top: 3rem;
+	}
+
+}
 </style>
 
 </head>
@@ -90,17 +123,19 @@
 	              	</button>
               	</c:if>
                 <c:if test="${ docInfo.drafter.memNo == loginUser.memNo and (docInfo.status == 0 or docInfo.status == 1 or docInfo.status == 2) }">
-                	<button class="btn btn-warning mx-2 mb-1 px-4 fs-4" onclick="location.href='${contextPath}/approval/modifyPage.do?no=${docInfo.docNo}'">
+                	<button type="button" class="btn btn-warning me-1 mb-1 px-4 fs-4" onclick="location.href='${contextPath}/approval/modifyPage.do?no=${docInfo.docNo}'">
                 		수정하기
                 	</button>
                 </c:if>
-                <c:if test="${ docInfo.historyCount == 0 and docInfo.drafter.memNo == loginUser.memNo and docInfo.status != 1}">
-                	<button class="btn btn-light mx-2 mb-1 px-4 fs-4 recallBtn">
+                <c:if test="${ docInfo.historyCount == 0 and docInfo.drafter.memNo == loginUser.memNo and docInfo.status != 1 and docInfo.status != 0}">
+                	<button type="button" class="btn btn-light me-1 mb-1 px-4 fs-4 recallBtn">
                 		회수하기
                 	</button>                
                 </c:if>
               </span>
-              <a href="" class="btn btn-outline-secondary me-1 mb-1 px-4 fs-4">인쇄 미리보기</a>
+              <button type="button" class="btn btn-outline-secondary me-1 mb-1 px-4 fs-4" onclick="printDoc();">
+              	인쇄 미리보기
+              </button>
             </div>
             
             <div class="form-with-tabs">
@@ -141,9 +176,9 @@
                     </div>
                     <div class="col-lg-6">
                       <div class="row align-items-center">
-                        <label for="" class="form-label fw-semibold col-sm-3 col-form-label fs-4">???</label>
+                        <label for="" class="form-label fw-semibold col-sm-3 col-form-label fs-4">수정일</label>
                         <div class="col-sm-9 fs-4">
-                          ???
+                          ${ docInfo.modifyDate }
                         </div>
                       </div>
                     </div>
@@ -474,6 +509,23 @@
     		}else{
         	$("input[name='appYn']").val('R');
     		}
+    	}
+    	
+    	function printDoc(){
+    		var div = "<div>테스트테스트테스트테스트테스트테스트</div>";
+    		var initBody;
+ 		    
+ 		    window.onbeforeprint = function(){
+ 		    	initBody = document.body.innerHTML;
+ 		      document.body.innerHTML = div.innerHTML;
+ 		    };
+ 		    
+ 		    window.onafterprint = function(){
+ 		    	document.body.innerHTML = initBody;
+ 		    };
+ 		    
+ 		    window.print();
+    		
     	}
     	
     </script>

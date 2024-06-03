@@ -28,12 +28,9 @@ public class ApprovalDocDto {
 	private String docTitle;
 	private int historyCount;
 	private String nowApprover;
+	private String drafterNo;
 	
 	private MemberDto drafter;
 	private List<AttachDto> attachList;
-	
-	private List<ApproverDto> collaborators;
-	private ApproverDto approver;
-	private ApproverDto receiver;
 	
 }
