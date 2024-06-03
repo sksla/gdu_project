@@ -1364,6 +1364,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	            AND resources.res_type = '4'
 	    )
 	    WHERE row_num <= 6
+	    order by rev_date desc
 	    ]]>
 	</select>
 	
