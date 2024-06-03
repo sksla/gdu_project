@@ -242,12 +242,12 @@
                                             src="${ contextPath }${loginUser.signUrl}"
                                             class="shadow-warning rounded-2"
                                             alt=""
-                                            width="100"
-                                            height="72"
+                                            width="150"
+                                            height="100"
                                         />
                                    </c:if>
-                                        <input class="form-control form-control-sm" id="formFileSm" name="signUrl" type="file">
-                                        <button type="button" class="btn btn-success rounded-pill px-4" data-bs-toggle="modal" data-bs-target="#canvasModal">
+                                        <input class="form-control form-control-sm" id="formFileSm" name="signUrl" type="file" style="display: none;">
+                                        <button type="button" id="createSign" class="btn btn-success rounded-pill px-4 createSign" data-bs-toggle="modal" data-bs-target="#canvasModal">
                                            <c:choose>
 																			        <c:when test="${not empty loginUser.signUrl}">
 																			            서명변경
@@ -265,7 +265,7 @@
                                            <div class="d-flex justify-content-center ">
                                              <button type="button" class="btn btn-success  px-4" id="saveButton">저장</button>
                                              <button type="button" class="btn btn-success  px-4" id="erase">지우기</button>
-                                             <button  class="btn btn-success  px-4" id="closeButton">닫기</button>
+                                             <button type="button" class="btn btn-success  px-4" id="closeButton">닫기</button>
                                            </div>
                                         </div>
                                      </div>
@@ -378,6 +378,9 @@
             // Handle button click event
             function handleSignatureClick(shipSeq) {
                 canvasModal.style.display = 'block';
+                $(".modal-backdrop").css("display", "block");
+               
+            		
                 context.clearRect(0, 0, canvas.width, canvas.height);
                 isDrawing = false;
             }
@@ -488,7 +491,10 @@
             // 닫기 이벤트
             const closeButton = document.getElementById('closeButton');
             closeButton.addEventListener('click', (event) => {
+            	 	eraseCanvas();
                 canvasModal.style.display = 'none';
+                $(".modal-backdrop").css("display", "none");
+                
             });
 
             // 지우기 이벤트
@@ -508,6 +514,16 @@
         	let pwdEqualResult = false;
         	
         	$(document).ready(function(){
+        		
+        		document.getElementById('createSign').addEventListener('click', function() {
+	            	
+        			
+	                
+	                $(".modal-backdrop").css("display", "block");  
+	                $("#canvasModal").css("display", "block");  
+	                
+	            })
+        		
         		
 						$("#changePwd_form input[name=updatePwd]").on("keyup", function(){ // 비밀번호 유효성 검사
 								
