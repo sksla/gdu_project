@@ -94,8 +94,8 @@
 		
 		          <div class="selectStatus">
 		            <input type="radio" id="ingMember" name="selectStatus" value="N"><span><label for="ingMember">재직</label></span>
-		            <input type="radio" id="allMember" name="selectStatus" value="all"><span><label for="allMember">전체</label></span>
 		            <input type="radio" id="endMember" name="selectStatus" value="Y"><span><label for="endMember">퇴직</label></span>
+		            <input type="radio" id="allMember" name="selectStatus" value="all"><span><label for="allMember">전체</label></span>
 		          </div>
 		
 		          <div class="outAndUpdate">

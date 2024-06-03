@@ -237,14 +237,14 @@
                       $('.addSelectLeave').attr('disabled', true);
                       $('.addSelectLeave').removeAttr('name');           
                       $('.addLeaveDate').attr('name', 'vacUsed');
-                      $('.addLeaveReason').attr('name', 'vacTypeReason');
+                      $('.addLeaveReason').attr('name', 'vacReason');
                     } else {
                       $('.addLeaveReason').attr('disabled', true);
                       $('.addLeaveDate').attr('disabled', true);
                       $('.addSelectLeave').attr('disabled', false);
                       $('.addLeaveDate').removeAttr('name');
                       $('.addLeaveReason').removeAttr('name');    
-                      $('.addSelectLeave').attr('name', 'vacTypeReason');
+                      $('.addSelectLeave').attr('name', 'vacReason');
                     }
                   });                    
                   

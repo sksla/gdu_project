@@ -73,7 +73,8 @@
                       <li class="breadcrumb-item">
                         <a class="text-muted text-decoration-none" href="${ contextPath }/member/mainpage">Home</a>
                       </li>
-                      <li class="breadcrumb-item" aria-current="page">연차신청현황</li>
+                      <li class="breadcrumb-item" aria-current="page">연차</li>
+                      <li class="breadcrumb-item" aria-current="page">신청받은연차</li>
                     </ol>
                   </nav>
                 </div>
@@ -246,7 +247,7 @@
 		                    <button type="submit" class="btn bg-danger-subtle text-danger  waves-effect text-start">
 		                      확인
 		                    </button>
-		                    <button type="button" class="btn bg-danger-subtle text-danger  waves-effect text-start" data-bs-dismiss="modal">
+		                    <button type="button" class="btn bg-danger-subtle text-danger  waves-effect text-start cencelButton" data-bs-dismiss="modal">
 		                      취소
 		                    </button>
 		                  </div>
@@ -419,6 +420,16 @@
 										$(".modalButton").removeAttr("disabled", true);
 									}else{
 										$(".modalButton").attr("disabled", true);
+									}
+								})
+								
+								// 휴가승인시 이미 승인된 휴가인지 검사			
+								$(document).on("submit", "#yesForm", function(event){
+									let yesStatus = $(".selectMember:checked").closest("tr").find("th:contains('승인')").length > 0;
+									if(yesStatus){
+										event.preventDefault();
+										alert("이미 승인된 휴가입니다.");
+										$(".cencelButton").click();
 									}
 								})
 								
