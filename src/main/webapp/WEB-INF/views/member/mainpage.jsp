@@ -25,23 +25,23 @@
 	<style>
 		.container {
         display: flex;
-    }
-		.left-box {
-        width: 80%;
         
+    }
+    .container *{box-sizing: border-box;}
+      .left-box {
+        width:25%;
+        min-height: 800px;
         padding: 20px;
         text-align: center;
     }
     .right-box {
-        width: 20%;
-        
+        width:75%;
+        min-height: 800px;
         padding: 20px;
         text-align: center;
     }
   
     .card-body {
-        display: flex;
-        align-items: center;
         box-sizing: border-box;
     }
     .card-body > div,
@@ -51,8 +51,8 @@
     }
     .card-body > button {
         width: auto; /* Adjust button width automatically */
-	 }
-	  .bg-info-subtle {
+    }
+     .bg-info-subtle {
         height: 35px;
         width: 100px;
         margin-right: 3px;
@@ -63,7 +63,9 @@
     #checkInTime, #checkOutTime {
         width: 70px;
         margin-right: 3px;
-    }	
+    }   
+    .preview_table td{padding: 10px;}
+    .view_more:hover{cursor:pointer;}
 	</style>
 </head>
 
@@ -363,81 +365,393 @@
       
       <!----------------------------- 본문 시작 -------------------->
       <div class="body-wrapper flex-row">
-        <div class="container-fluid">
+        <div class="container">
           <!-- 메인 전체  -->
           <div class="container">
+          
           <!-- 왼쪽 박스 부분 -->
-	          <div class="r-8 left-box">
-					      <div class="row" style="height:50%">
+          <div class="left-box">
+            <div class="card py-3 " style="height:250px; margin-bottom:10px;">
+              <div class="d-flex flex-row align-items-center">
+	              <button type="button" class="btn bg-info-subtle text-info"  id="checkInBtn">
+	                출근
+	              </button>
+	              <div id="checkInTime" ></div>
+	              <button type="button" class="btn bg-info-subtle text-info" id="checkOutBtn">
+	                퇴근
+	              </button>
+	              <div id="checkOutTime"></div>
+              </div>
+            </div>
+
+            <div class="card" style="height: 90px; margin-bottom: 10px;">
+              <div class="card-body">
+                날씨
+              </div>
+            </div>
+            
+  
+            <div class="card" style="height: 90px; margin-bottom: 10px;">
+              <div class="card-body">
+                <a class="btn btn-secondary" href="${ contextPath }/chat/room.page">채팅하기</a>
+              </div>
+            </div>
+            
+            <div class="card">
+              <div class="card-body" style="height: 300px;">
+                투두
+              </div>
+            </div>
+          
+          </div>
+
+          
+          <!-- 오른쪽 박스 부분 -->
+	          <div class="r-8 right-box">
+					      <div class="row" style="height:390px">
 			          	<div class="col-lg-6 d-flex align-items-strech">
 			          		<div class="card w-100">
 				          		<div class="card-body">
-				          		분할1
+				          			<div class="w-100 mb-3 d-flex justify-content-between">
+				          				<div><h4><b>공지사항</b></h4></div>
+				          				<div class="view_more"><b>더보기</b></div>
+				          			</div>
+				          			<div class="w-100">
+				          				<table class="preview_table w-100 table text-nowrap mb-0 overflow-hidden table-hover">
+				                  <thead class="text-dark fs-4">
+				                    <tr>
+				                      <th width="40%">
+				                        <h6 class="fs-4 fw-semibold mb-0">제목</h6>
+				                      </th>
+				                      <th width="">
+				                        <h6 class="fs-4 fw-semibold mb-0">작성일</h6>
+				                      </th>
+				                      <th width="">
+				                        <h6 class="fs-4 fw-semibold mb-0">작성일</h6>
+				                      </th>
+				                    </tr>
+				                  </thead>
+				                  <tbody>
+				                    <tr>
+				                    	<td width="">
+				                        제목입니다.
+				                      </td>
+				                      <td width="">
+				                        2024-01-01
+				                      </td>
+				                      <td width="">
+				                        몰라
+				                      </td>
+				                    </tr>
+				                    <tr>
+				                    	<td width="">
+				                        제목입니다.
+				                      </td>
+				                      <td width="">
+				                        2024-01-01
+				                      </td>
+				                      <td width="">
+				                        몰라
+				                      </td>
+				                    </tr>
+				                    <tr>
+				                    	<td width="">
+				                        제목입니다.
+				                      </td>
+				                      <td width="">
+				                        2024-01-01
+				                      </td>
+				                      <td width="">
+				                        몰라
+				                      </td>
+				                    </tr>
+				                    <tr>
+				                    	<td width="">
+				                        제목입니다.
+				                      </td>
+				                      <td width="">
+				                        2024-01-01
+				                      </td>
+				                      <td width="">
+				                        몰라
+				                      </td>
+				                    </tr>
+				                    <tr>
+				                    	<td width="">
+				                        제목입니다.
+				                      </td>
+				                      <td width="">
+				                        2024-01-01
+				                      </td>
+				                      <td width="">
+				                        몰라
+				                      </td>
+				                    </tr>
+				                  </tbody>
+				                </table>
+				          			</div>
 				          		</div>
 				          	</div>
 			          	</div>
 			          	<div class="col-lg-6 d-flex align-items-strech">
 			          		<div class="card w-100">
 				          		<div class="card-body">
-				          		분할2
+				          			<div class="w-100 mb-3 d-flex justify-content-between">
+				          				<div><h4><b>공지사항</b></h4></div>
+				          				<div class="view_more"><b>더보기</b></div>
+				          			</div>
+				          			<div class="w-100">
+				          				<table class="preview_table w-100 table text-nowrap mb-0 overflow-hidden table-hover">
+					                  <thead class="text-dark fs-4">
+					                    <tr>
+					                      <th width="40%">
+					                        <h6 class="fs-4 fw-semibold mb-0">제목</h6>
+					                      </th>
+					                      <th width="">
+					                        <h6 class="fs-4 fw-semibold mb-0">작성일</h6>
+					                      </th>
+					                      <th width="">
+					                        <h6 class="fs-4 fw-semibold mb-0">작성일</h6>
+					                      </th>
+					                    </tr>
+					                  </thead>
+					                  <tbody>
+					                    <tr>
+					                    	<td width="">
+					                        제목입니다.
+					                      </td>
+					                      <td width="">
+					                        2024-01-01
+					                      </td>
+					                      <td width="">
+					                        몰라
+					                      </td>
+					                    </tr>
+					                    <tr>
+					                    	<td width="">
+					                        제목입니다.
+					                      </td>
+					                      <td width="">
+					                        2024-01-01
+					                      </td>
+					                      <td width="">
+					                        몰라
+					                      </td>
+					                    </tr>
+					                    <tr>
+					                    	<td width="">
+					                        제목입니다.
+					                      </td>
+					                      <td width="">
+					                        2024-01-01
+					                      </td>
+					                      <td width="">
+					                        몰라
+					                      </td>
+					                    </tr>
+					                    <tr>
+					                    	<td width="">
+					                        제목입니다.
+					                      </td>
+					                      <td width="">
+					                        2024-01-01
+					                      </td>
+					                      <td width="">
+					                        몰라
+					                      </td>
+					                    </tr>
+					                    <tr>
+					                    	<td width="">
+					                        제목입니다.
+					                      </td>
+					                      <td width="">
+					                        2024-01-01
+					                      </td>
+					                      <td width="">
+					                        몰라
+					                      </td>
+					                    </tr>
+					                  </tbody>
+					                </table>
+				          			</div>
 				          		</div>
 				          	</div>
 			          	</div>
 			          </div>
 			          
-			          <div class="row" style="height:50%">
+			          <div class="row" style="height:390px">
 			          	<div class="col-lg-6 d-flex align-items-strech">
 			          		<div class="card w-100">
 				          		<div class="card-body">
-				          		분할1
+				          			<div class="w-100 mb-3 d-flex justify-content-between">
+				          				<div><h4><b>공지사항</b></h4></div>
+				          				<div class="view_more"><b>더보기</b></div>
+				          			</div>
+				          			<div class="w-100">
+				          				<table class="preview_table w-100 table text-nowrap mb-0 overflow-hidden table-hover">
+					                  <thead class="text-dark fs-4">
+					                    <tr>
+					                      <th width="40%">
+					                        <h6 class="fs-4 fw-semibold mb-0">제목</h6>
+					                      </th>
+					                      <th width="">
+					                        <h6 class="fs-4 fw-semibold mb-0">작성일</h6>
+					                      </th>
+					                      <th width="">
+					                        <h6 class="fs-4 fw-semibold mb-0">작성일</h6>
+					                      </th>
+					                    </tr>
+					                  </thead>
+					                  <tbody>
+					                    <tr>
+					                    	<td width="">
+					                        제목입니다.
+					                      </td>
+					                      <td width="">
+					                        2024-01-01
+					                      </td>
+					                      <td width="">
+					                        몰라
+					                      </td>
+					                    </tr>
+					                    <tr>
+					                    	<td width="">
+					                        제목입니다.
+					                      </td>
+					                      <td width="">
+					                        2024-01-01
+					                      </td>
+					                      <td width="">
+					                        몰라
+					                      </td>
+					                    </tr>
+					                    <tr>
+					                    	<td width="">
+					                        제목입니다.
+					                      </td>
+					                      <td width="">
+					                        2024-01-01
+					                      </td>
+					                      <td width="">
+					                        몰라
+					                      </td>
+					                    </tr>
+					                    <tr>
+					                    	<td width="">
+					                        제목입니다.
+					                      </td>
+					                      <td width="">
+					                        2024-01-01
+					                      </td>
+					                      <td width="">
+					                        몰라
+					                      </td>
+					                    </tr>
+					                    <tr>
+					                    	<td width="">
+					                        제목입니다.
+					                      </td>
+					                      <td width="">
+					                        2024-01-01
+					                      </td>
+					                      <td width="">
+					                        몰라
+					                      </td>
+					                    </tr>
+					                  </tbody>
+					                </table>
+				          			</div>
 				          		</div>
 				          	</div>
 			          	</div>
 			          	<div class="col-lg-6 d-flex align-items-strech">
 			          		<div class="card w-100">
 				          		<div class="card-body">
-				          		분할2
+				          			<div class="w-100 mb-3 d-flex justify-content-between">
+				          				<div><h4><b>공지사항</b></h4></div>
+				          				<div class="view_more"><b>더보기</b></div>
+				          			</div>
+				          			<div class="w-100">
+				          				<table class="preview_table w-100 table text-nowrap mb-0 overflow-hidden table-hover">
+					                  <thead class="text-dark fs-4">
+					                    <tr>
+					                      <th width="40%">
+					                        <h6 class="fs-4 fw-semibold mb-0">제목</h6>
+					                      </th>
+					                      <th width="">
+					                        <h6 class="fs-4 fw-semibold mb-0">작성일</h6>
+					                      </th>
+					                      <th width="">
+					                        <h6 class="fs-4 fw-semibold mb-0">작성일</h6>
+					                      </th>
+					                    </tr>
+					                  </thead>
+					                  <tbody>
+					                    <tr>
+					                    	<td width="">
+					                        제목입니다.
+					                      </td>
+					                      <td width="">
+					                        2024-01-01
+					                      </td>
+					                      <td width="">
+					                        몰라
+					                      </td>
+					                    </tr>
+					                    <tr>
+					                    	<td width="">
+					                        제목입니다.
+					                      </td>
+					                      <td width="">
+					                        2024-01-01
+					                      </td>
+					                      <td width="">
+					                        몰라
+					                      </td>
+					                    </tr>
+					                    <tr>
+					                    	<td width="">
+					                        제목입니다.
+					                      </td>
+					                      <td width="">
+					                        2024-01-01
+					                      </td>
+					                      <td width="">
+					                        몰라
+					                      </td>
+					                    </tr>
+					                    <tr>
+					                    	<td width="">
+					                        제목입니다.
+					                      </td>
+					                      <td width="">
+					                        2024-01-01
+					                      </td>
+					                      <td width="">
+					                        몰라
+					                      </td>
+					                    </tr>
+					                    <tr>
+					                    	<td width="">
+					                        제목입니다.
+					                      </td>
+					                      <td width="">
+					                        2024-01-01
+					                      </td>
+					                      <td width="">
+					                        몰라
+					                      </td>
+					                    </tr>
+					                  </tbody>
+					                </table>
+				          			</div>
 				          		</div>
 				          	</div>
 			          	</div>
 			          </div>
 		          
-						</div> <!-- 왼쪽 박스 부분 끝 -->
+						</div> <!-- 오른쪽 박스 부분 끝 -->
 					
-					<!-- 오른쪽 박스 부분 -->
-					<div class="right-box">
-						<div class="card">
-	            <div class="card-body">
-	              날씨
-	            </div>
-	          </div>
-	
-	          <div class="card py-3 ">
-	            <div class=" d-flex flex-row align-items-center">
-	             <button type="button" class="btn bg-info-subtle text-info"  id="checkInBtn">
-                 출근
-               </button>
-               <div id="checkInTime" ></div>
-               <button type="button" class="btn bg-info-subtle text-info" id="checkOutBtn">
-                 퇴근
-               </button>
-               <div id="checkOutTime"></div>
-	            </div>
-	          </div>
-	
-	          <div class="card">
-	            <div class="card-body">
-	              <a class="btn btn-secondary" href="${ contextPath }/chat/room.page">채팅하기</a>
-	            </div>
-	          </div>
-	          
-	          <div class="card">
-	            <div class="card-body">
-	              투두
-	            </div>
-	          </div>
-					
-					</div>
 				</div>
         </div>
         
