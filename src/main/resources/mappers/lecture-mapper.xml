@@ -164,10 +164,8 @@
 	<insert id="insertStuList">
 		insert 
 			into stu_attend (atten_no, stu_no, lec_no, major_no, stu_name, major_name, lec_name)
-		select seq_stu_attend_no.nextval, stu_no, lec_no, major_no, stu_name, major_name, lec_name
-			from lec_stu
-			
-		 where lecture_date = #{lectureDate}
+		(select seq_stu_attend_no.nextval, stu_no, lec_no, major_no, stu_name, major_name, lec_name
+			from lec_stu)
 	</insert>
 	
 	<update id="updateStuAttend" >
