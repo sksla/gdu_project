@@ -332,6 +332,18 @@
             	    	alert("입력하신 수량이 비품의 재고보다 많습니다.");
             	    	$("input[name='revCount']").val("");
             	    }
+            	    
+            	    if(inputStockInt == 0){
+            	    	event.preventDefault();
+            	    	alert("대여수량을 제대로 입력해주세요.");
+            	    	$("input[name='revCount']").val("");
+            	    }
+            	    
+            	    if(stock == 0){
+            	    	event.preventDefault();
+            	    	alert("대여가능 재고가 없습니다.");
+            	    	$("input[name='revCount']").val("");
+            	    }
               		
               	});
               	

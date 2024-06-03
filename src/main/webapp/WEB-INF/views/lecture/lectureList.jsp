@@ -1,37 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<c:set var="contextPath" value="${pageContext.request.contextPath}" />
+<c:set var="contextPath" value="${ pageContext.request.contextPath }" />
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
- <style>
-    /* div 스타일 */
-    .lec_wrap{
-      width:100%;
-      max-height: 1100px;
-      margin: auto;
-      display: flex;
-      flex-direction: column;
-    }
-    .lec_content1{
-      height: 100px;
-      display: flex;
-    }
+<title>출석</title>
 
-    .lec_content2{
-      height: 800px;
-      display:flex;
-    }
-  
-    .lec_content3{
-      height: 100px;
-      display:flex;
-    }
-  
-  </style>
 </head>
 <body>
 	<div class="main-wrapper">
@@ -46,310 +22,305 @@
     	
 	    <!----------------------------- 본문 시작 -------------------->
 	    <div class="body-wrapper">
-    <div class="container-fluid">
-      <!-- 페이지 타이틀 -->
-      <div class="card bg-info-subtle shadow-none position-relative overflow-hidden mb-4">
-        <div class="card-body px-4 py-3">
-          <div class="row align-items-center">
-            <div class="col-9">
-              <h4 class="fw-semibold mb-8">강의목록</h4>
-              <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                  <li class="breadcrumb-item">
-                    <a class="text-muted text-decoration-none" href="../main/index.html"
-                      >Home</a
-                    >
-                  </li>
-                  <li class="breadcrumb-item" aria-current="page">강의목록</li>
-                </ol>
-              </nav>
-            </div>
-            <div class="col-3">
-              <div class="text-center mb-n5">
-                <img
-                  src=""
-                  alt=""
-                  class="img-fluid mb-n4"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 페이지 내용 -->
-      <div class="card">
-        <div class="card-body">
-          <div class="lec_wrap">
-            <div class="lec_content1">
-             <h5 class="fw-semibold mb-8">강의목록</h5>
-            </div>
-            <!-- 강의 등록 모달 시작 -->
-            <div class="modal fade" id="samedata-modal" tabindex="-1" aria-labelledby="exampleModalLabel1">
-              <div class="modal-dialog" role="document">
-                <form method="post" action="${contextPath}/lec/enrollLec.do"  enctype="multipart/form-data">
-                	<div class="modal-content">
-                  	<div class="modal-header d-flex align-items-center">
-                    <h4 class="modal-title" id="exampleModalLabel1">
-                      강의등록
-                    </h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  	</div>
-	                  <div class="modal-body">
-	                  	<div class="mb-3">
-	                    	<label for="lec_name" class="control-label">강의명</label><!-- 드롭다운으로 바꾸기 -->
-	                    	<select class="form-select" id="lectureList" name="lecNo">
-	                        <c:forEach var="lec" items="${lecList}">
-	                        	<option value="${lec.lecNo}">${lec.lecName}</option>
-	                        </c:forEach> 
-                        </select>
-                      </div>
-                      <div class="mb-3">
-						            <label for="mem_no" class="control-label">담당교수</label>
-						            <select class="form-select" id="profList1" name="memNo">
-	                        <c:forEach var="prof" items="${profList}">
-	                        	<option value="${prof.memNo}">${prof.memName}</option>
-	                        </c:forEach> 
-                        </select>
-						          </div>
-	                 		<div class="mb-3">
-                        <label for="lec_date" class="control-label">강의기간</label>
-                        <input type="date" class="form-control" id="start_date1"  name="startDate">
-                        &nbsp;<label for="" class="form-label fw-semibold col-form-label fs-3"> ~ </label>&nbsp;
-                        <input type="date" class="form-control" id="end_date1" name="endDate">
-                      </div>
-                      <div class="mb-3">
-                        <label for="lec_date1" class="control-label">요일</label><br><!-- 요일로바꾸고 -->
-                        <input type="radio" id="mon1" name="lectureDate" value="월"><label for="scales">월</label>
-                        <input type="radio" id="tue1" name="lectureDate" value="화"><label for="scales">화</label>
-                        <input type="radio" id="wed1" name="lectureDate" value="수"><label for="scales">수</label>
-                        <input type="radio" id="thu1" name="lectureDate" value="목"><label for="scales">목</label>
-                        <input type="radio" id="fri1" name="lectureDate" value="금"><label for="scales">금</label>
-                        <input type="radio" id="sat1" name="lectureDate" value="토"><label for="scales">토</label>
-                      </div>
-                      <div class="mb-3">
-                        <label for="lec_time" class="control-label">강의시간</label><!-- 교시로 바꾸기 -->
-                        <select class="form-select" id="start_time1" name="startTime">
-	                        	<option value="1">1교시</option>
-	                        	<option value="2">2교시</option>
-	                        	<option value="3">3교시</option>
-	                        	<option value="4">4교시</option>
-	                        	<option value="5">5교시</option>
-	                        	<option value="6">6교시</option>
-	                        	<option value="7">7교시</option>
-	                        	<option value="8">8교시</option>
-	                        	<option value="9">9교시</option>
-	                        	<option value="10">10교시</option>
-	                        	<option value="11">11교시</option>
-	                        	<option value="12">12교시</option>
-                        </select>
-                        &nbsp;<label for="" class="form-label fw-semibold col-form-label fs-3"> ~ </label>&nbsp;
-                        <select class="form-select" id="end_time1" name="endTime">
-	                        	<option value="1">1교시</option>
-	                        	<option value="2">2교시</option>
-	                        	<option value="3">3교시</option>
-	                        	<option value="4">4교시</option>
-	                        	<option value="5">5교시</option>
-	                        	<option value="6">6교시</option>
-	                        	<option value="7">7교시</option>
-	                        	<option value="8">8교시</option>
-	                        	<option value="9">9교시</option>
-	                        	<option value="10">10교시</option>
-	                        	<option value="11">11교시</option>
-	                        	<option value="12">12교시</option>
-                        </select>   
-                      </div>
-		                  <div class="mb-3">
-		                    <label for="res_no" class="control-label">강의실</label><!-- 쓸수 있는 강의실 다 불러오기 -->
-		                    <select class="form-select" id="resList1" name="resNo">
-		                    	<c:forEach var="res" items="${resList}">
-		                      	<option value="${res.resNo}">${res.resName}</option>
-		                    	</c:forEach> 
-	                      </select>
-		                  </div>
-		                	<div class="modal-footer">
-			                	<button type="submit" class="btn mb-1 px-4 fs-4 bg-primary-subtle text-primary" id="enrollButton">등록하기</button>
-		                	</div>
-		              	</div>
-	             		</div>
-                </form>
-              </div>
-            </div>
-            <!-- 강의 등록 모달 끝 -->
-          </div>
-						<!-- 강의 리스트 시작 -->
-            <div class="lec_content2">
-              <div class="list">
-                <div class="card-body p-4" style="justify-content: center;">
-	                <div class="d-flex flex-row justify-content-between">
-		              	<div class="lec"></div>
-			              <div class="col-3">
-			                <button type="button" class="btn mb-1 px-4 fs-4 bg-primary-subtle text-primary"
-			                data-bs-toggle="modal" data-bs-target="#samedata-modal" data-bs-whatever="@mdo">강의등록</button>
-			              </div>
-            			</div>
-                  <div class="table-responsive mb-4" >
-	                  <form id="lecListForm" method="get" action="${contextPath}/lec/lecList.do">
-	                    <table class="table border text-nowrap mb-0 align-middle app_doc_table overflow-hidden">
-	                      <thead class="text-dark fs-4">
-	                        <tr>
-	                          <th>
-	                            <h6 class="fs-4 fw-semibold mb-0">번호</h6>
-	                          </th>
-	                          <th>
-	                            <h6 class="fs-4 fw-semibold mb-0">강의코드</h6>
-	                          </th>
-	                          <th>
-	                            <h6 class="fs-4 fw-semibold mb-0">개설학과</h6>
-	                          </th>
-	                          <th>
-	                            <h6 class="fs-4 fw-semibold mb-0">과목명</h6>
-	                          </th>
-	                          <th>
-	                            <h6 class="fs-4 fw-semibold mb-0">담당교수</h6>
-	                          </th>
-	                          <th>
-	                            <h6 class="fs-4 fw-semibold mb-0">강의실</h6>
-	                          </th>
-	                        </tr>
-	                      </thead>
-	                      <tbody>
-	                      	<c:choose>
-	                      		<c:when test="${ empty lecList }">
-	                      			<tr>
-	                      				<td colspan="6">등록된 강의가 없습니다.</td>
-	                      			</tr>
-	                      		</c:when>
-		                      	<c:otherwise>
-		                      		<c:forEach var="openLec" items="${openLecList}" varStatus="status">
-		                      			<tr onclick="detail('${openLec.openLecNo}');">
-				                          <td>
-				                            <p class="mb-0 fw-normal fs-4">${status.count}</p>
-				                          </td>
-				                          <td>
-				                            <p class="mb-0 fw-normal fs-4">${openLec.lecNo}</p>
-				                          </td>
-				                          <td>
-				                            <p class="mb-0 fw-normal fs-4">${openLec.majorName}</p>
-				                          </td>
-				                          <td>
-				                            <p class="mb-0 fw-normal fs-4">${openLec.lecName}</p>
-				                          </td>
-				                          <td>
-				                            <p class="mb-0 fw-normal fs-4">${openLec.memName}</p>
-				                          </td>
-				                          <td>
-				                            <p class="mb-0 fw-normal fs-4">${openLec.resName}</p>
-				                          </td>
-				                        </tr>
-		                      		</c:forEach>
-		                      	</c:otherwise>
-													</c:choose>   
-	                      </tbody>   
-	                    </table>
-                    </form>
+        <div class="container-fluid">
+        <!-- ----------------------------- 실제 내용 작성 영역 ----------------------------- -->
+          <!-- 페이지 타이틀 -->
+          <div class="card bg-info-subtle shadow-none position-relative overflow-hidden mb-4">
+            <div class="card-body px-4 py-3">
+            
+              <div class="row align-items-center my-3">
+              
+                <div class="col-9">
+                  <h4 class="fw-semibold mb-8">출석</h4>
+                  <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                      <li class="breadcrumb-item">
+                        <a class="text-muted text-decoration-none" href="../main/index.html">Home</a>
+                      </li>
+                      <li class="breadcrumb-item" aria-current="page">출석</li>
+                    </ol>
+                  </nav>
+                </div>
+                
+                <div class="col-3">
+                  <div class="text-center mb-n5">
+                    
                   </div>
-                     
                 </div>
               </div>
             </div>
-            <!-- 강의 리스트 끝-->
-            <!-- 강의 상세 모달 시작 -->
-						<div class="modal fade" id="lecDetail-modal" tabindex="-1" aria-labelledby="exampleModalLabel1">
-						  <div class="modal-dialog" role="document">
-						    <div class="modal-content">
-						      <div class="modal-header d-flex align-items-center">
-						        <h4 class="modal-title" id="exampleModalLabel1">
-						          강의정보
-						        </h4>
-						        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-						      </div>
-						      <div class="modal-body">
-						        <form id="lecDetailForm" method="post" action="${ contextPath }/lec/modifyLec.do">
-						          <div class="mb-3">
-						            <label for="lec_no" class="control-label">강의코드</label>
-						            <input type="text" class="form-control" name="lecNo" id="lec_no" value="" readonly/>
-						            <input type="hidden" class="form-control" name="openLecNo" id="open_lec_no" value=""/>
-						          </div>
-						          <div class="mb-3">
-						            <label for="lec_name" class="control-label">강의명</label>
-						            <input type="text" class="form-control" name="lecName" id="lec_name" value=""/>
-						          </div>
-						          <div class="mb-3">
-						            <label for="mem_no" class="control-label">담당교수</label>
-						            <input type="text" class="form-control" name="memName" id="mem_name" value="" readonly/>
-						            <input type="hidden" class="form-control" name="memNo" id="mem_no" value=""/>
-						          </div>
-						          <div class="mb-3">
-						            <label for="lec_date" class="control-label">강의기간</label>
-						            <input type="date" class="form-control" name="startDate" id="start_date" value="">
-						            <label for="" class="form-label fw-semibold col-form-label fs-3"> ~ </label>
-						            <input type="date" class="form-control" name="endDate" id="end_date" value="">
-						          </div>
-						          <div class="mb-3">
-                        <label for="lec_date" class="control-label">요일</label><br>
-                        <input type="radio" id="mon" name="lectureDate" value="월"><label for="scales">월</label>
-                        <input type="radio" id="tue" name="lectureDate" value="화"><label for="scales">화</label>
-                        <input type="radio" id="wed" name="lectureDate" value="수"><label for="scales">수</label>
-                        <input type="radio" id="thu" name="lectureDate" value="목"><label for="scales">목</label>
-                        <input type="radio" id="fri" name="lectureDate" value="금"><label for="scales">금</label>
-                        <input type="radio" id="sat" name="lectureDate" value="토"><label for="scales">토</label>
-                      </div>
-						          <div class="mb-3">
-						          	<label for="lec_time" class="control-label">강의시간</label>
-						         		<select class="form-select" id="start_time" name="startTime">
-	                        	<option value="1">1교시</option>
-	                        	<option value="2">2교시</option>
-	                        	<option value="3">3교시</option>
-	                        	<option value="4">4교시</option>
-	                        	<option value="5">5교시</option>
-	                        	<option value="6">6교시</option>
-	                        	<option value="7">7교시</option>
-	                        	<option value="8">8교시</option>
-	                        	<option value="9">9교시</option>
-	                        	<option value="10">10교시</option>
-	                        	<option value="11">11교시</option>
-	                        	<option value="12">12교시</option>
-                        </select>
-                        &nbsp;<label for="" class="form-label fw-semibold col-form-label fs-3"> ~ </label>&nbsp;
-                        <select class="form-select" id="end_time" name="endTime">
-	                        	<option value="1">1교시</option>
-	                        	<option value="2">2교시</option>
-	                        	<option value="3">3교시</option>
-	                        	<option value="4">4교시</option>
-	                        	<option value="5">5교시</option>
-	                        	<option value="6">6교시</option>
-	                        	<option value="7">7교시</option>
-	                        	<option value="8">8교시</option>
-	                        	<option value="9">9교시</option>
-	                        	<option value="10">10교시</option>
-	                        	<option value="11">11교시</option>
-	                        	<option value="12">12교시</option>
-                        </select>  
-						          </div>
-						          <div class="mb-3">
-		                    <label for="res_no" class="control-label">강의실</label><!-- 쓸수 있는 강의실 다 불러오기 -->
-		                    <select class="form-select" id="resList" name="resNo">
-		                    	<c:forEach var="res" items="${resList}">
-		                      	<option value="${res.resNo}">${res.resName}</option>
-		                    	</c:forEach> 
-	                      </select>
-		                  </div>
-						        </form>
-						      </div>
-						      <div class="modal-footer">
-						        <button type="submit" form="lecDetailForm" class="btn mb-1 px-4 fs-4 bg-primary-subtle text-primary" id="modifyButton" onclick="return frmSubmit(1);">수정하기</button>
-						        <button type="submit" form="lecDetailForm" class="btn mb-1 px-4 fs-4 bg-primary-subtle text-primary" id="deleteButton" onclick="frmSubmit(2);">삭제하기</button>
-						      </div>
-						    </div>
-						  </div>
-						</div>
-						<!-- 강의 상세 모달 끝 -->
-        </div>
-      </div>
+          </div>
 
-    </div>
-  </div><!-- body-wrapper end 본문 끝-->
+          <!-- 페이지 내용 -->
+          <div class="card">
+            <div class="card-body">
+	            <!-- 강의 리스트 시작 -->
+	            <div class="lec_content2">
+	              <div class="list">
+	                <div class="card-body p-4" style="justify-content:  flex-end;">
+		                <div class="d-flex flex-row justify-content-between">
+			              	<div class="lec"></div>
+				              <div class="col-3" style="display: flex; margin-left:auto; flex-direction: row-reverse;">
+				                <button type="button" class="btn mb-1 px-4 fs-4 bg-primary-subtle text-primary"
+				                data-bs-toggle="modal" data-bs-target="#samedata-modal" data-bs-whatever="@mdo">강의등록</button>
+				              </div>
+	            			</div>
+	                  <div class="table-responsive mb-4" >
+		                  <form id="lecListForm" method="get" action="${contextPath}/lec/lecList.do">
+		                    <table class="table border text-nowrap mb-0 align-middle app_doc_table overflow-hidden" style="margin:auto;">
+		                      <thead class="text-dark fs-4">
+		                        <tr>
+		                          <th>
+		                            <h6 class="fs-4 fw-semibold mb-0">번호</h6>
+		                          </th>
+		                          <th>
+		                            <h6 class="fs-4 fw-semibold mb-0">강의코드</h6>
+		                          </th>
+		                          <th>
+		                            <h6 class="fs-4 fw-semibold mb-0">개설학과</h6>
+		                          </th>
+		                          <th>
+		                            <h6 class="fs-4 fw-semibold mb-0">과목명</h6>
+		                          </th>
+		                          <th>
+		                            <h6 class="fs-4 fw-semibold mb-0">담당교수</h6>
+		                          </th>
+		                          <th>
+		                            <h6 class="fs-4 fw-semibold mb-0">강의실</h6>
+		                          </th>
+		                        </tr>
+		                      </thead>
+		                      <tbody>
+		                      	<c:choose>
+		                      		<c:when test="${ empty lecList }">
+		                      			<tr>
+		                      				<td colspan="6">등록된 강의가 없습니다.</td>
+		                      			</tr>
+		                      		</c:when>
+			                      	<c:otherwise>
+			                      		<c:forEach var="openLec" items="${openLecList}" varStatus="status">
+			                      			<tr onclick="detail('${openLec.openLecNo}');">
+					                          <td>
+					                            <p class="mb-0 fw-normal fs-4">${status.count}</p>
+					                          </td>
+					                          <td>
+					                            <p class="mb-0 fw-normal fs-4">${openLec.lecNo}</p>
+					                          </td>
+					                          <td>
+					                            <p class="mb-0 fw-normal fs-4">${openLec.majorName}</p>
+					                          </td>
+					                          <td>
+					                            <p class="mb-0 fw-normal fs-4">${openLec.lecName}</p>
+					                          </td>
+					                          <td>
+					                            <p class="mb-0 fw-normal fs-4">${openLec.memName}</p>
+					                          </td>
+					                          <td>
+					                            <p class="mb-0 fw-normal fs-4">${openLec.resName}</p>
+					                          </td>
+					                        </tr>
+			                      		</c:forEach>
+			                      	</c:otherwise>
+														</c:choose>   
+		                      </tbody>   
+		                    </table>
+	                    </form>
+	                  </div>
+	                     
+	                </div>
+	              </div>
+	            </div>
+	            <!-- 강의 리스트 끝-->
+	            <!-- 강의 등록 모달 시작 -->
+	            <div class="modal fade" id="samedata-modal" tabindex="-1" aria-labelledby="exampleModalLabel1">
+	              <div class="modal-dialog" role="document">
+	                <form method="post" action="${contextPath}/lec/enrollLec.do"  enctype="multipart/form-data">
+	                	<div class="modal-content">
+	                  	<div class="modal-header d-flex align-items-center">
+	                    <h4 class="modal-title" id="exampleModalLabel1">
+	                      강의등록
+	                    </h4>
+	                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	                  	</div>
+		                  <div class="modal-body">
+		                  	<div class="mb-3">
+		                    	<label for="lec_name" class="control-label">강의명</label><!-- 드롭다운으로 바꾸기 -->
+		                    	<select class="form-select" id="lectureList" name="lecNo">
+		                        <c:forEach var="lec" items="${lecList}">
+		                        	<option value="${lec.lecNo}">${lec.lecName}</option>
+		                        </c:forEach> 
+	                        </select>
+	                      </div>
+	                      <div class="mb-3">
+							            <label for="mem_no" class="control-label">담당교수</label>
+							            <select class="form-select" id="profList1" name="memNo">
+		                        <c:forEach var="prof" items="${profList}">
+		                        	<option value="${prof.memNo}">${prof.memName}</option>
+		                        </c:forEach> 
+	                        </select>
+							          </div>
+		                 		<div class="mb-3">
+	                        <label for="lec_date" class="control-label">강의기간</label>
+	                        <input type="date" class="form-control" id="start_date1"  name="startDate">
+	                        &nbsp;<label for="" class="form-label fw-semibold col-form-label fs-3"> ~ </label>&nbsp;
+	                        <input type="date" class="form-control" id="end_date1" name="endDate">
+	                      </div>
+	                      <div class="mb-3">
+	                        <label for="lec_date1" class="control-label">요일</label><br><!-- 요일로바꾸고 -->
+	                        <input type="radio" id="mon1" name="lectureDate" value="월"><label for="scales">월</label>
+	                        <input type="radio" id="tue1" name="lectureDate" value="화"><label for="scales">화</label>
+	                        <input type="radio" id="wed1" name="lectureDate" value="수"><label for="scales">수</label>
+	                        <input type="radio" id="thu1" name="lectureDate" value="목"><label for="scales">목</label>
+	                        <input type="radio" id="fri1" name="lectureDate" value="금"><label for="scales">금</label>
+	                        <input type="radio" id="sat1" name="lectureDate" value="토"><label for="scales">토</label>
+	                      </div>
+	                      <div class="mb-3">
+	                        <label for="lec_time" class="control-label">강의시간</label><!-- 교시로 바꾸기 -->
+	                        <select class="form-select" id="start_time1" name="startTime">
+		                        	<option value="1">1교시</option>
+		                        	<option value="2">2교시</option>
+		                        	<option value="3">3교시</option>
+		                        	<option value="4">4교시</option>
+		                        	<option value="5">5교시</option>
+		                        	<option value="6">6교시</option>
+		                        	<option value="7">7교시</option>
+		                        	<option value="8">8교시</option>
+		                        	<option value="9">9교시</option>
+		                        	<option value="10">10교시</option>
+		                        	<option value="11">11교시</option>
+		                        	<option value="12">12교시</option>
+	                        </select>
+	                        &nbsp;<label for="" class="form-label fw-semibold col-form-label fs-3"> ~ </label>&nbsp;
+	                        <select class="form-select" id="end_time1" name="endTime">
+		                        	<option value="1">1교시</option>
+		                        	<option value="2">2교시</option>
+		                        	<option value="3">3교시</option>
+		                        	<option value="4">4교시</option>
+		                        	<option value="5">5교시</option>
+		                        	<option value="6">6교시</option>
+		                        	<option value="7">7교시</option>
+		                        	<option value="8">8교시</option>
+		                        	<option value="9">9교시</option>
+		                        	<option value="10">10교시</option>
+		                        	<option value="11">11교시</option>
+		                        	<option value="12">12교시</option>
+	                        </select>   
+	                      </div>
+			                  <div class="mb-3">
+			                    <label for="res_no" class="control-label">강의실</label><!-- 쓸수 있는 강의실 다 불러오기 -->
+			                    <select class="form-select" id="resList1" name="resNo">
+			                    	<c:forEach var="res" items="${resList}">
+			                      	<option value="${res.resNo}">${res.resName}</option>
+			                    	</c:forEach> 
+		                      </select>
+			                  </div>
+			                	<div class="modal-footer">
+				                	<button type="submit" class="btn mb-1 px-4 fs-4 bg-primary-subtle text-primary" id="enrollButton">등록하기</button>
+			                	</div>
+			              	</div>
+		             		</div>
+	                </form>
+	              </div>
+	            </div>
+	            <!-- 강의 등록 모달 끝 -->
+		          <!-- 강의 상세 모달 시작 -->
+							<div class="modal fade" id="lecDetail-modal" tabindex="-1" aria-labelledby="exampleModalLabel1">
+							  <div class="modal-dialog" role="document">
+							    <div class="modal-content">
+							      <div class="modal-header d-flex align-items-center">
+							        <h4 class="modal-title" id="exampleModalLabel1">
+							          강의정보
+							        </h4>
+							        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							      </div>
+							      <div class="modal-body">
+							        <form id="lecDetailForm" method="post" action="${ contextPath }/lec/modifyLec.do">
+							          <div class="mb-3">
+							            <label for="lec_no" class="control-label">강의코드</label>
+							            <input type="text" class="form-control" name="lecNo" id="lec_no" value="" readonly/>
+							            <input type="hidden" class="form-control" name="openLecNo" id="open_lec_no" value=""/>
+							          </div>
+							          <div class="mb-3">
+							            <label for="lec_name" class="control-label">강의명</label>
+							            <input type="text" class="form-control" name="lecName" id="lec_name" value=""/>
+							          </div>
+							          <div class="mb-3">
+							            <label for="mem_no" class="control-label">담당교수</label>
+							            <input type="text" class="form-control" name="memName" id="mem_name" value="" readonly/>
+							            <input type="hidden" class="form-control" name="memNo" id="mem_no" value=""/>
+							          </div>
+							          <div class="mb-3">
+							            <label for="lec_date" class="control-label">강의기간</label>
+							            <input type="date" class="form-control" name="startDate" id="start_date" value="">
+							            <label for="" class="form-label fw-semibold col-form-label fs-3"> ~ </label>
+							            <input type="date" class="form-control" name="endDate" id="end_date" value="">
+							          </div>
+							          <div class="mb-3">
+	                        <label for="lec_date" class="control-label">요일</label><br>
+	                        <input type="radio" id="mon" name="lectureDate" value="월"><label for="scales">월</label>
+	                        <input type="radio" id="tue" name="lectureDate" value="화"><label for="scales">화</label>
+	                        <input type="radio" id="wed" name="lectureDate" value="수"><label for="scales">수</label>
+	                        <input type="radio" id="thu" name="lectureDate" value="목"><label for="scales">목</label>
+	                        <input type="radio" id="fri" name="lectureDate" value="금"><label for="scales">금</label>
+	                        <input type="radio" id="sat" name="lectureDate" value="토"><label for="scales">토</label>
+	                      </div>
+							          <div class="mb-3">
+							          	<label for="lec_time" class="control-label">강의시간</label>
+							         		<select class="form-select" id="start_time" name="startTime">
+		                        	<option value="1">1교시</option>
+		                        	<option value="2">2교시</option>
+		                        	<option value="3">3교시</option>
+		                        	<option value="4">4교시</option>
+		                        	<option value="5">5교시</option>
+		                        	<option value="6">6교시</option>
+		                        	<option value="7">7교시</option>
+		                        	<option value="8">8교시</option>
+		                        	<option value="9">9교시</option>
+		                        	<option value="10">10교시</option>
+		                        	<option value="11">11교시</option>
+		                        	<option value="12">12교시</option>
+	                        </select>
+	                        &nbsp;<label for="" class="form-label fw-semibold col-form-label fs-3"> ~ </label>&nbsp;
+	                        <select class="form-select" id="end_time" name="endTime">
+		                        	<option value="1">1교시</option>
+		                        	<option value="2">2교시</option>
+		                        	<option value="3">3교시</option>
+		                        	<option value="4">4교시</option>
+		                        	<option value="5">5교시</option>
+		                        	<option value="6">6교시</option>
+		                        	<option value="7">7교시</option>
+		                        	<option value="8">8교시</option>
+		                        	<option value="9">9교시</option>
+		                        	<option value="10">10교시</option>
+		                        	<option value="11">11교시</option>
+		                        	<option value="12">12교시</option>
+	                        </select>  
+							          </div>
+							          <div class="mb-3">
+			                    <label for="res_no" class="control-label">강의실</label><!-- 쓸수 있는 강의실 다 불러오기 -->
+			                    <select class="form-select" id="resList" name="resNo">
+			                    	<c:forEach var="res" items="${resList}">
+			                      	<option value="${res.resNo}">${res.resName}</option>
+			                    	</c:forEach> 
+		                      </select>
+			                  </div>
+							        </form>
+							      </div>
+							      <div class="modal-footer">
+							        <button type="submit" form="lecDetailForm" class="btn mb-1 px-4 fs-4 bg-primary-subtle text-primary" id="modifyButton" onclick="return frmSubmit(1);">수정하기</button>
+							        <button type="submit" form="lecDetailForm" class="btn mb-1 px-4 fs-4 bg-primary-subtle text-primary" id="deleteButton" onclick="frmSubmit(2);">삭제하기</button>
+							      </div>
+							    </div>
+							  </div>
+							</div>
+							<!-- 강의 상세 모달 끝 --> 
+            </div>
+          </div>
+
+          
+					<!-- ----------------------------- 실제 내용 작성 영역 end ----------------------------- -->
+        </div>
+      </div><!-- body-wrapper end 본문 끝-->
       
     </div><!-- page-wrapper end -->
     

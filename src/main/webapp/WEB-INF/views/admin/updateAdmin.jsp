@@ -98,7 +98,7 @@
                         <label for="startDate3" class="form-label fw-semibold col-sm-3 col-form-label">학과명</label>
                         <div class="col-sm-9">
                           <div class="input-group">
-                            <input class="form-control newMajorName" type="text" name="majorName" id="example-search-input" placeholder="학과명을 입력해주세요" />
+                            <input class="form-control newMajorName" type="text" name="majorName" id="example-search-input" placeholder="학과명을 입력해주세요" required />
                           </div>
                         </div>
                       </div>
@@ -160,7 +160,7 @@
                         <label for="startDate3" class="form-label fw-semibold col-sm-3 col-form-label">수정명</label>
                         <div class="col-sm-9">
                           <div class="input-group">
-                            <input class="form-control updateMajorName" type="text" name="majorName" id="example-search-input" placeholder="수정할 학과명을 입력해주세요" />
+                            <input class="form-control updateMajorName" type="text" name="majorName" id="example-search-input" placeholder="수정할 학과명을 입력해주세요" required />
                           </div>
                         </div>
                       </div>
@@ -248,7 +248,7 @@
                         <label for="startDate3" class="form-label fw-semibold col-sm-3 col-form-label">직급명</label>
                         <div class="col-sm-9">
                           <div class="input-group">
-                            <input class="form-control newJobName" type="text" name="jobName" id="example-search-input" placeholder="직급명을 입력해주세요" />
+                            <input class="form-control newJobName" type="text" name="jobName" id="example-search-input" placeholder="직급명을 입력해주세요" required />
                           </div>
                         </div>
                       </div>
@@ -341,7 +341,7 @@
                         <label for="startDate3" class="form-label fw-semibold col-sm-3 col-form-label">수정명</label>
                         <div class="col-sm-9">
                           <div class="input-group">
-                            <input class="form-control updateJobName" type="text" name="jobName" id="example-search-input" placeholder="수정할 직급명을 입력해주세요" />
+                            <input class="form-control updateJobName" type="text" name="jobName" id="example-search-input" placeholder="수정할 직급명을 입력해주세요" required />
                           </div>
                         </div>
                       </div>
@@ -430,14 +430,14 @@
                           <label for="startDate3" class="form-label fw-semibold col-sm-3 col-form-label">신규 강의등록시작일</label>
                           <div class="col-sm-9">
                             <div class="input-group">
-                              <input class="form-control startRectureDate" type="date" name="startDate" id="example-search-input" />
+                              <input class="form-control startRectureDate" type="date" name="startDate" id="example-search-input" required />
                             </div>
                           </div>
                           <br><br>
                           <label for="startDate3" class="form-label fw-semibold col-sm-3 col-form-label">신규 강의등록종료일</label>
                           <div class="col-sm-9">
                             <div class="input-group">
-                              <input class="form-control endRectureDate" type="date" name="endDate" id="example-search-input" />
+                              <input class="form-control endRectureDate" type="date" name="endDate" id="example-search-input" required />
                             </div>
                           </div>
                         </div>
@@ -470,14 +470,14 @@
                           <label for="startDate3" class="form-label fw-semibold col-sm-3 col-form-label">신규 학생등록시작일</label>
                           <div class="col-sm-9">
                             <div class="input-group">
-                              <input class="form-control startStuDate" type="date" name="startDate" id="example-search-input" />
+                              <input class="form-control startStuDate" type="date" name="startDate" id="example-search-input" required />
                             </div>
                           </div>
                           <br><br>
                           <label for="startDate3" class="form-label fw-semibold col-sm-3 col-form-label">신규 학생등록종료일</label>
                           <div class="col-sm-9">
                             <div class="input-group">
-                              <input class="form-control endStuDate" type="date" name="endDate" id="example-search-input" />
+                              <input class="form-control endStuDate" type="date" name="endDate" id="example-search-input" required />
                             </div>
                           </div>
                         </div>
