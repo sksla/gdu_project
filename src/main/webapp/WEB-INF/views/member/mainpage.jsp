@@ -384,13 +384,72 @@
               </div>
             </div>
 
-            <div class="card" style="height: 90px; margin-bottom: 10px;">
-              <div class="card-body">
-                날씨
-              </div>
-            </div>
-            
-  
+						<div class="card" style="height: 90px; margin-bottom: 10px;">
+						  <div class="card-body">
+						    날씨
+						    <div class="SKY"></div>
+						    <div class="wicon"></div>
+						  </div>
+						</div>
+			
+						<script>
+						
+							$(document).ready(function(){
+								
+                 let date = new Date();
+                 let year = date.getFullYear();
+                 let month = ("0" + (date.getMonth() + 1)).slice(-2); // 월을 2자리 문자열로 만듭니다.
+                 let day = ("0" + date.getDate()).slice(-2); // 일을 2자리 문자열로 만듭니다.
+                 let hours = ("0" + (date.getHours() - 1)).slice(-2)
+                 let minutes = "00"
+                 let today = year + month + day;
+                 let time = hours + minutes;
+                 let wtkey = "i92%2FVs3SXjSPBWL2iRyVrQ%2Flueak5Wo57p0AJOeml6xjQUAiMtxHWnk5o2v%2FdcRUqyzOzq4BwhqkoKGoulZvNg%3D%3D";
+                 $.ajax({
+                    url : 'https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst?serviceKey=' + wtkey + '&pageNo=1&numOfRows=1000&dataType=JSON&base_date='+today+'&base_time='+time+'&nx=58&ny=125',
+                    success : function(result) {
+                       let T1H = result.response.body.items.item[24].fcstValue;
+                       let WSD = result.response.body.items.item[54].fcstValue;
+                       let REH = result.response.body.items.item[30].fcstValue;
+                       let SKY = result.response.body.items.item[18].fcstValue;
+                       let PTY = result.response.body.items.item[6].fcstValue;
+                       $(".T1H").text(T1H + "°");
+                       $(".WSD").text("풍속 " + WSD + "m/s 　습도 " + REH + "%");
+                       if(PTY == 0){
+                          if(SKY == 1){
+                             $(".SKY").text("맑음");
+                             $(".wicon").html('<i class="wi wi-day-sunny text-black"></i>');
+                          }else if(SKY == 3){
+                             $(".SKY").text("구름많음");
+                             $(".wicon").html('<i class="wi wi-cloud weather-text"></i>');
+                          }else if(SKY == 4){
+                             $(".SKY").text("흐림");
+                             $(".wicon").html('<i class="wi wi-cloudy weather-text"></i>');
+                          }else{
+                             $(".SKY").text("구름조금");
+                             $(".wicon").html('<i class="wi wi-day-cloudy weather-text"></i>');
+                          }
+                       }else{
+                          if(PTY == 1 || PTY == 5){
+                             $(".SKY").text("비");
+                             $(".wicon").html('<i class="wi wi-rain weather-text"></i>');
+                          }else if(PTY == 2 || PTY == 6){
+                             $(".SKY").text("비/눈");
+                             $(".wicon").html('<i class="wi wi-rain-mix weather-text"></i>');
+                          }else if(PTY == 3 || PTY == 7){
+                             $(".SKY").text("눈");
+                             $(".wicon").html('<i class="wi wi-snow-wind weather-text"></i>');
+                          }else{
+                             $(".SKY").text("소나기");
+                             $(".wicon").html('<i class="wi wi-day-showers weather-text"></i>');
+                          }
+                       }
+                    }
+                 })
+							})
+							
+	         </script> 
+
             <div class="card" style="height: 90px; margin-bottom: 10px;">
               <div class="card-body">
                 <a class="btn btn-secondary" href="${ contextPath }/chat/room.page">채팅하기</a>
