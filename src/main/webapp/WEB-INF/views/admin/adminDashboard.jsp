@@ -53,7 +53,7 @@
   #content3{
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    /*justify-content: space-between;*/
     width: 1100px;
   }
   .leaveReasonContent {
@@ -68,44 +68,24 @@
     flex: 1; /* 화면 너비에 맞춰 균등 배분 */
     margin: 0 10px; /* 좌우 여백 추가 */
   }
-  /* 스크롤바 div
   .todayReser{font-size:18px;}
   .todayReserList{
   	height: 220px;
   	max-height: 600px;
   	overflow-y: scroll;
   }
-  */
+  
   /* 미반납비품 테이블 스크롤 */
   .noReturn table {
     width: 100%;
     border-collapse: collapse;
   }
-  
   .noReturn thead, .noReturn tbody tr {
     display: table;
     width: 100%;
     table-layout: fixed;
   }
-
   .noReturn tbody {
-    display: block;
-    max-height: 200px; /* Adjust height as needed */
-    overflow-y: auto;
-  }
-  /* 오늘 시설사용건 테이블 스크롤 */
-  .todayReserve table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  .todayReserve thead, .todayReserve tbody tr {
-    display: table;
-    width: 100%;
-    table-layout: fixed;
-  }
-
-  .todayReserve tbody {
     display: block;
     max-height: 200px; /* Adjust height as needed */
     overflow-y: auto;
@@ -266,16 +246,16 @@
 	                        			<c:forEach var="member" items="${v.memberList}">
 				                          <tr class="leaveReason">
 				                            <td>
-				                              <p class="mb-0 fw-normal fs-4">${major.majorName}</p>
+				                              <p class="mb-0 fw-normal fs-3">${major.majorName}</p>
 				                            </td>
 				                            <td>
-				                              <p class="mb-0 fw-normal fs-4">${member.memName}</p>
+				                              <p class="mb-0 fw-normal fs-3">${member.memName}</p>
 				                            </td>
 				                            <td>
-				                              <p class="mb-0 fw-normal fs-4">${v.startDate}~${v.endDate}</p>
+				                              <p class="mb-0 fw-normal fs-3">${v.startDate}~${v.endDate}</p>
 				                            </td>
 				                            <td>
-				                              <p class="mb-0 fw-normal fs-4" align="center">${v.status}</p>
+				                              <p class="mb-0 fw-normal fs-3" align="center">${v.status}</p>
 				                            </td>
 				                          </tr>
 				                          <tr class="leaveReasonContent">
@@ -314,18 +294,18 @@
 	                        <tbody align="center">
 	                          <tr>
 	                            <td>
-	                              <p class="mb-0 fw-normal fs-4">강의등록</p>
+	                              <p class="mb-0 fw-normal fs-3">강의등록</p>
 	                            </td>
 	                            <td>
-	                              <p class="mb-0 fw-normal fs-4">${lecDate.startDate} ~ ${lecDate.endDate}</p>
+	                              <p class="mb-0 fw-normal fs-3">${lecDate.startDate} ~ ${lecDate.endDate}</p>
 	                            </td>
 	                          </tr>
 	                          <tr>
 	                            <td>
-	                              <p class="mb-0 fw-normal fs-4">학생등록</p>
+	                              <p class="mb-0 fw-normal fs-3">학생등록</p>
 	                            </td>
 	                            <td>
-	                              <p class="mb-0 fw-normal fs-4">${stuDate.startDate} ~ ${stuDate.endDate}</p>
+	                              <p class="mb-0 fw-normal fs-3">${stuDate.startDate} ~ ${stuDate.endDate}</p>
 	                            </td>
 	                          </tr>
 	                        </tbody>
@@ -514,7 +494,7 @@
         
                 <!--오늘예약건&미반납비품-->
                 <div id="content3">
-                	<!-- 오늘 시설 사용건
+                	
 	                <div class="todayReserve"> 
 	                  <p class="fs-7 fw-semibold">오늘 시설 사용건</p>
 	                  <div class="card" style="width: 600px; height: 250px;">
@@ -535,112 +515,6 @@
 	                    </div>
 	                  </div>
 	                </div>
-	                 -->
-	                <!-- 대기
-	                <div class="todayReserve">
-	                  <p class="fs-7 fw-semibold">오늘 시설 사용건</p>
-	                  <table class="table border text-nowrap mb-0 align-middle">
-	                    <thead class="text-dark fs-4" align="center">
-	                      <tr>
-	                        <th>
-	                          <h6 class="fs-4 fw-semibold mb-0">사용자</h6>
-	                        </th>
-	                        <th>
-	                          <h6 class="fs-4 fw-semibold mb-0">시설명</h6>
-	                        </th>
-	                        <th>
-	                          <h6 class="fs-4 fw-semibold mb-0">사용시간</h6>
-	                        </th>
-	                      </tr>
-	                    </thead>
-	                    <tbody>
-	                    	<c:choose>
-	                    		<c:when test="${empty todayReserList}">
-	                    			<tr>
-	                    				<td colspan="3" align="center">
-	                    					<p class="mb-0 fw-normal fs-4">오늘의 시설 사용기록이 없습니다.</p>
-	                    				</td>
-	                    			</tr>
-	                    		</c:when>
-	                    		<c:otherwise>
-			                    	<c:forEach var="t" items="${todayReserList}">
-				                      <tr>
-				                        <td>
-				                          <p class="mb-0 fw-normal fs-4">${t.memberList[0].memName}/${t.memberList[0].majorNo}</p>
-				                        </td>
-				                        <td>
-				                          <p class="mb-0 fw-normal fs-4">${t.resourceList[0].resName}</p>
-				                        </td>
-				                        <td>
-				                          <p class="mb-0 fw-normal fs-4" align="center">${t.revDate}</p>
-				                        </td>
-				                      </tr>
-			                      </c:forEach>
-	                    		</c:otherwise>
-	                    	</c:choose>
-	                    </tbody>
-	                  </table>
-	                </div>
-	                -->
-								<div class="todayReserve"> <!-- 오늘 시설 사용건 -->
-								  <p class="fs-7 fw-semibold">오늘 시설 사용건</p>
-								  <table class="table border text-nowrap mb-0 align-middle todayTable">
-								    <thead class="text-dark fs-2" align="center">
-								      <tr>
-								        <th>
-								          <h6 class="fs-4 fw-semibold mb-0">사용자</h6>
-								        </th>
-								        <th>
-								          <h6 class="fs-4 fw-semibold mb-0">시설명</h6>
-								        </th>
-								        <th>
-								          <h6 class="fs-4 fw-semibold mb-0">사용시간</h6>
-								        </th>
-								      </tr>
-								    </thead>
-								    <tbody style="display: block; max-height: 200px; overflow-y: auto;">
-								      <c:choose>
-								        <c:when test="${empty todayReserList}">
-								          <tr>
-								            <td colspan="3" align="center">
-								              <p class="mb-0 fw-normal fs-4">오늘의 시설 사용기록이 없습니다.</p>
-								            </td>
-								          </tr>
-								          <c:forEach var="i" begin="1" end="5">
-								            <tr style="display: table; width: 100%; table-layout: fixed;">
-								              <td>&nbsp;</td>
-								              <td>&nbsp;</td>
-								              <td>&nbsp;</td>
-								            </tr>
-								          </c:forEach>
-								        </c:when>
-								        <c:otherwise>
-								          <c:forEach var="t" items="${todayReserList}" varStatus="status">
-								            <tr style="display: table; width: 100%; table-layout: fixed;" align="center">
-								              <td>
-								                <p class="mb-0 fw-normal fs-3">${t.memberList[0].memName}/${t.memberList[0].majorNo}</p>
-								              </td>
-								              <td>
-								                <p class="mb-0 fw-normal fs-3">${t.resourceList[0].resName}</p>
-								              </td>
-								              <td>
-								                <p class="mb-0 fw-normal fs-3" align="center">${t.revDate}</p>
-								              </td>
-								            </tr>
-								          </c:forEach>
-								          <c:forEach var="i" begin="${fn:length(todayReserList)}" end="5">
-								            <tr style="display: table; width: 100%; table-layout: fixed;">
-								              <td>&nbsp;</td>
-								              <td>&nbsp;</td>
-								              <td>&nbsp;</td>
-								            </tr>
-								          </c:forEach>
-								        </c:otherwise>
-								      </c:choose>
-								    </tbody>
-								  </table>
-								</div>
-
 	                <div class="noReturn"> <!--미반납비품-->
 	                  <p class="fs-7 fw-semibold">미반납비품</p>
 	                  <table class="table border text-nowrap mb-0 align-middle noReturnTable">
@@ -657,17 +531,17 @@
 	                        </th>
 	                      </tr>
 	                    </thead>
-	                    <tbody style="display: block; max-height: 200px; overflow-y: auto;">
+	                    <tbody style="display: block; max-height: 200px; overflow-y: auto;" align="center">
 	                    	<c:forEach var="r" items="${reserList}">
 		                      <tr style="display: table; width: 100%; table-layout: fixed;">
 		                        <td>
-		                          <p class="mb-0 fw-normal fs-4">${r.memberList[0].memName}/${r.memberList[0].majorNo}</p>
+		                          <p class="mb-0 fw-normal fs-3">${r.memberList[0].memName}/${r.memberList[0].majorNo}</p>
 		                        </td>
 		                        <td>
-		                          <p class="mb-0 fw-normal fs-4">${r.resourceList[0].resName}</p>
+		                          <p class="mb-0 fw-normal fs-3">${r.resourceList[0].resName}</p>
 		                        </td>
 		                        <td>
-		                          <p class="mb-0 fw-normal fs-4" align="center">${r.revDate}</p>
+		                          <p class="mb-0 fw-normal fs-3">${r.revDate}</p>
 		                        </td>
 		                      </tr>
 	                      </c:forEach>
