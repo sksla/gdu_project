@@ -114,9 +114,10 @@
              <span>
                <i class="ti ti-clipboard"></i>
              </span>
-             <span class="hide-menu">수신문서</span>
+             <span class="hide-menu">결재대기 문서</span>
            </a>
          </li>
+         <!-- 
 				 <li class="sidebar-item">
             <a class="sidebar-link" href="" aria-expanded="false">
               <span>
@@ -133,6 +134,7 @@
               <span class="hide-menu">공람문서</span>
             </a>
           </li>
+           -->
           <li class="sidebar-item">
             <a class="sidebar-link" href="${ contextPath }/approval/myLineList.do" aria-expanded="false">
               <span>
@@ -140,7 +142,9 @@
               </span>
               <span class="hide-menu">자주쓰는 결재선 관리</span>
             </a>
-          </li>	
+          </li>
+          <c:if test="${ loginUser.jobNo == '행정관리' }">
+          <!-- 전자결재 양식 -->
           <li class="sidebar-item">
             <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
               <span class="d-flex">
@@ -175,6 +179,7 @@
               </li>
             </ul>
           </li>
+          </c:if>
         </ul>
       </nav>
 

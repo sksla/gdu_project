@@ -495,6 +495,8 @@
 		<if test="searchType == 'drafter'">
 			 and mem_name like '%' || #{search} || '%'
 		</if>
+		 order
+		    by draft_date desc
 	</select>
 	
 	<!-- 전자결재 상세 페이지 ********************************-->
@@ -580,7 +582,7 @@
 		     , sign_url
 		     , job_name
 		     , app_yn
-         , app_date
+         , to_char(app_date, 'YYYY-MM-DD') app_date
 		  from approver
 		  join member on (mem_no = approver)
 		  join major using (major_no)

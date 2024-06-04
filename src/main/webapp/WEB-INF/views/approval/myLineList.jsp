@@ -275,17 +275,19 @@
                 </div>
               </div>
               <span class="mx-2">
-                <div class="custom-control py-2 custom-radio">
-                  <input type="radio" id="customRadio1" value="name" checked class="form-check-input searchRadio" />
-                  <label class="form-check-label" for="customRadio1">직원이름으로 검색</label>
-                </div>
-              </span>
-              <span class="mx-2">
-                <div class="custom-control py-2 custom-radio">
-                  <input type="radio" id="customRadio2" value="major" class="form-check-input searchRadio" />
-                  <label class="form-check-label" for="customRadio2">학과명으로 검색</label>
-                </div>
-              </span>
+	                <div class="custom-control py-2 custom-radio">
+	                  <input type="radio" id="customRadio1" name="searchRadio" value="name"
+	                  			checked class="form-check-input searchRadio" />
+	                  <label class="form-check-label" for="customRadio1">직원이름으로 검색</label>
+	                </div>
+	              </span>
+	              <span class="mx-2">
+	                <div class="custom-control py-2 custom-radio">
+	                  <input type="radio" id="customRadio2" name="searchRadio" value="major" 
+	                  			class="form-check-input searchRadio" />
+	                  <label class="form-check-label" for="customRadio2">학과명으로 검색</label>
+	                </div>
+	              </span>
             </div>
             <div class="d-flex flex-row">
             	<div class="me-2 list_box_wrap">
@@ -469,9 +471,8 @@
    		// 부서목록 리스트 조회
    		createMajorList("");
    		
-   		// 결재선 검색 기능
+			// 결재선 검색 기능
    		document.getElementById("search_box").onkeyup = function(e) {
-   			console.log("실행");
    			let $searchType = $(".searchRadio:checked").val();
    			let $search = $("#search_box").val();
    			if($searchType == "name"){
@@ -483,21 +484,21 @@
           			data:{ search: $search },
           			type:"get",
           			success: function(list){
-          				createMemList(list);
+          				createMemList(list); // 변경
           			},
           			error: function(){
           				console.log("부서목록 생성 ajax 통신 실패");
           			}
           		})
        		}
-        	}else{
-        		if($search == ""){
-        			createMajorList("");
-       		}else{
-         		createMajorList($search);
-       		}
-        	}
-       }
+       	}else{
+       		if($search == ""){
+       			createMajorList(""); // 변경
+      		}else{
+        		createMajorList($search);
+      		}
+	     	}
+	    }
    		// **************************************************************
 			
 		})

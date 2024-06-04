@@ -60,7 +60,7 @@
           	<input type="hidden" name="appNo" value="${ appForm.appNo }">
             <div class="mb-4">
               <span>
-                <button type="button" onclick="return enrollAppForm(1);" class="btn btn-info me-1 mb-1 px-4 fs-4">등록하기</button>
+                <button type="submit" onclick="return enrollAppForm(1);" class="btn btn-info me-1 mb-1 px-4 fs-4">등록하기</button>
                 <button type="button" onclick="return enrollAppForm(2);" class="btn btn-light mx-2 mb-1 px-4 fs-4">임시저장</button>
               </span>
             </div>
@@ -201,15 +201,9 @@
       function enrollAppForm(type){
     	  if(type == 1){
     		  $("#tmp_yn").val("N");
-       	  AjaxValidateFormName()
-   		    	    .then(isResult => {
-   		    	    	if(isResult){
-   		    	    		$("#category_form").submit();
-   		    	    	}
-   		    	    })
-   		    	    .catch(error => {
-   		    	      console.error(error);
-   		    	    });
+    		  if(!confirm("양식을 수정하시겠습니까?")){
+    			  return false;
+    		  }
     	  }else if(type == 2){
     		  $("#tmp_yn").val("Y");
     		  $("#category_form").submit();

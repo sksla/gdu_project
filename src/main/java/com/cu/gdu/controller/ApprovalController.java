@@ -77,6 +77,7 @@ public class ApprovalController {
 	public String enrollAppForm(ApprovalFormDto appForm, 
 								Model model,
 								RedirectAttributes redirectAttributes) {
+		
 		int result = approvalService.insertAppForm(appForm);
 		
 		if(result > 0) {
@@ -142,7 +143,7 @@ public class ApprovalController {
 		return "approval/modifyCategory";
 	}
 	
-	// 결재양식ㄴ 수정
+	// 결재양식 수정
 	@PostMapping("/modifyForm.do")
 	public String modifyAppForm(ApprovalFormDto appForm, 
 								Model model,
@@ -233,7 +234,8 @@ public class ApprovalController {
 			}
 		}
 		appDoc.setAttachList(attachList);
-		
+		log.debug("approverNo : {}", approverNo);
+		log.debug("approverNo : {}", receiverNo);
 		int result = approvalService.insertApp(appDoc, approverNo, receiverNo, collaboratorNo);
 		if(result > 0) {
 			redirectAttributes.addFlashAttribute("alertMsg"
@@ -251,7 +253,7 @@ public class ApprovalController {
 	@PostMapping("/modify.do")
 	public String modifyApproval(ApprovalDocDto appDoc,
 								 @RequestParam(value="approverNo", defaultValue="0")int approverNo, 
-								 @RequestParam(value="approverNo", defaultValue="0")int receiverNo,
+								 @RequestParam(value="receiverNo", defaultValue="0")int receiverNo,
 								 String[] collaboratorNo,
 								 String[] delFileNo,
 								 int nowStatus,
