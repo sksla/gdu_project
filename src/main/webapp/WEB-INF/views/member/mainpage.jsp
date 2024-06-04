@@ -154,6 +154,7 @@
 		.read-alert h6{color:#9E9E9E;}
 		.alert-item h6{width:210px; white-space:normal}
 		.alert-item p{font-size:10px;margin:auto}
+		.alert-item{cursor:pointer;} 
     
     /* 스크롤바 스타일 */
 		.alert-body::-webkit-scrollbar {
@@ -301,7 +302,7 @@
 		                  </div>
 		                  <div class="alert-body message-body">
 		                  
-		                    <div class="no-alert-item py-6 px-7 d-flex justify-content-between align-items-center dropdown-item">
+		                    <div class="no-alert-item py-6 px-7 dropdown-item">
 		                    	새로운 알림이 없습니다.
 		                    </div>
 		                    	
