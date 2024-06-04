@@ -1,10 +1,9 @@
 package com.cu.gdu.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.collections4.map.HashedMap;
-import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Service;
 
 import com.cu.gdu.dao.ApprovalDao;
@@ -12,7 +11,6 @@ import com.cu.gdu.dto.ApprovalCommentDto;
 import com.cu.gdu.dto.ApprovalDocDto;
 import com.cu.gdu.dto.ApprovalFormDto;
 import com.cu.gdu.dto.ApprovalMyLineDto;
-import com.cu.gdu.dto.ApprovalMyLineMemberDto;
 import com.cu.gdu.dto.ApproverDto;
 import com.cu.gdu.dto.AttachDto;
 import com.cu.gdu.dto.CollegeDto;
@@ -320,6 +318,14 @@ public class ApprovalServiceImpl implements ApprovalService {
 	@Override
 	public String selectNowAppLine(String docNo) {
 		return approvalDao.selectNowAppLine(docNo);
+	}
+
+	@Override
+	public List<ApprovalMyLineDto> selectMyAppLine(int memNo) {
+		Map<String, String> map = new HashMap<>();
+		map.put("loginUserNo", String.valueOf(memNo));
+		map.put("search", "");
+		return approvalDao.selectAppLineList(map);
 	}
 
 	

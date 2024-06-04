@@ -29,6 +29,9 @@ public interface ApprovalService {
 	int selectCountAppFormList(Map<String, String> map);
 	List<ApprovalFormDto> selectAppFormList(PageInfoDto pi, Map<String, String> map);
 
+	// 자주쓰는 결재선 목록 가져오기
+	Object selectMyAppLine(int memNo);
+
 	// 결재양식 임시보관 상태 변경
 	int updateAppFormTmp(ApprovalFormDto appForm);
 	
