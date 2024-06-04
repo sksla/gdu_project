@@ -11,7 +11,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <!-- 날씨관련 라이브러리 -->
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.10/css/weather-icons.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.10/css/weather-icons.min.css"> 
 	
   <!-- Favicon icon-->
   <link rel="shortcut icon" type="image/png" href="${ contextPath }/assets/images/logos/favicon.png" />
@@ -401,17 +401,17 @@
 						        <span class="city"></span> 								<!-- 서울 -->
 					        </div><br>
 					        <div class="serveWeather" style="display:flex; flex-direction:column; align-items: flex-start;">
-				            <div class="temp_max"></div> 					<!-- 최고온도 -->
-				            <div class="temp_min"></div> 					<!-- 최저온도 -->
-				            <div class="wind"></div> 							<!-- 풍속 -->
-				           	<!-- <div class="humidity"></div> --> <!-- 습도 -->
-				            <!-- <div class="cloud"></div> --> 		<!-- 구름지수 -->
+				            <div class="temp_max"></div> 				<!-- 최고온도 -->
+				            <div class="temp_min"></div> 				<!-- 최저온도 -->
+				           	<div class="humidity"></div> 				<!-- 습도 -->
+				            <!-- <div class="wind"></div> --> 	<!-- 풍속 -->
+				            <!-- <div class="cloud"></div> --> 	<!-- 구름지수 -->
 			            </div>
 								</div>
 
 						  </div>
 						</div>
-						
+						<script src="https://kit.fontawesome.com/2f1ece6450.js" crossorigin="anonymous"></script>
 						<script>
 						
 							// 날씨 api 아이콘용 배열
@@ -437,7 +437,7 @@
 								    type: "GET",
 								    async: "false",
 								    success: function(resp) {
-											console.log(resp.weather[0].main);
+											console.log(resp);
 							        var $Icon = (resp.weather[0].icon).substr(0,2);
 							        var $weather_description = resp.weather[0].main;
 							        var $Temp = Math.floor(resp.main.temp- 273.15) + ' ºC';
