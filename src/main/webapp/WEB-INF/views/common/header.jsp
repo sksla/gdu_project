@@ -8,6 +8,24 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<style>
+.alert-body{max-height: 360px; overflow-y:auto;}
+.alert-item i{font-size:20px;}
+.read-alert{background-color:#EEEEEE;}
+.read-alert h6{color:#9E9E9E;}
+.alert-item h6{width:210px; white-space:normal}
+.alert-item p{font-size:10px;margin:auto}
+
+/* 스크롤바 스타일 */
+.alert-body::-webkit-scrollbar {
+  width: 8px;
+  
+}
+.alert-body::-webkit-scrollbar-thumb {
+  background-color: #EEEEEE;
+  border-radius: 5px;
+   }
+</style>
 </head>
 <body>
 
@@ -21,6 +39,8 @@
         }
     }
 	</script>
+	<!-- <script src="https://cdn.jsdelivr.net/sockjs/1/sockjs.min.js"></script>  -->
+	<%-- <script src="${contextPath}/resources/js/alert.js"></script> --%>
 
 	<header class="topbar">
 	  <div class="with-vertical"><!-- ---------------------------------- -->
@@ -119,6 +139,7 @@
 	                <i class="ti ti-bell-ringing"></i>
 	                <div class="notification bg-primary rounded-circle"></div>
 	              </a>
+	              <!--  
 	              <div class="dropdown-menu content-dd dropdown-menu-end dropdown-menu-animate-up"
 	                aria-labelledby="drop2">
 	                <div class="d-flex align-items-center justify-content-between py-3 px-7">
@@ -192,6 +213,25 @@
 	                </div>
 	
 	              </div>
+	              -->
+	              <div class="alert-area dropdown-menu content-dd dropdown-menu-end dropdown-menu-animate-up"
+                  aria-labelledby="drop2">
+                  <div class="alert-title d-flex align-items-center justify-content-between py-3 px-7">
+                    <h5 class="mb-0 fs-5 fw-semibold">알림</h5>
+                    <span class="new-alert-count badge text-bg-primary rounded-4 px-3 py-1 lh-sm">0 new</span>
+                  </div>
+                  <div class="alert-body message-body">
+                  
+                    <div class="no-alert-item py-6 px-7 d-flex justify-content-between align-items-center dropdown-item">
+                    	새로운 알림이 없습니다.
+                    </div>
+                    	
+                  </div>
+                  <div class="py-6 px-7 mb-1">
+                    <button class="btn btn-outline-primary w-100 " id="delAllAlertBtn" onclick="ajaxDeleteAlert(2, 0, this);">알림 전체 삭제</button>
+                  </div>
+
+                </div>
 	            </li>
 	            <!-- ------------------------------- -->
 	            <!-- end notification Dropdown -->
@@ -292,8 +332,10 @@
 	    <!-- apps Dropdown in Small screen -->
 	    <!-- ------------------------------- -->
 	    <!--  Mobilenavbar -->
-	
-	
+	    
+	    <!-- 알림 기능 include -->
+			<jsp:include page="/WEB-INF/views/common/alert.jsp"/>
+			
 	  </div>
 
   </header>

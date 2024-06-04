@@ -35,12 +35,24 @@
 	<beans:bean class="com.cu.gdu.handler.ChatEchoHandler" id="chatEchoHandler" />
 	<websocket:handlers>
 		<websocket:mapping handler="chatEchoHandler" path="/chat"/>
+		<!-- <websocket:mapping handler="alertEchoHandler" path="/alert"/> -->
 		<websocket:handshake-interceptors>
 			<beans:bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"/>
 		</websocket:handshake-interceptors>
 		<websocket:sockjs />
 	</websocket:handlers>
+	 
+	<beans:bean class="com.cu.gdu.handler.AlertEchoHandler" id="alertEchoHandler" />
 	
+	<websocket:handlers allowed-origin-patterns="*">
+
+		<websocket:mapping handler="alertEchoHandler" path="/alert" />
+		<websocket:handshake-interceptors>
+			<beans:bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor" />
+		</websocket:handshake-interceptors>
+		<websocket:sockjs />
+	</websocket:handlers>
+
 	<!-- @Scheduled 허용 -->
 	<task:annotation-driven /> 
 	

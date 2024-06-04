@@ -40,6 +40,9 @@
 		<typeAlias type="com.cu.gdu.dto.TodoListDto" alias="TodoListDto" />
 		<typeAlias type="com.cu.gdu.dto.OpenLecDto" alias="OpenLecDto" />
 		
+		
+		
+		<typeAlias type="com.cu.gdu.dto.AlertDto" alias="AlertDto"/>
 	</typeAliases>
 	
 	<mappers>
@@ -52,6 +55,8 @@
 		<mapper resource="mappers/lecture-mapper.xml"/>
 		<mapper resource="mappers/reservation-mapper.xml"/>
 		<mapper resource="mappers/chat-mapper.xml"/>
+		
+		<mapper resource="mappers/alert-mapper.xml"/>
 	</mappers>
 	
 </configuration>

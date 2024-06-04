@@ -566,7 +566,7 @@
 	                		<button type="button" class="btn btn-outline-danger" onclick="ajaxDeleteCtg(1, 'insert_my');" data-bs-dismiss="modal">삭제</button>
 	                	</div>
 	                	<div class="insertBtn">
-		                  <button type="submit" class="btn btn-outline-primary insertMyBtn" onclick="return insertCalCtg(1);">등록</button>
+		                  <button type="button" class="btn btn-outline-primary insertMyBtn" data-bs-dismiss="modal" onclick="ajaxInsertCalCtg(1);">등록</button>
 		                  <button type="button" class="btn btn-info" data-bs-dismiss="modal">취소</button>
 	                	</div>
 	                </div>
@@ -736,7 +736,7 @@
 		               		<button type="button" class="btn btn-outline-danger" onclick="ajaxDeleteCtg(2, 'insert_share');" data-bs-dismiss="modal">삭제</button>
 		               	</div>
 		               	<div class="insertBtn">
-		                  <button type="submit" class="btn btn-outline-primary insertMyBtn" onclick="return insertCalCtg(2);">등록</button>
+		                  <button type="button" class="btn btn-outline-primary insertMyBtn" data-bs-dismiss="modal" onclick="ajaxInsertCalCtg(2);">등록</button>
 		                  <button type="button" class="btn btn-info" data-bs-dismiss="modal">취소</button>
 		               	</div>
 	                </div>
@@ -1703,9 +1703,10 @@
             } // 카테고리 조회 끝
             
          		// 카테고리 등록 요청
-         		function insertCalCtg(type){
+         		function ajaxInsertCalCtg(type){
             	// type = 1 => 개인
-            	//let formName = ( type == 1 ? "#myCtgForm" : "#shareCtgForm" );
+            	let formName = ( type == 1 ? "#myCtgForm" : "#shareCtgForm" );
+            	let alertStr = ( type == 1 ? "개인" : "공유" );
             	
             	if( (type == 1 ? colorChkValidate(type) : insertShareCtgVali()) ){
             	
@@ -1719,6 +1720,23 @@
 	           			$("#insert_share .selected_app_mem .mem_list input[name='rightLevel']").each(function(index, el){
 	           				$(el).attr("name", "shList[" + index + "].rightLevel");
 	           			});
+	           			
+	           			$.ajax({
+	           				url:"${contextPath }/calendar/insertCtg.do",
+	           				type:"post",
+	           				data:$(formName).serialize(),
+	           				success:function(result){
+	           					if(result == "SUCCESS"){
+	           						alert("성공적으로" + alertStr + " 캘린더가 등록되었습니다.");
+	           					}else{
+	           						alert( alertStr + " 캘린더 등록에 실패했습니다.");
+	           					}
+	           						
+	           				 	ajaxSelectListCalCtg();
+	           					ajaxSelectCalList();
+	           				}
+	           				
+	           			})
             			
             		}
             		

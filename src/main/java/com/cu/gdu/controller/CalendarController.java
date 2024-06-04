@@ -1,6 +1,8 @@
 package com.cu.gdu.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,12 +16,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketSession;
 
+import com.cu.gdu.dto.AlertDto;
 import com.cu.gdu.dto.CalCtgDto;
 import com.cu.gdu.dto.CalendarDto;
 import com.cu.gdu.dto.MemberDto;
 import com.cu.gdu.dto.ShareMemDto;
 import com.cu.gdu.dto.TodoListDto;
+import com.cu.gdu.handler.AlertEchoHandler;
+import com.cu.gdu.service.AlertService;
 import com.cu.gdu.service.CalendarService;
 
 import lombok.RequiredArgsConstructor;
@@ -31,6 +38,8 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 public class CalendarController {
 	private final CalendarService calendarService;
+	private final AlertEchoHandler alertEchoHandler;
+	private final AlertService alertService;
 	
 	
 	// -------김영주 시작 -------------------------------------------------------------
@@ -77,22 +86,46 @@ public class CalendarController {
 	 * @param redirectAttributes
 	 * @return
 	 */
+	@ResponseBody
 	@PostMapping("/insertCtg.do")
 	public String insertCtg(CalCtgDto ctg
 						   , HttpSession session
-						   , RedirectAttributes redirectAttributes) {
+						   , RedirectAttributes redirectAttributes) throws Exception {
 		
 		// ctgType:1=> shList = null | ctgType:2 => shList  = 공유멤버 리스트 담겨있음
 		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
 		ctg.setCtgWriter(String.valueOf(loginUser.getMemNo()));
+		// 알람리스트
+		List<AlertDto> altList = new ArrayList<>();
+		String currentTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 		
 		log.debug("ctg: {}", ctg);
 		
 		List<ShareMemDto> shList = ctg.getShList();
 		
+		
+		
 		if(shList != null && !shList.isEmpty()) {
 			for(ShareMemDto s : shList) {
 				s.setInsertType("N");
+				String memName = loginUser.getMemName();
+				
+				// 공유받은 멤버만 알림이 가도록 tb_alert에 insert실행
+				if(!s.getRightLevel().equals("1")) {
+					
+					
+					altList.add( AlertDto.builder()
+										 .targetNo(Integer.parseInt(s.getShareMemNo()))
+										 .alertContent(memName + "님의 공유캘린더(" + ctg.getCtgName() + ")에 초대되었습니다.")
+										 .alertLink("/calendar/calendar.page")
+										 .alertType("S")
+										 .sendDate(currentTime)
+										 .build()
+							);
+					
+				}
+				
+				
 			}
 			
 		}
@@ -103,12 +136,46 @@ public class CalendarController {
 		String ctgType = ctg.getCtgType(); 
 		String ctgTypeStr = ctgType.equals("1") ? "개인" : "공유";
 		if(ctgType.equals("1") && result == 1 || ctgType.equals("2") && result == shList.size()) {
-			redirectAttributes.addFlashAttribute("alertMsg", ctgTypeStr + "캘린더를 성공적으로 등록하였습니다.");
+			
+			if(ctgType.equals("2")) {
+				// 공유캘린더 등록의 경우 알림 발송
+				List<WebSocketSession> sessionList = alertEchoHandler.getSessionList();
+				
+				log.debug("altList 사이즈 : {}", altList.size());
+				
+				if(alertService.insertAlert(altList) == altList.size()) {
+					
+					for(WebSocketSession client : sessionList ) {
+						int clientNo = ((MemberDto)client.getAttributes().get("loginUser")).getMemNo();
+						
+						for(AlertDto a : altList) {
+							if(a.getTargetNo() == clientNo) {
+								// 메세지전송형식 : 알림번호|알림타입|알림내용|알림링크|알림시간
+								int alertNo = alertService.selectAlertNo(a);
+								String msg = alertNo  + "|"
+											+ a.getAlertType() + "|"
+											+ a.getAlertContent() + "|"
+											+ a.getAlertLink() + "|"
+											+ a.getSendDate();
+								
+								client.sendMessage(new TextMessage(msg)); 
+								log.debug("=============== controller에서 보낸 메세지 ==================");
+								log.debug("msg : {}", msg);
+								log.debug("clienNo: {}", clientNo);
+								log.debug("client : {}", client);
+							}
+						}
+						
+					}
+				}
+				
+			}
+			return "SUCCESS";
+			
 		}else {
-			redirectAttributes.addFlashAttribute("alertMsg", ctgTypeStr + "캘린더 등록에 실패하였습니다.");
+			return "FAIL";
 		}
 				
-		return "redirect:/calendar/calendar.page";
 	}
 	
 	/**

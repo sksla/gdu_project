@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="alertMapper">
+
+	<resultMap type="AlertDto" id="alertResult">
+		<id column="alert_no" property="alertNo" />
+		<result column="target_no" property="targetNo" />
+		<result column="alert_content" property="alertContent" />
+		<result column="alert_link" property="alertLink" />
+		<result column="regist_date" property="registDate" />
+		<result column="send_date" property="sendDate" />
+		<result column="read_status" property="readStatus" />
+		<result column="alert_type" property="alertType" />
+	</resultMap>
+	
+	<!-- 알람 리스트 조회 -->
+	<select id="selectAlertListByTargetNo" resultMap="alertResult">
+		select 
+		       alert_no
+		     , target_no
+		     , alert_content
+		     , alert_link
+		     , send_date
+		     , read_status
+		     , alert_type
+		  from tb_alert
+		 where target_no = #{targetNo} 
+		 order
+		    by alert_no desc    
+	</select>
+	
+	<!-- 알람 등록 -->
+	<insert id="insertAlert">
+		insert
+		  into tb_alert
+		  (
+		    alert_no
+		  , target_no
+		  , alert_content
+		  , alert_link
+		  , alert_type  
+		  , send_date
+		  )
+		  values
+		  (
+		    seq_alert_no.nextval
+		  , #{targetNo}
+		  , #{alertContent}
+		  , #{alertLink}
+		  , #{alertType}  
+		  , #{sendDate}
+		  )
+	</insert>
+	
+	<select id="selectAlertNo" resultType="_int">
+		select alert_no
+		  from tb_alert
+		 where target_no = #{targetNo}
+		   and alert_content = #{alertContent}
+		   and alert_link = #{alertLink}
+		   and alert_type = #{alertType}
+		   and send_date = #{sendDate}
+	</select>
+	
+	<!-- 읽음 여부 'Y'로 변경 -->
+	<update id="updateAlertReadStatus">
+		update
+		       tb_alert
+		   set read_status = 'Y'
+		 where alert_no = #{alertNo}      
+	
+	</update>
+	
+	<!-- 알림 삭제 delType : 1(개별)|2(읽음일괄삭제) -->
+	<delete id="deleteAlert">
+		delete
+		  from tb_alert
+		 <where>
+		 	<choose>
+		 		<when test='delType != null and delType == 1'>
+					 alert_no = #{alertNo}    
+		 		</when>
+		 		<otherwise>
+		 			target_no = #{targetNo}
+		 		</otherwise>
+		 	</choose>
+		 
+		 </where> 
+	</delete>
+	
+	<select id="selectAlertCount" resultType="_int">
+		select 
+		       count(*) count
+		  from tb_alert
+		 where target_no = #{targetNo}
+		       
+	</select>
+
+</mapper>
