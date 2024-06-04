@@ -42,6 +42,7 @@
 		  $(".alert-body .no-alert-item").css("display", "none");
 		  $alertBody.prepend($alertItem);
 			//console.log("메세지 들어는 왔냐", alertArr);
+			newAlertCount();
 		  
 		}
 		
