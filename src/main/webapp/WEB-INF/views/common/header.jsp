@@ -299,6 +299,7 @@
 	                    </a>
 	                  </div>
 	                  <div class="d-grid py-4 px-7 pt-8">
+	                  	<!-- 
 	                    <div
 	                      class="upgrade-plan bg-primary-subtle position-relative overflow-hidden rounded-4 p-4 mb-9">
 	                      <div class="row">
@@ -313,6 +314,7 @@
 	                        </div>
 	                      </div>
 	                    </div>
+	                     -->
 	                    <a href="${ contextPath }/member/signout.do" class="btn btn-outline-primary">Log Out</a>
 	                  </div>
 	                </div>
