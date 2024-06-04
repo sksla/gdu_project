@@ -124,7 +124,7 @@
                     </th>
                     <th>
                       <h6 class="fs-3 fw-semibold mb-0">
-                        <select class="form-select mb-n2 ajaxSelect selectMajor" style="width: 130px;">
+                        <select class="form-select mb-n2 ajaxSelect selectMajor" style="width: 130px; border: 0;">
                             <option value="0" selected>전체학과</option>
                             <c:forEach var="major" items="${majorList}">
                             	<option value="${major.majorNo}">${major.majorName}</option>
@@ -134,7 +134,7 @@
                     </th>
                     <th>
                       <h6 class="fs-3 fw-semibold mb-0">
-                        <select class="form-select mb-n2 ajaxSelect selectJob" style="width: 130px;">
+                        <select class="form-select mb-n2 ajaxSelect selectJob" style="width: 130px; border: 0;">
                           <option value="0" selected>전체직급</option>
                           <c:forEach var="j" items="${jobList}">
                           	<option value="${j.jobNo}">${j.jobName}</option>
@@ -171,7 +171,7 @@
 		                    <tr class="leaveReason">
 		                      <th>
 		                        <h6 class="fs-2 mb-0">
-		                          <input type="checkbox" value="${v.vacNo}" class="selectMember">
+		                          <input type="checkbox" value="${v.vacNo}" class="selectMember" name="checkedMember">
 		                        </h6>
 		                      </th>
 		                      <th>
@@ -327,7 +327,7 @@
 														filterTable +=	"<tr class='leaveReason'>"
 									                       +		"<th>"
 									                       +			"<h6 class='fs-2 mb-0'>"
-									                       +				"<input type='checkbox' class='selectMember' value='" + map.vacList[i].vacNo + "'>"
+									                       +				"<input type='checkbox' name='checkedMember' class='selectMember' value='" + map.vacList[i].vacNo + "'>"
 									                       +			"</h6>"
 									                       +		"</th>"
 									                       +		"<th>"
@@ -417,7 +417,10 @@
 								
 								// 체크박스 체크시만 승인/거절버튼 활성화
 								$(document).on("change", ".selectMember", function(){
-									if($(this).is(":checked")){
+
+									//$("input:checkbox[name=checkedMember]:checked").length;
+									/*if($(this).is(":checked")){*/
+									if($("input:checkbox[name=checkedMember]:checked").length != 0){
 										$(".modalButton").removeAttr("disabled", true);
 									}else{
 										$(".modalButton").attr("disabled", true);

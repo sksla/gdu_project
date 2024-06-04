@@ -1096,7 +1096,7 @@ public class AdminController {
 	public Map<String, Object> ajaxChartMemberList(@RequestParam(value = "page", defaultValue = "1") int currentPage, String majorNo){
 		Map<String, Object> map = new HashMap<>();
 		int listCount = adminService.ajaxChartMemberListCount(majorNo);
-		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 10);
+		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 5);
 		map.put("pi", pi);
 		map.put("majorNo", majorNo);
 		List<MemberDto> memList = adminService.ajaxChartMemberList(map);
