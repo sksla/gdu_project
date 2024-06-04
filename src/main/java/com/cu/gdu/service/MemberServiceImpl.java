@@ -1,6 +1,7 @@
 package com.cu.gdu.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -86,6 +87,36 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public int selectUsedPlusVacCount(int memNo) {
 		return memberDao.selectUsedPlusVacCount(memNo);
+	}
+
+	@Override
+	public int selectVacationListCountSet(VacationDto v) {
+		return memberDao.selectVacationListCountSet( v);
+	}
+
+	@Override
+	public List<VacationDto> selectVacationListSet(PageInfoDto pi, VacationDto v) {
+		return memberDao.selectVacationListSet(pi,  v);
+	}
+
+	@Override
+	public int selectAttendListCount(Map<String, String> search) {
+		return memberDao.selectAttendListCount(search);
+	}
+
+	@Override
+	public List<AttendDto> selectAttendList(PageInfoDto pi, Map<String, String> search) {
+		return memberDao.selectAttendList(pi, search);
+	}
+
+	@Override
+	public int selectSearchAttendListCount(Map<String, String> search) {
+		return memberDao.selectSearchAttendListCount(search);
+	}
+
+	@Override
+	public List<AttendDto> selectSearchAttendList(PageInfoDto pi, Map<String, String> search) {
+		return memberDao.selectSearchAttendList(search, pi);
 	}
 
 	

@@ -2,6 +2,8 @@ package com.cu.gdu.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -233,6 +235,77 @@ public class MemberController {
 		return "redirect:/member/vacationList.do";
 	}
 	
+	
+	@GetMapping("vacationListSet.do")
+	public ModelAndView search(@RequestParam(value="page", defaultValue="1") int currentPage,
+									String setStatus,
+									ModelAndView mv
+								, HttpSession session) {
+		VacationDto v = new VacationDto();
+		
+		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
+		int memNo = loginUser.getMemNo();
+		v.setMemNo(memNo);
+		v.setStatus(setStatus);
+		int listCount = memberService.selectVacationListCountSet( v );
+		int plusVacCount = memberService.selectPlusVacCount(memNo);
+		int usedPlusCount = memberService.selectUsedPlusVacCount(memNo);
+		
+		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 8);
+		List<VacationDto> list = memberService.selectVacationListSet(pi, v);
+		
+		mv.addObject("pi", pi)
+		  .addObject("list", list)
+		  .addObject("plusVacCount", plusVacCount)
+		  .addObject("usedPlusCount", usedPlusCount)
+		  .addObject("setStatus", setStatus)
+		  .setViewName("member/vacationList");
+		
+		return mv;
+	}
+	
+	// * 근태 조회 관련 ------------------------------------------
+		@GetMapping("attendList.page")
+		public String attendPage() {
+			return "/member/attendList";
+		}
+		
+		@ResponseBody
+		@GetMapping(value="attendList.do", produces="application/json; charset=utf-8")
+		public Map<String, Object> searchAttendList (@RequestParam(value="page" ,defaultValue="1") int currentPage
+										, @RequestParam Map<String, String> search
+										, HttpSession session) {
+			System.out.println(search);
+			
+			MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
+			int memNo = loginUser.getMemNo();
+			int listCount = 0;
+			PageInfoDto pi = null;
+			List<AttendDto> list = new ArrayList<>();
+			search.put("memNo", String.valueOf(memNo));
+			
+			if(search.get("keyword") == null || search.get("keyword").equals("")) {
+				// keyword="" ==> 전체목록 조회
+				listCount = memberService.selectAttendListCount(search);
+				pi = pagingUtil.getPageInfoDto(listCount, currentPage , 5, 8);
+				list = memberService.selectAttendList(pi, search);
+				
+			}else {
+				// keyword가 빈값이 아닌경우 => 검색목록 조회
+				listCount = memberService.selectSearchAttendListCount(search);
+				pi = pagingUtil.getPageInfoDto(listCount, currentPage , 5, 8);
+				list = memberService.selectSearchAttendList(pi, search);
+			}
+			
+			Map<String, Object> searchMap = new HashMap<>();
+			searchMap.put("list", list);
+			searchMap.put("pi", pi);
+			
+			  
+			return searchMap;
+			
+		}
+		
 	
 	
 	

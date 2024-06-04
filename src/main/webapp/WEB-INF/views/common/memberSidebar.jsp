@@ -81,7 +81,7 @@
                  </a>
                </li>
                <li class="sidebar-item">
-                 <a href="./main/blog-detail.html" class="sidebar-link">
+                 <a href="${ contextPath }/member/attendList.page"  class="sidebar-link">
                    <div class="round-16 d-flex align-items-center justify-content-center">
                      <i class="ti ti-circle"></i>
                    </div>
@@ -91,6 +91,8 @@
              </ul>
            </li>
 
+
+					<!--  
            <li class="sidebar-item">
              <a class="sidebar-link" href="./main/app-kanban.html" aria-expanded="false">
                <span>
@@ -99,6 +101,7 @@
                <span class="hide-menu">급여명세서</span>
              </a>
            </li>
+           -->
          </ul>
        </nav>
 

@@ -32,6 +32,7 @@
   		<result column="regist_date" property="registDate"/>
   		<result column="modify_date" property="modifyDate"/>
   		<result column="mod_no" property="modNo"/>
+  		<result column="status" property="status"/>
   </resultMap>
   
   <resultMap id="vacationResult" type="VacationDto">
@@ -69,7 +70,7 @@
   		join major on (member.major_no = major.major_no)
 		  join job on (member.job_no = job.job_no)
   	 where member.status = 'N'
-  	 	 and mem_no = #{memNo}
+  	 	 and mem_id = #{memId}
   	 	 
   </select>
   
@@ -174,12 +175,48 @@
      by vac_no desc
 	</select>
 	
+	 <select id="selectVacationListSet" resultMap="vacationResult">
+		select 
+          vac_no
+        ,	mem_no
+        , vac_used
+        , vac_option
+        , to_char(regist_date, 'YYYY-MM-DD') regist_date
+        , vac_reason
+        , doc_no
+        , status
+        , to_char(start_date, 'YYYY-MM-DD') start_date
+        , to_char(end_date, 'YYYY-MM-DD') end_date
+        , v.vac_type_no
+        , v.vac_type
+        , vac_type_date
+    from vacation v
+    left join vacation_type t on (t.vac_type_no = v.vac_type_no)
+   where mem_no = #{memNo}
+     and v.status = #{status}
+   order
+     by vac_no desc
+	</select>
+	
 	<select id="selectVacationListCount"  resultType="_int">
 		select
 					count(*)
 			from vacation
 		 where mem_no = #{memNo}
 	</select>	
+	
+	<select id="selectVacationListCountSet"  resultType="_int">
+		select
+					count(*)
+			from vacation
+		 where mem_no = #{memNo}
+		   and status = #{status}
+	</select>	
+	
+	
+	
+	
+	
 	
 	<select id="selectPlusVacCount" resultType="_int" >
 		select nvl(sum(vac_used), 0)
@@ -230,9 +267,54 @@
 	</update>
   
   
+  <!-- 근태 조회  -->
+  <select id="selectAttendList" resultMap="attendResult">
+		select 
+          atd_no
+        ,	mem_no
+        , nvl(TO_CHAR(start_time, 'HH24:MI'), '-') as start_time
+        , nvl(TO_CHAR(end_time, 'HH24:MI'), '-') as end_time
+        , status
+        , to_char(regist_date, 'YYYY-MM-DD') as regist_date
+    from attend
+   where mem_no = #{memNo}
+     AND TO_CHAR(regist_date, 'YYYY-MM') = #{targetYearMonth}
+   order
+     by regist_date desc
+	</select>
   
+  <select id="selectAttendListCount"  resultType="_int">
+		select
+					count(*)
+			from attend
+		 where mem_no = #{memNo}
+		   AND TO_CHAR(regist_date, 'YYYY-MM') = #{targetYearMonth}
+	</select>
+	
+	<select id="selectSearchAttendList" resultMap="attendResult">
+		select 
+          atd_no
+        ,	mem_no
+        , nvl(TO_CHAR(start_time, 'HH24:MI'), '-') as start_time
+        , nvl(TO_CHAR(end_time, 'HH24:MI'), '-') as end_time
+        , status
+        , to_char(regist_date, 'YYYY-MM-DD') as regist_date
+    from attend
+   where mem_no = #{memNo}
+     AND TO_CHAR(regist_date, 'YYYY-MM') = #{targetYearMonth}
+     and status = #{keyword}
+   order
+     by regist_date desc
+	</select>
   
-  
+  <select id="selectSearchAttendListCount"  resultType="_int">
+		select
+					count(*)
+			from attend
+		 where mem_no = #{memNo}
+		   AND TO_CHAR(regist_date, 'YYYY-MM') = #{targetYearMonth}
+		   and status = #{keyword}
+	</select>
   
   
   

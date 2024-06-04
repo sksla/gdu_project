@@ -1,6 +1,7 @@
 package com.cu.gdu.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.cu.gdu.dto.AttendDto;
 import com.cu.gdu.dto.MemberDto;
@@ -34,10 +35,21 @@ public interface MemberService {
 	   List<VacationDto> selectVacationList(PageInfoDto pi, int memNo);
 	   int selectPlusVacCount(int memNo); // 보상휴가일수 조회
 	   int selectUsedPlusVacCount(int memNo); // 보상휴가 사용일수 조회
+	   
+	// 휴가 목록 정렬
+	   int selectVacationListCountSet(VacationDto v);
+	   List<VacationDto> selectVacationListSet(PageInfoDto pi, VacationDto v);
 	  
 	// 휴가 신청 서비스, 멤버 연차 차감
 	   int insertVacation(VacationDto v);
 	   int updateMemVac(VacationDto v);
+	   
+	// 근태 목록 조회
+	   int selectAttendListCount(Map<String, String> search);
+	   List<AttendDto> selectAttendList(PageInfoDto pi,Map<String, String> search);
+	   
+	   int selectSearchAttendListCount(Map<String, String> search) ;
+	   List<AttendDto> selectSearchAttendList(PageInfoDto pi, Map<String, String> search);
 	   
 	
 }

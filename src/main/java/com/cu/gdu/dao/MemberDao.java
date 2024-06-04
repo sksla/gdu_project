@@ -1,6 +1,7 @@
 package com.cu.gdu.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -55,9 +56,18 @@ public class MemberDao {
 		return sqlSessionTemplate.selectOne("memberMapper.selectVacationListCount", memNo);
 	}
 	
+	public int selectVacationListCountSet(VacationDto v) {
+		return sqlSessionTemplate.selectOne("memberMapper.selectVacationListCountSet", v);
+	}
+	
 	public List<VacationDto> selectVacationList(PageInfoDto pi, int memNo){
 		RowBounds rowBounds = new RowBounds((pi.getCurrentPage()-1) * pi.getBoardLimit(), pi.getBoardLimit());
 		return sqlSessionTemplate.selectList("memberMapper.selectVacationList", memNo, rowBounds );
+	}
+	
+	public List<VacationDto> selectVacationListSet(PageInfoDto pi, VacationDto v){
+		RowBounds rowBounds = new RowBounds((pi.getCurrentPage()-1) * pi.getBoardLimit(), pi.getBoardLimit());
+		return sqlSessionTemplate.selectList("memberMapper.selectVacationListSet", v, rowBounds );
 	}
 	
 	public int insertVacation(VacationDto v) {
@@ -75,4 +85,23 @@ public class MemberDao {
 	public int selectUsedPlusVacCount(int memNo) {
 		return sqlSessionTemplate.selectOne("memberMapper.selectUsedPlusVacCount", memNo);
 	}
+	
+	public int selectAttendListCount(Map<String, String> search) {
+		return sqlSessionTemplate.selectOne("memberMapper.selectAttendListCount", search);
+	}
+	
+	public List<AttendDto> selectAttendList(PageInfoDto pi, Map<String, String> search){
+		RowBounds rowBounds = new RowBounds((pi.getCurrentPage()-1) * pi.getBoardLimit(), pi.getBoardLimit());
+		return sqlSessionTemplate.selectList("memberMapper.selectAttendList", search, rowBounds );
+	}
+	
+	public int selectSearchAttendListCount(Map<String, String> search) {
+		return sqlSessionTemplate.selectOne("memberMapper.selectSearchAttendListCount", search);
+	}
+	
+	public List<AttendDto> selectSearchAttendList(Map<String, String> search, PageInfoDto pi){
+		RowBounds rowBounds = new RowBounds((pi.getCurrentPage()-1) * pi.getBoardLimit(), pi.getBoardLimit());
+		return sqlSessionTemplate.selectList("memberMapper.selectSearchAttendList", search, rowBounds );
+	}
+	
 }
