@@ -165,8 +165,9 @@ public class ApprovalController {
 	// **************************** 결재 문서 ****************************
 	// 결재문서 작성 페이지
 	@GetMapping("/enrollAppDoc.page")
-	public String enrollAppDocPage(Model model) {
+	public String enrollAppDocPage(Model model, HttpSession session) {
 		model.addAttribute("appCategories", approvalService.selectAppCategory());
+		model.addAttribute("myLineList", approvalService.selectMyAppLine( ((MemberDto)session.getAttribute("loginUser")).getMemNo() ));
 		return "approval/enrollAppDoc";
 	}
 	

@@ -523,7 +523,6 @@
  		    window.onafterprint = function(){
  		    	document.body.innerHTML = initBody;
  		    };
- 		    
  		    window.print();
     		
     	}
