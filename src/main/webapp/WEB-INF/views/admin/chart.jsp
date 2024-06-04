@@ -193,36 +193,32 @@
                 </a>
               </li>
               <li class="nav-item d-none d-xl-block d-flex align-items-center">
-                <a href="${ contextPath }/horizontal/index.html" class="text-nowrap nav-link">
-                  <img src="../assets/images/logos/longlogo.png" class="dark-logo pt-3 pb-3" width="" height="72" />
+                <a href="${ contextPath }/member/mainpage" class="text-nowrap nav-link">
+                  <img src="${ contextPath }/assets/images/logos/longlogo.png" class="dark-logo pt-3 pb-3" width="" height="72" />
                   <img src="${ contextPath }/assets/images/logos/light-logo.svg" class="light-logo" width="180" alt="" />
                 </a>
               </li>
             </ul>
             <ul class="navbar-nav quick-links d-none d-xl-flex">
-              <!-- 메인 메뉴들 -->
-              <!-- ----------------메인 메뉴들--------------- -->
-              <li class="nav-item dropdown-hover d-none d-lg-block">
-                <a class="nav-link" href="./main/app-chat.html">전자결재</a>
-              </li>
-              <li class="nav-item dropdown-hover d-none d-lg-block">
-                <a class="nav-link" href="./main/app-calendar.html">메일</a>
-              </li>
-              <li class="nav-item dropdown-hover d-none d-lg-block">
-                <a class="nav-link" href="${ contextPath }/calendar/calendar.page">일정</a>
-              </li>
-              <li class="nav-item dropdown-hover d-none d-lg-block">
-                <a class="nav-link" href="./main/app-email.html">예약</a>
-              </li>
-              <li class="nav-item dropdown-hover d-none d-lg-block">
-                <a class="nav-link" href="./main/app-email.html">공지</a>
-              </li>
-              <li class="nav-item dropdown-hover d-none d-lg-block">
-                <a class="nav-link" href="./main/app-email.html">게시판</a>
-              </li>
-              <li class="nav-item dropdown-hover d-none d-lg-block">
-                <a class="nav-link" href="./main/app-email.html">학생&수업</a>
-              </li>
+			        <!-- ----------------메인 메뉴들--------------- -->
+			        <li class="nav-item dropdown-hover d-none d-lg-block">
+			          <a class="nav-link" href="${contextPath}/approval/main.do">전자결재</a>
+			        </li>
+			        <li class="nav-item dropdown-hover d-none d-lg-block">
+			          <a class="nav-link" href="./main/app-calendar.html">메일</a>
+			        </li>
+			        <li class="nav-item dropdown-hover d-none d-lg-block">
+			          <a class="nav-link" href="${ contextPath }/calendar/calendar.page">일정</a>
+			        </li>
+			        <li class="nav-item dropdown-hover d-none d-lg-block">
+			          <a class="nav-link" href="${ contextPath }/reservation/reservationList.page">예약</a>
+			        </li>
+			        <li class="nav-item dropdown-hover d-none d-lg-block">
+			          <a class="nav-link" href="${ contextPath }/board/noticeList.do">게시판</a>
+			        </li>
+			        <li class="nav-item dropdown-hover d-none d-lg-block">
+			          <a class="nav-link" href="${ contextPath }/lec/lecList.do">학생&수업</a>
+			        </li>
             </ul>
             <div class="d-block d-xl-none">
               <a href="${ contextPath }/horizontal/index.html" class="text-nowrap nav-link">
@@ -248,14 +244,16 @@
          
                   
                   <!-- --- 관리자일때만 보이는 버튼 (톱니바퀴)---------------------------- -->
-                  <li class="nav-item">
-                    <a class="nav-link nav-icon-hover admin" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
-                      aria-expanded="false">
-                      <span>
-                        <i class="ti ti-settings"></i>
-                      </span>
-                    </a>
-                  </li>
+                  <c:if test="${not empty loginUser and loginUser.jobNo eq '행정관리'}">
+	                  <li class="nav-item">
+	                    <a class="nav-link nav-icon-hover admin" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
+	                      aria-expanded="false">
+	                      <span>
+	                        <i class="ti ti-settings"></i>
+	                      </span>
+	                    </a>
+	                  </li>
+                  </c:if>
                   <!-- ------------------------------- -->
                   <!-- ---------조직도 버튼------------- -->
                   <li class="nav-item">
@@ -374,7 +372,7 @@
                       aria-expanded="false">
                       <div class="d-flex align-items-center">
                         <div class="user-profile-img">
-                          <img src="${ contextPath }/assets/images/profile/user-1.jpg" class="rounded-circle" width="35" height="35"
+                          <img src="${ contextPath }<c:out value='${loginUser.profileUrl}' default='/assets/images/profile/user-1.jpg'/>" class="rounded-circle" width="35" height="35"
                             alt="" />
                         </div>
                       </div>
@@ -386,13 +384,13 @@
                           <h5 class="mb-0 fs-5 fw-semibold">User Profile</h5>
                         </div>
                         <div class="d-flex align-items-center py-9 mx-7 border-bottom">
-                          <img src="${ contextPath }/assets/images/profile/user-1.jpg" class="rounded-circle" width="80" height="80"
+                          <img src="${ contextPath }<c:out value='${loginUser.profileUrl}' default='/assets/images/profile/user-1.jpg'/>" class="rounded-circle" width="80" height="80"
                             alt="" />
                           <div class="ms-3">
-                            <h5 class="mb-1 fs-3">Mathew Anderson</h5>
-                            <span class="mb-1 d-block">Designer</span>
+                            <h5 class="mb-1 fs-3">${ loginUser.memName }</h5>
+                            <span class="mb-1 d-block">${ loginUser.jobNo }</span>
                             <p class="mb-0 d-flex align-items-center gap-2">
-                              <i class="ti ti-mail fs-4"></i> info@modernize.com
+                              <i class="ti ti-mail fs-4"></i> ${ loginUser.email }
                             </p>
                           </div>
                         </div>
@@ -441,7 +439,7 @@
                               </div>
                             </div>
                           </div>
-                          <a href="${ contextPath }/horizontal/authentication-login.html" class="btn btn-outline-primary">Log Out</a>
+                          <a href="${ contextPath }/member/signout.do" class="btn btn-outline-primary">Log Out</a>
                         </div>
                       </div>
 

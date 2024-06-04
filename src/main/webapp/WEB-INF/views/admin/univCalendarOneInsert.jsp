@@ -51,12 +51,14 @@
               <div class="row align-items-center my-3">
               
                 <div class="col-9">
-                  <h4 class="fw-semibold mb-8">일정</h4>
+                  <h4 class="fw-semibold mb-8">학사일정개별등록</h4>
                   <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                       <li class="breadcrumb-item">
                         <a class="text-muted text-decoration-none" href="${ contextPath }/member/mainpage">Home</a>
                       </li>
+                      <li class="breadcrumb-item" aria-current="page">일정</li>
+                      <li class="breadcrumb-item" aria-current="page">학사일정</li>
                       <li class="breadcrumb-item" aria-current="page">학사일정개별등록</li>
                     </ol>
                   </nav>

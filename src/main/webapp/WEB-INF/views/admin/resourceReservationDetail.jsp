@@ -46,14 +46,16 @@
               <div class="row align-items-center my-3">
               
                 <div class="col-9">
-                  <h4 class="fw-semibold mb-8">예약</h4>
+                  <h4 class="fw-semibold mb-8">자원예약 상세정보</h4>
                   <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                       <li class="breadcrumb-item">
                         <a class="text-muted text-decoration-none" href="${ contextPath }/member/mainpage">Home</a>
                       </li>
-                      <li class="breadcrumb-item" aria-current="page">자원 예약내역</li>
-                      <li class="breadcrumb-item" aria-current="page">상세내역</li>
+                      <li class="breadcrumb-item" aria-current="page">일정</li>
+                      <li class="breadcrumb-item" aria-current="page">예약</li>
+                      <li class="breadcrumb-item" aria-current="page">자원예약 리스트</li>
+                      <li class="breadcrumb-item" aria-current="page">자원예약 상세정보</li>
                     </ol>
                   </nav>
                 </div>
