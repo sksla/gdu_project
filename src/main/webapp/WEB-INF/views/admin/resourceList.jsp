@@ -489,36 +489,51 @@
               				$(".pagination").empty();
               				let filterTable = "";
               				let filterPage = "";
-              				for(let i=0; i<map.resourceList.length; i++){
-              					filterTable +=	"<tr onclick='resourceDetail(" + map.resourceList[i].resNo + ");'>"
-              											+			"<th class='selectResourceCheck'>"
-              											+				"<h6 class='fs-2 mb-0'>"
-              											+					"<input type='checkbox' value='" + map.resourceList[i].resNo + "' class='selectResource' onclick='event.stopPropagation();'>"
-              											+					"<input type='hidden' value='" + map.resourceList[i].resDetail + "' class='resDetail'>"
-              											+				"</h6>"
+              				
+              				if(map.resourceList.length == 0){
+              					filterTable +=	"<tr>"
+              											+			"<th colspan='5'>"
+              											+				"<h6 class='fs-2 mb-0 resType'>조건에 맞는 자원이 없습니다.</h6>"
               											+			"</th>"
-              											+			"<th>"
-              											+				"<h6 class='fs-2 mb-0 resType'>" + map.resourceList[i].resType + "</h6>"
-              											+			"</th>"
-              											+			"<th>"
-              											+				"<h6 class='fs-2 mb-0 resName'>" + map.resourceList[i].resName + "</h6>"
-              											+			"</th>"
-              											+			"<th>"
-              											+				"<h6 class='fs-2 mb-0 resGps'>" + map.resourceList[i].resGps + "</h6>"
-              											+			"</th>"
-              											+			"<th>"
-              											+				"<h6 class='fs-2 mb-0 stock'>";
-						             											if(map.resourceList[i].stock == 0){
-						             												filterTable += "-";
-						             											}else{
-						             												filterTable += map.resourceList[i].stock + "개";
-						             											}
-						            filterTable	+=			"</h6>"
-						            						+			"</th>"
-						            						+		"</tr>";
-						            
-              											
+              											+		"</tr>";
+              				}else{
+              					
+	              				for(let i=0; i<map.resourceList.length; i++){
+	              					filterTable +=	"<tr onclick='resourceDetail(" + map.resourceList[i].resNo + ");'>"
+	              											+			"<th class='selectResourceCheck'>"
+	              											+				"<h6 class='fs-2 mb-0'>"
+	              											+					"<input type='checkbox' value='" + map.resourceList[i].resNo + "' class='selectResource' onclick='event.stopPropagation();'>"
+	              											+					"<input type='hidden' value='" + map.resourceList[i].resDetail + "' class='resDetail'>"
+	              											+				"</h6>"
+	              											+			"</th>"
+	              											+			"<th>"
+	              											+				"<h6 class='fs-2 mb-0 resType'>" + map.resourceList[i].resType + "</h6>"
+	              											+			"</th>"
+	              											+			"<th>"
+	              											+				"<h6 class='fs-2 mb-0 resName'>" + map.resourceList[i].resName + "</h6>"
+	              											+			"</th>"
+	              											+			"<th>"
+	              											+				"<h6 class='fs-2 mb-0 resGps'>" + map.resourceList[i].resGps + "</h6>"
+	              											+			"</th>"
+	              											+			"<th>"
+	              											+				"<h6 class='fs-2 mb-0 stock'>";
+							             											if(map.resourceList[i].stock == 0){
+							             												filterTable += "-";
+							             											}else{
+							             												filterTable += map.resourceList[i].stock + "개";
+							             											}
+							            filterTable	+=			"</h6>"
+							            						+			"</th>"
+							            						+		"</tr>";
+							            
+	              											
+	              				}
+	              				
               				}
+              				
+              				
+              				
+              				
               				$(".tableBody").append(filterTable);
               				
 					            // 페이징처리

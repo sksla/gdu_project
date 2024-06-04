@@ -905,13 +905,13 @@
 	               }else{
 	         				alert("완료여부 변경에 실패했습니다.");
 	               }
+		            countTodoList();
 	         			
 	         		},
 	         		error:function(){
 	         			console.log("투두리스트 체크용 ajax통신 실패");
 	         		}
 	         	})
-            countTodoList();
 						
           }
           

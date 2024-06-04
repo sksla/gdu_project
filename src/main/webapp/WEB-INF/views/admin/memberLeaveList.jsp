@@ -119,7 +119,7 @@
                     </th>
                     <th>
                       <h6 class="fs-3 fw-semibold mb-0">
-                        <select class="form-select mb-n2 ajaxSelect selectMajor" style="width: 130px;">
+                        <select class="form-select mb-n2 ajaxSelect selectMajor" style="width: 130px; border: 0;">
                             <option selected value="0">전체학과</option>
 	                          <c:forEach var="major" items="${majorList}">
 	                          	<option value="${major.majorNo}">${major.majorName}</option>
@@ -129,7 +129,7 @@
                     </th>
                     <th>
                       <h6 class="fs-3 fw-semibold mb-0">
-                        <select class="form-select mb-n2 ajaxSelect selectJob" style="width: 130px;">
+                        <select class="form-select mb-n2 ajaxSelect selectJob" style="width: 130px; border: 0;">
 	                        <option selected value="0">전체직급</option>
 	                        <c:forEach var="j" items="${jobList}">
 	                        	<option value="${j.jobNo}">${j.jobName}</option>

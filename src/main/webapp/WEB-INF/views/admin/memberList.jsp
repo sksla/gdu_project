@@ -122,7 +122,7 @@
 		                  </th>
 		                  <th>
 		                    <h6 class="fs-3 fw-semibold mb-0">
-		                      <select class="form-select mb-n2 ajaxSelect selectMajor" style="width: 130px;">
+		                      <select class="form-select mb-n2 ajaxSelect selectMajor" style="width: 130px; border: 0;">
 		                          <option selected value="0">전체학과</option>
 		                          <c:forEach var="major" items="${majorList}">
 		                          	<option value="${major.majorNo}">${major.majorName}</option>
@@ -132,7 +132,7 @@
 		                  </th>
 		                  <th>
 		                    <h6 class="fs-3 fw-semibold mb-0">
-		                      <select class="form-select mb-n2 ajaxSelect selectJob" style="width: 130px;">
+		                      <select class="form-select mb-n2 ajaxSelect selectJob" style="width: 130px; border: 0;">
 		                        <option selected value="0">전체직급</option>
 		                        <c:forEach var="j" items="${jobList}">
 		                        	<option value="${j.jobNo}">${j.jobName}</option>
@@ -165,7 +165,7 @@
 		              				<tr>
 		              					<th class="memberCheckbox">
 		              						<h6 class="fs-2 mb-0">
-		              							<input type="checkbox" class="selectMember" value="${m.memNo}"> 
+		              							<input type="checkbox" class="selectMember" value="${m.memNo}" name="checkedMember"> 
 		              						</h6>
 		              					</th>
 		              					<th>
@@ -269,7 +269,7 @@
 					                    filterTable += "<tr>"
 				                                   +   "<th class='memberCheckbox'>"
 				                                   +       "<h6 class='fs-2 mb-0'>"
-				                                   +           "<input type='checkbox' class='selectMember' value='" + list.member[i].memNo + "'>"
+				                                   +           "<input type='checkbox' name='checkedMember' class='selectMember' value='" + list.member[i].memNo + "'>"
 				                                   +       "</h6>"
 				                                   +   "</th>"
 				                                   +   "<th>"
@@ -343,7 +343,7 @@
                 
                	// 체크박스 체크시 왼쪽상단 퇴직직급학과 처리 div 보이고 안보이고 처리
                 $(document).on("change", ".selectMember" , function(){
-                  if($(this).is(":checked")){
+                  if($("input:checkbox[name=checkedMember]:checked").length != 0){
                     $(".outAndUpdate").css("display", "block");
                   }else{
                     $(".outAndUpdate").css("display", "none");
@@ -471,7 +471,7 @@
 						                    filterTable += "<tr>"
 					                                   +   "<th class='memberCheckbox'>"
 					                                   +       "<h6 class='fs-2 mb-0'>"
-					                                   +           "<input type='checkbox' class='selectMember' value='" + list.member[i].memNo + "'>"
+					                                   +           "<input type='checkbox' name='checkedMember' class='selectMember' value='" + list.member[i].memNo + "'>"
 					                                   +       "</h6>"
 					                                   +   "</th>"
 					                                   +   "<th>"
