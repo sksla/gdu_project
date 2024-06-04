@@ -795,6 +795,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			join member on (member.mem_no = attend.mem_no)
 			join major on (major.major_no = member.major_no)
 			join job on (job.job_no = member.job_no)
+		 order
+        by atd_no desc
 	</select>
 	
 	<select id="ajaxFilterMemberAttendListCount" resultType="_int">
@@ -859,6 +861,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			 	 </otherwise>
 			 	</choose>
 			 </if>
+		 order
+        by atd_no desc
 	</select>
 	
 	<select id="ajaxTodayMemberAttendListCount" resultType="_int">

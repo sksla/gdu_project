@@ -386,72 +386,79 @@
               </div>
             </div>
 
-						<!-- 기상청 api -->
-						<div class="card" >
-						  <div class="card-body weather" style="font-size:18px; color:black;">
-						    <span class="SKY"></span>
-						    <span class="wicon"></span>
-						    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						    <span class="T1H"></span>
-						    <div class="WSD"></div>
+						<div class="card">
+						  <div class="card-body weather" style="height: 150px; color:black; padding:15px; display: flex; align-items: center; justify-content: center;">
+						  	
+								<div style="display: flex; font-size:15px; align-items: flex-start;">
+							    <div class="weather_icon" style="padding-right:15px; color: rgb(127, 127, 127);"></div><br>
+							    <div class="mainWeather" style="display:flex; flex-direction:column; padding-right:20px;">
+						        <span class="current_temp"></span> 				<!-- 현재기온 -->
+						        <span class="weather_description"></span> <!-- 현재 날씨상태 영문표기 -->
+						        <span class="city"></span> 								<!-- 서울 -->
+					        </div><br>
+					        <div class="serveWeather" style="display:flex; flex-direction:column; align-items: flex-start;">
+				            <div class="temp_max"></div> 					<!-- 최고온도 -->
+				            <div class="temp_min"></div> 					<!-- 최저온도 -->
+				            <div class="wind"></div> 							<!-- 풍속 -->
+				           	<!-- <div class="humidity"></div> --> <!-- 습도 -->
+				            <!-- <div class="cloud"></div> --> 		<!-- 구름지수 -->
+			            </div>
+								</div>
+
 						  </div>
 						</div>
-						<!-- 기상청 api -->
+						
 						<script>
+						
+							// 날씨 api 아이콘용 배열
+							let weatherIcon = {
+						    '01' : 'fas fa-sun',
+						    '02' : 'fas fa-cloud-sun',
+						    '03' : 'fas fa-cloud',
+						    '04' : 'fas fa-cloud-meatball',
+						    '09' : 'fas fa-cloud-sun-rain',
+						    '10' : 'fas fa-cloud-showers-heavy',
+						    '11' : 'fas fa-poo-storm',
+						    '13' : 'far fa-snowflake',
+						    '50' : 'fas fa-smog'
+							};
+						
+							// 날씨 api 접속
 							$(document).ready(function(){
 								
-                 let date = new Date();
-                 let year = date.getFullYear();
-                 let month = ("0" + (date.getMonth() + 1)).slice(-2); // 월을 2자리 문자열로 만듭니다.
-                 let day = ("0" + date.getDate()).slice(-2); // 일을 2자리 문자열로 만듭니다.
-                 let hours = ("0" + (date.getHours() - 1)).slice(-2)
-                 let minutes = "00"
-                 let today = year + month + day;
-                 let time = hours + minutes;
-                 let wtkey = "i92%2FVs3SXjSPBWL2iRyVrQ%2Flueak5Wo57p0AJOeml6xjQUAiMtxHWnk5o2v%2FdcRUqyzOzq4BwhqkoKGoulZvNg%3D%3D";
-                 $.ajax({
-                    url : 'https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst?serviceKey=' + wtkey + '&pageNo=1&numOfRows=1000&dataType=JSON&base_date='+today+'&base_time='+time+'&nx=58&ny=125',
-                    success : function(result) {
-                       let T1H = result.response.body.items.item[24].fcstValue;
-                       let WSD = result.response.body.items.item[54].fcstValue;
-                       let REH = result.response.body.items.item[30].fcstValue;
-                       let SKY = result.response.body.items.item[18].fcstValue;
-                       let PTY = result.response.body.items.item[6].fcstValue;
-                       $(".T1H").text("기온: " + T1H + "°");
-                       $(".WSD").text("풍속 " + WSD + "m/s 　습도 " + REH + "%");
-                       if(PTY == 0){
-                          if(SKY == 1){
-                             $(".SKY").text("맑음");
-                             $(".wicon").html('<i class="wi wi-day-sunny text-black"></i>');
-                          }else if(SKY == 3){
-                             $(".SKY").text("구름많음");
-                             $(".wicon").html('<i class="wi wi-cloud weather-text"></i>');
-                          }else if(SKY == 4){
-                             $(".SKY").text("흐림");
-                             $(".wicon").html('<i class="wi wi-cloudy weather-text"></i>');
-                          }else{
-                             $(".SKY").text("구름조금");
-                             $(".wicon").html('<i class="wi wi-day-cloudy weather-text"></i>');
-                          }
-                       }else{
-                          if(PTY == 1 || PTY == 5){
-                             $(".SKY").text("비");
-                             $(".wicon").html('<i class="wi wi-rain weather-text"></i>');
-                          }else if(PTY == 2 || PTY == 6){
-                             $(".SKY").text("비/눈");
-                             $(".wicon").html('<i class="wi wi-rain-mix weather-text"></i>');
-                          }else if(PTY == 3 || PTY == 7){
-                             $(".SKY").text("눈");
-                             $(".wicon").html('<i class="wi wi-snow-wind weather-text"></i>');
-                          }else{
-                             $(".SKY").text("소나기");
-                             $(".wicon").html('<i class="wi wi-day-showers weather-text"></i>');
-                          }
-                       }
-                    }
-                 });
-							});					
-	         </script> 
+								var apiURI = "http://api.openweathermap.org/data/2.5/weather?q="+'seoul'+"&appid="+"b5f0d4fff3cb1be4470073be5caf09a0";
+								$.ajax({
+								    url: apiURI,
+								    dataType: "json",
+								    type: "GET",
+								    async: "false",
+								    success: function(resp) {
+											console.log(resp.weather[0].main);
+							        var $Icon = (resp.weather[0].icon).substr(0,2);
+							        var $weather_description = resp.weather[0].main;
+							        var $Temp = Math.floor(resp.main.temp- 273.15) + 'ºC';
+							        var $humidity = '습도&nbsp;&nbsp;&nbsp;&nbsp;' + resp.main.humidity+ ' %';
+							        var $wind = '바람&nbsp;&nbsp;&nbsp;&nbsp;' +resp.wind.speed + ' m/s';
+							        var $city = '서울';
+							        var $cloud = '구름&nbsp;&nbsp;&nbsp;&nbsp;' + resp.clouds.all +"%";
+							        var $temp_min = '최저 온도&nbsp;&nbsp;&nbsp;&nbsp;' + Math.floor(resp.main.temp_min- 273.15) + 'ºC';
+							        var $temp_max = '최고 온도&nbsp;&nbsp;&nbsp;&nbsp;' + Math.floor(resp.main.temp_max- 273.15) + 'ºC';
+							        
+	
+							        $('.weather_icon').append('<i class="' + weatherIcon[$Icon] +' fa-4x"></i>'); // 날씨아이콘
+							        $('.weather_description').prepend($weather_description); // 현재 날씨상태 영문
+							        $('.current_temp').prepend($Temp); // 현재 기온
+							        $('.humidity').prepend($humidity); // 습도
+							        $('.wind').prepend($wind); // 바람
+							        $('.city').append($city); // 서울
+							        $('.cloud').append($cloud); // 구름
+							        $('.temp_min').append($temp_min); // 최저온도
+							        $('.temp_max').append($temp_max); // 최고온도              
+								    }
+								})
+								
+							});
+						</script>
 
             <div class="card" style="height: 90px; margin-bottom: 10px;">
               <div class="card-body">
