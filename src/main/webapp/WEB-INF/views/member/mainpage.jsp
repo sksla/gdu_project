@@ -24,6 +24,28 @@
   <link rel="stylesheet" href="${ contextPath }/assets/libs/owl.carousel/dist/assets/owl.carousel.min.css" />
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	
+	<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/google-calendar@6.1.13/index.global.min.js"></script>
+  <script>
+
+    document.addEventListener('DOMContentLoaded', function() {
+      var calendarEl = document.getElementById('calendar');
+      var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        headerToolbar: {
+          left: 'prevYear,prev,next,nextYear',
+          center: 'title',
+          right:'today'
+        },
+        nowIndicator: true, // 현재 시간 마크
+        timeZone:'local', // 우리나라 시간
+        locale: 'ko', // 한국어 설정
+      });
+      calendar.render();
+    });
+
+  </script>
+	
 	<style>
 		.container {
         display: flex;
@@ -68,6 +90,59 @@
     }   
     .preview_table td{padding: 10px;}
     .view_more:hover{cursor:pointer;}
+    
+    .card-body h4{color:#64B5F6;}
+    
+    /*투두리스트 관련 스타일*/
+    .todo-area{
+			height: 350px; padding:15px;
+		}
+		
+		.todo-body{
+			border:2px dashed #ebf3fe; 
+			border-radius: 10px; 
+			height: 260px; 
+			padding:5px; 
+			overflow-y: auto;
+		}
+		
+		.todo-item{
+			display: flex; 
+			justify-content: space-between; 
+			align-items: center; 
+			padding: 10px; 
+			background-color: #ebf3fe; 
+			border-radius: 10px;
+			margin-bottom: 5px;
+		}
+		.form-check-input[type=checkbox]{
+			border-color:gray;
+		}
+    
+    /* 달력 스타일*/
+    #calendar * {padding:0px;}
+	  #calendar .fc-header-toolbar{margin:5px;}
+	  #calendar{height: 400px;}
+		.app-calendar .fc .fc-day-sun .fc-daygrid-day-number{
+		  color: red;
+		  text-decoration: none;
+		}
+		.app-calendar .fc .fc-day-sat .fc-daygrid-day-number{
+		  color: blue;
+		  text-decoration: none;
+		}
+    .holiday{
+			color:red; 
+			background-color:transparent !important; 
+			border-color:transparent;
+			pointer-events:none;
+		}
+		.fc-today-button.fc-button.fc-button-primary{font-size:12px; padding:2px;}
+		.fc .fc-toolbar-title{font-size:20px;}
+    .app-calendar .fc .fc-daygrid-day-number{font-size:12px;}
+    .fc-day-today .fc-daygird-number{font-size:12px;}
+    .fc-scrollgrid-sync-table{font-size:12px;}
+    .fc-event-title-container{height:15px;font-size:10px;}
 	</style>
 </head>
 
@@ -196,79 +271,27 @@
                       <i class="ti ti-bell-ringing"></i>
                       <div class="notification bg-primary rounded-circle"></div>
                     </a>
-                    <div class="dropdown-menu content-dd dropdown-menu-end dropdown-menu-animate-up"
-                      aria-labelledby="drop2">
-                      <div class="d-flex align-items-center justify-content-between py-3 px-7">
-                        <h5 class="mb-0 fs-5 fw-semibold">Notifications</h5>
-                        <span class="badge text-bg-primary rounded-4 px-3 py-1 lh-sm">5 new</span>
-                      </div>
-                      <div class="message-body" data-simplebar>
-                        <a href="javascript:void(0)" class="py-6 px-7 d-flex align-items-center dropdown-item">
-                          <span class="me-3">
-                            <img src="${ contextPath }/assets/images/profile/user-2.jpg" alt="user" class="rounded-circle" width="48"
-                              height="48" />
-                          </span>
-                          <div class="w-75 d-inline-block v-middle">
-                            <h6 class="mb-1 fw-semibold lh-base">Roman Joined the Team!</h6>
-                            <span class="fs-2 d-block text-body-secondary">Congratulate him</span>
-                          </div>
-                        </a>
-                        <a href="javascript:void(0)" class="py-6 px-7 d-flex align-items-center dropdown-item">
-                          <span class="me-3">
-                            <img src="${ contextPath }/assets/images/profile/user-3.jpg" alt="user" class="rounded-circle" width="48"
-                              height="48" />
-                          </span>
-                          <div class="w-75 d-inline-block v-middle">
-                            <h6 class="mb-1 fw-semibold lh-base">New message</h6>
-                            <span class="fs-2 d-block text-body-secondary">Salma sent you new message</span>
-                          </div>
-                        </a>
-                        <a href="javascript:void(0)" class="py-6 px-7 d-flex align-items-center dropdown-item">
-                          <span class="me-3">
-                            <img src="${ contextPath }/assets/images/profile/user-4.jpg" alt="user" class="rounded-circle" width="48"
-                              height="48" />
-                          </span>
-                          <div class="w-75 d-inline-block v-middle">
-                            <h6 class="mb-1 fw-semibold lh-base">Bianca sent payment</h6>
-                            <span class="fs-2 d-block text-body-secondary">Check your earnings</span>
-                          </div>
-                        </a>
-                        <a href="javascript:void(0)" class="py-6 px-7 d-flex align-items-center dropdown-item">
-                          <span class="me-3">
-                            <img src="${ contextPath }/assets/images/profile/user-5.jpg" alt="user" class="rounded-circle" width="48"
-                              height="48" />
-                          </span>
-                          <div class="w-75 d-inline-block v-middle">
-                            <h6 class="mb-1 fw-semibold lh-base">Jolly completed tasks</h6>
-                            <span class="fs-2 d-block text-body-secondary">Assign her new tasks</span>
-                          </div>
-                        </a>
-                        <a href="javascript:void(0)" class="py-6 px-7 d-flex align-items-center dropdown-item">
-                          <span class="me-3">
-                            <img src="${ contextPath }/assets/images/profile/user-6.jpg" alt="user" class="rounded-circle" width="48"
-                              height="48" />
-                          </span>
-                          <div class="w-75 d-inline-block v-middle">
-                            <h6 class="mb-1 fw-semibold lh-base">John received payment</h6>
-                            <span class="fs-2 d-block text-body-secondary">$230 deducted from account</span>
-                          </div>
-                        </a>
-                        <a href="javascript:void(0)" class="py-6 px-7 d-flex align-items-center dropdown-item">
-                          <span class="me-3">
-                            <img src="${ contextPath }/assets/images/profile/user-7.jpg" alt="user" class="rounded-circle" width="48"
-                              height="48" />
-                          </span>
-                          <div class="w-75 d-inline-block v-middle">
-                            <h6 class="mb-1 fw-semibold lh-base">Roman Joined the Team!</h6>
-                            <span class="fs-2 d-block text-body-secondary">Congratulate him</span>
-                          </div>
-                        </a>
-                      </div>
-                      <div class="py-6 px-7 mb-1">
-                        <button class="btn btn-outline-primary w-100">See All Notifications</button>
-                      </div>
+                  	<div class="alert-area dropdown-menu content-dd dropdown-menu-end dropdown-menu-animate-up"
+		                  aria-labelledby="drop2">
+		                  <div class="alert-title d-flex align-items-center justify-content-between py-3 px-7">
+		                    <h5 class="mb-0 fs-5 fw-semibold">알림</h5>
+		                    <span class="new-alert-count badge text-bg-primary rounded-4 px-3 py-1 lh-sm">0 new</span>
+		                  </div>
+		                  <div class="alert-body message-body">
+		                  
+		                    <div class="no-alert-item py-6 px-7 d-flex justify-content-between align-items-center dropdown-item">
+		                    	새로운 알림이 없습니다.
+		                    </div>
+		                    	
+		                  </div>
+		                  <div class="py-6 px-7 mb-1">
+		                    <button class="btn btn-outline-primary w-100 " id="delAllAlertBtn" onclick="ajaxDeleteAlert(2, 0, this);">알림 전체 삭제</button>
+		                  </div>
+		
+		                </div>
+                      
 
-                    </div>
+                    
                   </li>
                   <!-- ------------------------------- -->
                   <!-- end notification Dropdown -->
@@ -364,6 +387,9 @@
               </div>
             </div>
           </nav>
+          
+          <!-- 알림 기능 include -->
+					<jsp:include page="/WEB-INF/views/common/alert.jsp"/>
 
         </div>
       </header>
@@ -470,9 +496,23 @@
               </div>
             </div>
             
+            <!-- 투두리스트 -->
             <div class="card">
-              <div class="card-body" style="height: 300px;">
-                투두
+              <div class="card-body todo-area" style="height: 350px; padding:15px;">
+                <div class="w-100 mb-3 d-flex justify-content-between" style="padding:0px; margin-bottom: 0px;">
+                  <div><h4 class="fw-semibold">오늘의 할일</h4></h4></div>
+                  <div class="view_more" onclick="location.href='${contextPath}/calendar/todoList.page';"><b><i class="ti ti-plus"></i></b></div>
+                </div>
+                
+                <div class="todo-body">
+                  
+                  
+                  <div class="no-todo-item" style="text-align:center">
+                    <p><i class='ti ti-pencil-plus fs-7'></i><br>오늘의 할 일이 없습니다. <br>할 일을 추가하여 목록을 채워보세요!</p>
+                  </div>
+                  
+                  
+                </div>
               </div>
             </div>
           
@@ -481,172 +521,52 @@
           
           <!-- 오른쪽 박스 부분 -->
 	          <div class="r-8 right-box">
-					      <div class="row" style="height:390px">
-			          	<div class="col-lg-6 d-flex align-items-strech">
+					      <div class="row" style="height:450px">
+					      	<!-- 오늘의 시설예약 -->
+			          	<div class="col-lg-6 d-flex align-items-start">
 			          		<div class="card w-100">
 				          		<div class="card-body">
 				          			<div class="w-100 mb-3 d-flex justify-content-between">
-				          				<div><h4><b>공지사항</b></h4></div>
-				          				<div class="view_more"><b>더보기</b></div>
+				          				<div><h4><b>오늘의 시설예약</b></h4></div>
+				          				<div class="view_more" onclick="location.href='${contextPath}/reservation/reservationList.page'"><b>더보기</b></div>
 				          			</div>
 				          			<div class="w-100">
-				          				<table class="preview_table w-100 table text-nowrap mb-0 overflow-hidden table-hover">
+				          				<table class="reservation_table preview_table w-100 table text-nowrap mb-0 overflow-hidden">
 				                  <thead class="text-dark fs-4">
 				                    <tr>
-				                      <th width="40%">
-				                        <h6 class="fs-4 fw-semibold mb-0">제목</h6>
+				                      <th width="30%">
+				                        <h6 class="fs-4 fw-semibold mb-0">시설명</h6>
 				                      </th>
 				                      <th width="">
-				                        <h6 class="fs-4 fw-semibold mb-0">작성일</h6>
-				                      </th>
-				                      <th width="">
-				                        <h6 class="fs-4 fw-semibold mb-0">작성일</h6>
+				                        <h6 class="fs-4 fw-semibold mb-0">시간</h6>
 				                      </th>
 				                    </tr>
 				                  </thead>
 				                  <tbody>
-				                    <tr>
-				                    	<td width="">
-				                        제목입니다.
-				                      </td>
-				                      <td width="">
-				                        2024-01-01
-				                      </td>
-				                      <td width="">
-				                        몰라
-				                      </td>
-				                    </tr>
-				                    <tr>
-				                    	<td width="">
-				                        제목입니다.
-				                      </td>
-				                      <td width="">
-				                        2024-01-01
-				                      </td>
-				                      <td width="">
-				                        몰라
-				                      </td>
-				                    </tr>
-				                    <tr>
-				                    	<td width="">
-				                        제목입니다.
-				                      </td>
-				                      <td width="">
-				                        2024-01-01
-				                      </td>
-				                      <td width="">
-				                        몰라
-				                      </td>
-				                    </tr>
-				                    <tr>
-				                    	<td width="">
-				                        제목입니다.
-				                      </td>
-				                      <td width="">
-				                        2024-01-01
-				                      </td>
-				                      <td width="">
-				                        몰라
-				                      </td>
-				                    </tr>
-				                    <tr>
-				                    	<td width="">
-				                        제목입니다.
-				                      </td>
-				                      <td width="">
-				                        2024-01-01
-				                      </td>
-				                      <td width="">
-				                        몰라
-				                      </td>
-				                    </tr>
+				                    
+				                    
 				                  </tbody>
 				                </table>
 				          			</div>
 				          		</div>
 				          	</div>
 			          	</div>
+			          	
+			          	<!--  학사일정 조회 -->
 			          	<div class="col-lg-6 d-flex align-items-strech">
 			          		<div class="card w-100">
-				          		<div class="card-body">
+				          		<div class="card-body" style="padding:10px;">
 				          			<div class="w-100 mb-3 d-flex justify-content-between">
-				          				<div><h4><b>공지사항</b></h4></div>
-				          				<div class="view_more"><b>더보기</b></div>
+				          				<!-- <div><h4><b>학사일정</b></h4></div> -->
+				          				<!-- <div class="view_more"><b></b></div> -->
 				          			</div>
-				          			<div class="w-100">
-				          				<table class="preview_table w-100 table text-nowrap mb-0 overflow-hidden table-hover">
-					                  <thead class="text-dark fs-4">
-					                    <tr>
-					                      <th width="40%">
-					                        <h6 class="fs-4 fw-semibold mb-0">제목</h6>
-					                      </th>
-					                      <th width="">
-					                        <h6 class="fs-4 fw-semibold mb-0">작성일</h6>
-					                      </th>
-					                      <th width="">
-					                        <h6 class="fs-4 fw-semibold mb-0">작성일</h6>
-					                      </th>
-					                    </tr>
-					                  </thead>
-					                  <tbody>
-					                    <tr>
-					                    	<td width="">
-					                        제목입니다.
-					                      </td>
-					                      <td width="">
-					                        2024-01-01
-					                      </td>
-					                      <td width="">
-					                        몰라
-					                      </td>
-					                    </tr>
-					                    <tr>
-					                    	<td width="">
-					                        제목입니다.
-					                      </td>
-					                      <td width="">
-					                        2024-01-01
-					                      </td>
-					                      <td width="">
-					                        몰라
-					                      </td>
-					                    </tr>
-					                    <tr>
-					                    	<td width="">
-					                        제목입니다.
-					                      </td>
-					                      <td width="">
-					                        2024-01-01
-					                      </td>
-					                      <td width="">
-					                        몰라
-					                      </td>
-					                    </tr>
-					                    <tr>
-					                    	<td width="">
-					                        제목입니다.
-					                      </td>
-					                      <td width="">
-					                        2024-01-01
-					                      </td>
-					                      <td width="">
-					                        몰라
-					                      </td>
-					                    </tr>
-					                    <tr>
-					                    	<td width="">
-					                        제목입니다.
-					                      </td>
-					                      <td width="">
-					                        2024-01-01
-					                      </td>
-					                      <td width="">
-					                        몰라
-					                      </td>
-					                    </tr>
-					                  </tbody>
-					                </table>
+                        
+				          			<div class="calender-sidebar app-calendar w-100" style="height: fit-content;">
+				          				<div id="calendar">
+
+                          </div>
 				          			</div>
+                        
 				          		</div>
 				          	</div>
 			          	</div>
@@ -830,80 +750,308 @@
         
         <!-- 출퇴근 부분 -->
         <script> 
-        $(document).ready(function(){
-        	ajaxAttend();
-        	
-        	
-            $("#checkInBtn").click(function(){
-            	const options = { hour12: false, timeZone: 'Asia/Seoul' };
-            	const currentTimeString = new Date().toLocaleTimeString('ko-KR', options);
-            	
-                $.ajax({
-                    url: "${contextPath}/member/checkin.do",
-                    type: "POST",
-                    data: {
-				  						startTime:currentTimeString,
-				  						memNo:${loginUser.memNo}
-				  					},
-                    success: function(result) {
-                        if(result == "SUCCESS") {
-                        	alert("출근되었습니다.");
-													ajaxAttend();
-                        } 
-                    }
-                    
-                })
-            })
-            
-            $("#checkOutBtn").click(function(){
-            	const registDate = new Date().toISOString().split('T')[0]; // 오늘 날짜만 추출
-                $.ajax({
-                    url: "${contextPath}/member/checkout.do",
-                    type: "POST",
-                    data: {
-					  						registDate:registDate,
+	        $(document).ready(function(){
+	        	ajaxAttend();
+	        	ajaxSelectTodoList();
+	        	ajaxSelectTodayReservationList();
+	        	ajaxSelectUnivCalList();
+	        	
+	        	
+	            $("#checkInBtn").click(function(){
+	            	const options = { hour12: false, timeZone: 'Asia/Seoul' };
+	            	const currentTimeString = new Date().toLocaleTimeString('ko-KR', options);
+	            	
+	                $.ajax({
+	                    url: "${contextPath}/member/checkin.do",
+	                    type: "POST",
+	                    data: {
+					  						startTime:currentTimeString,
 					  						memNo:${loginUser.memNo}
 					  					},
-                    success: function(result) {
-                        if(result == "SUCCESS") {
-                        	alert("퇴근되었습니다.");
-													ajaxAttend();
-                        } 
+	                    success: function(result) {
+	                        if(result == "SUCCESS") {
+	                        	alert("출근되었습니다.");
+														ajaxAttend();
+	                        } 
+	                    }
+	                    
+	                })
+	            })
+	            
+	            $("#checkOutBtn").click(function(){
+	            	const registDate = new Date().toISOString().split('T')[0]; // 오늘 날짜만 추출
+	                $.ajax({
+	                    url: "${contextPath}/member/checkout.do",
+	                    type: "POST",
+	                    data: {
+						  						registDate:registDate,
+						  						memNo:${loginUser.memNo}
+						  					},
+	                    success: function(result) {
+	                        if(result == "SUCCESS") {
+	                        	alert("퇴근되었습니다.");
+														ajaxAttend();
+	                        } 
+	                    }
+	                    
+	                })
+	            })
+	            
+	        }) // document.ready function 끝
+	        
+	        
+          function ajaxAttend(){
+          	const registDate = new Date().toISOString().split('T')[0]; // 오늘 날짜만 추출
+          	
+          	$.ajax({
+          		url:"${contextPath}/member/selectAttend.do",
+       			type:"get",
+       			data: {
+    						registDate:registDate,
+    						memNo:${loginUser.memNo}
+    					},
+       			success:function(result){
+       				
+       				 if(result.startTime) {
+                     $("#checkInTime").text(result.startTime);
+                     $("#checkInBtn").prop("disabled", true);
+                 }
+                 if(result.endTime) {
+                     $("#checkOutTime").text(result.endTime);
+                     $("#checkOutBtn").prop("disabled", true);
+                 }
+       			}
+       			
+          	})
+          	
+          }
+	        
+	        // 투두, 오늘의 시설예약, 학사일정
+	        let now = new Date();
+          let year = now.getFullYear();
+          let month = String(now.getMonth() + 1).padStart(2, '0');
+          let date = String(now.getDate()).padStart(2, '0');
+          let nowStr = year + "-" + month + "-" + date;
+          
+       		// 오늘 날짜에 해당하는 투두리스트 조회해오는 function
+          function ajaxSelectTodoList(){
+
+            $.ajax({
+              url:"${contextPath}/calendar/todoList.do",
+              type:"post",
+              data:{
+                tdlDate:nowStr
+              },
+              success:function(list){
+                console.log("조회 ajax실행");
+                
+                //$('.todo-body .todo-item').remove();
+                let todoBodyHtml =  $(".todo-body").html();
+                let todoItems = "";
+                let doneList = "";
+                console.log("list:", list);
+                if(list.length > 0){
+                	console.log(list);
+                  for(let i=0; i<list.length; i++){
+                    if(list[i].isCompleted == "N"){
+                      todoItems += "<div class='todo-item'>"
+                                 +   "<div class='form-check form-check-inline'>"
+                                 +      "<input class='form-check-input primary' type='checkbox' name='tdlNo' value='" + list[i].tdlNo + "'  onclick='checkTodoCompletion(this);'>"
+                                 +      "<span class='text' >" + list[i].tdlContent + "</span>"
+                                 +    "</div>"
+                                 + "</div>";
+                      
+                      
                     }
+                  }
+                  
+                  $(".todo-body").html( todoBodyHtml + todoItems);
+                }
+                
+                countTodoList();
+                
+              },error:function(){
+                console.log("투두리스트 조회용 ajax 통신 실패");
+              }
+            })
+          }
+       		
+          function countTodoList(){
+            let todoItemCount = $(".todo-body .todo-item").length;
+            
+            console.log("투두개수", todoItemCount);
+            $('.todo-body .no-todo-item').css("display", ( todoItemCount > 0 ? "none" : "block") );
+            
+          }
+          
+
+          // 체크박스 여부에 따라 상태값 변경하는 function
+          function checkTodoCompletion(chkbox){
+            const todoItem = chkbox.closest(".todo-item");
+            const isCompleted = "Y";
+            const tdlNo = chkbox.value;
+					
+						$.ajax({
+	         		url:"${contextPath}/calendar/toggleTodoStatus.do",
+	         		type:"post",
+	         		data:{
+	         			tdlNo:tdlNo,
+	         			isCompleted:isCompleted
+	         		},
+	         		success:function(result){
+	         			//console.log(result);
+	         			if(result == "SUCCESS"){
+	                 todoItem.remove();
+	               }else{
+	         				alert("완료여부 변경에 실패했습니다.");
+	               }
+	         			
+	         		},
+	         		error:function(){
+	         			console.log("투두리스트 체크용 ajax통신 실패");
+	         		}
+	         	})
+            countTodoList();
+						
+          }
+          
+       		// 오늘의 시설예약 조회용 ajax function
+          function ajaxSelectTodayReservationList(){
+            $.ajax({
+              url:"${contextPath}/reservation/todayReservationList.do",
+              type:"post",
+              data:{
+                revDate:nowStr
+              },
+              success:function(list){
+                
+                let tbody = "";
+                
+                if(list.length > 0){
+                  for(let i=0; i<list.length; i++){
+                    tbody += "<tr>"
+                           + "<td width='30%'>" + list[i].resNo + "</td>"
+    				               + "<td width=''>" + list[i].revDate + " " + list[i].startTime + " ~ " + list[i].endTime + "</td>"        
+				                   + "</tr>";   
+				                      
+                  }
+                }else{
+                  tbody += "<tr><td colspan='2'>오늘의 시설 예약 내역이 없습니다.</td></tr>";
+                }
+
+                $(".reservation_table tbody").html(tbody);
+              },
+              error:function(){
+                console.log("오늘 시설예약 조회용 ajax통신 실패");
+              }
+              
+
+            })
+          }
+	        
+       		// 학사일정 조회용 ajax
+          function ajaxSelectUnivCalList(){
+
+            let calList = new Array();
+            
+            $.ajax({
+              url:"${contextPath}/calendar/univCalList.do",
+              type:"post",
+              async:false,
+              data:{},
+              success:function(rep){
+                
+                console.log(rep);
+                
+                if(rep.length > 0){
+                  for(let i=0; i<rep.length; i++){
                     
-                })
+                    let isAllday = rep[i].isAllday;
+                    let startTimeStr = isAllday == 'N' ? rep[i].startDate.split(" ")[1] : '';
+                    let endTimeStr = isAllday == 'N' ? rep[i].endDate.split(" ")[1] : '';
+                    
+                    
+                    calList.push({
+                      id:rep[i].calNo,
+                      ctgNo:rep[i].ctg.ctgNo,
+                      title:rep[i].calTitle,
+                      start:new Date(rep[i].startDate),
+                      end:new Date(rep[i].endDate),
+                      startStr:rep[i].startDate, // 일정 상세조회용
+                      endStr:rep[i].endDate, // 일정 상세조회용
+                      stTime:startTimeStr, // 일정 수정용
+                      edTime:endTimeStr,	// 일정 수정용
+                      allDay:(rep[i].isAllday == 'Y' ? true : false),
+                      content:rep[i].calContent,
+                      color:rep[i].ctg.color,
+        
+                    })
+                  }
+                  
+                  console.log("calList",calList);
+                    
+                }
+                
+              },
+              error:function(){
+                console.log("일정 조회용 ajax 통신 실패");
+              }
+                        
             })
             
-            function ajaxAttend(){
-            	const registDate = new Date().toISOString().split('T')[0]; // 오늘 날짜만 추출
-            	
-            	$.ajax({
-            		url:"${contextPath}/member/selectAttend.do",
-	        			type:"get",
-	        			data: {
-      						registDate:registDate,
-      						memNo:${loginUser.memNo}
-      					},
-	        			success:function(result){
-	        				
-	        				 if(result.startTime) {
-                       $("#checkInTime").text(result.startTime);
-                       $("#checkInBtn").prop("disabled", true);
-                   }
-                   if(result.endTime) {
-                       $("#checkOutTime").text(result.endTime);
-                       $("#checkOutBtn").prop("disabled", true);
-                   }
-	        			}
-	        			
-            	})
-            	
-            }
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+              initialView: 'dayGridMonth',
+              googleCalendarApiKey: 'AIzaSyDcnW6WejpTOCffshGDDb4neIrXVUA1EAE',
+              headerToolbar: {
+                left: 'prevYear,prev,next,nextYear',
+                center: 'title',
+                right:'today'
+              },
+              nowIndicator: true, // 현재 시간 마크
+              timeZone:'local', // 우리나라 시간
+              locale: 'ko', // 한국어 설정
+              dayMaxEvents:true,
+              selectable: true,
+              selectMirror: true,
+              dateClick:function(){
+                  location.href="${contextPath}/calendar/univCalendar.page";
+              },
+              eventClick:function(){
+                location.href="${contextPath}/calendar/univCalendar.page";
+              },
+              events:calList,
+              eventDataTransform: function(event) {                                                                                                                                
+                if(event.allDay && event.start !== event.end) {                                                                                                                                               
+                  // 이벤트 데이터에서 end 날짜 값을 가져옴
+                  let end = new Date(event.end);
+
+                  // 하루를 더함
+                  end.setDate(end.getDate() + 1);
+
+                  event.end = end; 
+
+                  return event;  
+                                                                                                                                
+                }
+              }, 
+              eventSources: [ {
+                googleCalendarId: 'ko.south_korea#holiday@group.v.calendar.google.com',
+                classNames: 'holiday',
+                backgroundColor: 'white',
+                textColor: '#e63c09',
+                constraint: 'availableForMeeting'
+                }
+              ]
+              
+              
             
+            });
             
-            
-           
-        })
+            calendar.render();
+          }
+	        
+	        
     </script>
         
         

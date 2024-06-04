@@ -90,6 +90,12 @@ public class ReservationServiceImpl implements ReservationService {
 		return reservationDao.selectReservaionListByResNo(resNo);
 	}
 
+	// 오늘의 시설 예약 내역 조회
+	@Override
+	public List<ReservationDto> selectTodayFacilityReservationList(ReservationDto rev) {
+		return reservationDao.selectTodayFacilityReservationList(rev);
+	}
+
 	
 
 

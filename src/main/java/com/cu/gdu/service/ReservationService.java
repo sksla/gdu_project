@@ -42,6 +42,8 @@ public interface ReservationService {
 	// 시설 예약 내역 조회
 	List<ReservationDto> selectReservaionListByResNo(int resNo);
 	
+	// 오늘의 시설예약
+	List<ReservationDto> selectTodayFacilityReservationList(ReservationDto rev);
 	
 	
 	

@@ -93,6 +93,20 @@ public class ReservationController {
 		
 	}
 	
+	// 오늘의 시설예약 내역 조회
+	@ResponseBody
+	@PostMapping(value="/todayReservationList.do", produces="application/json; charset=utf-8")
+	public List<ReservationDto> selectTodayFacilityReservationList(ReservationDto rev, HttpSession session){
+		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
+		int memNo = loginUser.getMemNo();
+		
+		rev.setMemNo(String.valueOf(memNo));
+		
+		List<ReservationDto> list = new ArrayList<>();
+		list = reservationService.selectTodayFacilityReservationList(rev);
+		return list;
+	}
+	
 	
 	
 	// ===================================예약 목록==========================================
@@ -179,6 +193,8 @@ public class ReservationController {
 			return "FAIL";
 		}
 	}
+	
+	
 	
 	
 	

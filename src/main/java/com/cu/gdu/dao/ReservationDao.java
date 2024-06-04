@@ -96,6 +96,10 @@ public class ReservationDao {
 	}
 	
 	
+	// 마이페이지 오늘의 시설예약 조회
+	public List<ReservationDto> selectTodayFacilityReservationList(ReservationDto rev){
+		return sqlSessionTemplate.selectList("reservationMapper.selectTodayFacilityReservationList", rev);
+	}
 	
 	
 	

@@ -269,7 +269,23 @@
 		       
 	</select>
 	
-	
+	<!-- 메인페이지 오늘의 시설 예약 조회 -->
+	<select id="selectTodayFacilityReservationList" resultMap="reservationResult">
+		select
+		       rev_no
+		     , res_name
+		     , rev_date
+		     , start_time
+		     , end_time
+		  from reservation rev
+		  join resources res on (rev.res_no = res.res_no)
+		  where rev.status = '1'
+		    and rev.mem_no = #{memNo}
+		    and rev_date = #{revDate}
+		   
+		  order 
+		     by  to_date(rev_date, 'YYYY-MM-DD') desc      
+	</select>
 	
 
 
