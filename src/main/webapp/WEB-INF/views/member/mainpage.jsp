@@ -144,7 +144,27 @@
     .fc-scrollgrid-sync-table{font-size:12px;}
     .fc-event-title-container{height:15px;font-size:10px;}
     
+
     .board_title:hover, .app_doc_title:hover{cursor: pointer;}
+
+    /*알림 스타일*/
+    .alert-body{max-height: 360px; overflow-y:auto;}
+		.alert-item i{font-size:20px;}
+		.read-alert{background-color:#EEEEEE;}
+		.read-alert h6{color:#9E9E9E;}
+		.alert-item h6{width:210px; white-space:normal}
+		.alert-item p{font-size:10px;margin:auto}
+    
+    /* 스크롤바 스타일 */
+		.alert-body::-webkit-scrollbar {
+		  width: 8px;
+		  
+		}
+		.alert-body::-webkit-scrollbar-thumb {
+		  background-color: #EEEEEE;
+		  border-radius: 5px;
+   	}
+
 	</style>
 </head>
 

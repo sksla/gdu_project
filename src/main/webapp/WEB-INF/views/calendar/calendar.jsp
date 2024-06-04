@@ -1720,6 +1720,7 @@
 	           			$("#insert_share .selected_app_mem .mem_list input[name='rightLevel']").each(function(index, el){
 	           				$(el).attr("name", "shList[" + index + "].rightLevel");
 	           			});
+            		}
 	           			
 	           			$.ajax({
 	           				url:"${contextPath }/calendar/insertCtg.do",
@@ -1738,7 +1739,6 @@
 	           				
 	           			})
             			
-            		}
             		
             	
             	}else{

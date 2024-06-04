@@ -92,7 +92,9 @@
 		  $(".alert-title .new-alert-count").text(newItemCount + " new" );
 		  console.log("alertitem 개수 : ", alertItemCount);
 		  
-		  $(".alert-body .no-alert-item").css("display", (alertItemCount > 0 ? "none" : "block"));
+		  $(".alert-body>.no-alert-item").css("display", (alertItemCount > 0 ? "none" : "block"));
+			console.log($(".alert-body .no-alert-item"));
+		  console.log("실행되나?");
 		  $(".alert-area #delAllAlertBtn").prop("disabled", (alertItemCount > 0 ? false : true));
 
 		}
@@ -131,7 +133,7 @@
 		}
 		
 		// 클릭시 읽음 처리하는 function
-		function ajaxUpdateAlertReadStatus(alertNo, alertLink){
+		function ajaxUpdateAlertReadStatus(alertNo, alertLink, $aEl){
 		  $alertItem = $aEl.closest(".alert-item");
 			
 		  if($alertItem.hasClass("read-alert")){

@@ -557,7 +557,7 @@
           																				 : "예약 내역을 삭제하시겠습니까?\n(삭제 후 복구 불가합니다.)";
           		
           		if(now >= startDateTime && now <= endDateTime){
-          			alert("현재 예약이 진행중이므로 취소하실 수 없습니다./n예약이 종료된 후 해당 예약내역을 삭제해주세요.");
+          			alert("현재 예약이 진행중이므로 취소하실 수 없습니다.\n예약이 종료된 후 해당 예약내역을 삭제해주세요.");
           		}else if(confirm(confirmMsg)){
           			$.ajax({
           				url:"${contextPath}/reservation/deleteReservation.do",
