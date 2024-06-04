@@ -61,8 +61,8 @@
                
                 <form action="${ contextPath }/member/login.do" method="post">
                   <div class="mb-3">
-                    <label for="memNo" class="form-label">UserNo</label>
-                    <input type="text" class="form-control" id="memNo" name="memNo" required placeholder="Enter No">
+                    <label for="memNo" class="form-label">UserId</label>
+                    <input type="text" class="form-control" id="memId" name="memId" required placeholder="Enter No">
                   </div>
                   <div class="mb-4">
                     <label for="InputPassword" class="form-label">Password</label>
@@ -75,12 +75,14 @@
                         Remeber this Device
                       </label>
                     </div>
+                    <!-- 
                     <div>
                       <input class="form-check-input primary" type="checkbox" value=""  checked>
                       <label class="form-check-label text-dark fs-3" for="flexCheckChecked">
                         자동로그인
                       </label>
                     </div>
+                    -->
                     
                   </div>
                   <button type="submit" class="btn btn-primary w-100 py-8 mb-4 rounded-2">Sign In</button>
