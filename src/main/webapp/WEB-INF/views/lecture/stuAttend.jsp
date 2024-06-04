@@ -325,12 +325,12 @@
 									if(result.length > 0){
 										
 										for(let i=0; i<result.length; i++){
-											
+											var j = Math.min(Math.max(1, i + 1), 8); // i 값을 최소 1에서 최대 8로 제한
 											
 											tbody  += "<tr>"
 															+ 	"<td height='50px'>" + "<input type='checkbox' class='checkOne' name='checkOne' id='CheckOnebox' value='" + i + "'>" + "</td>"
 															+ 	"<td><input type='hidden' name='stuAttendList[" + i + "].lecNo' value='" + result[i].lecNo + "'><p class='mb-0 fw-normal fs-4'>" + (i + 1) + "</p></td>"
-															+ 	"<td><p class='mb-0 fw-normal fs-4'>" + result[i].사진 + "</p></td>"
+															+ 	"<td><p class='mb-0 fw-normal fs-4'>" + "<img src='/gdu/assets/images/profile/user-" + j + ".jpg' class='rounded-circle' width='35' height='35'alt='' />" + "</p></td>"
 															+ 	"<td><input type='hidden' name='stuAttendList[" + i + "].majorNo' value='" + result[i].majorNo +"'><p class='mb-0 fw-normal fs-4'>" + result[i].majorName + "</p></td>" 
 															+ 	"<td><input type='hidden' name='stuAttendList[" + i + "].stuNo' value='" + result[i].stuNo+"'><p class='mb-0 fw-normal fs-4'>" + result[i].stuNo + "</p></td>"													
 															+ 	"<td><p class='mb-0 fw-normal fs-4'>" + result[i].stuName + "</p></td>"             
