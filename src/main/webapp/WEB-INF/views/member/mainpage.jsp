@@ -154,14 +154,16 @@
          
                   
                   <!-- --- 관리자일때만 보이는 버튼 (톱니바퀴)---------------------------- -->
-                  <li class="nav-item">
-                    <a class="nav-link nav-icon-hover admin" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
-                      aria-expanded="false">
-                      <span>
-                        <i class="ti ti-settings"></i>
-                      </span>
-                    </a>
-                  </li>
+                  <c:if test="${not empty loginUser and loginUser.jobNo eq '행정관리'}">
+	                  <li class="nav-item">
+	                    <a class="nav-link nav-icon-hover admin" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
+	                      aria-expanded="false">
+	                      <span>
+	                        <i class="ti ti-settings"></i>
+	                      </span>
+	                    </a>
+	                  </li>
+                  </c:if>
                   <!-- ------------------------------- -->
                   <!-- ---------조직도 버튼------------- -->
                   <li class="nav-item">
