@@ -145,22 +145,22 @@
                                 <div class="mb-4 row align-items-center">
                                   <label for="exampleInputText17" class="form-label fw-semibold col-sm-3 col-form-label">사번</label>
                                   <div class="col-sm-9">
-                                    <input class="form-control" type="text" name="memNo" value="${ loginUser.memNo }" readonly />
+                                    <input class="form-control" type="text" name="memN" value="${ loginUser.memNo }" disabled />
+                                    <input class="form-control" type="hidden" name="memNo" value="${ loginUser.memNo }" readonly />
                                 </div>
                                 </div>
                                 <div class="mb-4 row align-items-center">
                                   <label for="exampleInputSelect4"
                                     class="form-label fw-semibold col-sm-3 col-form-label">이름</label>
                                   <div class="col-sm-9">
-                                    <input class="form-control" type="text" name="memName" value="${ loginUser.memName }"
-                                       />
+                                    <input class="form-control" type="text" name="memName" value="${ loginUser.memName }" disabled />
                                   </div>
                                 </div>
                                 <div class="mb-4 row align-items-center">
                                   <label for="startDate3" class="form-label fw-semibold col-sm-3 col-form-label">학과</label>
                                   <div class="col-sm-9">
                                     <div class="input-group">
-                                        <input class="form-control" type="text" name="majorNo" value="${ loginUser.majorNo }" readonly />
+                                        <input class="form-control" type="text" name="majorNo" value="${ loginUser.majorNo }" disabled />
                                     </div>
                                   </div>
                                 </div>
@@ -168,7 +168,7 @@
                                     <label for="startDate3" class="form-label fw-semibold col-sm-3 col-form-label">직급</label>
                                     <div class="col-sm-9">
                                       <div class="input-group">
-                                        <input class="form-control" type="text" name="jobNo" value="${ loginUser.jobNo }" readonly/>
+                                        <input class="form-control" type="text" name="jobNo" value="${ loginUser.jobNo }" disabled/>
                                       </div>
                                     </div>
                                 </div>
@@ -176,8 +176,10 @@
                                     <label for="exampleInputSelect4"
                                       class="form-label fw-semibold col-sm-3 col-form-label">아이디</label>
                                     <div class="col-sm-9">
-                                        <input class="form-control" type="text" name="memId" value="${ loginUser.memId }"
-                                        id="example-email-input" readonly />
+                                        <input class="form-control" type="text" name="" value="${ loginUser.memId }"
+                                         disabled />
+                                        <input class="form-control" type="hidden" name="memId" value="${ loginUser.memId }"
+                                        id="example-email-input"  />
                                     </div>
                                 </div>
                                 <div class="mb-4 row align-items-center">
@@ -185,7 +187,7 @@
                                       class="form-label fw-semibold col-sm-3 col-form-label">전화번호</label>
                                     <div class="col-sm-9">
                                         <input class="form-control" type="tel" name="phone" value="${ loginUser.phone }"
-                                            id="example-tel-input" oninput="addHyphen(this)" />
+                                            id="example-tel-input" oninput="addHyphen(this)"  maxlength="13"/>
                                     </div>
                                 </div>
                                 <div class="mb-4 row align-items-center">
@@ -212,14 +214,14 @@
                                   <label for="exampleInputText18" class="form-label fw-semibold col-sm-3 col-form-label">생년월일
                                     </label>
                                   <div class="col-sm-9">
-                                    <input type="text" class="form-control" value="${ loginUser.birth }" readonly>
+                                    <input type="text" class="form-control" value="${ loginUser.birth }" disabled>
                                  </div>
                                 </div>
                                 <div class="mb-4 row align-items-center">
                                     <label for="exampleInputText18" class="form-label fw-semibold col-sm-3 col-form-label">입사일
                                       </label>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control" value="${ loginUser.hireDate }" readonly>
+                                        <input type="text" class="form-control" value="${ loginUser.hireDate }" disabled>
                                     </div>
                                 </div>
                                 <!-- 퇴사일 null아닐경우에만 보여지게 조건처리  -->
@@ -247,16 +249,7 @@
                                         />
                                    </c:if>
                                         <input class="form-control form-control-sm" id="formFileSm" name="signUrl" type="file" style="display: none;">
-                                        <button type="button" id="createSign" class="btn btn-success rounded-pill px-4 createSign" data-bs-toggle="modal" data-bs-target="#canvasModal">
-                                           <c:choose>
-																			        <c:when test="${not empty loginUser.signUrl}">
-																			            서명변경
-																			        </c:when>
-																			        <c:otherwise>
-																			            서명만들기
-																			        </c:otherwise>
-																			    	</c:choose>
-                                        </button>
+                                        
                                     </div>
                                     <!-- 캔버스 모달 ------------>
                                     <div class="mb-3 row" id="canvasModal">
@@ -270,6 +263,22 @@
                                         </div>
                                      </div>
 																		<!-- 캔버스모달 끝 -------- -->
+                                </div>
+                                
+                                 <div class="mb-4 row align-items-center">
+                                    
+                                    <div class="col-sm-9">
+                                        <button type="button" id="createSign" class="btn btn-success  px-4 createSign" data-bs-toggle="modal" data-bs-target="#canvasModal">
+                                           <c:choose>
+																			        <c:when test="${not empty loginUser.signUrl}">
+																			            서명변경
+																			        </c:when>
+																			        <c:otherwise>
+																			            서명만들기
+																			        </c:otherwise>
+																			    	</c:choose>
+                                        </button>
+                                    </div>
                                 </div>
 
                               </div>
@@ -288,9 +297,11 @@
                             비밀번호변경
                           </button>
                           <button type="submit" class="btn btn-primary px-4 ms-6">submit</button>
+                          <!--  
                           <button type="button" class="btn bg-danger-subtle text-danger  px-4 ms-6">
                             Cancel
                           </button>
+                          -->
                         </div>
                       </div>
 
