@@ -473,6 +473,7 @@
                       <li class="breadcrumb-item">
                         <a class="text-muted text-decoration-none" href="${ contextPath }/member/mainpage">Home</a>
                       </li>
+                      <li class="breadcrumb-item" aria-current="page">조직도</li>
                     </ol>
                   </nav>
                 </div>
@@ -500,7 +501,7 @@
 													<c:forEach var="m" items="${majorList}">
 														<c:if test="${m.colNo == '1'}">
 			                        <li class="majorName" onclick="majorMemberList(1, '${m.majorNo}', '${m.majorName}');" >
-		                          	<a>${m.majorName}</a>
+		                          	<a class="majorNameList">${m.majorName}</a>
 		                          	<input type="hidden" value="${m.majorNo}" class="hiddenNo">
 			                        </li>
 		                        </c:if>
@@ -513,7 +514,7 @@
 													<c:forEach var="m" items="${majorList}">
 														<c:if test="${m.colNo == '2'}">
 			                        <li class="majorName" onclick="majorMemberList(1, '${m.majorNo}', '${m.majorName}');">
-		                          	<a>${m.majorName}</a>
+		                          	<a class="majorNameList">${m.majorName}</a>
 		                          	<input type="hidden" value="${m.majorNo}" class="hiddenNo">
 			                        </li>
 		                        </c:if>
@@ -526,7 +527,7 @@
 													<c:forEach var="m" items="${majorList}">
 														<c:if test="${m.colNo == '3'}">
 			                        <li class="majorName" onclick="majorMemberList(1, '${m.majorNo}', '${m.majorName}');">
-		                          	<a>${m.majorName}</a>
+		                          	<a class="majorNameList">${m.majorName}</a>
 		                          	<input type="hidden" value="${m.majorNo}" class="hiddenNo">
 			                        </li>
 		                        </c:if>
@@ -554,6 +555,7 @@
 					    	// 학과 직원 ajax 검색 함수 요청
 					    	function majorMemberList(page, majorNo, majorName){
 					    		currentPage = 0;
+
 					    		if(currentMajorNo != majorNo){
 					    			majorMemberSelect(page, majorNo, majorName);
 					    			currentMajorNo = majorNo;
