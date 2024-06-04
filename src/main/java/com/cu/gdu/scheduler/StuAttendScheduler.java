@@ -17,13 +17,13 @@ import lombok.extern.slf4j.Slf4j;
 public class StuAttendScheduler {
 	
 	private final LectureService lectureService;
-	
-	@Scheduled(cron="0 05 1 * * *")	
+	/*
+	@Scheduled(cron="0 0 0 * * *")	
 	public void execute1() {
 		
 		String str =new SimpleDateFormat("E").format(new Date());
 		int result = lectureService.insertStuList(str);
 		log.debug(str);
 
-	   }
+	   }*/
 }
