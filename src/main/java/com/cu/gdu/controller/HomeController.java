@@ -7,7 +7,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.cu.gdu.dto.MemberDto;
+import com.cu.gdu.dto.PageInfoDto;
 import com.cu.gdu.service.ApprovalService;
+import com.cu.gdu.service.BoardService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -15,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class HomeController {
 	private final ApprovalService approvalService;
+	private final BoardService boardService;
 
 	// 메인페이지
 	@GetMapping(value= {"/", "/main.page"})
@@ -24,6 +27,10 @@ public class HomeController {
 			return "main";
 		}else{
 			model.addAttribute("appDocList", approvalService.selectSampleOngoingDocList(5, loginUser.getMemNo()));
+			PageInfoDto pi = PageInfoDto.builder().boardLimit(5)
+												  .currentPage(1)
+												  .build();
+			model.addAttribute("boardList", boardService.selectBoardList(pi, "N"));
 			
 			return "member/mainpage";
 		}
