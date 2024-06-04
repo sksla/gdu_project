@@ -164,7 +164,9 @@
               		</button>
               	</c:if>
               </span>
+              <!-- 
               <a href="" class="btn btn-outline-secondary me-1 mb-1 px-4 fs-4">인쇄 미리보기</a>
+               -->
             </div>
             
             <div class="form-with-tabs">
@@ -544,26 +546,36 @@
               </div>
             </div>
              -->
-            <form class="input-group mb-3">
-              <div class="col-3">
-                <div class="input-group">
-                  <input type="text" class="form-control" id="search_box" placeholder="이름/부서명을 입력하세요." aria-label="Recipient's username" aria-describedby="basic-addon2">
-                </div>
-              </div>
-              <span class="mx-2">
-                <div class="custom-control py-2 custom-radio">
-                  <input type="radio" id="customRadio1" name="searchRadio" value="name"
-                  			checked class="form-check-input searchRadio" />
-                  <label class="form-check-label" for="customRadio1">직원이름으로 검색</label>
-                </div>
-              </span>
-              <span class="mx-2">
-                <div class="custom-control py-2 custom-radio">
-                  <input type="radio" id="customRadio2" name="searchRadio" value="major" class="form-check-input searchRadio" />
-                  <label class="form-check-label" for="customRadio2">학과명으로 검색</label>
-                </div>
-              </span>
-            </form>
+            <div class="d-flex justify-content-between">
+	            <form class="input-group mb-3">
+	              <div class="col-4">
+	                <div class="input-group">
+	                  <input type="text" class="form-control" id="search_box" placeholder="이름/부서명을 입력하세요." aria-label="Recipient's username" aria-describedby="basic-addon2">
+	                </div>
+	              </div>
+	              <span class="mx-2">
+	                <div class="custom-control py-2 custom-radio">
+	                  <input type="radio" id="customRadio1" name="searchRadio" value="name"
+	                  			checked class="form-check-input searchRadio" />
+	                  <label class="form-check-label" for="customRadio1">직원이름으로 검색</label>
+	                </div>
+	              </span>
+	              <span class="mx-2">
+	                <div class="custom-control py-2 custom-radio">
+	                  <input type="radio" id="customRadio2" name="searchRadio" value="major" class="form-check-input searchRadio" />
+	                  <label class="form-check-label" for="customRadio2">학과명으로 검색</label>
+	                </div>
+	              </span>
+	            </form>
+	            <div class="col-4 mb-3">
+		            <select class="form-select" id="selectmyLine" aria-label="Default select example">
+		            	<option value="0" selected>자주쓰는 결재선</option>
+		              <c:forEach var="myLine" items="${myLineList}">
+		             		<option value="${myLine.lineNo}">${myLine.lineTitle}</option>
+		             	</c:forEach>
+		            </select>
+	            </div>
+            </div>
             <div class="d-flex flex-row">
             	<div class="me-2 list_box_wrap">
             		<div class="my-1 text-end" style="height: 35px"></div>
@@ -585,7 +597,7 @@
               </div>
               <div class="selected_app_mem list_box_wrap">
               	<div class="my-1" style="display: block; height: 35px; text-align:right;">
-              		<button class="btn btn-light fw-semibold" onclick="resetEnrollLineModal();">초기화</button>
+              		<button class="btn btn-light fw-semibold" onclick="resetEnrollLineModal(0);">초기화</button>
               	</div>
                 <div style="height: 220px; margin-bottom: 10px;">
                   <div class="app_mem_etc">
@@ -774,6 +786,51 @@
         		}
          	}
         }
+    		
+    		// 자주쓰는 결재선 선택
+    		$("#selectmyLine").on("change", function(){
+    			console.log($(this).val());
+    			resetEnrollLineModal();
+    			let $lineNo = $(this).val();
+					$.ajax({
+						url: "${contextPath}/approval/modifyPage.do",
+						data: {no: $lineNo},
+						method: "post",
+						success: function(result){
+							// 협조자 추가
+							if(result.collaboratorList != null){
+								for(let collaborator of result.collaboratorList){
+									let $collaborator = $("<div>" + collaborator.memName + " (" + collaborator.majorNo + ", " + collaborator.jobNo + ")" + "</div>");
+									$collaborator.addClass("selected_collaborator")
+									$collaborator.append("<span class='hide'>" + collaborator.memNo + "</span>")
+													 		 .append("<span class='hide'>" + collaborator.majorNo + "</span>")
+													 		 .append("<span class='hide'>" + collaborator.jobNo + "</span>")
+													 		 .append("<span class='hide'>" + collaborator.memName + "</span>");
+			       			$(".app_collaborator>.mem_list").append($collaborator);
+								}
+							}
+							// 결재자 추가
+							let $approver = $("<div>" + result.approver.memName + " (" + result.approver.majorNo + ", " + result.approver.jobNo + ")" + "</div>");
+							$approver.addClass("selected_approver")
+							$approver.append("<span class='hide'>" + result.approver.memNo + "</span>")
+											 .append("<span class='hide'>" + result.approver.majorNo + "</span>")
+											 .append("<span class='hide'>" + result.approver.jobNo + "</span>")
+											 .append("<span class='hide'>" + result.approver.memName + "</span>");
+	       			$(".app_approver>.mem_list").append($approver);
+							// 수신자 추가
+	       			let $receiver = $("<div>" + result.receiver.memName + " (" + result.receiver.majorNo + ", " + result.receiver.jobNo + ")" + "</div>");
+	       			$receiver.addClass("selected_receiver")
+							$receiver.append("<span class='hide'>" + result.receiver.memNo + "</span>")
+											 .append("<span class='hide'>" + result.receiver.majorNo + "</span>")
+											 .append("<span class='hide'>" + result.receiver.jobNo + "</span>")
+											 .append("<span class='hide'>" + result.receiver.memName + "</span>");
+	       			$(".app_receiver>.mem_list").append($receiver);
+						},
+						error: function(){
+							console.log()
+						}
+					})
+    		})
     		// **************************************************************
     		
     		// 업로드 파일 목록 표시
@@ -980,11 +1037,14 @@
     	}
     	
     	// 결재선 등록 모달 초기화
-     	function resetEnrollLineModal(){
+     	function resetEnrollLineModal(type){
      		createMajorList("");
-         	$(".mem_list").each(function(index, el){
-         		$(el).empty();
-         	})
+      	$(".mem_list").each(function(index, el){
+      		$(el).empty();
+      	})
+       	if(type === 0){
+	       	$("#selectmyLine").val(0);
+       	}
      	}
     	
     	// 선택한 결재선 적용
@@ -1055,7 +1115,7 @@
     				$(".receiver").eq(i).text("-");
     			}
     		}
-    		resetEnrollLineModal();
+    		resetEnrollLineModal(0);
     		$("#app_line_modal").modal("hide");
     	}
     	// *****************************************************************

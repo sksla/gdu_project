@@ -135,7 +135,9 @@
                 <button onclick="return enrollAppForm(1);" class="btn btn-info me-1 mb-1 px-4 fs-4">기안하기</button>
                 <button onclick="return enrollAppForm(2);" class="btn btn-light mx-2 mb-1 px-4 fs-4">임시저장</button>
               </span>
+              <!-- 
               <a href="" class="btn btn-outline-secondary me-1 mb-1 px-4 fs-4">인쇄 미리보기</a>
+               -->
             </div>
             
             <div class="form-with-tabs">
@@ -401,7 +403,7 @@
 	            </form>
 	            <div class="col-4 mb-3">
 		            <select class="form-select" id="selectmyLine" aria-label="Default select example">
-		            	<option value="0" disabled selected>자주쓰는 결재선</option>
+		            	<option value="0" selected>자주쓰는 결재선</option>
 		              <c:forEach var="myLine" items="${myLineList}">
 		             		<option value="${myLine.lineNo}">${myLine.lineTitle}</option>
 		             	</c:forEach>
@@ -429,7 +431,7 @@
               </div>
               <div class="selected_app_mem list_box_wrap">
               	<div class="my-1" style="display: block; height: 35px; text-align:right;">
-              		<button class="btn btn-light fw-semibold" onclick="resetEnrollLineModal();">초기화</button>
+              		<button class="btn btn-light fw-semibold" onclick="resetEnrollLineModal(0);">초기화</button>
               	</div>
                 <div style="height: 220px; margin-bottom: 10px;">
                   <div class="app_mem_etc">
@@ -823,11 +825,14 @@
     	}
     	
     	// 결재선 등록 모달 초기화
-     	function resetEnrollLineModal(){
+     	function resetEnrollLineModal(type){
      		createMajorList("");
-         	$(".mem_list").each(function(index, el){
-         		$(el).empty();
-         	})
+       	$(".mem_list").each(function(index, el){
+       		$(el).empty();
+       	})
+       	if(type === 0){
+	       	$("#selectmyLine").val(0);
+       	}
      	}
     	
     	// 선택한 결재선 적용
@@ -875,7 +880,7 @@
     			for(let i=1; i<=$(".approver").length-1; i++){
     				$(".approver").eq(i).text( $selectedApproverProp.eq(i).text() );
     			}
-    			$("#appForm").append('<input type="text" name="approverNo" value="' + $selectedApproverProp.eq(0).text() + '">');
+    			$("#appForm").append('<input type="hidden" name="approverNo" value="' + $selectedApproverProp.eq(0).text() + '">');
     		}else{
     			for(let i=0; i<$(".approver").length; i++){
     				$(".approver").eq(i).text("-");  
@@ -892,13 +897,13 @@
     			for(let i=1; i<=$(".receiver").length-1; i++){
     				$(".receiver").eq(i).text( $selectedReceiverProp.eq(i).text() );    				
     			}
-    			$("#appForm").append('<input type="text" name="receiverNo" value="' + $selectedReceiverProp.eq(0).text() + '">');
+    			$("#appForm").append('<input type="hidden" name="receiverNo" value="' + $selectedReceiverProp.eq(0).text() + '">');
     		}else{
     			for(let i=0; i<$(".receiver").length; i++){
     				$(".receiver").eq(i).text("-");
     			}
     		}
-    		resetEnrollLineModal();
+    		resetEnrollLineModal(0);
     		$("#app_line_modal").modal("hide");
     	}
     	// *****************************************************************

@@ -235,11 +235,17 @@
        																												+ "&endDate=" + $endDate;
        	})
        	
+       	// 날짜로 검색
        	$(".dateSearch").on("click", function(){
-       		$(".date_form").append("<input type='hidden' name='category' value='" + $category + "'>")
-												 .append("<input type='hidden' name='status' value='" + $status + "'>")
-												 .append("<input type='hidden' name='search' value='" + $search + "'>")
-												 .append("<input type='hidden' name='searchType' value='" + $searchType + "'>")
+       		if($("input[name='startDate']").val() > $("input[name='endDate']").val()){
+       			alert('종료 날짜보다 시작 날짜가 작아야합니다.');
+       			return false;
+       		}else{
+	       		$(".date_form").append("<input type='hidden' name='category' value='" + $category + "'>")
+													 .append("<input type='hidden' name='status' value='" + $status + "'>")
+													 .append("<input type='hidden' name='search' value='" + $search + "'>")
+													 .append("<input type='hidden' name='searchType' value='" + $searchType + "'>")
+       		}
        	})
        	
        	// post 방식으로 이동

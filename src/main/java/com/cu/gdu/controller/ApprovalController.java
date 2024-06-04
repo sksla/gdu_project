@@ -214,7 +214,7 @@ public class ApprovalController {
 	@PostMapping("/enroll.do")
 	public String enrollApproval(ApprovalDocDto appDoc,
 								 @RequestParam(value="approverNo", defaultValue="0")int approverNo, 
-								 @RequestParam(value="approverNo", defaultValue="0")int receiverNo,
+								 @RequestParam(value="receiverNo", defaultValue="0")int receiverNo,
 								 String[] collaboratorNo,
 								 List<MultipartFile> uploadFiles,
 								 HttpSession session,
@@ -234,8 +234,6 @@ public class ApprovalController {
 			}
 		}
 		appDoc.setAttachList(attachList);
-		log.debug("approverNo : {}", approverNo);
-		log.debug("approverNo : {}", receiverNo);
 		int result = approvalService.insertApp(appDoc, approverNo, receiverNo, collaboratorNo);
 		if(result > 0) {
 			redirectAttributes.addFlashAttribute("alertMsg"
@@ -447,10 +445,11 @@ public class ApprovalController {
 	}
 	
 	@GetMapping("/modifyPage.do")
-	public String appModifyPage(int no, Model model) {
+	public String appModifyPage(int no, Model model, HttpSession session) {
 		
 		model.addAttribute("appCategories", approvalService.selectAppCategory());
 		model.addAttribute("docInfo", approvalService.selectAppDoc(no));
+		model.addAttribute("myLineList", approvalService.selectMyAppLine( ((MemberDto)session.getAttribute("loginUser")).getMemNo() ));
 		
 		Map<String, Integer> map = new HashMap<>();
 		
