@@ -875,7 +875,7 @@
     			for(let i=1; i<=$(".approver").length-1; i++){
     				$(".approver").eq(i).text( $selectedApproverProp.eq(i).text() );
     			}
-    			$("#appForm").append('<input type="hidden" name="approverNo" value="' + $selectedApproverProp.eq(0).text() + '">');
+    			$("#appForm").append('<input type="text" name="approverNo" value="' + $selectedApproverProp.eq(0).text() + '">');
     		}else{
     			for(let i=0; i<$(".approver").length; i++){
     				$(".approver").eq(i).text("-");  
@@ -892,7 +892,7 @@
     			for(let i=1; i<=$(".receiver").length-1; i++){
     				$(".receiver").eq(i).text( $selectedReceiverProp.eq(i).text() );    				
     			}
-    			$("#appForm").append('<input type="hidden" name="receiverNo" value="' + $selectedReceiverProp.eq(0).text() + '">');
+    			$("#appForm").append('<input type="text" name="receiverNo" value="' + $selectedReceiverProp.eq(0).text() + '">');
     		}else{
     			for(let i=0; i<$(".receiver").length; i++){
     				$(".receiver").eq(i).text("-");

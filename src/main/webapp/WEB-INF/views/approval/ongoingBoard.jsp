@@ -226,6 +226,7 @@
     		$("input[name='startDate']").val($startDate);
     		$("input[name='endDate']").val($endDate);
     		
+    		// 분류 검색
     		$(".selectGroupping").on("change", function(){
        		$category = $("#selectCategory").val();
        		$status = $("#selectStatus").val();
@@ -236,10 +237,16 @@
        																												+ "&endDate=" + $endDate;
        	})
        	
+       	// 날짜 검색
        	$(".dateSearch").on("click", function(){
-       		$(".date_form").append("<input type='hidden' name='category' value='" + $category + "'>")
-												 .append("<input type='hidden' name='status' value='" + $status + "'>")
-												 .append("<input type='hidden' name='search' value='" + $search + "'>")
+       		if($("input[name='startDate']").val() > $("input[name='endDate']").val()){
+       			alert('종료 날짜보다 시작 날짜가 작아야합니다.');
+       			return false;
+       		}else{
+         		$(".date_form").append("<input type='hidden' name='category' value='" + $category + "'>")
+  												 .append("<input type='hidden' name='status' value='" + $status + "'>")
+  												 .append("<input type='hidden' name='search' value='" + $search + "'>");
+       		}
        	})
        	
        	// post 방식으로 이동
@@ -255,6 +262,7 @@
         
     	})
 
+    	// 검색어로 검색
       function valSearch(){
   			if($(".search_form input").val() == ""){
   				alert("검색어를 입력해주세요.");
