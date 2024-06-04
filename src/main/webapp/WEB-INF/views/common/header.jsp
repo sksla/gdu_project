@@ -78,7 +78,7 @@
 	      </ul>
 	
 	      <div class="d-block d-lg-none">
-	        <a href="./main/index.html" class="text-nowrap logo-img">
+	        <a href="${ contextPath }/member/mainpage" class="text-nowrap logo-img">
 	          <img src="${ contextPath }/assets/images/logos/dark-logo.svg" class="dark-logo" alt="Logo-Dark" />
 	          <img src="${ contextPath }/assets/images/logos/light-logo.svg" class="light-logo" alt="Logo-light" />
 	        </a>
