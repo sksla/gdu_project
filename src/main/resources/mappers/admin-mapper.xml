@@ -1163,6 +1163,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				, resources.res_name
 				, resources.res_type
 				, major_name
+				, rev_count
 		 from reservation
 		 left join member on (member.mem_no = reservation.mem_no)
 		 left join resources on (resources.res_no = reservation.res_no)

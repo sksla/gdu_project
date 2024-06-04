@@ -324,7 +324,7 @@
 			                </c:forEach>
 			                
 			                <li class="page-item ${pi.currentPage==pi.maxPage ? 'disabled' : ''}">
-			                  <a class="page-link link" href="${contextPath}/adminadminResourceList.page?page=${pi.currentPage+1}" aria-label="Next">
+			                  <a class="page-link link" href="${contextPath}/admin/adminResourceList.page?page=${pi.currentPage+1}" aria-label="Next">
 			                    <span aria-hidden="true">
 			                      <i class="ti ti-chevrons-right fs-4"></i>
 			                    </span>

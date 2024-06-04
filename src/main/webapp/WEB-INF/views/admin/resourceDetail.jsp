@@ -112,9 +112,18 @@
                   			<h5>${r.resName}를(을) 사용한 기록이 없습니다.</h5><br>
                   		</c:when>
                   		<c:otherwise>
-		                  	<c:forEach var="re" items="${reserList}">
-			                    <h5>-${re.memNo} / ${re.memberList[0].majorNo} / ${re.revDate} (${re.startTime}시 ~ ${re.endTime}시)</h5><br>
-		                    </c:forEach>
+                  			<c:choose>
+                  				<c:when test="${r.resType == '비품'}">
+                  					<c:forEach var="reser" items="${reserList}">
+                  						<h5>-${reser.memNo} / ${reser.memberList[0].majorNo} / ${reser.revDate}</h5><br>
+                  					</c:forEach>
+                  				</c:when>
+                  				<c:otherwise>
+				                  	<c:forEach var="re" items="${reserList}">
+					                    <h5>-${re.memNo} / ${re.memberList[0].majorNo} / ${re.revDate} (${re.startTime}시 ~ ${re.endTime}시)</h5><br>
+				                    </c:forEach>
+                  				</c:otherwise>
+                  			</c:choose>
                   		</c:otherwise>
                   	</c:choose>
                   </div>
