@@ -58,7 +58,7 @@ public class MemberController {
 			redirectAttributes.addFlashAttribute("alertMsg", "로그인 실패하였습니다. 아이디 및 비밀번호를 다시 확인해주세요.");
 			redirectAttributes.addFlashAttribute("historyBackYN", "Y");
 		}
-		return "redirect:/member/mainpage";
+		return "redirect:/main.page";
 	}
 	
 	@RequestMapping("/signout.do")
@@ -66,12 +66,6 @@ public class MemberController {
 		session.invalidate();
 		return "redirect:/";
 	}
-	
-	// * 메인페이지 -------------------------------
-	@GetMapping("/mainpage")
-    public String showMainPage() {
-        return "member/mainpage"; 
-    }
 	
 	// * 마이페이지 관련 -------------------------
 	@GetMapping("/mypage.page")
