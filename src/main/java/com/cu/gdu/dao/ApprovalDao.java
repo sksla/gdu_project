@@ -214,5 +214,10 @@ public class ApprovalDao {
 	public int updateAppDocContent(ApprovalDocDto appDoc) {
 		return sqlSessionTemplate.update("approvalMapper.updateAppDocContent", appDoc);
 	}
+
+	public List<ApprovalDocDto> selectSampleOngoingDocList(int boardLimit, int loginUserNo) {
+		RowBounds rowBounds = new RowBounds(0, boardLimit);
+		return sqlSessionTemplate.selectList("approvalMapper.selectSampleOngoingDocList", loginUserNo, rowBounds);
+	}
 	
 }

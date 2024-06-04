@@ -328,6 +328,11 @@ public class ApprovalServiceImpl implements ApprovalService {
 		return approvalDao.selectAppLineList(map);
 	}
 
+	@Override
+	public List<ApprovalDocDto> selectSampleOngoingDocList(int boardLimit, int loginUserNo) {
+		return approvalDao.selectSampleOngoingDocList(boardLimit, loginUserNo);
+	}
+
 	
 	
 }

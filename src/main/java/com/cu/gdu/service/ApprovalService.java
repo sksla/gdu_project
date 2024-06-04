@@ -111,6 +111,9 @@ public interface ApprovalService {
 	int deleteAppLine(int no);
 
 	String selectNowAppLine(String docNo);
+	
+	// 메인페이지의 전자결재문서 목록
+	List<ApprovalDocDto> selectSampleOngoingDocList(int boardLimit, int loginUserNo);
 
 	
 }

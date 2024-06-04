@@ -661,8 +661,8 @@
 			          		<div class="card w-100">
 				          		<div class="card-body">
 				          			<div class="w-100 mb-3 d-flex justify-content-between">
-				          				<div><h4><b>공지사항</b></h4></div>
-				          				<div class="view_more"><b>더보기</b></div>
+				          				<div><h4><b>진행중 전자결재</b></h4></div>
+				          				<div class="view_more" onclick="location.href='${contextPath}/approval/ongoingBoard.do'"><b>더보기</b></div>
 				          			</div>
 				          			<div class="w-100">
 				          				<table class="preview_table w-100 table text-nowrap mb-0 overflow-hidden table-hover">
@@ -680,61 +680,30 @@
 					                    </tr>
 					                  </thead>
 					                  <tbody>
-					                    <tr>
-					                    	<td width="">
-					                        제목입니다.
-					                      </td>
-					                      <td width="">
-					                        2024-01-01
-					                      </td>
-					                      <td width="">
-					                        몰라
-					                      </td>
-					                    </tr>
-					                    <tr>
-					                    	<td width="">
-					                        제목입니다.
-					                      </td>
-					                      <td width="">
-					                        2024-01-01
-					                      </td>
-					                      <td width="">
-					                        몰라
-					                      </td>
-					                    </tr>
-					                    <tr>
-					                    	<td width="">
-					                        제목입니다.
-					                      </td>
-					                      <td width="">
-					                        2024-01-01
-					                      </td>
-					                      <td width="">
-					                        몰라
-					                      </td>
-					                    </tr>
-					                    <tr>
-					                    	<td width="">
-					                        제목입니다.
-					                      </td>
-					                      <td width="">
-					                        2024-01-01
-					                      </td>
-					                      <td width="">
-					                        몰라
-					                      </td>
-					                    </tr>
-					                    <tr>
-					                    	<td width="">
-					                        제목입니다.
-					                      </td>
-					                      <td width="">
-					                        2024-01-01
-					                      </td>
-					                      <td width="">
-					                        몰라
-					                      </td>
-					                    </tr>
+					                  	<c:choose>
+					                  		<c:when test="${ empty appDocList }">
+					                  			<tr>
+							                    	<td colspan="3">
+							                        결재문서가 존재하지 않습니다.
+							                      </td>
+							                    </tr>
+					                  		</c:when>
+					                  		<c:otherwise>
+					                  			<c:forEach var="appDoc" items="${ appDocList }">
+							                    <tr>
+							                    	<td width="" class="app_doc_title">
+							                        ${ appDoc.docTitle }
+							                      </td>
+							                      <td width="">
+							                        ${ appDoc.draftDate }
+							                      </td>
+							                      <td width="">
+							                        ${ status }
+							                      </td>
+							                    </tr>
+							                    </c:forEach>
+					                  		</c:otherwise>
+					                  	</c:choose>
 					                  </tbody>
 					                </table>
 				          			</div>
@@ -1051,21 +1020,17 @@
             calendar.render();
           }
 	        
-	        
+      // 전자결재
+      $(document).ready(function(){
+    	  $(".app_doc_title").each(function(index, el){
+    		  if($(el).text().length > 5){
+    			  let $str = el.innerText.substr(0, 5) + "...";
+    			  $(el).text($str);
+    		  }
+    	  })
+      })
+	    
     </script>
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
         
       </div><!-- body-wrapper end-->
 

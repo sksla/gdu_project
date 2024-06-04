@@ -425,6 +425,21 @@
 		   by draft_date desc
 	</select>
 	
+	<select id="selectSampleOngoingDocList" resultMap="appDocResult">
+		select doc_no
+		     , doc_title
+		     , to_char(draft_date, 'YYYY-MM-DD') draft_date
+		     , app_category
+		     , status_name
+		  from app_doc
+		  join app_status on (status = status_no)
+		  join app_form on (app_doc.app_no = app_form.app_no)
+		 where drafter = #{loginUserNo}
+		   and app_doc.status not in (0, 1)
+		 order
+			  by draft_date desc
+	</select>
+	
 	<select id="selectCountReceiveBoardList" resultType="_int">
 		select count(*)
 		  from app_doc
