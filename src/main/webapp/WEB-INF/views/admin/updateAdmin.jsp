@@ -8,6 +8,16 @@
 <meta charset="UTF-8">
 <title>관리자 설정
 </title>
+<style>
+  .updateSet{
+    display: flex;
+  }
+  .one, .two{cursor: pointer;}
+  .split{
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+</style>
 </head>
 <body>
 	<div class="main-wrapper">
@@ -56,9 +66,19 @@
           <!-- 학과생성-->
           <div class="card">
             <div class="card-body">
+            
+              <div class="updateSet">
+                <h2 class="one" onclick="location.href='${contextPath}/admin/insertOneMemberEnrollForm.do'">학과설정</h2>
+                <h2 class="split">|</h2>
+                <h2 class="two" onclick="location.href='${contextPath}/admin/insertManyMember.page'">직급설정</h2>
+                <h2 class="split">|</h2>
+                <h2 class="three" onclick="location.href='${contextPath}/admin/insertManyMember.page'">기간설정</h2>
+              </div>
 
               <script>
                 $(document).ready(function(){
+                	
+              		// 학과생성
                   $(".selectCollege").attr("disabled", true);
                   $(".newMajorName").attr("disabled", true);
                   $(".createMajor").attr("disabled", true);
@@ -73,10 +93,128 @@
                       $(".newMajorName").attr("disabled", true);
                       $(".createMajor").attr("disabled", true);
                     }
-                  })
-                })
+                  });
+                  
+                  // 학과수정
+                  $(".selectMajor").attr("disabled", true);
+                  $(".updateMajorName").attr("disabled", true);
+                  $(".selectMajorStatus").attr("disabled", true);
+                  $(".updateMajor").attr("disabled", true);
+                  $(".majorUpdateCheck").change(function(){
+                    if($(this).is(":checked")){
+                      $(".selectMajor").removeAttr("disabled");
+                      $(".updateMajorName").removeAttr("disabled");
+                      $(".selectMajorStatus").removeAttr("disabled");
+                      $(".updateMajor").removeAttr("disabled");
+                    }else{
+                      $(".selectMajor").attr("disabled", true);
+                      $(".updateMajorName").attr("disabled", true);
+                      $(".selectMajorStatus").attr("disabled", true);
+                      $(".updateMajor").attr("disabled", true);
+                    }
+                  });
+                  
+                	// 직급 생성
+                  $(".selectMemberLevel").hide();
+
+                  $(".newJobName").attr("disabled", true);
+                  $(".selectJobType").attr("disabled", true);
+                  $(".selectProLevel").attr("disabled", true);
+                  $(".selectMemberLevel").attr("disabled", true);
+                  $(".createJob").attr("disabled", true);
+                  
+                  $(".jobCreateCheck").change(function(){
+                    if($(this).is(":checked")){
+                      $(".newJobName").removeAttr("disabled");
+                      $(".selectJobType").removeAttr("disabled");
+                      $(".selectProLevel").removeAttr("disabled");
+                      $(".selectMemberLevel").removeAttr("disabled");
+                      $(".createJob").removeAttr("disabled");
+                    }else{
+                      $(".newJobName").attr("disabled", true);
+                      $(".selectJobType").attr("disabled", true);
+                      $(".selectProLevel").attr("disabled", true);
+                      $(".selectMemberLevel").attr("disabled", true);
+                      $(".createJob").attr("disabled", true);
+                    }
+                  });
+    
+                  $(".selectJobType").change(function(){
+                    if($(this).val() == "P"){
+                      $(".selectMemberLevel").hide();
+                      $(".selectProLevel").show();
+                    }else{
+                      $(".selectProLevel").hide();
+                      $(".selectMemberLevel").show();
+                    }
+                  });
+    
+                  $("form").submit(function(){
+                	  if($(".selectJobType").val() == "P"){
+                		  $(".selectMemberLevel").removeAttr("name");
+                	  }else{
+                		  $(".selectProLevel").removeAttr("name");
+                	  }
+                  });
+                  
+             			// 직급수정
+                  $(".selecJob").attr("disabled", true);
+                  $(".updateJobName").attr("disabled", true);
+                  $(".selectJobStatus").attr("disabled", true);
+                  $(".updateJob").attr("disabled", true);
+
+                  $(".jobUpdateCheck").change(function(){
+                    if($(this).is(":checked")){
+                      $(".selecJob").removeAttr("disabled");
+                      $(".updateJobName").removeAttr("disabled");
+                      $(".selectJobStatus").removeAttr("disabled");
+                      $(".updateJob").removeAttr("disabled");
+                    }else{
+                      $(".selecJob").attr("disabled", true);
+                      $(".updateJobName").attr("disabled", true);
+                      $(".selectJobStatus").attr("disabled", true);
+                      $(".updateJob").attr("disabled", true);
+                    }
+                  });
+                  
+                  // 강의등록기간 
+                  $(".startRectureDate").attr("disabled", true);
+                  $(".endRectureDate").attr("disabled", true);
+                  $(".updateRetureDate").attr("disabled", true);
+
+                  $(document).on("change", ".setRectureCheck", function(){
+                    if($(this).is(":checked")){
+                      $(".startRectureDate").removeAttr("disabled");
+                      $(".endRectureDate").removeAttr("disabled");
+                      $(".updateRetureDate").removeAttr("disabled");
+                    }else{
+                      $(".startRectureDate").attr("disabled", true);
+                      $(".endRectureDate").attr("disabled", true);
+                      $(".updateRetureDate").attr("disabled", true);
+                    }
+                  });
+                  
+                  // 학생등록기간
+                  $(".startStuDate").attr("disabled", true);
+                  $(".endStuDate").attr("disabled", true);
+                  $(".updateStuDate").attr("disabled", true);
+
+                  $(document).on("change", ".setStudentCheck", function(){
+                    if($(this).is(":checked")){
+                      $(".startStuDate").removeAttr("disabled");
+                      $(".endStuDate").removeAttr("disabled");
+                      $(".updateStuDate").removeAttr("disabled");
+                    }else{
+                      $(".startStuDate").attr("disabled", true);
+                      $(".endStuDate").attr("disabled", true);
+                      $(".updateStuDate").attr("disabled", true);
+                    }
+                  });
+                  
+                });
               </script>
 
+							<!-- 학과생성 -->
               <form action="${contextPath}/admin/insertMajor.do" method="get">
                 <div id="createMojor">
                   <br><br>
@@ -110,35 +248,8 @@
                   </div>
                 </div>
               </form>
-
-            </div>
-          </div>
-          
-          <!-- 학과수정 -->
-          <div class="card">
-            <div class="card-body">
-              <script>
-                $(document).ready(function(){
-                  $(".selectMajor").attr("disabled", true);
-                  $(".updateMajorName").attr("disabled", true);
-                  $(".selectMajorStatus").attr("disabled", true);
-                  $(".updateMajor").attr("disabled", true);
-                  $(".majorUpdateCheck").change(function(){
-                    if($(this).is(":checked")){
-                      $(".selectMajor").removeAttr("disabled");
-                      $(".updateMajorName").removeAttr("disabled");
-                      $(".selectMajorStatus").removeAttr("disabled");
-                      $(".updateMajor").removeAttr("disabled");
-                    }else{
-                      $(".selectMajor").attr("disabled", true);
-                      $(".updateMajorName").attr("disabled", true);
-                      $(".selectMajorStatus").attr("disabled", true);
-                      $(".updateMajor").attr("disabled", true);
-                    }
-                  })
-                })
-              </script>
-
+							
+							<!-- 학과수정 -->
               <form action="${contextPath}/admin/updateMajor.do" method="get">
                 <div id="updateMajor">
                   <br><br>
@@ -183,60 +294,8 @@
                   </div>
                 </div>
               </form>
-            </div>
-          </div>
-          
-          <!-- 직급생성 -->
-          <div class="card">
-            <div class="card-body">
-              <script>
-                $(document).ready(function(){
-                	
-                  $(".selectMemberLevel").hide();
-
-                  $(".newJobName").attr("disabled", true);
-                  $(".selectJobType").attr("disabled", true);
-                  $(".selectProLevel").attr("disabled", true);
-                  $(".selectMemberLevel").attr("disabled", true);
-                  $(".createJob").attr("disabled", true);
-                  
-                  $(".jobCreateCheck").change(function(){
-                    if($(this).is(":checked")){
-                      $(".newJobName").removeAttr("disabled");
-                      $(".selectJobType").removeAttr("disabled");
-                      $(".selectProLevel").removeAttr("disabled");
-                      $(".selectMemberLevel").removeAttr("disabled");
-                      $(".createJob").removeAttr("disabled");
-                    }else{
-                      $(".newJobName").attr("disabled", true);
-                      $(".selectJobType").attr("disabled", true);
-                      $(".selectProLevel").attr("disabled", true);
-                      $(".selectMemberLevel").attr("disabled", true);
-                      $(".createJob").attr("disabled", true);
-                    }
-                  })
-    
-                  $(".selectJobType").change(function(){
-                    if($(this).val() == "P"){
-                      $(".selectMemberLevel").hide();
-                      $(".selectProLevel").show();
-                    }else{
-                      $(".selectProLevel").hide();
-                      $(".selectMemberLevel").show();
-                    }
-                  })
-    
-                  $("form").submit(function(){
-                	  if($(".selectJobType").val() == "P"){
-                		  $(".selectMemberLevel").removeAttr("name");
-                	  }else{
-                		  $(".selectProLevel").removeAttr("name");
-                	  }
-                  })
-                  
-                })
-              </script>
-
+              
+          		<!-- 직급생성 -->
               <form action="${contextPath}/admin/insertJob.do" method="get">
                 <div id="createJob">
                   <br><br>
@@ -288,38 +347,8 @@
                   </div>
                 </div>
               </form>
-            </div>
-          </div>
-          
-          <!-- 직급수정 -->
-          <div class="card">
-            <div class="card-body">
-
-              <script>
-                $(document).ready(function(){
-
-                  $(".selecJob").attr("disabled", true);
-                  $(".updateJobName").attr("disabled", true);
-                  $(".selectJobStatus").attr("disabled", true);
-                  $(".updateJob").attr("disabled", true);
-
-                  $(".jobUpdateCheck").change(function(){
-                    if($(this).is(":checked")){
-                      $(".selecJob").removeAttr("disabled");
-                      $(".updateJobName").removeAttr("disabled");
-                      $(".selectJobStatus").removeAttr("disabled");
-                      $(".updateJob").removeAttr("disabled");
-                    }else{
-                      $(".selecJob").attr("disabled", true);
-                      $(".updateJobName").attr("disabled", true);
-                      $(".selectJobStatus").attr("disabled", true);
-                      $(".updateJob").attr("disabled", true);
-                    }
-                  })
-
-                })
-              </script>
-
+              
+          		<!-- 직급수정 -->
               <form action="${contextPath}/admin/updateJob.do" method="get">
                 <div id="updateJob">
                   <br><br>
@@ -364,132 +393,85 @@
                   </div>
                 </div>
               </form>
-            </div>
-          </div>
-          
-          <!-- 강의 학생 등록기간 설정 -->
-          <div class="card">
-            <div class="card-body">
-
-              <script>
-                $(document).ready(function(){
-
-                  // 강의등록기간 
-                  $(".startRectureDate").attr("disabled", true);
-                  $(".endRectureDate").attr("disabled", true);
-                  $(".updateRetureDate").attr("disabled", true);
-
-                  $(document).on("change", ".setRectureCheck", function(){
-                    if($(this).is(":checked")){
-                      $(".startRectureDate").removeAttr("disabled");
-                      $(".endRectureDate").removeAttr("disabled");
-                      $(".updateRetureDate").removeAttr("disabled");
-                    }else{
-                      $(".startRectureDate").attr("disabled", true);
-                      $(".endRectureDate").attr("disabled", true);
-                      $(".updateRetureDate").attr("disabled", true);
-                    }
-                  })
-
-                  // 학생등록기간
-                  $(".startStuDate").attr("disabled", true);
-                  $(".endStuDate").attr("disabled", true);
-                  $(".updateStuDate").attr("disabled", true);
-
-                  $(document).on("change", ".setStudentCheck", function(){
-                    if($(this).is(":checked")){
-                      $(".startStuDate").removeAttr("disabled");
-                      $(".endStuDate").removeAttr("disabled");
-                      $(".updateStuDate").removeAttr("disabled");
-                    }else{
-                      $(".startStuDate").attr("disabled", true);
-                      $(".endStuDate").attr("disabled", true);
-                      $(".updateStuDate").attr("disabled", true);
-                    }
-                  })
-
-                })
-              </script>
-
-              <div class="setDate">
-                <form action="${contextPath}/admin/updateLecDate.do" method="get">
-                	<input type="hidden" name="insertType" value="1">
-                  <div class="setRecture">
-                    <span style="font-size: 30px; font-weight: bold; color: black;">강의등록기간</span>
-                    <input type="checkbox" style="zoom: 2.0;" class="setRectureCheck"> <br><br>
-                    <div class="row">
-                      <div class="col-lg-6 mb-4 mb-lg-0">
-                        <div class="mb-4 row align-items-center">
-                          <label for="startDate3" class="form-label fw-semibold col-sm-3 col-form-label">기존 강의등록기간</label>
-                          <div class="col-sm-9">
-                            <div class="input-group">
-                              <input class="form-control" type="text" value="${lecDate.startDate} ~ ${lecDate.endDate}" id="example-search-input" disabled/>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="mb-4 row align-items-center">
-                          <label for="startDate3" class="form-label fw-semibold col-sm-3 col-form-label">신규 강의등록시작일</label>
-                          <div class="col-sm-9">
-                            <div class="input-group">
-                              <input class="form-control startRectureDate" type="date" name="startDate" id="example-search-input" required />
-                            </div>
-                          </div>
-                          <br><br>
-                          <label for="startDate3" class="form-label fw-semibold col-sm-3 col-form-label">신규 강의등록종료일</label>
-                          <div class="col-sm-9">
-                            <div class="input-group">
-                              <input class="form-control endRectureDate" type="date" name="endDate" id="example-search-input" required />
-                            </div>
+              
+              <!-- 강의등록기간 -->
+              <form action="${contextPath}/admin/updateLecDate.do" method="get">
+              	<input type="hidden" name="insertType" value="1">
+                <div class="setRecture">
+                  <span style="font-size: 30px; font-weight: bold; color: black;">강의등록기간</span>
+                  <input type="checkbox" style="zoom: 2.0;" class="setRectureCheck"> <br><br>
+                  <div class="row">
+                    <div class="col-lg-6 mb-4 mb-lg-0">
+                      <div class="mb-4 row align-items-center">
+                        <label for="startDate3" class="form-label fw-semibold col-sm-3 col-form-label">기존 강의등록기간</label>
+                        <div class="col-sm-9">
+                          <div class="input-group">
+                            <input class="form-control" type="text" value="${lecDate.startDate} ~ ${lecDate.endDate}" id="example-search-input" disabled/>
                           </div>
                         </div>
                       </div>
-                      <div>
-                        <button type="submit" class="btn btn-secondary updateRetureDate">등록기간수정</button>
+                      <div class="mb-4 row align-items-center">
+                        <label for="startDate3" class="form-label fw-semibold col-sm-3 col-form-label">신규 강의등록시작일</label>
+                        <div class="col-sm-9">
+                          <div class="input-group">
+                            <input class="form-control startRectureDate" type="date" name="startDate" id="example-search-input" required />
+                          </div>
+                        </div>
+                        <br><br>
+                        <label for="startDate3" class="form-label fw-semibold col-sm-3 col-form-label">신규 강의등록종료일</label>
+                        <div class="col-sm-9">
+                          <div class="input-group">
+                            <input class="form-control endRectureDate" type="date" name="endDate" id="example-search-input" required />
+                          </div>
+                        </div>
                       </div>
                     </div>
+                    <div>
+                      <button type="submit" class="btn btn-secondary updateRetureDate">등록기간수정</button>
+                    </div>
                   </div>
-                </form>
+                </div>
+              </form>
                 
-                <br><br>
-                <hr>
-                <form action="${contextPath}/admin/updateStuDate.do" method="get">
-                	<input type="hidden" name="insertType" value="2">
-                  <div class="setStudent">
-                    <span style="font-size: 30px; font-weight: bold; color: black;">학생등록기간</span>
-                    <input type="checkbox" style="zoom: 2.0;" class="setStudentCheck"> <br><br>
-                    <div class="row">
-                      <div class="col-lg-6 mb-4 mb-lg-0">
-                        <div class="mb-4 row align-items-center">
-                          <label for="startDate3" class="form-label fw-semibold col-sm-3 col-form-label">기존 학생등록기간</label>
-                          <div class="col-sm-9">
-                            <div class="input-group">
-                              <input class="form-control" type="text" value="${stuDate.startDate} ~ ${stuDate.endDate}" id="example-search-input" disabled/>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="mb-4 row align-items-center">
-                          <label for="startDate3" class="form-label fw-semibold col-sm-3 col-form-label">신규 학생등록시작일</label>
-                          <div class="col-sm-9">
-                            <div class="input-group">
-                              <input class="form-control startStuDate" type="date" name="startDate" id="example-search-input" required />
-                            </div>
-                          </div>
-                          <br><br>
-                          <label for="startDate3" class="form-label fw-semibold col-sm-3 col-form-label">신규 학생등록종료일</label>
-                          <div class="col-sm-9">
-                            <div class="input-group">
-                              <input class="form-control endStuDate" type="date" name="endDate" id="example-search-input" required />
-                            </div>
+              <!-- 학생등록기간 -->
+              <form action="${contextPath}/admin/updateStuDate.do" method="get">
+              	<input type="hidden" name="insertType" value="2">
+                <div class="setStudent">
+                  <span style="font-size: 30px; font-weight: bold; color: black;">학생등록기간</span>
+                  <input type="checkbox" style="zoom: 2.0;" class="setStudentCheck"> <br><br>
+                  <div class="row">
+                    <div class="col-lg-6 mb-4 mb-lg-0">
+                      <div class="mb-4 row align-items-center">
+                        <label for="startDate3" class="form-label fw-semibold col-sm-3 col-form-label">기존 학생등록기간</label>
+                        <div class="col-sm-9">
+                          <div class="input-group">
+                            <input class="form-control" type="text" value="${stuDate.startDate} ~ ${stuDate.endDate}" id="example-search-input" disabled/>
                           </div>
                         </div>
                       </div>
-                      <div>
-                        <button type="submit" class="btn btn-secondary updateStuDate">등록기간수정</button>
+                      <div class="mb-4 row align-items-center">
+                        <label for="startDate3" class="form-label fw-semibold col-sm-3 col-form-label">신규 학생등록시작일</label>
+                        <div class="col-sm-9">
+                          <div class="input-group">
+                            <input class="form-control startStuDate" type="date" name="startDate" id="example-search-input" required />
+                          </div>
+                        </div>
+                        <br><br>
+                        <label for="startDate3" class="form-label fw-semibold col-sm-3 col-form-label">신규 학생등록종료일</label>
+                        <div class="col-sm-9">
+                          <div class="input-group">
+                            <input class="form-control endStuDate" type="date" name="endDate" id="example-search-input" required />
+                          </div>
+                        </div>
                       </div>
                     </div>
+                    <div>
+                      <button type="submit" class="btn btn-secondary updateStuDate">등록기간수정</button>
+                    </div>
                   </div>
-                </form>
-              </div>
+                </div>
+              </form>
+                
             </div>
           </div>
           
@@ -500,7 +482,7 @@
     </div><!-- page-wrapper end -->
     
     <!-- 세팅메뉴(바) -->
-	    <jsp:include page="/WEB-INF/views/common/settingbar.jsp"/>
+	  <jsp:include page="/WEB-INF/views/common/settingbar.jsp"/>
     
 	</div><!-- main-wrapper end -->
 	
