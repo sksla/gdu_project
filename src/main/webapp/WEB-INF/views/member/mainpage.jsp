@@ -177,7 +177,7 @@
                 </a>
               </li>
               <li class="nav-item d-none d-xl-block d-flex align-items-center">
-                <a href="${ contextPath }/member/mainpage" class="text-nowrap nav-link">
+                <a href="${ contextPath }" class="text-nowrap nav-link">
                   <img src="${ contextPath }/assets/images/logos/longlogo.png" class="dark-logo pt-3 pb-3" width="" height="72" />
                   <img src="${ contextPath }/assets/images/logos/light-logo.svg" class="light-logo" width="180" alt="" />
                 </a>
