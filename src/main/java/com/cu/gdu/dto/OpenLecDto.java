@@ -29,4 +29,5 @@ public class OpenLecDto {
 	private String resName;
 	private String memNo;
 	private String lecStatus;
+	private String grade;
 }

@@ -21,10 +21,7 @@ public interface LectureService {
 	List<LectureDto> selectLectureList(int memNo);
 	List<LecStuDto> selectStuAttendList();
 	List<LecStuDto> selectStuListForLec(Map<String, Object> map);
-	
-	// 학생 출석 목록 스케줄러 이용해서 등록
-	int insertStuList(String str);
-	
+
 	// 출석 등록
 	int updateStuAttend(ArrayList<StuAttendDto> stuAttendList);
 
@@ -38,12 +35,14 @@ public interface LectureService {
 	List<MemberDto> selectProfList();
 	// 강의 등록
 	int insertLecture(OpenLecDto ol);
+	int insertStuList(StuAttendDto sa);
 	// 강의 상세조회
 	OpenLecDto selectLecDetail(String openLecNo);
 	// 강의수정
 	int modifyLec(OpenLecDto ol);
 	// 강의 삭제
 	int deleteLec(String openLecNo);
+	
 	
 	
 	

@@ -41,11 +41,6 @@ public class LectureServiceImpl implements LectureService {
 	public List<LecStuDto> selectStuListForLec(Map<String, Object> map) {
 		return lectureDao.selectStuListForLec(map);
 	}
-	// 학생 출석 목록 스케줄러 이용해서 등록
-	@Override
-	public int insertStuList(String str) {
-		return lectureDao.insertStuList(str);
-	}
 	// 출석등록
 	@Override
 	public int updateStuAttend(ArrayList<StuAttendDto> stuAttendList) {
@@ -88,6 +83,11 @@ public class LectureServiceImpl implements LectureService {
 	public int insertLecture(OpenLecDto ol) {
 		return lectureDao.insertLecture(ol);
 	}
+	// 학생등록
+	@Override
+	public int insertStuList(StuAttendDto sa) {
+		return lectureDao.insertStuList(sa);
+	}
 	// 강의 상세조회
 	@Override
 	public OpenLecDto selectLecDetail(String openLecNo) {
@@ -103,5 +103,7 @@ public class LectureServiceImpl implements LectureService {
 	public int deleteLec(String openLecNo) {
 		return lectureDao.deleteLec(openLecNo);
 	}
+	
+	
 
 }

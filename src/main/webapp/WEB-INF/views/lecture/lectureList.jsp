@@ -31,13 +31,13 @@
               <div class="row align-items-center my-3">
               
                 <div class="col-9">
-                  <h4 class="fw-semibold mb-8">출석</h4>
+                  <h4 class="fw-semibold mb-8">강의</h4>
                   <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                       <li class="breadcrumb-item">
                         <a class="text-muted text-decoration-none" href="../main/index.html">Home</a>
                       </li>
-                      <li class="breadcrumb-item" aria-current="page">출석</li>
+                      <li class="breadcrumb-item" aria-current="page">강의목록</li>
                     </ol>
                   </nav>
                 </div>
@@ -144,12 +144,19 @@
 	                  	</div>
 		                  <div class="modal-body">
 		                  	<div class="mb-3">
-		                    	<label for="lec_name" class="control-label">강의명</label><!-- 드롭다운으로 바꾸기 -->
+		                    	<label for="lec_name" class="control-label">강의명</label>
 		                    	<select class="form-select" id="lectureList" name="lecNo">
 		                        <c:forEach var="lec" items="${lecList}">
 		                        	<option value="${lec.lecNo}">${lec.lecName}</option>
 		                        </c:forEach> 
 	                        </select>
+	                      </div>
+	                      <div class="mb-3">
+	                        <label for="lec_date1" class="control-label">학년</label><br>
+	                        <input type="radio" id="1" name="grade" value="1"><label for="scales">1</label>
+	                        <input type="radio" id="2" name="grade" value="2"><label for="scales">2</label>
+	                        <input type="radio" id="3" name="grade" value="3"><label for="scales">3</label>
+	                        <input type="radio" id="4" name="grade" value="4"><label for="scales">4</label>
 	                      </div>
 	                      <div class="mb-3">
 							            <label for="mem_no" class="control-label">담당교수</label>
@@ -166,16 +173,16 @@
 	                        <input type="date" class="form-control" id="end_date1" name="endDate">
 	                      </div>
 	                      <div class="mb-3">
-	                        <label for="lec_date1" class="control-label">요일</label><br><!-- 요일로바꾸고 -->
-	                        <input type="radio" id="mon1" name="lectureDate" value="월"><label for="scales">월</label>
-	                        <input type="radio" id="tue1" name="lectureDate" value="화"><label for="scales">화</label>
-	                        <input type="radio" id="wed1" name="lectureDate" value="수"><label for="scales">수</label>
-	                        <input type="radio" id="thu1" name="lectureDate" value="목"><label for="scales">목</label>
-	                        <input type="radio" id="fri1" name="lectureDate" value="금"><label for="scales">금</label>
-	                        <input type="radio" id="sat1" name="lectureDate" value="토"><label for="scales">토</label>
+	                        <label for="lec_date1" class="control-label">요일</label><br>
+	                        <input type="radio" id="mon1" name="lectureDate" value="2"><label for="scales">월</label>
+	                        <input type="radio" id="tue1" name="lectureDate" value="3"><label for="scales">화</label>
+	                        <input type="radio" id="wed1" name="lectureDate" value="4"><label for="scales">수</label>
+	                        <input type="radio" id="thu1" name="lectureDate" value="5"><label for="scales">목</label>
+	                        <input type="radio" id="fri1" name="lectureDate" value="6"><label for="scales">금</label>
+	                        <input type="radio" id="sat1" name="lectureDate" value="7"><label for="scales">토</label>
 	                      </div>
 	                      <div class="mb-3">
-	                        <label for="lec_time" class="control-label">강의시간</label><!-- 교시로 바꾸기 -->
+	                        <label for="lec_time" class="control-label">강의시간</label>
 	                        <select class="form-select" id="start_time1" name="startTime">
 		                        	<option value="1">1교시</option>
 		                        	<option value="2">2교시</option>
@@ -207,7 +214,7 @@
 	                        </select>   
 	                      </div>
 			                  <div class="mb-3">
-			                    <label for="res_no" class="control-label">강의실</label><!-- 쓸수 있는 강의실 다 불러오기 -->
+			                    <label for="res_no" class="control-label">강의실</label>
 			                    <select class="form-select" id="resList1" name="resNo">
 			                    	<c:forEach var="res" items="${resList}">
 			                      	<option value="${res.resNo}">${res.resName}</option>
@@ -245,6 +252,13 @@
 							            <input type="text" class="form-control" name="lecName" id="lec_name" value=""/>
 							          </div>
 							          <div class="mb-3">
+	                        <label for="grade" class="control-label">학년</label><br>
+	                        <input type="radio" id="grade1" name="grade" value="1"><label for="scales">1</label>
+	                        <input type="radio" id="grade2" name="grade" value="2"><label for="scales">2</label>
+	                        <input type="radio" id="grade3" name="grade" value="3"><label for="scales">3</label>
+	                        <input type="radio" id="grade4" name="grade" value="4"><label for="scales">4</label>
+	                      </div>
+							          <div class="mb-3">
 							            <label for="mem_no" class="control-label">담당교수</label>
 							            <input type="text" class="form-control" name="memName" id="mem_name" value="" readonly/>
 							            <input type="hidden" class="form-control" name="memNo" id="mem_no" value=""/>
@@ -257,12 +271,12 @@
 							          </div>
 							          <div class="mb-3">
 	                        <label for="lec_date" class="control-label">요일</label><br>
-	                        <input type="radio" id="mon" name="lectureDate" value="월"><label for="scales">월</label>
-	                        <input type="radio" id="tue" name="lectureDate" value="화"><label for="scales">화</label>
-	                        <input type="radio" id="wed" name="lectureDate" value="수"><label for="scales">수</label>
-	                        <input type="radio" id="thu" name="lectureDate" value="목"><label for="scales">목</label>
-	                        <input type="radio" id="fri" name="lectureDate" value="금"><label for="scales">금</label>
-	                        <input type="radio" id="sat" name="lectureDate" value="토"><label for="scales">토</label>
+	                        <input type="radio" id="mon" name="lectureDate" value="2"><label for="scales">월</label>
+	                        <input type="radio" id="tue" name="lectureDate" value="3"><label for="scales">화</label>
+	                        <input type="radio" id="wed" name="lectureDate" value="4"><label for="scales">수</label>
+	                        <input type="radio" id="thu" name="lectureDate" value="5"><label for="scales">목</label>
+	                        <input type="radio" id="fri" name="lectureDate" value="6"><label for="scales">금</label>
+	                        <input type="radio" id="sat" name="lectureDate" value="7"><label for="scales">토</label>
 	                      </div>
 							          <div class="mb-3">
 							          	<label for="lec_time" class="control-label">강의시간</label>
@@ -297,7 +311,7 @@
 	                        </select>  
 							          </div>
 							          <div class="mb-3">
-			                    <label for="res_no" class="control-label">강의실</label><!-- 쓸수 있는 강의실 다 불러오기 -->
+			                    <label for="res_no" class="control-label">강의실</label>
 			                    <select class="form-select" id="resList" name="resNo">
 			                    	<c:forEach var="res" items="${resList}">
 			                      	<option value="${res.resNo}">${res.resName}</option>
@@ -403,8 +417,14 @@
 				$("#mem_no").val(result.memNo);
 				$("#start_date").val(result.startDate);
 				$("#end_date").val(result.endDate);
+				// 조회해온 학년이랑 같은 value값 체크되게 (나머지 체크해제 되게) 삼항연산자
+				$("#grade1").prop("checked", result.grade=="1" ? true : false);
+				$("#grade2").prop("checked", result.grade=="2" ? true : false);
+				$("#grade3").prop("checked", result.grade=="3" ? true : false);
+				$("#grade4").prop("checked", result.grade=="4" ? true : false);
 
-				// 조회해온 요일이랑 같은 value값을 가진 checkbox 체크되게 (나머지 체크해제 되게) 삼항연산자
+				
+				// 조회해온 요일이랑 같은 value값 체크되게 (나머지 체크해제 되게) 삼항연산자
 				$("#mon").prop("checked", result.lectureDate=="월" ? true : false);
 				$("#tue").prop("checked", result.lectureDate=="화" ? true : false);
 				$("#wed").prop("checked", result.lectureDate=="수" ? true : false);

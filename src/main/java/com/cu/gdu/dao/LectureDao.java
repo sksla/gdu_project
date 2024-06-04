@@ -40,10 +40,6 @@ public class LectureDao {
 	public List<LecStuDto> selectStuListForLec(Map<String, Object> map) {
 		return sqlSessionTemplate.selectList("lectureMapper.selectStuListForLec", map);
 	}
-	// 학생 출석 목록 스케줄러 이용해서 등록
-	public int insertStuList(String str) {
-		return sqlSessionTemplate.insert("lectureMapper.insertStuList");
-	}
 	// 출석 등록	
 	public int updateStuAttend(StuAttendDto sa) {
 		return sqlSessionTemplate.update("lectureMapper.updateStuAttend", sa);
@@ -74,7 +70,9 @@ public class LectureDao {
 	public int insertLecture(OpenLecDto ol) {
 		return sqlSessionTemplate.insert("lectureMapper.insertLecture", ol);
 	}
-	
+	public int insertStuList(StuAttendDto sa) {
+		return sqlSessionTemplate.insert("lectureMapper.insertStuList", sa);
+	}
 	// 강의 상세조회
 	public OpenLecDto selectLecDetail(String openLecNo) {
 		return sqlSessionTemplate.selectOne("lectureMapper.selectLecDetail", openLecNo);
@@ -89,6 +87,7 @@ public class LectureDao {
 	public int deleteLec(String openLecNo) {
 		return sqlSessionTemplate.delete("lectureMapper.deleteLecture", openLecNo);
 	}
+	
 	
 
 	

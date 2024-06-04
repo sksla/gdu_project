@@ -26,6 +26,9 @@ public class StuAttendDto {
 	private String majorNo;
 	private String majotName;
 	private String lecName;
+	private String startDate;
+	private String endDate;
+	private String grade;
 	
 	// 다수의 학생객체 정보를 받을 용도의 필드 추가
 	private ArrayList<StuAttendDto> stuAttendList;

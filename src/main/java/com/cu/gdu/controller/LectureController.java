@@ -41,12 +41,6 @@ public class LectureController {
 	private final FileUtil fileUtil;
 
 	// * ------------------- 출석 시작 -------------------
-	/* 출석 리스트 페이지
-	@GetMapping("/stuAttend.page")
-	public String stuAttend() {
-		return "/lecture/stuAttend";
-	}
-	*/
 	// 출석 리스트 조회
 	@GetMapping("/stuAttendList.do")
 	public ModelAndView stuAttendList(ModelAndView mv, HttpSession session) {
@@ -131,12 +125,17 @@ public class LectureController {
 	
 	// 강의등록
 	@PostMapping("/enrollLec.do")
-	public String enrollLec(OpenLecDto ol, HttpSession session
+	public String enrollLec(OpenLecDto ol, StuAttendDto sa, HttpSession session
 						  , Model model, RedirectAttributes redirectAttributes) {
 		
-		int result = lectureService.insertLecture(ol);
 		
-		if(result == 1) {
+		
+		
+		int result1 = 0;
+		result1 = lectureService.insertLecture(ol);
+		int result2 = lectureService.insertStuList(sa);
+		System.out.println(sa);
+		if(result1 * result2 > 0 ) {
 			// 성공메세지
 			redirectAttributes.addFlashAttribute("alertMsg", "성공");
 		}else{
@@ -146,7 +145,7 @@ public class LectureController {
 		}
 		return "redirect:/lec/lecList.do";
 	}
-	
+
 	// 강의정보 조회
 	@ResponseBody
 	@GetMapping(value="/lecDetail.do", produces="application/json; charset=UTF-8")
