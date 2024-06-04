@@ -174,7 +174,8 @@
                     <div class="mb-4 row align-items-center">
                       <label for="exampleInputText18" class="form-label fw-semibold col-sm-3 col-form-label">서명이미지</label>
                       <div class="col-sm-9">
-	                      <c:if test="${ not empty m.signUrl }">
+	                      <c:choose>
+	                      	<c:when test="${ not empty m.signUrl }">
 	                          <img
 	                              src="${ contextPath }${m.signUrl}"
 	                              class="shadow-warning rounded-2"
@@ -182,7 +183,11 @@
 	                              width="100"
 	                              height="72"
 	                          />
-	                     	</c:if>
+	                      	</c:when>
+	                      	<c:otherwise>
+	                      		서명이 없습니다.
+	                      	</c:otherwise>
+	                      </c:choose>
                       </div>
                     </div>
                   </div>
