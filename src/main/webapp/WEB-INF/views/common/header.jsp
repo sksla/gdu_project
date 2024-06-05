@@ -289,7 +289,7 @@
 	                        <span class="fs-2 d-block text-body-secondary"> Chat Messages</span>
 	                      </div>
 	                    </a>
-	                    <a href="${ contextPath }/member/vacationList.do" class="py-8 px-7 d-flex align-items-center">
+	                    <a href="${ contextPath }/member/vacationList.page" class="py-8 px-7 d-flex align-items-center">
 	                      <span class="d-flex align-items-center justify-content-center text-bg-light rounded-1 p-6">
 	                        <img src="${ contextPath }/assets/images/svgs/icon-tasks.svg" alt="" width="24" height="24" />
 	                      </span>

@@ -252,6 +252,10 @@
 				        	searchAttendList(1);
 				        		
 				        })
+				        
+				        $("#targetYearMonth").change(function(){
+				        	searchAttendList(1);
+				        });
 							
 							
 							

@@ -159,7 +159,7 @@
         ,	mem_no
         , vac_used
         , vac_option
-        , to_char(regist_date, 'YYYY-MM-DD') regist_date
+        , regist_date
         , vac_reason
         , doc_no
         , status
@@ -171,9 +171,23 @@
     from vacation v
     left join vacation_type t on (t.vac_type_no = v.vac_type_no)
    where mem_no = #{memNo}
+    <if test="keyword != null and keyword != ''">
+        AND v.status = #{keyword}
+    </if>
    order
      by vac_no desc
 	</select>
+	
+	
+	<select id="selectVacationListCount"  resultType="_int">
+		select
+					count(*)
+			from vacation
+		 where mem_no = #{memNo}
+		  <if test="keyword != null and keyword != ''">
+        AND status = #{keyword}
+    	</if>
+	</select>	
 	
 	 <select id="selectVacationListSet" resultMap="vacationResult">
 		select 
@@ -181,7 +195,7 @@
         ,	mem_no
         , vac_used
         , vac_option
-        , to_char(regist_date, 'YYYY-MM-DD') regist_date
+        , regist_date
         , vac_reason
         , doc_no
         , status
@@ -193,29 +207,27 @@
     from vacation v
     left join vacation_type t on (t.vac_type_no = v.vac_type_no)
    where mem_no = #{memNo}
-     and v.status = #{status}
+      <if test="keyword != null and keyword != ''">
+        AND v.status = #{keyword}
+    	</if>
+     and v.regist_date <![CDATA[>=]]>  #{searchStartDate} 
+     AND v.regist_date <![CDATA[<=]]> #{searchEndDate}
    order
      by vac_no desc
 	</select>
 	
-	<select id="selectVacationListCount"  resultType="_int">
-		select
-					count(*)
-			from vacation
-		 where mem_no = #{memNo}
-	</select>	
+	
 	
 	<select id="selectVacationListCountSet"  resultType="_int">
 		select
 					count(*)
 			from vacation
 		 where mem_no = #{memNo}
-		   and status = #{status}
+		    <if test="keyword != null and keyword != ''">
+        AND status = #{keyword}
+    		</if>
+		   and regist_date BETWEEN #{searchStartDate} AND #{searchEndDate}
 	</select>	
-	
-	
-	
-	
 	
 	
 	<select id="selectPlusVacCount" resultType="_int" >

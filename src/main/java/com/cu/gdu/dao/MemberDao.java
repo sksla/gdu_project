@@ -52,22 +52,22 @@ public class MemberDao {
 		return sqlSessionTemplate.update("memberMapper.updateAttend", a);
 	}
 	
-	public int selectVacationListCount(int memNo) {
-		return sqlSessionTemplate.selectOne("memberMapper.selectVacationListCount", memNo);
+	public int selectVacationListCount(Map<String, String> search) {
+		return sqlSessionTemplate.selectOne("memberMapper.selectVacationListCount", search);
 	}
 	
-	public int selectVacationListCountSet(VacationDto v) {
-		return sqlSessionTemplate.selectOne("memberMapper.selectVacationListCountSet", v);
+	public int selectVacationListCountSet(Map<String, String> search) {
+		return sqlSessionTemplate.selectOne("memberMapper.selectVacationListCountSet", search);
 	}
 	
-	public List<VacationDto> selectVacationList(PageInfoDto pi, int memNo){
+	public List<VacationDto> selectVacationList(PageInfoDto pi, Map<String, String> search){
 		RowBounds rowBounds = new RowBounds((pi.getCurrentPage()-1) * pi.getBoardLimit(), pi.getBoardLimit());
-		return sqlSessionTemplate.selectList("memberMapper.selectVacationList", memNo, rowBounds );
+		return sqlSessionTemplate.selectList("memberMapper.selectVacationList", search, rowBounds );
 	}
 	
-	public List<VacationDto> selectVacationListSet(PageInfoDto pi, VacationDto v){
+	public List<VacationDto> selectVacationListSet(PageInfoDto pi, Map<String, String> search){
 		RowBounds rowBounds = new RowBounds((pi.getCurrentPage()-1) * pi.getBoardLimit(), pi.getBoardLimit());
-		return sqlSessionTemplate.selectList("memberMapper.selectVacationListSet", v, rowBounds );
+		return sqlSessionTemplate.selectList("memberMapper.selectVacationListSet", search, rowBounds );
 	}
 	
 	public int insertVacation(VacationDto v) {

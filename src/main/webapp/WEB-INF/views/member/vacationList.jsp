@@ -67,19 +67,19 @@
                     <form class="d-flex flex-row" style="height: 38.33px;">
                       <label for="" class="form-label fw-semibold col-form-label fs-3">신청일 :</label>&nbsp;&nbsp;
                       <span class="form-group">
-                        <input type="date" class="form-control" value="2024-05-01">
+                        <input type="date" class="form-control" value="2024-05-01" id="searchStartDate">
                       </span>
                       &nbsp;<label for="" class="form-label fw-semibold col-form-label fs-3"> ~ </label>&nbsp;
                       <span class="form-group">
-                        <input type="date" class="form-control" value="2024-05-09">
+                        <input type="date" class="form-control" value="2024-05-09" id="searchEndDate">
                       </span>
-                      <button class="btn btn-info">검색</button>
+                      <button type="button" class="btn btn-info searchBtn">검색</button>
                     </form>
                     <a type="button" class="btn btn-info" href="${contextPath}/member/vacationForm.page">휴가신청</a> 
                   </div>
                 </div>
                 <div class="table-responsive mb-4">
-                  <table class="table border text-nowrap mb-0 align-middle text-center app_doc_table overflow-hidden">
+                  <table class="vacTable table border text-nowrap mb-0 align-middle text-center app_doc_table overflow-hidden">
                     <thead class="text-dark fs-4 align-middle ">
                         <tr>
                           <th width="200px">
@@ -101,9 +101,9 @@
                                 상태 : 전체
                               </button>
                               <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <li><a class="dropdown-item" href="#">대기</a></li>
-                                <li><a class="dropdown-item" href="#">승인</a></li>
-                                <li><a class="dropdown-item" href="#">반려</a></li>
+                                <li><a class="dropdown-item"  data-status="1">대기</a></li>
+                                <li><a class="dropdown-item"  data-status="2">승인</a></li>
+                                <li><a class="dropdown-item"  data-status="3">반려</a></li>
                               </ul>
                             </div>
                           </th>
@@ -119,7 +119,7 @@
                 			</c:when>
 				              <c:otherwise>
 				                	<c:forEach var="v" items="${list}">
-										        <tr onclick="showModal('${contextPath}/board/${b.memId == loginUser.memId ? 'detail.do' : 'increase.do'}?no=${b.boardNo}', ${b.openStatus}, '${b.password}');">
+										        <tr onclick="showModal();">
 										            <td><p class="mb-0 fw-normal fs-4">${v.vacNo}</p></td>
 										            <td><p class="mb-0 fw-normal fs-4">${v.vacOption}</p></td>
 										            <td><p class="mb-0 fw-normal fs-4">${v.vacUsed}일</p></td>
@@ -147,12 +147,46 @@
                     </tbody>
                   </table>
                 </div>
+                
+                
+               <!--  
+              <c:if test="${ not empty setStatus }">
+              <script>
+              $(document).ready(function(){
+	              $("#pagingArea a").on("click", function(){
+	            	    // 페이징 바 클릭시 기존 setStatus 값 유지
+	            	    const setStatus = "${setStatus}";
+	            	    
+	
+	            	    let newUrl = "${contextPath}/member/vacationListSet.do?pape=";
+	            	    let currentPage = ${pi.currentPage};
+	            	    
+	            	    if($(this).hasClass("leftbt")){
+	            	        currentPage--;
+	            	    } else if($(this).hasClass("rightbt")){
+	            	        currentPage++;
+	            	    } else {
+	            	        currentPage = $(this).text();
+	            	    }
+	            	    
+	            	    // 새로운 URL 생성
+	            	    newUrl +=    currentPage + "&setStatus=" + setStatus ;
+	
+	            	    // 새로운 URL로 이동
+	            	    location.href = newUrl;
+	
+	            	    return false;
+	            	});
+              })
+              </script>
+              </c:if>
+              -->
   
               <!-- 페이징바 -->
               <div id="pagingArea">
               <ul class="pagination justify-content-center">
                 <li class="page-item ${ pi.currentPage == 1 ? 'disabled' : '' }">
-                  <a class="page-link link" href="${ contextPath }/member/vacationList.do?page=${pi.currentPage-1}" aria-label="Previous">
+                  <a class="page-link link leftbt " href="${ contextPath }/member/vacationList.do?page=${pi.currentPage-1}" aria-label="Previous">
                     <span aria-hidden="true">
                       <i class="ti ti-chevrons-left fs-4"></i>
                     </span>
@@ -165,7 +199,7 @@
                 </c:forEach>
                 
                 <li class="page-item ${ pi.currentPage == pi.maxPage ? 'disabled' : '' }">
-                  <a class="page-link link" href="${ contextPath }/member/vacationList.do?page=${pi.currentPage + 1}" aria-label="Next">
+                  <a class="page-link link rightbt" href="${ contextPath }/member/vacationList.do?page=${pi.currentPage + 1}" aria-label="Next">
                     <span aria-hidden="true">
                       <i class="ti ti-chevrons-right fs-4"></i>
                     </span>
@@ -178,7 +212,215 @@
               </div>
           </div>
 
-          
+          <script>
+						var selectedStatus = "";
+						var searchStartDate = "";
+						var searchEndDate = "";
+						
+						$(document).ready(function(){
+							
+							searchVacationList(1);
+							
+							 // 드롭다운 항목 클릭 이벤트 핸들러
+				        $(".dropdown-item").click(function() {
+				            selectedStatus = $(this).data("status");
+				            console.log(selectedStatus);
+				            // 선택한 값으로 버튼 텍스트 변경
+				            $("#dropdownMenuButton").text("상태 : " + getStatusText(selectedStatus));
+				            
+				            // 선택 시 바로 searchAttendList 함수 실행
+				            searchVacationList(1); // 페이지 번호는 예시로 1로 설정
+				        });
+							 
+							 
+							 // 검색버튼 클릭시 함수
+							 $(".searchBtn").click(function(){
+								 
+								searchStartDate = $("#searchStartDate").val();
+							  searchEndDate = $("#searchEndDate").val();
+									 
+									// 받아온 값으로 인풋에 밸류 설정
+									 $("#searchStartDate").val(searchStartDate);
+									 $("#searchEndDate").val(searchEndDate);
+									
+									 searchVacationList(1); 
+									 
+							 });
+							
+				        
+							
+							
+							
+						}) // 레디function
+						
+						// 구분 변환용
+						function getStatusText(statusCode) {
+						    switch (statusCode) {
+						        case 1:
+						            return "대기";
+						        case 2:
+						            return "승인";
+						        case 3:
+						            return "반려";
+						        default:
+						            return "알 수 없음";
+						    }
+						}
+						
+						
+						
+						// 목록 조회용
+						function searchVacationList(requestPage){
+							 
+							 console.log("searchStartDate: " + searchStartDate);
+							 console.log("searchEndDate: " + searchEndDate);
+							 console.log("keyword: " + selectedStatus);
+							
+							
+							$.ajax({
+								url:"${contextPath}/member/vacationList.do",
+								type:"get",
+								async:false,
+								data:{
+									page:requestPage,
+									searchStartDate:searchStartDate,
+									searchEndDate:searchEndDate,
+									keyword: selectedStatus
+								},
+								success:function(rep){
+												console.log(rep);
+
+			          				drawVacationList(rep.list);
+			          				drawPaging(rep.pi);
+									
+									
+								},error:function(){
+									console.log("목록조회 ajax 실패");
+								}
+							
+							
+							})
+						}
+						
+						
+						// 휴가 목록 출력
+						function drawVacationList(list){
+	          		
+							// 데이터를 반복하여 HTML 코드 생성
+							var html = "";
+							if(list.length > 0){
+								
+							
+								for (var i = 0; i < list.length; i++) {
+								    var v = list[i];
+								    
+								    let date = new Date(v.registDate);
+								    let formattedDate = date.toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\./g, '-');
+								    
+								    formattedDate = formattedDate.replace(/-$/, ''); 
+								    
+								    // 상태에 따른 클래스와 텍스트 설정
+								    var statusClass = "";
+								    var statusText = "";
+								    switch (v.status) {
+								        case "1":
+								            statusClass = "bg-success-subtle text-success";
+								            statusText = "대기";
+								            break;
+								        case "2":
+								            statusClass = "bg-primary-subtle text-primary";
+								            statusText = "승인";
+								            break;
+								        case "3":
+								            statusClass = "bg-danger-subtle text-danger";
+								            statusText = "반려";
+								            break;
+								        default:
+								            statusClass = "bg-secondary-subtle text-secondary";
+								            statusText = "Unknown";
+								            break;
+								    }
+	
+								    html += "<tr onclick='showModal();'>";
+								    html += "<td><p class='mb-0 fw-normal fs-4'>" + v.vacNo + "</p></td>";
+								    html += "<td><p class='mb-0 fw-normal fs-4'>" + v.vacOption + "</p></td>";
+								    html += "<td><p class='mb-0 fw-normal fs-4'>" + v.vacUsed + "일</p></td>";
+								    html += "<td><p class='mb-0 fw-normal fs-4'>" + formattedDate + "</p></td>";
+								    html += "<td><span class='badge rounded-pill " + statusClass + " fw-semibold fs-2'>" + statusText + "</span></td>";
+								    html += "</tr>";
+								}
+								
+								
+							}else{
+          						html += "<tr><td colspan='5'>조회된 휴가 내역이 없습니다.</td></tr>";
+          		}
+
+							// 생성된 HTML을 tbody에 추가
+							$(".vacTable tbody").html(html);
+						
+						}
+						
+						// 페이징바 화면 출력용 함수
+			          	function drawPaging(pi){
+			          		
+			          		let paging = "";
+			          	if(pi.listCount > pi.boardLimit){	
+			          		if(pi.currentPage == 1){
+			          			paging += "<li class='page-item disabled'>"
+			          			        +		"<a class='page-link link' href='#' aria-label='Previous'>"
+			          			        +			"<span aria-hidden='true'>"
+			          			        +				"<i class='ti ti-chevrons-left fs-4'></i>"
+			          			        +			"</span>"
+			         			        	+		"</a>"
+			          			        +	"</li>";
+			          			        
+			          		}else{
+			          			paging += "<li class='page-item'>"
+					      			        +		"<a class='page-link link' href='#' onclick='searchVacationList(" + (pi.currentPage - 1) + ");' aria-label='Previous'>"
+					      			        +			"<span aria-hidden='true'>"
+					      			        +				"<i class='ti ti-chevrons-left fs-4'></i>"
+					      			        +			"</span>"
+					     			        	+		"</a>"
+					      			        +	"</li>";
+			          		}
+			          		
+			          		for(let p=pi.startPage; p<=pi.endPage; p++){
+			          			if(p == pi.currentPage){
+			          				paging += "<li class='page-item'><a class='page-link link active' onclick='searchVacationList(" + p + ");' href='#'>" + p + "</a></li>";
+			          			}else{
+			          				paging += "<li class='page-item'><a class='page-link link' onclick='searchVacationList(" + p + ");' href='#'>" + p + "</a></li>";
+			          			}
+			          		}
+			          		
+			             
+			          		if(pi.currentPage == pi.maxPage){
+			          			paging += "<li class='page-item disabled'>"
+					      			        +		"<a class='page-link link' href='#' aria-label='Next'>"
+					      			        +			"<span aria-hidden='true'>"
+					      			        +				"<i class='ti ti-chevrons-right fs-4'></i>"
+					      			        +			"</span>"
+					     			        	+		"</a>"
+					      			        +	"</li>";
+			          		}else{
+			          			paging += "<li class='page-item'>"
+					      			        +		"<a class='page-link link' href='#' onclick='searchVacationList(" + (pi.currentPage + 1) + ");' aria-label='Next'>"
+					      			        +			"<span aria-hidden='true'>"
+					      			        +				"<i class='ti ti-chevrons-right fs-4'></i>"
+					      			        +			"</span>"
+					     			        	+		"</a>"
+					      			        +	"</li>";
+			          		}
+			          		
+			          	}	
+			          		$(".pagination").html(paging);
+			              
+			          	
+			         }
+								
+						
+						
+						
+						</script>
 
           
 

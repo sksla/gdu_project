@@ -31,14 +31,14 @@ public interface MemberService {
 		AttendDto selectAttend(AttendDto atd);
 	  
 	// 휴가 목록 조회
-	   int selectVacationListCount(int memNo);
-	   List<VacationDto> selectVacationList(PageInfoDto pi, int memNo);
-	   int selectPlusVacCount(int memNo); // 보상휴가일수 조회
-	   int selectUsedPlusVacCount(int memNo); // 보상휴가 사용일수 조회
-	   
-	// 휴가 목록 정렬
-	   int selectVacationListCountSet(VacationDto v);
-	   List<VacationDto> selectVacationListSet(PageInfoDto pi, VacationDto v);
+		int selectPlusVacCount(int memNo); // 보상휴가일수 조회
+		int selectUsedPlusVacCount(int memNo); // 보상휴가 사용일수 조회
+		
+	   int selectVacationListCount(Map<String, String> search);
+	   List<VacationDto> selectVacationList(PageInfoDto pi, Map<String, String> search);
+	
+	   int selectVacationListCountSet(Map<String, String> search);
+	   List<VacationDto> selectVacationListSet(PageInfoDto pi, Map<String, String> search);
 	  
 	// 휴가 신청 서비스, 멤버 연차 차감
 	   int insertVacation(VacationDto v);

@@ -190,28 +190,6 @@ public class MemberController {
 	
 	
 	
-	// * 휴가 목록 조회 관련 --------------------------
-	@GetMapping("/vacationList.do")
-	public ModelAndView vacationList (@RequestParam(value="page" ,defaultValue="1") int currentPage
-									, ModelAndView mv
-									, HttpSession session) {
-		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
-		int memNo = loginUser.getMemNo();
-		int listCount = memberService.selectVacationListCount(memNo);
-		int plusVacCount = memberService.selectPlusVacCount(memNo);
-		int usedPlusCount = memberService.selectUsedPlusVacCount(memNo);
-		
-		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 8);
-		List<VacationDto> list = memberService.selectVacationList(pi, memNo);
-		
-		mv.addObject("pi", pi)
-		  .addObject("list", list)
-		  .addObject("plusVacCount", plusVacCount)
-		  .addObject("usedPlusCount", usedPlusCount)
-		  .setViewName("member/vacationList");
-		
-		return mv;
-	}
 	
 	// * 휴가 신청 관련 --------------------------------------
 	@GetMapping("/vacationForm.page")
@@ -221,6 +199,7 @@ public class MemberController {
 	
 	@PostMapping("vacationRegist.do")
 	public String vacationRegist(VacationDto vac, RedirectAttributes redirectAttributes, HttpSession session) {
+	
 		System.out.println(vac);
 		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
 		int result = memberService.insertVacation(vac);
@@ -236,76 +215,129 @@ public class MemberController {
 	}
 	
 	
-	@GetMapping("vacationListSet.do")
-	public ModelAndView search(@RequestParam(value="page", defaultValue="1") int currentPage,
-									String setStatus,
-									ModelAndView mv
-								, HttpSession session) {
-		VacationDto v = new VacationDto();
-		
+	
+
+	// * 휴가 목록 조회 관련 --------------------------
+	@GetMapping("vacationList.page")
+	public ModelAndView vacationPage(ModelAndView mv
+										, HttpSession session) {
 		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
 		int memNo = loginUser.getMemNo();
-		v.setMemNo(memNo);
-		v.setStatus(setStatus);
-		int listCount = memberService.selectVacationListCountSet( v );
+		
 		int plusVacCount = memberService.selectPlusVacCount(memNo);
 		int usedPlusCount = memberService.selectUsedPlusVacCount(memNo);
 		
-		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 8);
-		List<VacationDto> list = memberService.selectVacationListSet(pi, v);
 		
-		mv.addObject("pi", pi)
-		  .addObject("list", list)
-		  .addObject("plusVacCount", plusVacCount)
+		mv.addObject("plusVacCount", plusVacCount)
 		  .addObject("usedPlusCount", usedPlusCount)
-		  .addObject("setStatus", setStatus)
 		  .setViewName("member/vacationList");
 		
 		return mv;
 	}
 	
-	// * 근태 조회 관련 ------------------------------------------
-		@GetMapping("attendList.page")
-		public String attendPage() {
-			return "/member/attendList";
-		}
+	
+	@ResponseBody
+	@GetMapping(value="vacationList.do", produces="application/json; charset=utf-8")
+	public Map<String, Object> vacationList (@RequestParam(value="page" ,defaultValue="1") int currentPage
+									, @RequestParam Map<String, String> search
+									, HttpSession session) {
+		System.out.println(search);
 		
-		@ResponseBody
-		@GetMapping(value="attendList.do", produces="application/json; charset=utf-8")
-		public Map<String, Object> searchAttendList (@RequestParam(value="page" ,defaultValue="1") int currentPage
-										, @RequestParam Map<String, String> search
-										, HttpSession session) {
-			System.out.println(search);
-			
-			MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
-			int memNo = loginUser.getMemNo();
-			int listCount = 0;
-			PageInfoDto pi = null;
-			List<AttendDto> list = new ArrayList<>();
-			search.put("memNo", String.valueOf(memNo));
-			
-			if(search.get("keyword") == null || search.get("keyword").equals("")) {
-				// keyword="" ==> 전체목록 조회
-				listCount = memberService.selectAttendListCount(search);
-				pi = pagingUtil.getPageInfoDto(listCount, currentPage , 5, 8);
-				list = memberService.selectAttendList(pi, search);
-				
+		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
+		int memNo = loginUser.getMemNo();
+		int listCount = 0;
+		PageInfoDto pi = null;
+		List<VacationDto> list = new ArrayList<>();
+		search.put("memNo", String.valueOf(memNo));
+		
+		
+
+		
+		if (search.get("keyword") == null || search.get("keyword").equals("")) {
+		    
+			if(search.get("searchStartDate") != null && !search.get("searchStartDate").equals("") && !search.get("searchEndDate").equals("")) {
+				// keyword가 없는데 검색 시작일과 종료일이 모두 있는 경우
+				listCount = memberService.selectVacationListCountSet(search);
+		        pi = pagingUtil.getPageInfoDto(listCount, currentPage , 5, 8);
+		        list = memberService.selectVacationListSet(pi, search);
 			}else {
-				// keyword가 빈값이 아닌경우 => 검색목록 조회
-				listCount = memberService.selectSearchAttendListCount(search);
+				// keyword가 없는 경우 전체 목록 조회
+				listCount = memberService.selectVacationListCount(search);
 				pi = pagingUtil.getPageInfoDto(listCount, currentPage , 5, 8);
-				list = memberService.selectSearchAttendList(pi, search);
+				list = memberService.selectVacationList(pi, search);
+				
 			}
-			
-			Map<String, Object> searchMap = new HashMap<>();
-			searchMap.put("list", list);
-			searchMap.put("pi", pi);
-			
-			  
-			return searchMap;
-			
+		} else {
+		    // keyword가 있는 경우
+		    if (search.get("searchStartDate") == null || search.get("searchStartDate").equals("") || search.get("searchEndDate").equals("")) {
+		        // 검색 시작일 또는 종료일이 없는 경우
+		        // 전체 조회하도록 날짜 검색 조건을 추가하지 않고 keyword만을 사용하여 전체 목록 조회
+		        listCount = memberService.selectVacationListCount(search);
+		        pi = pagingUtil.getPageInfoDto(listCount, currentPage , 5, 8);
+		        list = memberService.selectVacationList(pi, search);
+		    } else {
+		        // 검색 시작일과 종료일이 모두 있는 경우
+		        // 날짜 검색 조건을 포함하여 검색 목록 조회
+		        listCount = memberService.selectVacationListCountSet(search);
+		        pi = pagingUtil.getPageInfoDto(listCount, currentPage , 5, 8);
+		        list = memberService.selectVacationListSet(pi, search);
+		    }
 		}
 		
+		Map<String, Object> searchMap = new HashMap<>();
+		searchMap.put("list", list);
+		searchMap.put("pi", pi);
+		
+		  
+		return searchMap;
+		
+	}
+	
+	
+	
+	
+	// * 근태 조회 관련 ------------------------------------------
+	@GetMapping("attendList.page")
+	public String attendPage() {
+		return "/member/attendList";
+	}
+	
+	@ResponseBody
+	@GetMapping(value="attendList.do", produces="application/json; charset=utf-8")
+	public Map<String, Object> searchAttendList (@RequestParam(value="page" ,defaultValue="1") int currentPage
+									, @RequestParam Map<String, String> search
+									, HttpSession session) {
+		System.out.println(search);
+		
+		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
+		int memNo = loginUser.getMemNo();
+		int listCount = 0;
+		PageInfoDto pi = null;
+		List<AttendDto> list = new ArrayList<>();
+		search.put("memNo", String.valueOf(memNo));
+		
+		if(search.get("keyword") == null || search.get("keyword").equals("")) {
+			// keyword="" ==> 전체목록 조회
+			listCount = memberService.selectAttendListCount(search);
+			pi = pagingUtil.getPageInfoDto(listCount, currentPage , 5, 8);
+			list = memberService.selectAttendList(pi, search);
+			
+		}else {
+			// keyword가 빈값이 아닌경우 => 검색목록 조회
+			listCount = memberService.selectSearchAttendListCount(search);
+			pi = pagingUtil.getPageInfoDto(listCount, currentPage , 5, 8);
+			list = memberService.selectSearchAttendList(pi, search);
+		}
+		
+		Map<String, Object> searchMap = new HashMap<>();
+		searchMap.put("list", list);
+		searchMap.put("pi", pi);
+		
+		  
+		return searchMap;
+		
+	}
+	
 	
 	
 	

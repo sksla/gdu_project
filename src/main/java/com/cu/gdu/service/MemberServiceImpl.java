@@ -60,13 +60,13 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public int selectVacationListCount(int memNo) {
-		return memberDao.selectVacationListCount(memNo);
+	public int selectVacationListCount(Map<String, String> search) {
+		return memberDao.selectVacationListCount(search);
 	}
 
 	@Override
-	public List<VacationDto> selectVacationList(PageInfoDto pi, int memNo) {
-		return memberDao.selectVacationList(pi, memNo);
+	public List<VacationDto> selectVacationList(PageInfoDto pi, Map<String, String> search) {
+		return memberDao.selectVacationList(pi, search);
 	}
 
 	@Override
@@ -90,13 +90,13 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public int selectVacationListCountSet(VacationDto v) {
-		return memberDao.selectVacationListCountSet( v);
+	public int selectVacationListCountSet(Map<String, String> search) {
+		return memberDao.selectVacationListCountSet(search);
 	}
 
 	@Override
-	public List<VacationDto> selectVacationListSet(PageInfoDto pi, VacationDto v) {
-		return memberDao.selectVacationListSet(pi,  v);
+	public List<VacationDto> selectVacationListSet(PageInfoDto pi, Map<String, String> search) {
+		return memberDao.selectVacationListSet(pi,  search);
 	}
 
 	@Override
