@@ -112,9 +112,11 @@
                         <th colspan="2">
                         <!--<textarea class="form-control" required name="" id="content" rows="10" style="resize:none;"></textarea>-->
                        	<textarea cols="80" id="testedit" name="boardContent" rows="10" data-sample="1" data-sample-short style="resize:none;" required placeholder="내용 입력">
+		                    내용입력
 		                    </textarea>
 		                  	<div style="display:none;">
 				                  <textarea cols="80" id="editor1" style="resize:none;" placeholder="내용 입력" disabled>
+													
 													</textarea>
 												</div>
                        </th>
@@ -169,14 +171,25 @@
 											})
 										})
 										
+									// CKEDITOR.replace('testedit');
+										
 										function registValidate(){
+											
+											const content = CKEDITOR.instances.testedit.getData()
+																																 .replace(/<[^>]*>/g, '')
+																																 .replace(/&nbsp;/g, '')
+																																 .trim();
+											
+											//console.log(content);
+											
 											if($("#title").val().trim() == ""){
 												alert("제목을 입력해주세요");
 												return false;
-											}else if($("#testedit").val().trim() == ""){
+											}else if(content == "내용입력" || content == ""){
 												alert("내용을 입력해주세요");
 												return false;
 											}
+											
 										}
 										
 										
