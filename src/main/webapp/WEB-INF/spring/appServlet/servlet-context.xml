@@ -30,6 +30,21 @@
 	<context:component-scan base-package="com.cu.gdu" />
 	
 	<!-- Interceptor 등록 -->
+	<interceptors>
+		<interceptor>
+			<mapping path="/admin/**" />
+			<mapping path="/approval/**" />
+			<mapping path="/board/**" />
+			<mapping path="/alert/**" />
+			<mapping path="/aff/**" />
+			<mapping path="/calendar/**" />
+			<mapping path="/chat/**" />
+			<mapping path="/lec/**" />
+			<mapping path="/member/**" />
+			<mapping path="/reservation/**" />
+			<beans:bean class="com.cu.gdu.Interceptor.LoginCheckInterceptor" id="loginCheckInterceptor" />
+		</interceptor>
+	</interceptors>
 	
 	<!-- * WebSocket 등록 -->
 	<beans:bean class="com.cu.gdu.handler.ChatEchoHandler" id="chatEchoHandler" />

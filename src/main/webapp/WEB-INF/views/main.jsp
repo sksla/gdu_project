@@ -25,7 +25,11 @@
 </head>
 <body>
 
-	
+	<script>
+    if ("${alertMsg}" !== "") { // 어떤 메세지 문구가 존재할 경우
+      alert("${alertMsg}");
+    }
+	</script>
 
 	<!-- Preloader -->
   <div class="preloader">
