@@ -103,13 +103,32 @@
                       
                     
                   </div>
+                  <div align="center">
+	        					<c:if test="${ loginUser.memId eq board.memId }">
+		                  <!-- 수정하기, 삭제하기 버튼은 이글이 본인글일 경우만 보여져야됨 -->
+		                  <form id="frm" action="" method="post" align="center">
+		                  	<input type="hidden" name="no" value="${board.boardNo }">
+		                    <button type="submit" class="btn btn-primary" onclick="frmSubmit(1);">수정하기</button>
+		                    <button type="submit" class="btn btn-danger" onclick="frmSubmit(2);">삭제하기</button>
+		                  </form>
+		                  <br><br>
+		                  <script>
+						            	function frmSubmit(num){
+						            		$("#frm").attr("action", num==1 ? "${contextPath}/board/noticeModifyForm.page"
+						            																		: "${contextPath}/board/noticeRemove.do");	
+						            	}
+												</script>
+	                  </c:if>
+ 									</div>
                   <div>
-                    <button type="button" class="btn btn-info" onclick="location.href='${contextPath}/board/noticeEnrollForm.page'">등록하기</button> 
+                    <c:if test="${loginUser.jobNo == '행정관리'}">     
+                    	<button type="button" class="btn btn-info" onclick="location.href='${contextPath}/board/noticeEnrollForm.page'">등록하기</button> 
+                    </c:if>
                   </div>
                 </div>
               </div>
               <div class="table-responsive mb-4">
-                <table class="table border text-nowrap mb-0 align-middle app_doc_table overflow-hidden">
+                <table class="table border text-nowrap mb-0 align-middle app_doc_table overflow-hidden table-hover" style="cursor:pointer;">
                   <thead class="text-dark fs-4">
                     <tr>
                       <th width="100px">
