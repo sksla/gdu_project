@@ -35,15 +35,16 @@
           <div class="card-body px-4 py-3">
             <div class="row align-items-center">
               <div class="col-9">
-                <h4 class="fw-semibold mb-8">전자결재</h4>
+                <h4 class="fw-semibold mb-8" id="page_name">진행중 문서</h4>
                 <nav aria-label="breadcrumb">
                   <ol class="breadcrumb">
                     <li class="breadcrumb-item">
-                      <a class="text-muted text-decoration-none" href="../main/index.html"
+                      <a class="text-muted text-decoration-none" href="${ contextPath }"
                         >Home
                       </a>
                     </li>
-                    <li class="breadcrumb-item" aria-current="page">결재문서함</li>
+                    <li class="breadcrumb-item" aria-current="page">전자결재</li>
+                    <li class="breadcrumb-item" aria-current="page">내 문서함</li>
                   </ol>
                 </nav>
               </div>
@@ -225,6 +226,17 @@
     		// $("select[name='searchType']").val($searchType);
     		$("input[name='startDate']").val($startDate);
     		$("input[name='endDate']").val($endDate);
+
+    		let $docStatus = "${ optionMap.docStatus }";
+    		if($docStatus == 0){
+    			$("#page_name").text("임시보관 문서");
+    		}else if($docStatus == 1){
+    			$("#page_name").text("회수문서");
+    		}else if($docStatus == 2){
+    			$("#page_name").text("반려문서");
+    		}else if($docStatus == 40){
+    			$("#page_name").text("완료문서");
+    		}
     		
     		// 분류 검색
     		$(".selectGroupping").on("change", function(){
@@ -254,7 +266,7 @@
        		var $form = $("<form>", {
        		    "action": "${contextPath}/approval/detail.do",
        		    "method": "post"
-       		});
+       		})
        		
        		$("body").append($form);
        		$form.append($(this).children("input").clone()).submit();

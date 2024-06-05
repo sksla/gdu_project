@@ -39,14 +39,15 @@
 						<div class="card-body px-4 py-3">
 							<div class="row align-items-center">
 								<div class="col-9">
-									<h4 class="fw-semibold mb-8">전자결재</h4>
+									<h4 class="fw-semibold mb-8">결재양식 보관함</h4>
 									<nav aria-label="breadcrumb">
 										<ol class="breadcrumb">
 											<li class="breadcrumb-item"><a
 												class="text-muted text-decoration-none"
-												href="../main/index.html">Home</a>
+												href="${ contextPath }">Home</a>
 											</li>
-											<li class="breadcrumb-item" aria-current="page">결재문서함</li>
+											<li class="breadcrumb-item" aria-current="page">전자결재</li>
+											<li class="breadcrumb-item" aria-current="page">결재양식 보관함</li>
 										</ol>
 									</nav>
 								</div>
