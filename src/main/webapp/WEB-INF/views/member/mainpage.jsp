@@ -546,7 +546,7 @@
 	          <div class="r-8 right-box">
 					      <div class="row" style="height:450px">
 					      	<!-- 오늘의 시설예약 -->
-			          	<div class="col-lg-6 d-flex align-items-start">
+			          	<div class="col-lg-6 d-flex align-items-stretch">
 			          		<div class="card w-100">
 				          		<div class="card-body">
 				          			<div class="w-100 mb-3 d-flex justify-content-between">
