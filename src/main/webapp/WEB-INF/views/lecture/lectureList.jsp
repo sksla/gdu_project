@@ -153,10 +153,10 @@
 	                      </div>
 	                      <div class="mb-3">
 	                        <label for="lec_date1" class="control-label">학년</label><br>
-	                        <input type="radio" id="1" name="grade" value="1"><label for="scales">1</label>
-	                        <input type="radio" id="2" name="grade" value="2"><label for="scales">2</label>
-	                        <input type="radio" id="3" name="grade" value="3"><label for="scales">3</label>
-	                        <input type="radio" id="4" name="grade" value="4"><label for="scales">4</label>
+	                        <input type="radio" id="1" name="grade" value="1">&nbsp;<label for="scales">1</label>&nbsp;&nbsp;&nbsp;&nbsp;
+	                        <input type="radio" id="2" name="grade" value="2">&nbsp;<label for="scales">2</label>&nbsp;&nbsp;&nbsp;&nbsp;
+	                        <input type="radio" id="3" name="grade" value="3">&nbsp;<label for="scales">3</label>&nbsp;&nbsp;&nbsp;&nbsp;
+	                        <input type="radio" id="4" name="grade" value="4">&nbsp;<label for="scales">4</label>
 	                      </div>
 	                      <div class="mb-3">
 							            <label for="mem_no" class="control-label">담당교수</label>
@@ -249,14 +249,14 @@
 							          </div>
 							          <div class="mb-3">
 							            <label for="lec_name" class="control-label">강의명</label>
-							            <input type="text" class="form-control" name="lecName" id="lec_name" value=""/>
+							            <input type="text" class="form-control" name="lecName" id="lec_name" value="" readonly/>
 							          </div>
 							          <div class="mb-3">
 	                        <label for="grade" class="control-label">학년</label><br>
-	                        <input type="radio" id="grade1" name="grade" value="1"><label for="scales">1</label>
-	                        <input type="radio" id="grade2" name="grade" value="2"><label for="scales">2</label>
-	                        <input type="radio" id="grade3" name="grade" value="3"><label for="scales">3</label>
-	                        <input type="radio" id="grade4" name="grade" value="4"><label for="scales">4</label>
+	                        <input type="radio" id="grade1" name="grade" value="1">&nbsp;<label for="scales">1</label>&nbsp;&nbsp;&nbsp;&nbsp;
+	                        <input type="radio" id="grade2" name="grade" value="2">&nbsp;<label for="scales">2</label>&nbsp;&nbsp;&nbsp;&nbsp;
+	                        <input type="radio" id="grade3" name="grade" value="3">&nbsp;<label for="scales">3</label>&nbsp;&nbsp;&nbsp;&nbsp;
+	                        <input type="radio" id="grade4" name="grade" value="4">&nbsp;<label for="scales">4</label>
 	                      </div>
 							          <div class="mb-3">
 							            <label for="mem_no" class="control-label">담당교수</label>
@@ -425,16 +425,16 @@
 
 				
 				// 조회해온 요일이랑 같은 value값 체크되게 (나머지 체크해제 되게) 삼항연산자
-				$("#mon").prop("checked", result.lectureDate=="월" ? true : false);
-				$("#tue").prop("checked", result.lectureDate=="화" ? true : false);
-				$("#wed").prop("checked", result.lectureDate=="수" ? true : false);
-				$("#thu").prop("checked", result.lectureDate=="목" ? true : false);
-				$("#fri").prop("checked", result.lectureDate=="금" ? true : false);
-				$("#sat").prop("checked", result.lectureDate=="토" ? true : false);
-				
+				$("#mon").prop("checked", result.lectureDate.trim() == "2" ? true : false);
+				$("#tue").prop("checked", result.lectureDate.trim() == "3" ? true : false);
+				$("#wed").prop("checked", result.lectureDate.trim() == "4" ? true : false);
+				$("#thu").prop("checked", result.lectureDate.trim() == "5" ? true : false);
+				$("#fri").prop("checked", result.lectureDate.trim() == "6" ? true : false);
+				$("#sat").prop("checked", result.lectureDate.trim() == "7" ? true : false);
+
 				// select안 옵션도 같은 value값 가진 option요소 selected 속성 부여
-				$("#start_time").val(result.startTime);
-				$("#end_time").val(result.endTime);
+				$("#start_time").val(result.startTime.trim() );
+				$("#end_time").val(result.endTime.trim() );
 	
 				$("#max_student").val(result.maxStudent);
 				$("#resList").val(result.resNo);
