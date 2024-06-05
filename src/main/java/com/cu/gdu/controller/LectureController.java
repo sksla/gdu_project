@@ -81,12 +81,14 @@ public class LectureController {
 		log.debug("result: {}", result);
 		
 		if(!(sa.getStuAttendList().isEmpty()) && (result == sa.getStuAttendList().size())) { // 성공
-			redirectAttributes.addFlashAttribute("alertMsg", "성공적으로 저장었습니다.");
+			redirectAttributes.addFlashAttribute("alertMsg", "성공적으로 저장되었습니다.");
+			redirectAttributes.addFlashAttribute("lecNo", sa.getStuAttendList().get(0).getLecNo());
 		}else {
 			redirectAttributes.addFlashAttribute("alertMsg", "저장에 실패했습니다.");
 		}
 		
 		log.debug("출석목록들: {}", sa.getStuAttendList());
+		
 		
 		return "redirect:/lec/stuAttendList.do";
 
@@ -137,10 +139,10 @@ public class LectureController {
 		System.out.println(sa);
 		if(result1 * result2 > 0 ) {
 			// 성공메세지
-			redirectAttributes.addFlashAttribute("alertMsg", "성공");
+			redirectAttributes.addFlashAttribute("alertMsg", "성공적으로 등록되었습니다.");
 		}else{
 			// 실패메세지
-			redirectAttributes.addFlashAttribute("alertMsg", "실패");
+			redirectAttributes.addFlashAttribute("alertMsg", "실패했습니다. 다시 입력해주세요.");
 			redirectAttributes.addFlashAttribute("historyBackYN", "Y");
 		}
 		return "redirect:/lec/lecList.do";
@@ -165,10 +167,10 @@ public class LectureController {
 		
 		if(result == 1) {
 			// 성공메세지
-			redirectAttributes.addFlashAttribute("alertMsg", "성공");
+			redirectAttributes.addFlashAttribute("alertMsg", "성공적으로 수정되었습니다.");
 		}else{
 			// 실패메세지
-			redirectAttributes.addFlashAttribute("alertMsg", "실패");
+			redirectAttributes.addFlashAttribute("alertMsg", "실패했습니다. 다시 입력해주세요.");
 			redirectAttributes.addFlashAttribute("historyBackYN", "Y");
 		}
 		return "redirect:/lec/lecList.do";
@@ -181,10 +183,10 @@ public class LectureController {
 		
 		if(result == 1) {
 			// 성공메세지
-			redirectAttributes.addFlashAttribute("alertMsg", "성공");
+			redirectAttributes.addFlashAttribute("alertMsg", "성공적으로 삭제되었습니다.");
 		}else{
 			// 실패메세지
-			redirectAttributes.addFlashAttribute("alertMsg", "실패");
+			redirectAttributes.addFlashAttribute("alertMsg", "실패했습니다. 다시 시도해주세요.");
 			redirectAttributes.addFlashAttribute("historyBackYN", "Y");
 		}
 

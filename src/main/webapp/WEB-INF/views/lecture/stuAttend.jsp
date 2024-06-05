@@ -110,11 +110,12 @@
 								      <select class="form-select w-auto" id="lectureSelect" name="lectureSelect" onchange="handleChange();">
 								      	<option value="0">강의선택</option>
 								      	<c:forEach var="lec" items="${leclist}">
-									    		<option value="${lec.lecNo}">${lec.lecName}
-									    		</option>		
+									    		<option value="${lec.lecNo}" ${ lec.lecNo eq lecNo ? 'selected' : '' }>${lec.lecName}</option>		
 									    	</c:forEach>
 								      </select>
 						        </div>
+						        
+						       
 	              	</c:otherwise>
 	              </c:choose>
 							</div>
@@ -295,6 +296,11 @@
 		let lecDate = dateOffset.toISOString().slice(0, 10);
 	  
 	  document.getElementById('lectureDate').value = lecDate;
+	  
+	  if('${lecNo}' != ''){
+		  handleChange();
+	  }
+	  
 	});
 	
 	// handleChange 함수
@@ -440,7 +446,6 @@
 	});
 	// ---------체크박스 끝 ---------
 	
-
 	</script>
 </body>
 </html>

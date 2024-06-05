@@ -125,6 +125,7 @@
 			from open_lec
       join lecture using(lec_no)
 		 where mem_no=#{memNo}
+		 	 and lec_status = 'Y'
 	</select>
 	
 	<!-- 학생 출석목록 -->
