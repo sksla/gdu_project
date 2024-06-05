@@ -120,56 +120,6 @@
                   </div>     
                 </div>
                 <div class="mapArea" id="map" style="width:450px;height:300px; float:left;"></div>
-							
-								<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0de54283cd0dd1d88f4512fabccae71c&libraries=services,clusterer,drawing"></script>
-							
-								<script>
-								var container = document.getElementById('map');
-								var options = {
-										center: new kakao.maps.LatLng(33.450701, 126.570667),
-										level: 3
-										};
-								var map = new kakao.maps.Map(container, options);
-								</script>
-								<script>
-               var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
-                mapOption = {
-                    center: new kakao.maps.LatLng(33.450752, 126.540667), // 지도의 중심좌표
-                    level: 4 // 지도의 확대 레벨
-                };  
-               // 지도를 생성합니다    
-               var map = new kakao.maps.Map(mapContainer, mapOption); 
-               // 주소-좌표 변환 객체를 생성합니다
-               var geocoder = new kakao.maps.services.Geocoder();
-               // 검색할 주소
-               var address = '${affiliatedOrgan.affLocation}';
-               console.log(address);
-               
-               // 주소로 좌표 검색
-               geocoder.addressSearch(address, function(result, status) {
-                  // 정상적으로 검색이 완료됐으면 
-                   if (status === kakao.maps.services.Status.OK) {
-                       var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-                   
-                    // 결과값으로 받은 위치를 마커로 표시
-                       var marker = new kakao.maps.Marker({
-                           map: map,
-                           position: coords
-                         });
-                    // 인포윈도우로 장소에 대한 설명을 표시
-                       var infowindow = new kakao.maps.InfoWindow({
-                           content: '<div style="width:150px;text-align:center;padding:6px 0;">${affiliatedOrgan.affName}</div>'
-                       });
-                       infowindow.open(map, marker);
-
-                       // 지도의 중심을 결과값으로 받은 위치로 이동
-                       map.setCenter(coords);
-                   } else {
-                       // 주소 검색 실패 시 처리
-                       console.log('주소 검색 실패');
-                   }
-               });
-               </script>
             </div>
             <br>
             <div class="content2">
@@ -249,14 +199,12 @@
                           <div class="form-group mb-0">
                             <div class="row align-items-center">
                               <label for="inputText1" class="col-3 text-end control-label col-form-label">사용기간</label>
-                              <div class="col-9 border-start pb-2 pt-2">
-                                
+                              <div class="col-9 border-start pb-2 pt-2 resDate">
                                   <span class="form-group">
                                     <input type="date" class="form-control" id="startDate" name="startDate" style="width: 150px;">
                                     &nbsp;<label for="" class="form-label fw-semibold col-form-label fs-3"> ~ </label>&nbsp;
                                     <input type="date" class="form-control" id="endDate" name="endDate" style="width: 150px;">
                                   </span>
-                                
                               </div>
                             </div>
                           </div>
@@ -311,6 +259,63 @@
 	
 	<!-- footer-->
   <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
+								
+	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0de54283cd0dd1d88f4512fabccae71c&libraries=services,clusterer,drawing"></script>
+							
+	<script>
+	// 지도
+	var container = document.getElementById('map');
+	var options = {
+		center: new kakao.maps.LatLng(33.450701, 126.570667),
+		level: 3
+	};
+	var map = new kakao.maps.Map(container, options);
+
+	var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+		mapOption = {
+			center: new kakao.maps.LatLng(33.450752, 126.540667), // 지도의 중심좌표
+			level: 4 // 지도의 확대 레벨
+		};  
+	// 지도를 생성합니다    
+	var map = new kakao.maps.Map(mapContainer, mapOption); 
+	// 주소-좌표 변환 객체를 생성합니다
+	var geocoder = new kakao.maps.services.Geocoder();
+	// 검색할 주소
+	var address = '${affiliatedOrgan.affLocation}';
+	console.log(address);
+               
+	// 주소로 좌표 검색
+	geocoder.addressSearch(address, function(result, status) {
+		// 정상적으로 검색이 완료됐으면 
+		if (status === kakao.maps.services.Status.OK) {
+			var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+                   
+			// 결과값으로 받은 위치를 마커로 표시
+			var marker = new kakao.maps.Marker({
+				map: map,
+				position: coords
+			});
+			// 인포윈도우로 장소에 대한 설명을 표시
+			var infowindow = new kakao.maps.InfoWindow({
+				content: '<div style="width:150px;text-align:center;padding:6px 0;">${affiliatedOrgan.affName}</div>'
+			});
+			infowindow.open(map, marker);
+		
+		  // 지도의 중심을 결과값으로 받은 위치로 이동
+			map.setCenter(coords);
+		} else {
+				// 주소 검색 실패 시 처리
+				console.log('주소 검색 실패');
+		}
+  });
 	
+	// 예약날짜
+   	$(".resDate").on("click", function(){
+   		if($("input[name='startDate']").val() > $("input[name='endDate']").val()){
+   			alert('시작일은 종료일보다 이전이어야 합니다. 확인해주세요.');
+   			return false;
+   		}
+   	})
+	</script>
 </body>
 </html>
