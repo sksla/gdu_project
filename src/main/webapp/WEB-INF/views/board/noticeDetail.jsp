@@ -119,19 +119,6 @@
 												</script>
 	                  </c:if>
  									</div>
-                  <table id="replyArea" class="table" align="center">
-                    <thead>
-                      <tr>
-                        <th colspan="2">
-                          <textarea class="form-control" name="" id="content" cols="55" rows="2" style="resize:none; width:100%"></textarea>
-                        </th>
-                        <th style="vertical-align: middle"><button class="btn btn-secondary">등록하기</button></th>
-                      </tr>
-                      <tr>
-                        <td colspan="3">댓글 (<span id="rcount">3</span>) </td> 
-                      </tr>
-                    </thead>
-                  </table>
                 </div>
                 <br><br>
               </div>
