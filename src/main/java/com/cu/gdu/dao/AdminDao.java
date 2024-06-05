@@ -473,5 +473,11 @@ public class AdminDao {
 		RowBounds rowBounds = new RowBounds(offset, limit);
 		return sqlSessionTemplate.selectList("adminMapper.ajaxChartMemberList", map, rowBounds);
 	}
+	
+	// 직원개별등록시 아이디 유효성검사
+	public int ajaxMemId(String memId) {
+		return sqlSessionTemplate.selectOne("adminMapper.ajaxMemId", memId);
+	}
+	
 
 }

@@ -208,6 +208,14 @@ public class AdminController {
 		}
 		return "redirect:/admin/memberList.do";
 	}
+	
+	// 직원 아이디 유효성검사
+	@ResponseBody
+	@GetMapping("/memIdFilter.do")
+	//@GetMapping(value = "/memIdFilter.do", produces = "application/json; charset=utf-8")
+	public String ajaxMemId(String memId) {
+		return adminService.ajaxMemId(memId) > 0 ? "NNNNN" : "YYYYY";
+	}
 
 	// 직원상세페이지
 	@GetMapping("/memberDetail.do")
@@ -272,9 +280,9 @@ public class AdminController {
 		return map;
 	}
 
-	// 관리자 설정페이지에 띄울 값들
-	@GetMapping("/setting.do")
-	public String adminSettings(Model model) {
+	// 관리자 학과 설정페이지에 띄울 값들
+	@GetMapping("/majorSetting.do")
+	public String adminMajorSettings(Model model) {
 		List<CollegeDto> colList = adminService.selectCollegeList();
 		List<MajorDto> majorList = adminService.selectAdminSetMajorList();
 		List<JobDto> jobList = adminService.selectJobList();
@@ -287,7 +295,43 @@ public class AdminController {
 		model.addAttribute("jobList", jobList);
 		model.addAttribute("colList", colList);
 		model.addAttribute("majorList", majorList);
-		return "admin/updateAdmin";
+		return "admin/updateSetMajor";
+	}
+	
+	// 관리자 직급 설정페이지에 띄울 값들
+	@GetMapping("/jobSetting.do")
+	public String adminJobSettings(Model model) {
+		List<CollegeDto> colList = adminService.selectCollegeList();
+		List<MajorDto> majorList = adminService.selectAdminSetMajorList();
+		List<JobDto> jobList = adminService.selectJobList();
+		List<JobDto> jobListAll = adminService.selectAdminSetJobList();
+		InsertDateDto lecDate = adminService.selectLecInsertDate();
+		InsertDateDto stuDate = adminService.selectStuInsertDate();
+		model.addAttribute("lecDate", lecDate);
+		model.addAttribute("stuDate", stuDate);
+		model.addAttribute("jobListAll", jobListAll);
+		model.addAttribute("jobList", jobList);
+		model.addAttribute("colList", colList);
+		model.addAttribute("majorList", majorList);
+		return "admin/updateSetJob";
+	}
+	
+	// 관리자 등록기간 설정페이지에 띄울 값들
+	@GetMapping("/dateSetting.do")
+	public String adminDateSettings(Model model) {
+		List<CollegeDto> colList = adminService.selectCollegeList();
+		List<MajorDto> majorList = adminService.selectAdminSetMajorList();
+		List<JobDto> jobList = adminService.selectJobList();
+		List<JobDto> jobListAll = adminService.selectAdminSetJobList();
+		InsertDateDto lecDate = adminService.selectLecInsertDate();
+		InsertDateDto stuDate = adminService.selectStuInsertDate();
+		model.addAttribute("lecDate", lecDate);
+		model.addAttribute("stuDate", stuDate);
+		model.addAttribute("jobListAll", jobListAll);
+		model.addAttribute("jobList", jobList);
+		model.addAttribute("colList", colList);
+		model.addAttribute("majorList", majorList);
+		return "admin/updateSetDate";
 	}
 
 	// 관리자 설정페이지 학과생성
@@ -300,7 +344,7 @@ public class AdminController {
 		} else {
 			redirectAttributes.addFlashAttribute("alertMsg", "학과생성에 실패했습니다.");
 		}
-		return "redirect:/admin/setting.do";
+		return "redirect:/admin/majorSetting.do";
 	}
 
 	// 관리자 설정페이지 학과수정
@@ -312,7 +356,7 @@ public class AdminController {
 		} else {
 			redirectAttributes.addFlashAttribute("alertMsg", "학과수정에 실패했습니다.");
 		}
-		return "redirect:/admin/setting.do";
+		return "redirect:/admin/majorSetting.do";
 	}
 
 	// 관리자 설정페이지 직급생성
@@ -326,7 +370,7 @@ public class AdminController {
 		} else {
 			redirectAttributes.addFlashAttribute("alertMsg", "직급생성에 실패했습니다.");
 		}
-		return "redirect:/admin/setting.do";
+		return "redirect:/admin/jobSetting.do";
 	}
 
 	// 관리자 설정페이지 직급수정
@@ -338,7 +382,7 @@ public class AdminController {
 		} else {
 			redirectAttributes.addFlashAttribute("alertMsg", "직급수정에 실패했습니다.");
 		}
-		return "redirect:/admin/setting.do";
+		return "redirect:/admin/jobSetting.do";
 	}
 
 	// 강의등록기간 수정
@@ -350,7 +394,7 @@ public class AdminController {
 		} else {
 			redirectAttributes.addFlashAttribute("alertMsg", "강의등록기간수정에 실패했습니다.");
 		}
-		return "redirect:/admin/setting.do";
+		return "redirect:/admin/dateSetting.do";
 	}
 
 	// 학생등록기간 수정
@@ -362,7 +406,7 @@ public class AdminController {
 		} else {
 			redirectAttributes.addFlashAttribute("alertMsg", "학생등록기간수정에 실패했습니다.");
 		}
-		return "redirect:/admin/setting.do";
+		return "redirect:/admin/dateSetting.do";
 	}
 
 	// 근무/연차페이지

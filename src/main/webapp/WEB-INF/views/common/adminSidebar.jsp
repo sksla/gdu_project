@@ -149,7 +149,7 @@
             </li>
             <!------------------------설정------------------------>
             <li class="sidebar-item">
-              <a class="sidebar-link" href="${contextPath}/admin/setting.do" aria-expanded="false">
+              <a class="sidebar-link" href="${contextPath}/admin/majorSetting.do" aria-expanded="false">
                 <span>
                   <i class="ti ti-aperture"></i>
                 </span>

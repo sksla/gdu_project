@@ -500,5 +500,11 @@ public class AdminServiceImpl implements AdminService {
 	public List<MemberDto> ajaxChartMemberList(Map<String, Object> map) {
 		return adminDao.ajaxChartMemberList(map);
 	}
+
+	// 직원개별등록시 아이디 유효성검사
+	@Override
+	public int ajaxMemId(String memId) {
+		return adminDao.ajaxMemId(memId);
+	}
 	
 }

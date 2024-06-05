@@ -7,6 +7,15 @@
 <head>
 <meta charset="UTF-8">
 <title>관리자_직원 상세페이지</title>
+<script>
+
+	//전화 번호 입력 시 자동 - 넣기
+	const addHyphen = (target) => {
+	target.value = target.value
+	  .replace(/[^0-9]/g, '')
+	  .replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
+	}
+</script>
 <style>
 	.majorAndJob{
 	  display: flex;
@@ -33,7 +42,9 @@
           <!-- 페이지 타이틀 -->
           <div class="card bg-info-subtle shadow-none position-relative overflow-hidden mb-4">
             <div class="card-body px-4 py-3">
+              
               <div class="row align-items-center">
+                
                 <div class="col-9">
                   <h4 class="fw-semibold mb-8">직원 상세정보</h4>
                   <nav aria-label="breadcrumb">
@@ -49,7 +60,7 @@
                 </div>
                 <div class="col-3">
                   <div class="text-center mb-n5">
-                    <img src="../assets/images/breadcrumb/ChatBc.png" alt="" class="img-fluid mb-n4" />
+                    
                   </div>
                 </div>
               </div>
@@ -103,7 +114,7 @@
                     <div class="mb-4 row align-items-center">
                       <label for="exampleInputSelect4" class="form-label fw-semibold col-sm-3 col-form-label">전화번호</label>
                       <div class="col-sm-9">
-                        <input class="form-control" type="tel" value="${m.phone}" name="phone" id="example-tel-input" />
+                        <input class="form-control" type="tel" value="${m.phone}" name="phone" id="example-tel-input" oninput="addHyphen(this)"  maxlength="13"/>
                       </div>
                     </div>
                     <div class="mb-4 row align-items-center">

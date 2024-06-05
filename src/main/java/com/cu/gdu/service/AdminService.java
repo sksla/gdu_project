@@ -232,4 +232,7 @@ public interface AdminService {
 	// 조직도 페이지에서 학과 직원수 및 직원조회
 	int ajaxChartMemberListCount(String majorNo);
 	List<MemberDto> ajaxChartMemberList(Map<String, Object> map);
+	
+	// 직원개별등록시 아이디 유효성검사
+	int ajaxMemId(String memID);
 }
