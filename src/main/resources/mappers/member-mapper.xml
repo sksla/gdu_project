@@ -85,8 +85,7 @@
   <!-- 회원정보 수정용 -->
   <update id="updateMember">
 			update member
-				 set mem_name = #{memName}, 
-				 		 email = #{email},
+				 set email = #{email},
 				 		 phone = #{phone},
 				 		 address = #{address}
 			 where mem_no = #{memNo}
@@ -211,7 +210,7 @@
         AND v.status = #{keyword}
     	</if>
      and v.regist_date <![CDATA[>=]]>  #{searchStartDate} 
-     AND v.regist_date <![CDATA[<=]]> #{searchEndDate}
+     AND  to_char(v.regist_date, 'YYYY-MM-DD') <![CDATA[<=]]> #{searchEndDate}
    order
      by vac_no desc
 	</select>
@@ -226,7 +225,7 @@
 		    <if test="keyword != null and keyword != ''">
         AND status = #{keyword}
     		</if>
-		   and regist_date BETWEEN #{searchStartDate} AND #{searchEndDate}
+		   and  to_char(regist_date, 'YYYY-MM-DD') BETWEEN #{searchStartDate} AND #{searchEndDate}
 	</select>	
 	
 	
