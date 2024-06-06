@@ -165,14 +165,20 @@
 										        </tr>
 										    
                 						  <script>
+                						  var jobNo = "${loginUser.jobNo}";
+                						  
 		                						  function showModal(url, openStatus, oripassword) {
-		                						        if (openStatus == 2) {
+		                						     if(jobNo != "행정관리"){
+		                							  		if (openStatus == 2) {
 		                						            $('#checkpass-modal').modal('show'); // 모달 표시
 		                						            $('#checkpass-modal').data('url', url); // 데이터 속성에 URL 저장
 		                						            $('#checkpass-modal').data('oripassword', oripassword); // 데이터 속성에 password 저장
 		                						        } else {
 		                						            location.href = url; // openStatus가 2가 아니면 바로 이동
 		                						        }
+		                						     }else {
+		                							  		location.href = url; // openStatus가 2가 아니면 바로 이동
+		                							  	}
 		                						    }
 		
 		                						    function checkPassword() {
