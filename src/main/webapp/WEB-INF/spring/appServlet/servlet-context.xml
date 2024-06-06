@@ -40,7 +40,10 @@
 			<mapping path="/calendar/**" />
 			<mapping path="/chat/**" />
 			<mapping path="/lec/**" />
-			<mapping path="/member/**" />
+			<mapping path="/member/mypage.page" />
+			<mapping path="/member/selectAttend.do" />
+			<mapping path="/member/vacationForm.page" />
+			<mapping path="/member/attendList.page" />
 			<mapping path="/reservation/**" />
 			<beans:bean class="com.cu.gdu.Interceptor.LoginCheckInterceptor" id="loginCheckInterceptor" />
 		</interceptor>
