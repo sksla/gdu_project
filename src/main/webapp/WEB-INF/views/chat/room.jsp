@@ -202,11 +202,19 @@
                       </ul>
                     </div>
                   </div>
+                  <!--  
                   <form class="position-relative mb-4">
                     <input type="text" class="form-control search-chat py-2 ps-5" id="text-srh"
                       placeholder="Search Contact" />
                     <i class="ti ti-search position-absolute top-50 start-0 translate-middle-y fs-6 text-dark ms-3"></i>
                   </form>
+                  -->
+                  <div style="padding-bottom: 10px; align-content: center; margin: auto;">
+                  <a class="btn bg-secondary-subtle  text-secondary px-4 py-2" onclick="openModal('createChat')" style="font-size: 18px; display: flex; align-items: center; justify-content: center; width: 300px; margin: auto;">
+		                <i class="ti ti-message-chatbot"  style="font-size: 24px;"></i>
+		                &nbsp; 채팅하기
+               		</a>
+               		</div>
                   <div class="dropdown">
                     <a class="text-muted fw-semibold d-flex align-items-center" href="javascript:void(0)" role="button"
                       data-bs-toggle="dropdown" aria-expanded="false">
@@ -352,11 +360,11 @@
                           </div>
                         </div>
                         
-                        <div class="d-flex justify-content-between fileList_wrap " style=" display:none;">
+                        <div class="d-flex justify-content-between fileList_wrap " style=" display:none; ">
                         	<div> 
                         		
                         	</div>
-	                        <div class="fileList_wrap chat-box " style=" display:none;">
+	                        <div class="fileList_wrap chat-box " style=" display:none; width:200px;">
 	                        	<div class="d-flex justify-content-between">
 	                        		<div></div>
 	                        		<div style="margin-right: 30px;">
