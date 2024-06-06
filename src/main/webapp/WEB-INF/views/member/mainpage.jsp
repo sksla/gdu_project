@@ -429,8 +429,8 @@
           <div class="left-box">
             <div class="card py-3 " style="height:185px; margin-bottom:10px;">
             	<div class="d-flex" style="align-items: center; padding-top: 15px;">
-            			<h4 class="todayDate" style="float: left;  padding-left: 25px; color: gray;">날짜</h4>
-            			<h2 class="todayTime" style="padding-left: 10px; color: gray;">시간</h2>
+            			<h4 class="todayDate" style="float: left;  padding-left: 25px; color: gray;"></h4>
+            			<h2 class="todayTime" style="padding-left: 10px; color: gray;"></h2>
             	</div>
             	
               <div class="d-flex flex-row align-items-center" style="margin: auto;">
