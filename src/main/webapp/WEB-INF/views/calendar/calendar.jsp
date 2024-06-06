@@ -1299,6 +1299,8 @@
               // 등록 버튼 보이게
               $("#editForm .insertEvtBtn").css("display", "inline");
               
+              $("#editForm #calTitle").val("");
+              
             	$("#editForm").modal("show");
     
             }
@@ -1976,6 +1978,8 @@
 	                $("#editForm .updateEvtBtn").css("display", "none");
 	                // 등록 버튼 보이게
 	                $("#editForm .insertEvtBtn").css("display", "inline");
+	                
+	                $("#editForm #calTitle").val("");
 	                
 	                $("#editForm").modal("show");
 	                
