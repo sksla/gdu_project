@@ -37,7 +37,7 @@
        
        <!-- 로고 -->
        <div class="brand-logo d-flex align-items-center justify-content-between">
-         <a href="${ contextPath }/member/mainpage" class="text-nowrap logo-img">
+         <a href="${ contextPath }" class="text-nowrap logo-img">
            <img src="../assets/images/logos/longlogo.png" class="dark-logo pt-3 pb-3" width="" height="72" />
            <img src="${ contextPath }/assets/images/logos/light-logo.svg" class="light-logo" alt="Logo-light" />
          </a>

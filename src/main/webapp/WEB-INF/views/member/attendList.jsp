@@ -311,7 +311,6 @@
 						    // 추출한 년 월을 년-월 형식으로 재구성
 						    let formattedYearMonth = year + "-" + month;
 							
-							console.log(targetYearMonth);
 							
 							
 							$.ajax({
@@ -324,7 +323,6 @@
 									keyword: selectedStatus
 								},
 								success:function(rep){
-												console.log(rep);
 
 			          				drawBoardList(rep.list);
 			          				drawPaging(rep.pi);

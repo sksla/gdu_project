@@ -106,7 +106,7 @@
                         <select class="form-select w-auto" name="vacType" id="vacTypeSelect" style="display: inline; width: auto; margin-left: 12px;">
                             <option value="정기">연차</option>
                             <option value="포상">보상</option>
-                            <option value="반차" >반차</option>
+                            <!--  <option value="반차" >반차</option>-->
                         </select>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <div class="form-check form-check-inline">
