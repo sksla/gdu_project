@@ -119,6 +119,7 @@
 		.form-check-input[type=checkbox]{
 			border-color:gray;
 		}
+		.todo-item span{white-space:normal;}
     
     /* 달력 스타일*/
     #calendar * {padding:0px;}
@@ -167,6 +168,14 @@
 		  border-radius: 5px;
    	}
 
+		.todo-body::-webkit-scrollbar {
+		  width: 8px;
+		  
+		}
+		.todo-body::-webkit-scrollbar-thumb {
+		  background-color: #EEEEEE;
+		  border-radius: 5px;
+   	}
 	</style>
 </head>
 
