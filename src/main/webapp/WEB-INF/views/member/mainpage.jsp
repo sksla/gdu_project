@@ -26,6 +26,7 @@
 	
 	<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/google-calendar@6.1.13/index.global.min.js"></script>
+  
   <script>
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -426,20 +427,28 @@
           
           <!-- 왼쪽 박스 부분 -->
           <div class="left-box">
-            <div class="card py-3 " style="height:250px; margin-bottom:10px;">
-              <div class="d-flex flex-row align-items-center">
-	              <button type="button" class="btn bg-info-subtle text-info"  id="checkInBtn">
+            <div class="card py-3 " style="height:185px; margin-bottom:10px;">
+            	<div class="d-flex" style="align-items: center; padding-top: 15px;">
+            			<h4 class="todayDate" style="float: left;  padding-left: 25px; color: gray;">날짜</h4>
+            			<h2 class="todayTime" style="padding-left: 10px; color: gray;">시간</h2>
+            	</div>
+            	
+              <div class="d-flex flex-row align-items-center" style="margin: auto;">
+	              <button type="button" class="btn btn-secondary px-5 py-2"  id="checkInBtn" style="font-size: 18px;">
 	                출근
 	              </button>
-	              <div id="checkInTime" ></div>
-	              <button type="button" class="btn bg-info-subtle text-info" id="checkOutBtn">
+	              
+	              <button type="button" class="btn btn-secondary px-5 py-2" id="checkOutBtn" style="display: none; font-size: 18px;">
 	                퇴근
 	              </button>
-	              <div id="checkOutTime"></div>
               </div>
+              <div class="d-flex flex-row align-items-center" style="margin: auto; padding-top: 10px;">
+              	<div id="checkInTime" ><h5 style="color: gray;"></h5></div> <div id="checkOutTime"><h5 style="color: gray;"></h5></div>
+              </div>
+              
             </div>
 
-						<div class="card">
+						<div class="card" style=" margin-bottom: 10px;">
 						  <div class="card-body weather" style="height: 150px; color:black; padding:15px; display: flex; align-items: center; justify-content: center;">
 						  	
 								<div style="display: flex; font-size:15px; align-items: flex-start;">
@@ -513,9 +522,12 @@
 							});
 						</script>
 
-            <div class="card" style="height: 90px; margin-bottom: 10px;">
-              <div class="card-body">
-                <a class="btn btn-secondary" href="${ contextPath }/chat/room.page">채팅하기</a>
+            <div class="card " style="height: 90px; margin-bottom: 10px; align-content: center;">
+              <div class="card-body" style="padding-top: 23px; align-content: center; margin: auto;">
+                <a class="btn bg-secondary-subtle  text-secondary px-4 py-2" href="${ contextPath }/chat/room.page" style="font-size: 18px; display: flex; align-items: center; justify-content: center; width: 180px; ">
+	                <i class="ti ti-message-chatbot"  style="font-size: 28px;"></i>
+	                &nbsp; 채팅
+                </a>
               </div>
             </div>
             
@@ -727,8 +739,29 @@
 	        	ajaxSelectTodoList();
 	        	ajaxSelectTodayReservationList();
 	        	ajaxSelectUnivCalList();
+	        	updateTime();
+	        	
+	        		// 1초마다 시간 업데이트
+	            setInterval(updateTime, 1000);
+	        	
+		        	// 요일 배열
+		        	const weekdays = ['일', '월', '화', '수', '목', '금', '토'];
+	
+		        	// 현재 날짜를 가져오기
+		        	const currentDate = new Date();
+	
+		        	// 월, 일, 요일 구하기
+		        	const month = currentDate.getMonth() + 1;
+		        	const day = currentDate.getDate();
+		        	const dayOfWeek = weekdays[currentDate.getDay()];
+
+		        	// 날짜 표시
+		        	$(".todayDate").text(month +"월 " +day + "일 ("+ dayOfWeek +")");
+		        	
+		        	
 	        	
 	        	
+	        		// 출근 버튼
 	            $("#checkInBtn").click(function(){
 	            	const options = { hour12: false, timeZone: 'Asia/Seoul' };
 	            	const currentTimeString = new Date().toLocaleTimeString('ko-KR', options);
@@ -748,8 +781,14 @@
 	                    }
 	                    
 	                })
+	                
+	             // 출근 버튼 감추고
+	            	document.getElementById("checkInBtn").style.display = "none";
+	            	// 퇴근 버튼 보이기
+	            	document.getElementById("checkOutBtn").style.display = "inline-block";
 	            })
 	            
+	            // 퇴근 버튼
 	            $("#checkOutBtn").click(function(){
 	            	const registDate = new Date().toISOString().split('T')[0]; // 오늘 날짜만 추출
 	                $.ajax({
@@ -771,7 +810,20 @@
 	            
 	        }) // document.ready function 끝
 	        
+	     		
+	        // 시간만드는 함수
+        	function updateTime() {
+             var curDate = new Date();
+             var timeString = curDate.getHours().toString().padStart(2, '0') + ":" +
+                              curDate.getMinutes().toString().padStart(2, '0') + ":" +
+                            curDate.getSeconds().toString().padStart(2, '0');
+             
+             $(".todayTime").text(timeString);
+           };
 	        
+	        
+	        
+	        // 근태 조회 함수
           function ajaxAttend(){
           	const registDate = new Date().toISOString().split('T')[0]; // 오늘 날짜만 추출
           	
@@ -785,11 +837,13 @@
        			success:function(result){
        				
        				 if(result.startTime) {
-                     $("#checkInTime").text(result.startTime);
+                     $("#checkInTime").find("h5").text(result.startTime);
                      $("#checkInBtn").prop("disabled", true);
+                     document.getElementById("checkInBtn").style.display = "none";
+                     document.getElementById("checkOutBtn").style.display = "inline-block";
                  }
                  if(result.endTime) {
-                     $("#checkOutTime").text(result.endTime);
+                     $("#checkOutTime").find("h5").text(result.endTime);
                      $("#checkOutBtn").prop("disabled", true);
                  }
        			}
@@ -797,6 +851,8 @@
           	})
           	
           }
+	        
+	       
 	        
 	        // 투두, 오늘의 시설예약, 학사일정
 	        let now = new Date();
