@@ -49,7 +49,7 @@
     }
   	
   	#myTable td{padding: 8px}
-  	
+
   </style>
 </head>
 <body>
@@ -110,12 +110,10 @@
 								      <select class="form-select w-auto" id="lectureSelect" name="lectureSelect" onchange="handleChange();">
 								      	<option value="0">강의선택</option>
 								      	<c:forEach var="lec" items="${leclist}">
-									    		<option value="${lec.lecNo}" ${ lec.lecNo eq lecNo ? 'selected' : '' }>${lec.lecName}</option>		
+									    		<option value="${lec.lecNo}" ${ lec.lecNo eq lecNo ? 'selected' : '' }>${lec.lecName}</option>
 									    	</c:forEach>
 								      </select>
 						        </div>
-						        
-						       
 	              	</c:otherwise>
 	              </c:choose>
 							</div>
@@ -149,7 +147,7 @@
 			                    <button type="submit" class="btn btn-info" id="stuAttendSubmit" style="width:100px;">저장</button>
 		                    </div>
 	                    </div> 
-	                    <table class="table border text-nowrap mb-0 align-middle app_doc_table overflow-hidden">
+	                    <table class="table border text-nowrap mb-0 align-middle app_doc_table overflow-hidden" style="text-align:center;">
 	                      <thead class="text-dark fs-4">
 	                        <tr>
 	                          <th>
@@ -179,7 +177,7 @@
 	                        <c:choose>
 		                        <c:when test="${ empty stulist }">
 			                        <tr>
-			                        	<td colspan="7"> 수강신청한 학생이 없습니다.</td>
+			                        	<td colspan="7">수강신청한 학생이 없습니다.</td>
 			                        </tr>
 		                        </c:when>
 		                        <c:otherwise>
@@ -191,7 +189,9 @@
 						                        <p class="mb-0 fw-normal fs-4">${status.count}</p>
 					                        </td>
 					                        <td>
-					                        	<p class="mb-0 fw-normal fs-4">사진</p>
+					                        	<p class="mb-0 fw-normal fs-4">
+					                        		<img src='/gdu/assets/images/profile/user-1.jpg' class='rounded-circle' width='35' height='35'alt='' />
+					                        	</p>
 					                        </td>
 					                        <td>
 						                        <p class="mb-0 fw-normal fs-4">${a.majorName}</p>
@@ -445,7 +445,7 @@
 		});
 	});
 	// ---------체크박스 끝 ---------
-	
+
 	</script>
 </body>
 </html>

@@ -24,7 +24,7 @@ public class StuAttendDto {
 	private String lecNo;
 	private String lectureDate;
 	private String majorNo;
-	private String majotName;
+	private String majorName;
 	private String lecName;
 	private String startDate;
 	private String endDate;
