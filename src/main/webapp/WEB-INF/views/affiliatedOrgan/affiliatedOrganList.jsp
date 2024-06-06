@@ -74,48 +74,12 @@
                         <div class="card">
                           <div class="card-body">
                             <div class="content1 d-flex flex-row justify-content-between">
-                              <div class="searchForm">
-                                <form class="d-flex">
-                                  <div class="form-group" style="width: 130px;">
-                                    <select class="form-select" id="exampleFormControlSelect1">
-                                        <option selected disabled>검색항목</option> 
-                                        <option>기관명</option>
-                                        <option>위치</option>
-                                        <option>관리자</option>
-                                    </select>
-                                  </div>
-                                  &nbsp;
-                                  <div class="input-group">
-                                    <input type="text" class="form-control" name="keyword" value="${ search.keyword }" placeholder="검색어를 입력하세요." aria-label="Recipient's username" aria-describedby="basic-addon2">  
-                                    <button class="btn btn-info" type="submit">검색</button>
-                                  </div>
-                                </form>
-                                <c:if test="${ not empty search }">
-						                      <script>
-									                  $(document).ready(function(){
-									                     $("#searchForm select").val("${search.condition}");
-									                  
-									                     // 검색후 페이지일 경우 페이징바의 페이지 클릭시
-									                     $("#pagingArea a").on("click", function(){
-									                        
-									                        if($(this).hasClass("ti-chevrons-left")){
-									                           $("#searchForm input[name=page]").val(${affPi.currentPage-1});                    
-									                        }else if($(this).hasClass("ti-chevrons-right")){
-									                           $("#searchForm input[name=page]").val(${affPi.currentPage+1});
-									                        }else {
-									                           $("#searchForm input[name=page]").val($(this).text());
-									                        }
-									                        $("#searchForm").submit();
-									                        
-									                        return false; // 기본 이벤트 제거(즉, a태그에 작성되어있는 href="/list.do" 실행안되도록)
-									                     })
-									                  })
-									            	 </script>
-					                     </c:if>
-                                
+                              <div class="searchForm">                               
                               </div>
                               <div class="button">
-                                <button type="button" class="btn btn-info" onclick="location.href='${contextPath}/aff/affiliatedOrganEnrollForm.page'">등록하기</button>
+                              	<c:if test="${loginUser.jobNo == '행정관리'}">     
+                                	<button type="button" class="btn btn-info" onclick="location.href='${contextPath}/aff/affiliatedOrganEnrollForm.page'">등록하기</button>
+                              	</c:if>
                               </div>
                             </div>
                             <div class="content2">

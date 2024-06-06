@@ -170,10 +170,12 @@
                             </div>
                           </div>
                         </div>
-	                      <div class="buttons">
-					                <button type="submit" class="btn btn-info" id="enrollButton">저장</button>
+	                      <div class="buttons"  align="center">
+					                <button type="submit" class="btn btn-info" id="enrollButton">저장</button>&nbsp;&nbsp;
 					                <button type="button" class="btn btn-light" onclick="history.back();">닫기</button>
 					              </div>
+					              <br>
+				                <br>
 					              <script>
 											    document.getElementById("enrollButton").addEventListener("click", function() {
 											        affiliatedOrganEnroll();
