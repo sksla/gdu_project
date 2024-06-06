@@ -211,7 +211,7 @@ public class MemberController {
 		redirectAttributes.addFlashAttribute("alertMsg", "휴가신청 실패하였습니다.");
 		}
 		
-		return "redirect:/member/vacationList.do";
+		return "redirect:/member/vacationList.page";
 	}
 	
 	
