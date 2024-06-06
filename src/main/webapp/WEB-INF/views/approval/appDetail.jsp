@@ -65,7 +65,6 @@
 	p{
     margin-top: 3rem;
 	}
-
 }
 </style>
 
@@ -371,7 +370,7 @@
 
                 <div class="card-body">
                   <label for="example-text-input" class="col-md-2 col-form-label fs-4">내용</label>
-                  <div class="col-md-12" style="min-height:400px">
+                  <div class="col-md-12" id="doc_content" style="min-height:400px">
                     ${ docInfo.docContent }
                   </div>
                 </div>
@@ -516,13 +515,17 @@
     		var initBody;
  		    
  		    window.onbeforeprint = function(){
- 		    	initBody = document.body.innerHTML;
- 		      document.body.innerHTML = div.innerHTML;
+ 		    	$("button").each(function(index, el){
+ 		    		$(el).css("display", "none");
+ 		    	})
  		    };
  		    
- 		    window.onafterprint = function(){
- 		    	document.body.innerHTML = initBody;
- 		    };
+ 		   window.onafterprint = function(){
+		    	$("button").each(function(index, el){
+		    		$(el).css("display", "inline");
+		    	})
+		    };
+		    
  		    window.print();
     		
     	}

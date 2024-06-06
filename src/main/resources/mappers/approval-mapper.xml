@@ -587,6 +587,8 @@
 		  join job using (job_no)
 		  join app_status on (app_type = status_no)
 		 where doc_no = #{no}
+		 order
+		    by comment_no
 	</select>
 	
 	<select id="selectApproverByDocNo" resultMap="approverResult">
@@ -680,7 +682,7 @@
 		   and line_title like '%' || #{search} || '%'
 		   </if>
 		 order
-		    by enroll_date desc
+		    by line_no desc
 	</select>
 	
 	<!-- 결재선 등록 -->

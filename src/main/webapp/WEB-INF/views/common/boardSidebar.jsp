@@ -64,7 +64,7 @@
                 <span class="hide-menu">공지사항</span>
               </a>
             </li>
-
+						<!-- 
             <li class="sidebar-item">
               <a class="sidebar-link" href="./main/app-kanban.html" aria-expanded="false">
                 <span>
@@ -73,7 +73,7 @@
                 <span class="hide-menu">자유게시판</span>
               </a>
             </li>
-
+						 -->
             <li class="sidebar-item">
               <a class="sidebar-link" href="${ contextPath }/board/dataBoardList.page" aria-expanded="false">
                 <span>

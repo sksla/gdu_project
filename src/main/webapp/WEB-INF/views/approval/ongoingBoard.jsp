@@ -35,7 +35,25 @@
           <div class="card-body px-4 py-3">
             <div class="row align-items-center">
               <div class="col-9">
-                <h4 class="fw-semibold mb-8" id="page_name">진행중 문서</h4>
+                <h4 class="fw-semibold mb-8" id="page_name">
+                	<c:choose>
+                		<c:when test="${ optionMap.docStatus == '0'}">
+                			임시보관 문서
+                		</c:when>
+                		<c:when test="${ optionMap.docStatus == '1'}">
+                			회수문서
+                		</c:when>
+                		<c:when test="${ optionMap.docStatus == '2'}">
+                			반려문서
+                		</c:when>
+                		<c:when test="${ optionMap.docStatus == '40'}">
+                			완료문서
+                		</c:when>
+                		<c:otherwise>
+		                	진행중 문서
+                		</c:otherwise>
+                	</c:choose>
+                </h4>
                 <nav aria-label="breadcrumb">
                   <ol class="breadcrumb">
                     <li class="breadcrumb-item">
@@ -226,17 +244,6 @@
     		// $("select[name='searchType']").val($searchType);
     		$("input[name='startDate']").val($startDate);
     		$("input[name='endDate']").val($endDate);
-
-    		let $docStatus = "${ optionMap.docStatus }";
-    		if($docStatus == 0){
-    			$("#page_name").text("임시보관 문서");
-    		}else if($docStatus == 1){
-    			$("#page_name").text("회수문서");
-    		}else if($docStatus == 2){
-    			$("#page_name").text("반려문서");
-    		}else if($docStatus == 40){
-    			$("#page_name").text("완료문서");
-    		}
     		
     		// 분류 검색
     		$(".selectGroupping").on("change", function(){

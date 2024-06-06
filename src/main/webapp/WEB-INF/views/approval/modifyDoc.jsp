@@ -306,7 +306,7 @@
 											</c:if>
                       <td class="approver" width="12.5%">
                       	<c:choose>
-                      		<c:when test="${receiver.appYn == 'Y'}">
+                      		<c:when test="${approver.appYn == 'Y'}">
 		                      	<div class="sign_area">
 		                          <img src="${contextPath}${approver.approver.signUrl}" style="height: 100%;" alt="서명이미지">
 		                        </div>
@@ -314,7 +314,7 @@
 	                        </c:when>
 	                        <c:otherwise>
 	                        	<c:choose>
-	                        		<c:when test="${ docInfo.nowApprover == col.approver.memNo  and docInfo.status == 2 }">
+	                        		<c:when test="${ docInfo.nowApprover == approver.approver.memNo  and docInfo.status == 2 }">
 			                        	<h5><b style="color: red;">반려</b></h5>
 	                        		</c:when>
 	                        		<c:otherwise>
@@ -334,7 +334,7 @@
 	                        </c:when>
 	                        <c:otherwise>
 	                        	<c:choose>
-	                        		<c:when test="${ docInfo.nowApprover == col.approver.memNo  and docInfo.status == 2 }">
+	                        		<c:when test="${ docInfo.nowApprover == receiver.approver.memNo  and docInfo.status == 2 }">
 			                        	<h5><b style="color: red;">반려</b></h5>
 	                        		</c:when>
 	                        		<c:otherwise>

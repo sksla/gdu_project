@@ -39,7 +39,9 @@
 						<div class="card-body px-4 py-3">
 							<div class="row align-items-center">
 								<div class="col-9">
-									<h4 class="fw-semibold mb-8">결재양식 보관함</h4>
+									<h4 class="fw-semibold mb-8">
+										결재양식 보관함<c:if test="${ optionMap.tmp eq 'Y' }">[임시저장]</c:if>
+									</h4>
 									<nav aria-label="breadcrumb">
 										<ol class="breadcrumb">
 											<li class="breadcrumb-item"><a
@@ -134,11 +136,14 @@
 																<span class="mb-0 fw-normal fs-4 app_title me-2 text-info modify_btn">
 																	수정
 																	<input type="hidden" name="no" value="${ form.appNo }">
-																</span> |
+																</span>
+																<c:if test="${ optionMap.tmp ne 'Y' }">
+																 |
 																<span class="mb-0 fw-normal fs-4 app_title ms-2 delete_btn" style="color: red;">
 																	삭제
 																	<input type="hidden" name="appNo" value="${ form.appNo }">
 																</span>
+																</c:if>
 															</td>
 														</tr>
 													</c:forEach>

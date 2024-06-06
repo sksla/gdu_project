@@ -105,11 +105,10 @@
               <br>
               
               <!-- 결재문서 작성 영역 -->
-              <h5 class="card-title fw-semibold" style="display: inline;">결재내용</h5><br><br>
+              <h5 class="card-title fw-semibold" style="display: inline;">양식내용</h5><br><br>
               <div class="card">
 
                 <div class="card-body">
-                  <label for="example-text-input" class="col-md-2 col-form-label fs-4">양식 내용</label>
                   <div class="col-md-12">
                     <textarea cols="80" id="testedit" name="appForm" rows="10" data-sample="1" data-sample-short>
                     	양식을 작성하세요.
