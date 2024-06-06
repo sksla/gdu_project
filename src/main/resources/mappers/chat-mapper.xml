@@ -109,7 +109,7 @@
 			JOIN JOB j on m.job_no = j.job_no
 		 WHERE m1.MEM_NO = #{memNo}
 			 AND m2.MEM_NO != #{memNo}
-		 order by msg_date desc nulls last
+		 order by msg_date desc 
 	</select>
 	
 	<!-- 채팅 메세지 등록 -->

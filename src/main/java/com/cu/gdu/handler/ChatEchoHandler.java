@@ -138,7 +138,7 @@ public class ChatEchoHandler extends TextWebSocketHandler {
 			// 전달하고자 하는 메세지의 형식 : 메세지유형(chat/entry/exit)|메세지내용
 			String msg = "exit|" + ((MemberDto)session.getAttributes().get("loginUser")).getMemName() + "님이 퇴장하였습니다." ; 
 						
-			client.sendMessage(new TextMessage(msg)); // * 채팅방jsp의 onMessage function실행됨
+			//client.sendMessage(new TextMessage(msg)); // * 채팅방jsp의 onMessage function실행됨
 		}
 	}
 	

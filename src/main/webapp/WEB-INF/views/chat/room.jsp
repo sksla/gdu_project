@@ -219,15 +219,18 @@
                       <li>
                         <a class="dropdown-item border-bottom" href="javascript:void(0)">Sort by Unread</a>
                       </li>
+                      <!--  
                       <li>
                         <a class="dropdown-item" href="javascript:void(0)">Hide favourites</a>
                       </li>
+                      -->
                     </ul>
                   </div>
                 </div>
                 <div class="app-chat">
                   <ul class="chat-users mb-0 list-mem scrollmy" >
                     <!--  목록 한개 부분 -->
+                    <!--  
                     <li>
                       <a href="" onclick="openChat(event, 'chat1')"
                         class="px-4 py-3 bg-hover-light-black d-flex align-items-start justify-content-between chat-user bg-light-subtle"
@@ -250,6 +253,7 @@
                         <p class="fs-2 mb-0 text-muted">15 mins</p>
                       </a>
                     </li>
+                    -->
                     <!-- 목록 한개 부분 -->
                     
                     
@@ -416,12 +420,14 @@
 											<!-- 미디어 파일 div -->
                           <div class="row mb-7 text-nowrap imgArea"> 
                             <!-- 미디어 한개 -->
+                              <!--  
                               <div class="col-4 px-1 mb-2">
 
                                 <img src="../assets/images/products/product-1.jpg" width="88" height="65" alt=""
                                   class="rounded" />
 
                               </div>
+                              -->
                             <!-- 한개 끝  -->
                              
                              
@@ -437,6 +443,7 @@
                                 Files <span class="text-muted fileCount">(36)</span>
                               </h6>
                             <!-- 파일 한개  -->
+                            <!-- 
                               <a href="javascript:void(0)"
                                 class="hstack gap-3 file-chat-hover justify-content-between text-nowrap mb-9">
                                 <div class="d-flex align-items-center gap-3">
@@ -457,6 +464,7 @@
                                   <i class="ti ti-download text-dark fs-6 bg-hover-primary"></i>
                                 </span>
                               </a>
+                              -->
                            <!-- 파일한개 끝 -->
                               
                               
@@ -912,6 +920,7 @@
 					        		            console.log("채팅방번호:", response);
 					        		            window.chatRoomNumber = response;
 					        		            ajaxChatRoomList();
+					        		            openChat(event, 'chat1', response, '','','');
 					        		        },
 					        		        error: function(xhr, status, error) {
 					        		            // AJAX 요청이 실패한 경우 실행될 작업
