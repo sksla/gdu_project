@@ -331,7 +331,7 @@ public class ApprovalController {
 							   "&status=" + map.get("status") + 
 							   "&search=" + map.get("search") + 
 							   "&startDate=" + map.get("startDate") + 
-							   "&docStstus=" + map.get("socStatus") + 
+							   "&docStatus=" + map.get("docStatus") + 
 							   "&endDate=" + map.get("endDate");
 		
 		model.addAttribute("appDocList", approvalService.selectOngoingDocList(pi, map));

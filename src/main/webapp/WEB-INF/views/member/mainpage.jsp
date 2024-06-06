@@ -632,7 +632,7 @@
 					                  </thead>
 					                  <tbody>
 					                    <c:choose>
-					                  		<c:when test="${ empty appDocList }">
+					                  		<c:when test="${ empty boardList }">
 					                  			<tr>
 							                    	<td colspan="3">
 							                        공지사항이 없습니다.

@@ -153,6 +153,8 @@
 		 <if test="search != ''">
 			 and app_form_name like '%' || #{search} || '%'
 		 </if>
+		 order
+		 		by app_no desc
 	</select>
 	
 	<update id="updateAppFormTmp">

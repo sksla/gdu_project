@@ -34,6 +34,10 @@
     text-align: center;
     width: 150px;
   }
+  #doc_content td, #doc_content th{
+  	text-align: center;
+  	border: 1px solid lightgray;
+  }
   
   @media print {
     
@@ -86,7 +90,7 @@
         
         <!-- ----------------------------- 실제 내용 작성 영역 ----------------------------- -->
           <!-- 페이지 타이틀 -->
-          <div class="card bg-info-subtle shadow-none position-relative overflow-hidden mb-4">
+          <div class="card bg-info-subtle shadow-none position-relative overflow-hidden mb-4 page_title">
             <div class="card-body px-4 py-3">
               <div class="row align-items-center">
                 <div class="col-9">
@@ -377,6 +381,7 @@
               </div>
               <br>
               
+              <div class="print_hide">
               <h5 class="card-title fw-semibold" style="display: inline;">첨부파일</h5><br><br>
               <div class="card">
                 <div class="card-body">
@@ -405,7 +410,6 @@
                   </div>
                 </div>
               </div>
-            </div>
           <br><br><br>
           
           <!-- 결재 코멘트 -->
@@ -438,8 +442,10 @@
             	</c:choose>
               
             </div>
-          
+          </div>
 					<!-- ----------------------------- 실제 내용 작성 영역 end ----------------------------- -->
+					
+        	</div>
         </div>
       </div><!-- body-wrapper end 본문 끝-->
       
@@ -488,6 +494,9 @@
     	
     	$(document).ready(function(){
     		
+    		console.log($("#doc_content table"));
+    		$("#doc_content table").addClass("table");
+    		
     		// 회수하기 (post 방식으로 이동)
        	$(".recallBtn").on("click", function(){
        		var $form = $("<form>", {
@@ -511,19 +520,21 @@
     	}
     	
     	function printDoc(){
-    		var div = "<div>테스트테스트테스트테스트테스트테스트</div>";
-    		var initBody;
  		    
  		    window.onbeforeprint = function(){
  		    	$("button").each(function(index, el){
  		    		$(el).css("display", "none");
  		    	})
+ 		    	$(".page_title").css("display", "none");
+ 		    	$(".print_hide").css("display", "none");
  		    };
  		    
  		   window.onafterprint = function(){
 		    	$("button").each(function(index, el){
 		    		$(el).css("display", "inline");
 		    	})
+		    	$(".page_title").css("display", "block");
+		    	$(".print_hide").css("display", "block");
 		    };
 		    
  		    window.print();
