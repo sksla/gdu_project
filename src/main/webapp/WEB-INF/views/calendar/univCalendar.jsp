@@ -104,7 +104,7 @@
 									<!-- ----------------- -->
 								</div>
 
-								<form class="">
+								<form class="" style="display:none">
 									<input type="text" class="search-style" name="" id=""
 										placeholder="검색어 입력">
 									<button class="btn btn-outline-primary">검색</button>
