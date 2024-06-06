@@ -24,4 +24,7 @@ public class AffReservationDto {
 	private String majorNo;
 	private String affLocation;
 	private String rownum;
+	private String memName;
+	private String affName;
+	private String majorName;
 }

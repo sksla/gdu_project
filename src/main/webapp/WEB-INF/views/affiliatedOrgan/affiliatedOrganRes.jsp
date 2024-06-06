@@ -231,10 +231,12 @@
                             </div>
                           </div>
                         </div>
-	                      <div class="buttons">
-				                  <button type="submit" class="btn btn-info" id="resButton">예약하기</button>
+	                      <div class="buttons " align="center">
+				                  <button type="submit" class="btn btn-info" id="resButton">예약하기</button>&nbsp;&nbsp;
 				                  <button type="button" class="btn btn-light" onclick="history.back();">닫기</button>
 				                </div>
+				                <br>
+				                <br>
                       </form>
                     </div>
                     <!-- end Project Assinging -->
@@ -310,12 +312,17 @@
   });
 	
 	// 예약날짜
-   	$(".resDate").on("click", function(){
+   	$("#resButton").on("click", function(){
    		if($("input[name='startDate']").val() > $("input[name='endDate']").val()){
    			alert('시작일은 종료일보다 이전이어야 합니다. 확인해주세요.');
    			return false;
    		}
    	})
+   	
+  // 예약날짜 오늘 이전은 안되게	
+	let today = new Date().toISOString().split('T')[0];
+	document.getElementById("startDate").setAttribute("min", today);
+	document.getElementById("endDate").setAttribute("min", today);
 	</script>
 </body>
 </html>

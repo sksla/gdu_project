@@ -49,10 +49,10 @@ public class AffiliatedOrganServiceImpl implements AffiliatedOrganService {
 	}
 
 	@Override
-	public List<AffReservationDto> selectAffiliatedOrganResList(PageInfoDto pi) {
-		return affiliatedOrganDao.selectAffiliatedOrganResList(pi);
+	public List<AffReservationDto> selectAffiliatedOrganResList() {
+		return affiliatedOrganDao.selectAffiliatedOrganResList();
 	}
-	
+
 	// * ------------------- 부속기관 등록관련 -------------------
 	@Override
 	public int insertAffiliatedOrgan(AffiliatedOrganDto aff) {
@@ -71,23 +71,5 @@ public class AffiliatedOrganServiceImpl implements AffiliatedOrganService {
 		}	
 		return result1 * result2;
 	}
-	
-	// * ------------------- 부속기관 검색관련 -------------------
-	@Override
-	public int selectAffiliatedOrganSearchListCount(Map<String, String> search) {
-		return affiliatedOrganDao.selectAffiliatedOrganSearchListCount(search);
-	}
-
-	@Override
-	public List<AffiliatedOrganDto> selectAffiliatedOrganSearchList(Map<String, String> search, PageInfoDto pi) {
-		return affiliatedOrganDao.selectAffiliatedOrganSearchList(search, pi);
-	}
-
-	
-
-	
-
-	
-
 
 }

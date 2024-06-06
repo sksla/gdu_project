@@ -105,17 +105,19 @@
     from 
    (select
 				   aff_name
-				 , aff_location
-				 , major_name
-				 , to_char(start_date, 'YY/MM/DD') start_date
-				 , to_char(end_date, 'YY/MM/DD') end_date
+				 , af.aff_location
+				 , maj.major_name
+				 , to_char(ar.start_date, 'YY/MM/DD') start_date
+				 , to_char(ar.end_date, 'YY/MM/DD') end_date
 				 , reason
-		  from aff_reservation
-		  join affiliated_organ using (aff_no)
-		  join major using (major_no)
+		  from aff_reservation ar
+		     join member mem on(mem.mem_no = ar.mem_no)
+   join affiliated_organ af on (af.aff_no=ar.aff_no)
+   join major maj on(maj.major_no=mem.major_no)
+   where ar.mem_no=mem.mem_no
+   and mem.major_no=mem.major_no
   order by start_date desc)
   </select>
-  
 
 	<!-- 부속기관 등록관련 -->
   <insert id="insertAffiliatedOrgan">
@@ -153,16 +155,5 @@
 			, seq_aff_no.currval
 			)
 	</insert>
-  
-  <!-- 검색 -->
-  <select id="selectAffiliatedOrganSearchListCount" resultType="_int">
-  
-  </select>
-  
-  
-  <select id="selectAffiliatedOrganSearchList" resultMap="affiliatedOrganResult">
-  
-  
-  </select>
 
 </mapper>

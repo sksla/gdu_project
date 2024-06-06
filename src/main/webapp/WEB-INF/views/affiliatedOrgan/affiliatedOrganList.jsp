@@ -218,11 +218,14 @@
                                                 <h6 class="fs-4 fw-semibold mb-0">기관명</h6>
                                               </th>
                                               <th>
-                                                <h6 class="fs-4 fw-semibold mb-0">관리자</h6>
+                                                <h6 class="fs-4 fw-semibold mb-0">예약자</h6>
                                               </th>
                                               <th>
                                                 <h6 class="fs-4 fw-semibold mb-0">사용기간</h6>
-                                              </th>
+                                              </th>   
+                                              <th>
+                                                <h6 class="fs-4 fw-semibold mb-0">예약사유</h6>
+                                              </th>  
                                             </tr>
                                           </thead>
                                           <tbody>
@@ -238,8 +241,9 @@
 		                                          			<tr>
 		                                          				<td>${ res.rownum }</td>
 		                                          				<td>${ res.affNo }</td>
-		                                          				<td>${ res.majorNo }</td>
+		                                          				<td>${ res.memNo }</td>
 		                                          				<td>${ res.startDate }~${ res.endDate }</td>
+		                                          				<td>${ res.reason }</td>
 		                                          			</tr>
 		                                          		</c:forEach>
 		                                          	</c:otherwise>
@@ -247,30 +251,7 @@
 		                                        </tr>
 		                                      </tbody>
                                         </table>
-                                       </div>
-					                              <!-- 페이징바 -->
-														            <ul class="pagination justify-content-center">
-																	        <li class="page-item ${resPi.currentPage == 1 ? 'disabled' : ''}">
-																	            <a class="page-link link" href="${contextPath}/aff/affiliatedOrganList.do?page=${resPi.currentPage-1}&tab=resList&myPage=res" aria-label="Previous">
-																	                <span aria-hidden="true">
-																	                    <i class="ti ti-chevrons-left fs-4"></i>
-																	                </span>
-																	            </a>
-																	        </li>
-																	        <c:forEach var="p" begin="${resPi.startPage}" end="${resPi.endPage}">
-																	            <li class="page-item ${resPi.currentPage == p ? 'active' : ''}">
-																	                <a class="page-link link" href="${contextPath}/aff/affiliatedOrganList.do?page=${p}&tab=resList&myPage=res">${p}</a>
-																	            </li>
-																	        </c:forEach>
-																	        <li class="page-item ${resPi.currentPage == resPi.maxPage ? 'disabled' : ''}">
-																	            <a class="page-link link" href="${contextPath}/aff/affiliatedOrganList.do?page=${resPi.currentPage+1}&tab=resList&myPage=res" aria-label="Next">
-																	                <span aria-hidden="true">
-																	                    <i class="ti ti-chevrons-right fs-4"></i>
-																	                </span>
-																	            </a>
-																	        </li>
-														   					</ul>
-										 										<!-- 페이징바 -->       
+                                   		</div>
                                   </div>
                                 </div>
                               </div>
@@ -291,13 +272,6 @@
       </div>
       
     </div><!-- page-wrapper end -->
-		<script>
-    	$(document).ready(function(){
-    		if(${myPage} == "res"){
-    			
-    		}
-    	})
-    </script>
 		<script>
 			document.addEventListener('DOMContentLoaded', function () {
 			// Initialize Bootstrap tab
@@ -334,9 +308,7 @@
 					}
 						return null;
 				}
-			});
-			
-			
+			});			
     </script>
     
     <!-- 세팅메뉴(바) -->

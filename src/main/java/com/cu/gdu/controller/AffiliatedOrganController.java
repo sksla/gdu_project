@@ -7,7 +7,6 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -58,16 +57,16 @@ public class AffiliatedOrganController {
 		PageInfoDto affPi = pagingUtil.getPageInfoDto(affiliatedOrganService.selectAffiliatedOrganListCount(), currentPage, 5, 8);
 		List<AffiliatedOrganDto> aflist = affiliatedOrganService.selectAffiliatedOrganList(affPi);
 		
-		PageInfoDto resPi = pagingUtil.getPageInfoDto(affiliatedOrganService.selectAffiliatedOrganResListCount(), currentPage, 5, 8);
-		List<AffReservationDto> reslist = affiliatedOrganService.selectAffiliatedOrganResList(resPi);
+		//PageInfoDto resPi = pagingUtil.getPageInfoDto(affiliatedOrganService.selectAffiliatedOrganResListCount(), currentPage, 5, 8);
+		List<AffReservationDto> reslist = affiliatedOrganService.selectAffiliatedOrganResList();
 		
 		log.debug("resList : " + reslist);
-		log.debug("resPi : " + resPi );
+		//log.debug("resPi : " + resPi );
 		
 		//System.out.println(list);
 		mv.addObject("affPi", affPi)
 		  .addObject("aflist", aflist)
-		  .addObject("resPi", resPi)
+		  //.addObject("resPi", resPi)
 		  .addObject("reslist", reslist)
 		  .addObject("tab", tab)
 		  .addObject("myPage", myPage)
@@ -85,7 +84,6 @@ public class AffiliatedOrganController {
 		
 		return "/affiliatedOrgan/affiliatedOrganRes";
 	}
-	   
 	// 부속기관 예약서비스
 	@PostMapping("/affiliatedOrganRes.do")
 	public String affiliatedOrganRes(AffReservationDto affres
@@ -93,6 +91,7 @@ public class AffiliatedOrganController {
 								   , RedirectAttributes redirectAttributes) {
 		log.debug("{}", affres);
 		int result = affiliatedOrganService.insertAffiliatedOrganRes(affres);
+		
 		if(result > 0) {
 			// 성공메세지
 			redirectAttributes.addFlashAttribute("alertMsg", "성공");
@@ -105,23 +104,6 @@ public class AffiliatedOrganController {
 		return "redirect:/aff/affiliatedOrganList.do?tab=resList";
 	}
 	
-	
-	/* 부속기관 예약목록 페이지 조회
-	@GetMapping("/affiliatedOrganResList.do")
-	public ModelAndView resList(@RequestParam(value="page", defaultValue="1") int currentPage, ModelAndView mv) {
-			
-		int listCount = affiliatedOrganService.selectAffiliatedOrganResListCount();
-		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 8);
-		List<AffReservationDto> reslist = affiliatedOrganService.selectAffiliatedOrganResList(pi);
-		System.out.println(reslist);
-		mv.addObject("pi", pi)
-		  .addObject("reslist", reslist)
-		  .setViewName("/affiliatedOrgan/affiliatedOrganResList");
-			
-			return mv;
-		}
-*/
-	
 	// * ------------------- 부속기관 등록관련 -------------------
 	// 부속기관 등록페이지 
 	@GetMapping("/affiliatedOrganEnrollForm.page")
@@ -129,8 +111,7 @@ public class AffiliatedOrganController {
 		List<MajorDto> list = adminService.selectMajorList();
 		model.addAttribute("list", list);
 		return "/affiliatedOrgan/affiliatedOrganEnrollForm";
-	}
-	
+	}	
 	// 부속기관 등록서비스
 	@PostMapping("/affiliatedOrganEnroll.do")
 	public String affiliatedOrganEnroll(AffiliatedOrganDto aff, List<MultipartFile> uploadFiles
@@ -166,28 +147,4 @@ public class AffiliatedOrganController {
 		}
 		return "redirect:/aff/affiliatedOrganList.do";
 	}
-	
-
-	// * ------------------- 부속기관 검색관련 -------------------
-	// 검색
-	@GetMapping("/affiliatedOrganSearch.do")
-	public ModelAndView search(@RequestParam(value="page", defaultValue="1") int currentPage,
-							   @RequestParam Map<String, String> search,
-							   ModelAndView mv) {
-		
-		log.debug("search :{}", search);
-		
-		int listCount = affiliatedOrganService.selectAffiliatedOrganSearchListCount(search);
-		PageInfoDto pi = pagingUtil.getPageInfoDto(listCount, currentPage, 5, 8);
-		List<AffiliatedOrganDto> list = affiliatedOrganService.selectAffiliatedOrganSearchList(search, pi);
-		
-		mv.addObject("pi", pi)
-		  .addObject("list", list)
-		  .addObject("search", search)
-		  .setViewName("aff/list");
-		
-		return mv;
-	}
-	
-
 }
