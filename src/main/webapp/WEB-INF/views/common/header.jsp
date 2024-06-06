@@ -80,8 +80,8 @@
 	
 	      <div class="d-block d-lg-none">
 	        <a href="${ contextPath }/member/mainpage" class="text-nowrap logo-img">
-	          <img src="${ contextPath }/assets/images/logos/dark-logo.svg" class="dark-logo" alt="Logo-Dark" />
-	          <img src="${ contextPath }/assets/images/logos/light-logo.svg" class="light-logo" alt="Logo-light" />
+	          <img src="${ contextPath }/assets/images/logos/longlogo.png" class="dark-logo" alt="Logo-Dark"  height="42"/>
+	          <img src="${ contextPath }/assets/images/logos/longlogo.png" class="light-logo" alt="Logo-light" height="42" />
 	        </a>
 	      </div>
 	      <a class="navbar-toggler nav-icon-hover p-0 border-0" href="javascript:void(0)" data-bs-toggle="collapse"

@@ -239,7 +239,7 @@
                       <div class="text-center mt-2 mb-4">
                         <a href="../main/index.html" class="text-success">
                           <span>
-                            <img src="../assets/images/logos/favicon.png" class="me-3" width="40" alt="" />
+                            <img src="../assets/images/logos/miniLogo.png" class="me-3" width="50" alt="" />
                           </span>
                         </a>
                       </div>
