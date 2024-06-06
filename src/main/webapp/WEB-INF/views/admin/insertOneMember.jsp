@@ -15,6 +15,14 @@
 	  .replace(/[^0-9]/g, '')
 	  .replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
 	}
+	
+	// 주민등록번호 입력 시 자동 - 넣기
+	const addHyphenToResidentNumber = (target) => {
+	target.value = target.value
+	  .replace(/[^0-9]/g, '')
+	  .replace(/^(\d{6})(\d{7})$/, `$1-$2`);
+	}
+	
 </script>
 <style>
   .memberLeave{
@@ -102,7 +110,7 @@
                       <div class="col-sm-9">
                         <input class="form-control memIdCheck" type="text" name="memId" id="example-text-input" placeholder="아이디를 입력해주세요" required/>
 												<div id="idCheck_result" class="noCheck smallfont"></div>
-                    </div>
+                    	</div>
                     </div>
                     <div class="mb-4 row align-items-center">
                       <label for="startDate3" class="form-label fw-semibold col-sm-3 col-form-label">학과</label>
@@ -168,7 +176,7 @@
                     <div class="mb-4 row align-items-center">
                       <label for="exampleInputSelect4" class="form-label fw-semibold col-sm-3 col-form-label">주민등록번호</label>
                       <div class="col-sm-9">
-                        <input class="form-control" type="text" value="" id="example-email-input" name="resident" placeholder="-포함 입력" required/>
+                        <input class="form-control" type="text" name="resident" id="example-resident-input" placeholder="숫자만 입력" required oninput="addHyphenToResidentNumber(this)" maxlength="14" />
                       </div>
                     </div>
                   </div>
