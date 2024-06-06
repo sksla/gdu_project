@@ -131,7 +131,7 @@
                 <div class="card-body">
                   <h5>마이페이지</h5>
                   <p class="card-subtitle mb-3">
-                    All bootstrap element classies
+                    
                   </p>
                   <form class="form" action="${ contextPath }/member/modify.do" method="post">
 
@@ -296,7 +296,7 @@
                           <button type="button" class="btn btn-success  px-4" data-bs-toggle="modal" data-bs-target="#changepass-modal">
                             비밀번호변경
                           </button>
-                          <button type="submit" class="btn btn-primary px-4 ms-6">submit</button>
+                          <button type="submit" class="btn btn-primary px-4 ms-6">수정하기</button>
                           <!--  
                           <button type="button" class="btn bg-danger-subtle text-danger  px-4 ms-6">
                             Cancel

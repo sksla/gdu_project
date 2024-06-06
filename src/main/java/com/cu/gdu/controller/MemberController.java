@@ -199,12 +199,16 @@ public class MemberController {
 	
 	@PostMapping("vacationRegist.do")
 	public String vacationRegist(VacationDto vac, RedirectAttributes redirectAttributes, HttpSession session) {
-	
+		
+		int result = 0; 
 		System.out.println(vac);
 		MemberDto loginUser = (MemberDto)session.getAttribute("loginUser");
-		int result = memberService.insertVacation(vac);
-		int result2 = memberService.updateMemVac(vac);
-		if( result * result2 > 0 ) {
+			result = memberService.insertVacation(vac);
+		
+		if(vac.getVacType().equals("정기")) {
+			int result2 = memberService.updateMemVac(vac);
+		}
+		if( result > 0 ) {
 			session.setAttribute("loginUser", memberService.selectMember(loginUser));
 			redirectAttributes.addFlashAttribute("alertMsg", "휴가신청 성공하였습니다.");
 		}else {
