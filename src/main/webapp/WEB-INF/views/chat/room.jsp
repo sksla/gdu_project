@@ -210,7 +210,7 @@
                   </form>
                   -->
                   <div style="padding-bottom: 10px; align-content: center; margin: auto;">
-                  <a class="btn bg-secondary-subtle  text-secondary px-4 py-2" onclick="openModal('createChat')" style="font-size: 18px; display: flex; align-items: center; justify-content: center; width: 300px; margin: auto;">
+                  <a class="btn bg-secondary-subtle  text-secondary px-4 py-2" onclick="openModal('createChat')" style="font-size: 18px; display: flex; align-items: center; justify-content: center; max-width: 100%; width: 300px; margin: 0 auto;"">
 		                <i class="ti ti-message-chatbot"  style="font-size: 24px;"></i>
 		                &nbsp; 채팅하기
                		</a>
