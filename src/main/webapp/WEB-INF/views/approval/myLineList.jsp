@@ -252,6 +252,7 @@
       aria-labelledby="bs-example-modal-lg" aria-hidden="true">
       <div class="modal-dialog modal-xl">
         <div class="modal-content">
+         	<div class="hide" id="modifyYN">N</div>
           <div class="modal-header d-flex align-items-center border-bottom">
             <h4 class="modal-title fw-semibold" id="myLargeModalLabel">
               결재선 등록
@@ -379,7 +380,7 @@
               onclick="confirmAppLine(this);">
               수정
             </button>
-            <button type="button" class="btn bg-danger-subtle text-danger  waves-effect text-start"
+            <button type="button" class="btn bg-danger-subtle text-danger  waves-effect text-start close_modal_btn"
               data-bs-dismiss="modal">
               닫기
             </button>
@@ -501,6 +502,11 @@
 	     	}
 	    }
    		// **************************************************************
+   		
+   		$(".close_modal_btn").on("click", function(){
+       		$(".enroll_line_btn").removeClass("hide");
+					$(".modify_line_btn").addClass("hide");
+   		})
 			
 		})
 
@@ -657,8 +663,10 @@
        		$(el).empty();
        	})
        	$("#line_title_input").val("");
-       	$(".modify_line_btn").addClass("hide");
-				$(".enroll_line_btn").removeClass("hide");
+       	if($("#modifyYN").text() == "Y"){
+       		$(".enroll_line_btn").addClass("hide");
+					$(".modify_line_btn").removeClass("hide");
+       	}
      	}
     	
     	// 선택한 결재선 적용
@@ -695,6 +703,9 @@
     		$("#line_form>input[name='modifyYN']").remove();
     		if(el.innerText == "수정"){
     			$("#line_form").append('<input type="hidden" name="modifyYN" value="Y">');
+    			$("#modifyYN").text("Y")
+    		}else{
+    			$("#modifyYN").text("N")
     		}
     		$("#line_form").submit();
     	}
