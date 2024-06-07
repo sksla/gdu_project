@@ -664,7 +664,7 @@
 					                                  .append($("<h6>").addClass("fs-2 text-muted").text(msgArr[3]))
 					                                  .append($("<div>").addClass("p-2 bg-info-subtle text-dark rounded-1 d-inline-block fs-3")
 					                                  .append($("<a>").attr("href", "${contextPath}"+ msgArr[1]).attr("target", "_blank").attr("download", msgArr[5])
-					                                                 .append($("<img>").attr("src", "${contextPath}/"+ msgArr[1]).attr("alt", "file").css("max-width", "400px").css("max-height", "450px"))))
+					                                                 .append($("<img>").attr("src", "${contextPath}/"+ msgArr[1]).attr("alt", "file").css("max-width", "360px").css("max-height", "410px"))))
 					                    );
 					                } else {
 					                    $chatDiv.append(
@@ -673,7 +673,7 @@
 					                            .append($("<h6>").addClass("fs-2 text-muted").text(msgArr[2] + ", " + msgArr[3]))
 					                            .append($("<div>").addClass("p-2 text-bg-light rounded-1 d-inline-block text-dark fs-3")
 					                            .append($("<a>").attr("href", "${contextPath}"+ msgArr[1]).attr("download", msgArr[5])
-					                            										.append( $("<img>").attr("src", "${contextPath}/"+ msgArr[1]).attr("alt", "file").css("max-width", "390px").css("max-height", "430px"))))
+					                            										.append( $("<img>").attr("src", "${contextPath}/"+ msgArr[1]).attr("alt", "file").css("max-width", "350px").css("max-height", "390px"))))
 					                    );
 					                }
 					          
@@ -810,7 +810,7 @@
 																			                .append($("<h6>").addClass("fs-2 text-muted").text(response[i].chDate))
 																			                .append($("<div>").addClass("p-2 bg-info-subtle text-dark rounded-1 d-inline-block fs-3")
 																			                		.append($("<a>").attr("href", "${contextPath}"+ filePath ).attr("download", originalName).attr("target", "_blank")
-																			                				.append($("<img>").attr("src", "${contextPath}"+ filePath).attr("alt", "file").css("max-width", "400px").css("max-height", "450px"))))
+																			                				.append($("<img>").attr("src", "${contextPath}"+ filePath).attr("alt", "file").css("max-width", "360px").css("max-height", "410px"))))
 																			            );
 																			            $chatArea.append($chatDiv); 
 							        		            		 			
@@ -823,7 +823,7 @@
 																									                .append($("<h6>").addClass("fs-2 text-muted").text(response[i].memName + response[i].jobName + ", " + response[i].chDate ))
 																									                .append($("<div>").addClass("p-2 text-bg-light rounded-1 d-inline-block text-dark fs-3")
 																									                		.append($("<a>").attr("href", "${contextPath}"+ filePath).attr("download", originalName).attr("target", "_blank")
-																									                				.append( $("<img>").attr("src", "${contextPath}/"+ filePath).attr("alt", "file").css("max-width", "390px").css("max-height", "430px"))))
+																									                				.append( $("<img>").attr("src", "${contextPath}/"+ filePath).attr("alt", "file").css("max-width", "350px").css("max-height", "390px"))))
 																									            );
 																							      		$chatArea.append($chatDiv);
 									   					                	
