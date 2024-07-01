@@ -282,7 +282,7 @@
 		  where rev.status = '1'
 		    and rev.mem_no = #{memNo}
 		    and rev_date = #{revDate}
-		   
+		    and res_type not in ('4')
 		  order 
 		     by  to_date(rev_date, 'YYYY-MM-DD') desc      
 	</select>
