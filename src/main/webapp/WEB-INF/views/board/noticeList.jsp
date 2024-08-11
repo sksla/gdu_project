@@ -31,9 +31,7 @@
           <!-- 페이지 타이틀 -->
           <div class="card bg-info-subtle shadow-none position-relative overflow-hidden mb-4">
             <div class="card-body px-4 py-3">
-            
-              <div class="row align-items-center my-3">
-              
+              <div class="row align-items-center">
                 <div class="col-9">
                   <h4 class="fw-semibold mb-8">공지게시판</h4>
                   <nav aria-label="breadcrumb">
@@ -161,7 +159,7 @@
 	                      </c:when>
 	                      <c:otherwise>
 		                      <c:forEach var="n" items="${ list }">
-			                      <tr onclick="location.href='${contextPath}/board/noticeDetail.do?no=${n.boardNo}'">
+			                      <tr onclick="location.href='${contextPath}/board/${b.memId == loginUser.memId ? 'noticeDetail.do' : 'noticeIncrease.do'}?no=${n.boardNo}';">
 				                      <td>${ n.boardNo }</td>
 				                      <td>${ n.boardTitle }</td>
 				                      <td>${ n.registDate }</td>
